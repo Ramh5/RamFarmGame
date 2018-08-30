@@ -5,7 +5,7 @@ import java.util.List;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
-
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
@@ -35,6 +35,12 @@ public class Grid extends Canvas{
 		});
 		*/
 		
+	}
+	 //hardcoded to set a dirt tile on the 
+	public void setTile(int tileNum){
+		FarmPlot dirtPlot = new FarmPlot("DIRT_PLOT", new Image("dirt_tile.png"), 0, 0);
+		grid.getChildren().remove(tileNum); 
+		grid.add(dirtPlot.getImageView(), 2, 5); //TODO hardcoded for the specifique case tileNum = 25, has to be implemented properly
 	}
 	
 	public GridPane getGrid(){

@@ -59,7 +59,7 @@ private GridPane gridPane;
 		
 		
 		Grid theGrid = new Grid(width, height);
-		
+		theGrid.setTile(25);
 		
 		mainPanel = new BorderPane(theGrid.getGrid(),topLabel,null,null,leftButton);
 		BorderPane.setAlignment(topLabel, Pos.CENTER);
@@ -90,7 +90,7 @@ private GridPane gridPane;
 				// game logic
 				
                 if(timer.value>1){
-                	Logic.update(theGrid.getGrid());
+                	//Logic.update(theGrid.getGrid());
                 	timer.value=0;
                 }
 				// UI logic
