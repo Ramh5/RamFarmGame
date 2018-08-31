@@ -41,11 +41,20 @@ public class FarmPlot extends Tile{
 		setMouse();
 	}
 	
-//set allows click to plant wheat, but only changes the imageview, does not realy change the Tile with all its property
+	
+	public void update(double dTime){
+		growth += growthRate*dTime;
+		System.out.println(dTime + " " + growth);
+	}
+	
+	
+//set click to plant wheat, but only changes the imageview, does not realy change the Tile with all its property
 	private void setMouse(){
+		System.out.println("setMouse");
 		ImageView imageView = this.getImageView();
-		this.getImageView().addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>(){
+		imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>(){
 			public void handle(MouseEvent event) {
+				System.out.println("test");
 				if (event.getButton()==MouseButton.PRIMARY){
 					MenuItem menuItem = new MenuItem("Plant wheat");
 					menuItem.setOnAction(e->{ imageView.setImage(new Image("wheat1_plot.png")); });
@@ -56,5 +65,57 @@ public class FarmPlot extends Tile{
 			}
 		});//eventhandler mouse clicked
 	}
+
+	
+	
+	public double getGrowthRate() {
+		return growthRate;
+	}
+
+	public void setGrowthRate(double growthRate) {
+		this.growthRate = growthRate;
+	}
+
+	public double getGrowth() {
+		return growth;
+	}
+
+	public void setGrowth(double growth) {
+		this.growth = growth;
+	}
+
+	public int getYield() {
+		return yield;
+	}
+
+	public void setYield(int yield) {
+		this.yield = yield;
+	}
+
+	public String getProduct() {
+		return product;
+	}
+
+	public void setProduct(String product) {
+		this.product = product;
+	}
+
+	public int getQuality() {
+		return quality;
+	}
+
+	public void setQuality(int quality) {
+		this.quality = quality;
+	}
+
+	public ContextMenu getPopup() {
+		return popup;
+	}
+
+	public void setPopup(ContextMenu popup) {
+		this.popup = popup;
+	}
+	
+	
 	
 }

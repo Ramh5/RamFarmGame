@@ -13,6 +13,8 @@ public class Tile {
 	public Tile(){
 		ID = "EMPTY_TILE";
 		imageView = new ImageView(Game.emptyTileImage);
+		
+		/*
 		imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>(){
 			public void handle(MouseEvent event) {
 				if (event.getButton()==MouseButton.PRIMARY){
@@ -20,6 +22,7 @@ public class Tile {
 				}
 			}
 		});//eventhandler mouse clicked
+		*/
 	}// empty constructor
 	
 	public Tile(String ID, Image image){
@@ -34,4 +37,9 @@ public class Tile {
 	public ImageView getImageView() {
 		return imageView;
 	}
+	
+	public void update(double dTime){
+		
+	}
+	
 }

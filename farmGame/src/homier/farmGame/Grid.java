@@ -3,7 +3,7 @@ package homier.farmGame;
 
 import java.util.ArrayList;
 
-
+import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 
@@ -23,21 +23,11 @@ public class Grid extends GridPane{
 		this.tileList = new ArrayList<Tile>();
 		
 		//initialize the arrayList the required size with empty tiles 
-		while(tileList.size() < Game.gridColumns*Game.gridRows) tileList.add(new Tile()); 
-		/*
-		for(int i=0;i<Game.gridColumns;i++){
-			for(int j=0;j<Game.gridRows;j++){
-				this.add(new Tile().getImageView(), i, j);
-			}
+		while(tileList.size() < Game.gridColumns*Game.gridRows){
+			Tile tile = new Tile();
+			tileList.add(tile);
+			this.getChildren().add(tile.getImageView());
 		}
-		*/
-		//set mouse click action for a particular node
-		/*
-		 grid.getChildren().get(11).setOnMouseClicked(e->{
-			//grid.setPadding(new Insets(10));
-		});
-		*/
-		
 	}
 	 //hardcoded to set a dirt tile on the 
 	/*
