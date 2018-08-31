@@ -1,8 +1,9 @@
 package homier.farmGame;
 
-import homier.farmGame.logic.Logic;
+import homier.farmGame.render.Render;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -15,6 +16,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -30,12 +32,14 @@ public static int width = gridColumns*tileSize;
 public static int height = gridRows*tileSize;
 
 public static Image emptyTileImage = new Image("empty_tile.png");
+public static Image dirtTileImage = new Image("dirt_tile.png");
 
 
 private BorderPane mainPanel;
 private Label topLabel;
 private Button leftButton;
 private GridPane gridPane;
+Scene myScene ;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -53,18 +57,38 @@ private GridPane gridPane;
 		leftButton.setGraphic(new ImageView("empty_tile.png"));
 		leftButton.setBorder(Border.EMPTY);
 		leftButton.setPadding(Insets.EMPTY);
-		gridPane = new GridPane();
-		gridPane.add(new ImageView("empty_tile.png"), 0	, 0);
+		//gridPane = new GridPane();
+		//gridPane.add(new ImageView("empty_tile.png"), 0	, 0);
 		
 		
+		Grid theGrid = new Grid();
 		
-		Grid theGrid = new Grid(width, height);
-		theGrid.setTile(25);
+		theGrid.setTile(new FarmPlot("DIRT_TILE", dirtTileImage, 15, 400), 0,0);
+		theGrid.setTile(new FarmPlot("DIRT_TILE", dirtTileImage, 15, 400), 1,1);
+		theGrid.setTile(new FarmPlot("DIRT_TILE", dirtTileImage, 15, 400), 2,2);
 		
-		mainPanel = new BorderPane(theGrid.getGrid(),topLabel,null,null,leftButton);
+		//theGrid.autosize();
+		
+		mainPanel = new BorderPane(theGrid,topLabel,null,null,leftButton);
 		BorderPane.setAlignment(topLabel, Pos.CENTER);
 		BorderPane.setAlignment(leftButton, Pos.CENTER);
 		mainPanel.setBackground(new Background(new BackgroundFill(Color.DARKGREY, null, null)));//TODO use CSS instead
+		
+		//System.out.println(theGrid.getChildren().size()); 
+		
+		//GridPane.setVgrow(theGrid.getChildren().get(2), Priority.ALWAYS); 
+		//System.out.println(mainPanel.getHeight());
+		
+		/*
+		Platform.runLater(new Runnable() {
+
+            @Override
+            public void run() {
+                System.out.println("borderPane's height: " + mainPanel.getHeight());
+                System.out.println("gridPane height: " + theGrid.getHeight());
+            }
+        });
+        */
 		
 		//GraphicsContext gc = theGrid.getGraphicsContext2D();
 
@@ -98,11 +122,17 @@ private GridPane gridPane;
 
 				// render
 
-				//theGrid.render();
+				Render.render(theGrid);
+				//System.out.println("gridPane height: " + theGrid.getHeight());
+				
+				//maybe a little buggy on startup but works to make the window fit the changes, maybe better just setting hard dimensions
+				//window.sizeToScene();
+				//window.centerOnScreen();
+				
 			}
 		}.start();
 		
-		Scene myScene = new Scene(mainPanel);
+		myScene = new Scene(mainPanel,1100, 1035); 
 		window.setScene(myScene);
 		window.show();
 	}
