@@ -20,23 +20,27 @@ public class Grid extends GridPane{
 	private ArrayList<Tile> tileList;
 	
 	public Grid() {
+		this.setMaxSize(Game.tileSize*Game.gridColumns, Game.tileSize*Game.gridRows);
 		this.tileList = new ArrayList<Tile>();
 		
 		//initialize the arrayList the required size with empty tiles 
 		while(tileList.size() < Game.gridColumns*Game.gridRows){
 			Tile tile = new Tile();
 			tileList.add(tile);
-			this.getChildren().add(tile.getImageView());
+			this.getChildren().add(tile.getImageView(0));
 		}
+		
+		init();
 	}
-	 //hardcoded to set a dirt tile on the 
-	/*
-	public void setTile(int tileNum){
-		FarmPlot dirtPlot = new FarmPlot("DIRT_PLOT", new Image("dirt_tile.png"), 0, 0);
-		grid.getChildren().remove(tileNum); 
-		grid.add(dirtPlot.getImageView(), 2, 5); //TODO hardcoded for the specifique case tileNum = 25, has to be implemented properly
+	
+	//initialize start game
+	private void init(){
+		for (int i=0;i<tileList.size();i++){
+			tileList.set(i, new FarmPlot("DIRT_TILE", Game.dirtTileImage, 0, 0));
+		}
+		
+		tileList.set(40, new Tile("HOUSE_TILE", Game.houseImage));
 	}
-	*/
 	
 	//sets the tileList of the Grid object
 	public void setTileList(ArrayList<Tile> tileList){

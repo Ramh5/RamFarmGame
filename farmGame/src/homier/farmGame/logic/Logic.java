@@ -15,8 +15,8 @@ public class Logic {
 	
 	public static void update(Grid theGrid, double dTime){
 		ArrayList<Tile> tileList = theGrid.getTileList();
-		ObservableList<Node> children = theGrid.getChildren();
-		int size = children.size();
+		//ObservableList<Node> children = theGrid.getChildren();
+		//int size = children.size();
 		
 		for(Tile tile : tileList){
 			tile.update(dTime);

@@ -8,11 +8,11 @@ import javafx.scene.input.MouseEvent;
 
 public class Tile {
 	private String ID;
-	private ImageView imageView;
+	private ImageView[] imageViews = new ImageView[5];
 	
 	public Tile(){
 		ID = "EMPTY_TILE";
-		imageView = new ImageView(Game.emptyTileImage);
+		imageViews[0] = new ImageView(Game.emptyTileImage);
 		
 		/*
 		imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>(){
@@ -27,15 +27,19 @@ public class Tile {
 	
 	public Tile(String ID, Image image){
 		this.ID=ID;
-		this.imageView= new ImageView(image);
+		this.imageViews[0]= new ImageView(image);
 	}
 
 	public String getID(){
 		return ID;
 	}
 	
-	public ImageView getImageView() {
-		return imageView;
+	public void setImageView(ImageView imageView){
+		this.imageViews[0] = imageView;
+	}
+	
+	public ImageView getImageView(int i) {
+		return imageViews[i];
 	}
 	
 	public void update(double dTime){

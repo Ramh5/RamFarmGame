@@ -7,6 +7,8 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -15,7 +17,9 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
@@ -29,15 +33,21 @@ public static int tileSize = 100, gridColumns = 10, gridRows = 9;
 public static int width = gridColumns*tileSize;
 public static int height = gridRows*tileSize;
 
-public static Image emptyTileImage = new Image("empty_tile.png");
-public static Image dirtTileImage = new Image("dirt_tile.png");
 
+public static Image emptyTileImage = new Image("empty_tile.png",tileSize,tileSize,true, true);
+public static Image dirtTileImage = new Image("dirt_tile.png",tileSize,tileSize,true,true);
+public static Image wheat1Image = new Image("wheat1_plot.png",tileSize,tileSize,true,true);
+public static Image wheat2Image = new Image("wheat_field2.png",tileSize,tileSize,true,true);
+public static Image houseImage = new Image("farmhouse.png",tileSize,tileSize,true,true);
 
 private BorderPane mainPanel;
+private StackPane root;
+private Canvas effect;
 private Label topLabel;
 private Button leftButton;
 
 Scene myScene ;
+
 
 	public static void main(String[] args) {
 		launch(args);
@@ -60,15 +70,25 @@ Scene myScene ;
 			
 		});
 		
+		// build a top layer effect
+		
+		effect = new Canvas(tileSize*gridColumns, tileSize*gridRows);
+		effect.setMouseTransparent(true);
+		//GraphicsContext gc = effect.getGraphicsContext2D();
+		//gc.setFill(new Color(0, 0, 1.0,.2));
+		//gc.fillRect(0, 0, tileSize*gridColumns, tileSize*gridRows);
+		
+		
 		
 		Grid theGrid = new Grid();
-		theGrid.setTile(new FarmPlot("DIRT_TILE", dirtTileImage, 15, 400), 0,0);
-		theGrid.setTile(new FarmPlot("DIRT_TILE", dirtTileImage, 15, 400), 1,1);
-		theGrid.setTile(new FarmPlot("DIRT_TILE", dirtTileImage, 15, 400), 2,2);
+		//theGrid.setTile(new FarmPlot("DIRT_TILE", dirtTileImage, 15, 400), 0,0);
+		//theGrid.setTile(new FarmPlot("DIRT_TILE", dirtTileImage, 15, 400), 1,1);
+		//theGrid.setTile(new FarmPlot("DIRT_TILE", dirtTileImage, 15, 400), 2,2);
 		Render.render(theGrid);
 		
-		
-		mainPanel = new BorderPane(theGrid,topLabel,null,null,leftButton);
+		root = new StackPane();
+		root.getChildren().addAll(theGrid,effect);
+		mainPanel = new BorderPane(root,topLabel,null,null,leftButton);
 		BorderPane.setAlignment(topLabel, Pos.CENTER);
 		BorderPane.setAlignment(leftButton, Pos.CENTER);
 		mainPanel.setBackground(new Background(new BackgroundFill(Color.DARKGREY, null, null)));//TODO use CSS instead
@@ -86,6 +106,9 @@ Scene myScene ;
                 lastNanoTime.value = currentNanoTime;
                 timer.value += dTime;
                 
+                //System.out.println(theGrid.getPadding());
+               // System.out.println(theGrid.getHeight());
+               //System.out.println(effect.getHeight());
                 //System.out.println("timer: "+timer.value);
                // System.out.println("elapsedTime: "+elapsedTime);
 				// game logic

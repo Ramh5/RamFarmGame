@@ -2,6 +2,7 @@ package homier.farmGame;
 
 
 
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
@@ -43,21 +44,25 @@ public class FarmPlot extends Tile{
 	
 	
 	public void update(double dTime){
-		growth += growthRate*dTime;
+		if(growth<100){
+		growth += growthRate/2*dTime;
 		System.out.println(dTime + " " + growth);
+		}else{
+			this.setImageView(new ImageView(Game.wheat2Image));
+		}
 	}
 	
 	
 //set click to plant wheat, but only changes the imageview, does not realy change the Tile with all its property
 	private void setMouse(){
-		System.out.println("setMouse");
-		ImageView imageView = this.getImageView();
+		ImageView imageView = this.getImageView(0);
 		imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>(){
 			public void handle(MouseEvent event) {
-				System.out.println("test");
 				if (event.getButton()==MouseButton.PRIMARY){
 					MenuItem menuItem = new MenuItem("Plant wheat");
-					menuItem.setOnAction(e->{ imageView.setImage(new Image("wheat1_plot.png")); });
+					menuItem.setOnAction(e->{ 
+						
+					});
 					popup = new ContextMenu(menuItem);
 					popup.show(imageView, event.getScreenX(), event.getScreenY());
 					
