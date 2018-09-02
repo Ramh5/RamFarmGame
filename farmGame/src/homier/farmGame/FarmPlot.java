@@ -41,30 +41,60 @@ public class FarmPlot extends Tile{
 	
 		
 	}
+	public FarmPlot(String ID, Image[] images, int[] map, double growthRate, double growth, int yield, int quality) {
+		super(ID, images, map);
+		this.growthRate = growthRate;
+		this.growth = growth;
+		this.yield = yield;
+		this.product = ID.substring(0, ID.indexOf("_"));
+		this.quality = quality;
 	
+		
+	}
+	public FarmPlot(String ID, Image[] images, int[] map, double growthRate, int yield) {
+		super(ID, images, map);
+		this.growthRate = growthRate;
+		this.growth = 0;
+		this.yield = yield;
+		this.product = ID.substring(0, ID.indexOf("_"));
+		this.quality = 0;
+	
+		
+	}
 	
 	public void update(double dTime){
-		if(growth<100){
-		growth += growthRate/2*dTime;
-		//System.out.println(dTime + " " + growth);
-		}else{
-			this.setImageView(new ImageView(Game.wheat2Image));
-		}
+		if(growth<100)
+		growth += growthRate*dTime;
 	}
+		
+	// only works for 3 stages for now, need a loop to make it more robust
+		public ImageView getImageToRender(){
+			if(getMap().length==1)
+				return getImageViews()[0];
+			
+			if(growth<getMap()[1])
+				return getImageViews()[0];
+			
+			if(growth<getMap()[2])
+				return getImageViews()[1];
+			
+				return getImageViews()[2];
+		}
 	
 	
 	//methode to set a popup menu controlled by the different tiles, but needing to update the grid
 	public void setMouse(Grid theGrid, int i){
 		ImageView imageView = this.getImageView(0);
-		Tile tile = this;
+		//Tile tile = this;
 		imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>(){
 			public void handle(MouseEvent event) {
-				System.out.println(event.getTarget());
+				//System.out.println(event.getTarget());
 				if (event.getButton()==MouseButton.PRIMARY){
 					MenuItem menuItem = new MenuItem("Plant wheat");
 					menuItem.setOnAction(e->{ 
-						theGrid.getTileList().set(i,new FarmPlot("WHEAT_PLOT", Game.dirtTileImage, 15, 400));
-						System.out.println(e.getTarget());
+						Image[] images = {Game.dirtTileImage, Game.wheat1Image, Game.wheat2Image};
+						theGrid.getTileList().set(i,new FarmPlot("WHEAT_PLOT", images,new int[]{0,25,90} , 15, 400));
+						//System.out.println(e.getTarget());
 					});
 					popup = new ContextMenu(menuItem);
 					popup.show(imageView, event.getScreenX(), event.getScreenY());
@@ -124,6 +154,16 @@ public class FarmPlot extends Tile{
 		this.popup = popup;
 	}
 	
+	public ImageView[] getImageViews(){
+		return super.getImageViews();
+	}
 	
+	public int[] getMap(){
+		return super.getMap();
+	}
+	
+	public String toString(){
+		return (super.toString() + String.format("\tGrowth Rate: %.0f", growthRate) + String.format("\t  Growth: %.0f", growth) + "\tyield: " + yield + "\tproduct: " + "\tquality: " + quality);
+	}
 	
 }

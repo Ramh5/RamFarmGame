@@ -39,6 +39,7 @@ public static Image dirtTileImage = new Image("dirt_tile.png",tileSize,tileSize,
 public static Image wheat1Image = new Image("wheat1_plot.png",tileSize,tileSize,true,true);
 public static Image wheat2Image = new Image("wheat_field2.png",tileSize,tileSize,true,true);
 public static Image houseImage = new Image("farmhouse.png",tileSize,tileSize,true,true);
+public static Image forestTileImage = new Image("summer_tile.png",tileSize,tileSize,true,true);
 
 private BorderPane mainPanel;
 private StackPane root;
@@ -102,7 +103,7 @@ private Scene myScene ;
 				
 			
 				// calculate time since last update.
-				double dTime = (currentNanoTime - lastNanoTime.value) / 1000000000.0;
+				double dTime = (currentNanoTime - lastNanoTime.value) / 1e9;
                 lastNanoTime.value = currentNanoTime;
                 timer.value += dTime;
                 
@@ -127,7 +128,7 @@ private Scene myScene ;
 			}
 		}.start();
 		
-		myScene = new Scene(mainPanel,1100, 1035); 
+		myScene = new Scene(mainPanel,1100, 1000); 
 		window.setScene(myScene);
 		window.show();
 	}

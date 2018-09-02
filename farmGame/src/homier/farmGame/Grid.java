@@ -43,9 +43,13 @@ public class Grid extends GridPane{
 	//initialize start game
 	private void init(){
 		for (int i=0;i<tileList.size();i++){
-			tileList.set(i, new FarmPlot("DIRT_TILE", Game.dirtTileImage, 0, 0));
+			
+			tileList.set(i, new Tile("FREST_TILE", Game.forestTileImage));
 		}
-		
+		int[] indexList = {30,31,32,39,41,48,49,50};
+		for (int i: indexList){
+			tileList.set(i, new FarmPlot("DIRT_PLOT", Game.dirtTileImage, 0, 0));
+		}
 		tileList.set(40, new Tile("HOUSE_TILE", Game.houseImage));
 	}
 	
