@@ -33,6 +33,13 @@ public class Grid extends GridPane{
 		init();
 	}
 	
+	//methode to set a popup menu controlled by the different tiles, but needing to update the grid
+	public void setMouse(){
+		for(int i=0;i<tileList.size();i++){
+			tileList.get(i).setMouse(this,i);
+		}
+	}
+	
 	//initialize start game
 	private void init(){
 		for (int i=0;i<tileList.size();i++){

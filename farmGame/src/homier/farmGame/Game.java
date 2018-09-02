@@ -45,8 +45,8 @@ private StackPane root;
 private Canvas effect;
 private Label topLabel;
 private Button leftButton;
-
-Scene myScene ;
+private Grid theGrid;
+private Scene myScene ;
 
 
 	public static void main(String[] args) {
@@ -67,7 +67,6 @@ Scene myScene ;
 		leftButton.setPadding(Insets.EMPTY);
 		leftButton.setOnAction(e->{
 			topLabel.setText(""+System.currentTimeMillis());
-			
 		});
 		
 		// build a top layer effect
@@ -80,7 +79,8 @@ Scene myScene ;
 		
 		
 		
-		Grid theGrid = new Grid();
+		theGrid = new Grid();
+		theGrid.setMouse();
 		//theGrid.setTile(new FarmPlot("DIRT_TILE", dirtTileImage, 15, 400), 0,0);
 		//theGrid.setTile(new FarmPlot("DIRT_TILE", dirtTileImage, 15, 400), 1,1);
 		//theGrid.setTile(new FarmPlot("DIRT_TILE", dirtTileImage, 15, 400), 2,2);

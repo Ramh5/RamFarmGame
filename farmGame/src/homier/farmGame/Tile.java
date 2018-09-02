@@ -30,6 +30,12 @@ public class Tile {
 		this.imageViews[0]= new ImageView(image);
 	}
 
+	
+	//methode to set a popup menu controlled by the different tiles, but needing to update the grid
+	public void setMouse(Grid theGrid, int i){
+		
+	}
+	
 	public String getID(){
 		return ID;
 	}
