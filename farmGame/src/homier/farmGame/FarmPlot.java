@@ -5,6 +5,8 @@ package homier.farmGame;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -64,7 +66,7 @@ public class FarmPlot extends Tile{
 	
 	public void update(double dTime){
 		if(growth<100)
-		growth += growthRate*dTime;
+		growth += growthRate*dTime/Game.secondsInADay;
 	}
 		
 	// only works for 3 stages for now, need a loop to make it more robust
@@ -83,21 +85,33 @@ public class FarmPlot extends Tile{
 	
 	
 	//methode to set a popup menu controlled by the different tiles, but needing to update the grid
-	public void setMouse(Grid theGrid, int i){
-		ImageView imageView = this.getImageView(0);
-		//Tile tile = this;
+	public void setUI(Grid theGrid, int i){
+		ImageView imageView = this.getImageToRender();
+		MenuItem menuItem = new MenuItem("Plant wheat");
+		/*
+		MenuItem menu2 = new MenuItem("menu2");
+		Menu menu3 = new Menu("item3");
+		MenuItem menu4 = new MenuItem("menu4");
+		menu3.getItems().add(menu4);
+		*/
+		popup = new ContextMenu();
+		popup.getItems().addAll(menuItem);
+		
 		imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>(){
 			public void handle(MouseEvent event) {
-				//System.out.println(event.getTarget());
+				
 				if (event.getButton()==MouseButton.PRIMARY){
-					MenuItem menuItem = new MenuItem("Plant wheat");
+					Game.pause=true;
+					
 					menuItem.setOnAction(e->{ 
 						Image[] images = {Game.dirtTileImage, Game.wheat1Image, Game.wheat2Image};
-						theGrid.getTileList().set(i,new FarmPlot("WHEAT_PLOT", images,new int[]{0,25,90} , 15, 400));
-						//System.out.println(e.getTarget());
+						Tile newTile = new FarmPlot("WHEAT_PLOT", images,new int[]{0,25,90} , 15, 400);
+						theGrid.getTileList().set(i,newTile);
+						
 					});
-					popup = new ContextMenu(menuItem);
+
 					popup.show(imageView, event.getScreenX(), event.getScreenY());
+					
 					
 				}
 			}

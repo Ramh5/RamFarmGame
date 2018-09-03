@@ -47,7 +47,7 @@ public class Tile {
 	}
 	
 	//methode to set a popup menu controlled by the different tiles, but needing to update the grid
-	public void setMouse(Grid theGrid, int i){
+	public void setUI(Grid theGrid, int i){
 		
 	}
 	
