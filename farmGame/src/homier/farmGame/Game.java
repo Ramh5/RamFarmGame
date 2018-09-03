@@ -2,6 +2,7 @@ package homier.farmGame;
 
 import homier.farmGame.logic.Logic;
 import homier.farmGame.render.Render;
+import homier.farmGame.utils.Tools;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -24,6 +25,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 
 
@@ -98,6 +103,7 @@ private Scene myScene ;
 
 		LongValue lastNanoTime = new LongValue( System.nanoTime() );
 		DoubleValue timer = new DoubleValue(0);
+		DoubleValue gameTime = new DoubleValue(0);
 		new AnimationTimer() {
 			public void handle(long currentNanoTime) {
 				
@@ -106,8 +112,13 @@ private Scene myScene ;
 				double dTime = (currentNanoTime - lastNanoTime.value) / 1e9;
                 lastNanoTime.value = currentNanoTime;
                 timer.value += dTime;
+                gameTime.value +=dTime;
                 
-                //System.out.println(theGrid.getPadding());
+                topLabel.setText(Tools.elapsedSecondsFormatter(gameTime.value));
+                
+                
+                
+                //System.out.println(new Date((long)gameTime.value));
                // System.out.println(theGrid.getHeight());
                //System.out.println(effect.getHeight());
                 //System.out.println("timer: "+timer.value);
