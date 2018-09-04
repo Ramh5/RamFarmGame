@@ -5,9 +5,11 @@ package homier.farmGame;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -71,51 +73,79 @@ public class FarmPlot extends Tile{
 		
 	// only works for 3 stages for now, need a loop to make it more robust
 		public ImageView getImageToRender(){
+			
 			if(getMap().length==1)
 				return getImageViews()[0];
 			
-			if(growth<getMap()[1])
-				return getImageViews()[0];
+			for(int i=0;i<(getMap().length-1);i++){
+				if(growth<getMap()[i+1])
+					return getImageViews()[i];
+			}
 			
-			if(growth<getMap()[2])
-				return getImageViews()[1];
-			
-				return getImageViews()[2];
+				return getImageViews()[getMap().length-1];
 		}
 	
 	
-	//methode to set a popup menu controlled by the different tiles, but needing to update the grid
+	//methode to set a popup menu controlled by the different tiles, that popup menu needs to be able to modify the grid
 	public void setUI(Grid theGrid, int i){
 		ImageView imageView = this.getImageToRender();
-		MenuItem menuItem = new MenuItem("Plant wheat");
+		MenuItem menuItem = new MenuItem();
+		Label label = new Label("  growth : xx");
+		SeparatorMenuItem separator = new SeparatorMenuItem();
+		separator.setContent(label);
+		popup = new ContextMenu();
+		popup.setOnHidden(e->{Game.pause = false;});
+		popup.getItems().addAll(menuItem,separator);
+		
+		if(getID().equals("DIRT_PLOT")){
+			
+			imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>(){
+				public void handle(MouseEvent event) {
+					if (event.getButton()==MouseButton.PRIMARY){
+						Game.pause=true;
+						menuItem.setText("Plant Wheat");
+						menuItem.setOnAction(e->{ 
+							Image[] images = {Game.dirtTileImage, Game.sown1Image, Game.sown2Image, Game.wheat1Image, Game.wheat2Image};
+							Tile newTile = new FarmPlot("WHEAT_PLOT", images,new int[]{0,20,40,60,90} , 15, 400);
+							theGrid.getTileList().set(i,newTile);
+						});
+						popup.show(imageView, event.getScreenX(), event.getScreenY());	
+					}
+				}
+			});//eventhandler mouse clicked
+		}
+		
+		if(getID().equals("WHEAT_PLOT")){
+			
+			imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>(){
+				public void handle(MouseEvent event) {
+					if (event.getButton()==MouseButton.PRIMARY){
+						Game.pause=true;
+						menuItem.setText("Harvest "+ (int)(growth/100.0*yield)+ " kg of wheat");
+						menuItem.setOnAction(e->{ 
+							Image[] images = {Game.dirtTileImage};
+							Tile newTile = new FarmPlot("DIRT_PLOT", images,new int[]{0} , 0, 0);
+							theGrid.getTileList().set(i,newTile);
+						});
+						popup.show(imageView, event.getScreenX(), event.getScreenY());
+					}
+				}
+			});//eventhandler mouse clicked
+		}
+		
+		
 		/*
 		MenuItem menu2 = new MenuItem("menu2");
 		Menu menu3 = new Menu("item3");
 		MenuItem menu4 = new MenuItem("menu4");
 		menu3.getItems().add(menu4);
 		*/
-		popup = new ContextMenu();
-		popup.getItems().addAll(menuItem);
+		//label as content of a separator to create a label in the context menu
 		
-		imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>(){
-			public void handle(MouseEvent event) {
-				
-				if (event.getButton()==MouseButton.PRIMARY){
-					Game.pause=true;
-					
-					menuItem.setOnAction(e->{ 
-						Image[] images = {Game.dirtTileImage, Game.wheat1Image, Game.wheat2Image};
-						Tile newTile = new FarmPlot("WHEAT_PLOT", images,new int[]{0,25,90} , 15, 400);
-						theGrid.getTileList().set(i,newTile);
-						
-					});
-
-					popup.show(imageView, event.getScreenX(), event.getScreenY());
-					
-					
-				}
-			}
-		});//eventhandler mouse clicked
+		
+		
+		
+	
 	}
 
 	
