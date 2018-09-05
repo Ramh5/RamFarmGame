@@ -21,6 +21,8 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -58,10 +60,10 @@ private BorderPane mainPanel;
 private StackPane root;
 private Canvas effect;
 private Label topLabel;
-private Button leftButton;
+private Button pauseButton;
 private Grid theGrid;
 private Scene myScene ;
-
+private VBox leftPanel;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -71,19 +73,24 @@ private Scene myScene ;
 	public void start(Stage window) {
 		window.setTitle("JeuFerme");
 		
-		VBox leftPanel = new VBox();
+	    leftPanel = new VBox();
 		topLabel = new Label("Farm Game");
 		topLabel.setFont(Font.font("Helvetica", FontWeight.BOLD, 24));
 		topLabel.setTextFill(Color.AQUAMARINE);
-		leftButton = new Button("Pause");
+		pauseButton = new Button("Pause");
 		//leftButton.setRotate(-90);
 		//leftButton.setGraphic(new ImageView("empty_tile.png"));
-		leftButton.setBorder(Border.EMPTY);
-		leftButton.setPadding(Insets.EMPTY);
-		leftButton.setOnAction(e->{
+		//pauseButton.setBorder(Border.EMPTY);
+		//pauseButton.setPadding(Insets.EMPTY);
+		pauseButton.setOnAction(e->{
 			pause = !pause;
 		});
 		
+		VBox mouseOverInfo = new VBox();
+		Label growthLabel = new Label("growth: ");
+		Label yieldLabel = new Label("yield: ");
+		mouseOverInfo.getChildren().addAll(growthLabel,yieldLabel);
+		leftPanel.getChildren().addAll(pauseButton, mouseOverInfo);
 		// build a top layer effect
 		
 		effect = new Canvas(tileSize*gridColumns, tileSize*gridRows);
@@ -109,17 +116,19 @@ private Scene myScene ;
 		*/
 		
 		theGrid = new Grid();
-		theGrid.setUI();
-		Render.render(theGrid);
+		
 		
 		root = new StackPane();
 		root.getChildren().addAll(theGrid,effect);
-		mainPanel = new BorderPane(root,topLabel,null,null,leftButton);
+		leftPanel.setAlignment(Pos.CENTER);
+		leftPanel.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, null)));
+		mainPanel = new BorderPane(root,topLabel,null,null,leftPanel);
 		BorderPane.setAlignment(topLabel, Pos.CENTER);
-		BorderPane.setAlignment(leftButton, Pos.CENTER);
+		BorderPane.setAlignment(leftPanel, Pos.CENTER);
 		mainPanel.setBackground(new Background(new BackgroundFill(Color.DARKGREY, null, null)));//TODO use CSS instead
 		
-		
+		theGrid.setUI();
+		Render.render(theGrid);
 		
 
 		LongValue lastNanoTime = new LongValue( System.nanoTime() );
