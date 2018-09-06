@@ -1,13 +1,12 @@
-package homier.farmGame;
+package homier.farmGame.model;
 
-import javafx.event.EventHandler;
+
+import homier.farmGame.controller.App;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
 
 public class Tile {
+
 	private String ID;
 	private ImageView[] imageViews;
 	private int[] map;
@@ -15,7 +14,7 @@ public class Tile {
 	public Tile(){
 		ID = "EMPTY_TILE";
 		imageViews= new ImageView[1];
-		imageViews[0] = new ImageView(Game.emptyTileImage);
+		imageViews[0] = new ImageView(App.emptyTileImage);
 	}// empty constructor
 	
 	public Tile(String ID, Image image){
@@ -37,10 +36,6 @@ public class Tile {
 		
 	}
 	
-	//methode to set a popup menu controlled by the different tiles, but needing to update the grid
-	public void setUI(Grid theGrid, int i){
-		
-	}
 	
 	public String getID(){
 		return ID;
@@ -74,4 +69,5 @@ public class Tile {
 		return ("ID: " + ID +"\tStages: " + imageViews.length);
 	}
 	
+
 }
