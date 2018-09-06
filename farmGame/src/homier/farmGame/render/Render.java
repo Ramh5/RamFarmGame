@@ -22,6 +22,7 @@ public class Render {
 					GridPane.setConstraints(newImageView, i, j);
 					theGrid.getChildren().set(Game.gridRows*i+j, newImageView);
 					tile.setUI(theGrid, Game.gridRows*i+j);
+					
 				}
 				
 				//System.out.println(theGrid.getTileList().get(Game.gridRows*i+j).toString());

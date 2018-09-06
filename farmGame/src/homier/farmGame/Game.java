@@ -44,7 +44,7 @@ public static int tileSize = 100, gridColumns = 10, gridRows = 9;
 public static int width = gridColumns*tileSize;
 public static int height = gridRows*tileSize;
 
-public static boolean pause = false;
+
 public static float gameSpeed = 50;
 public static int secondsInADay = 300;
 public static Image emptyTileImage = new Image("empty_tile.png",tileSize,tileSize,true, true);
