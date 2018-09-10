@@ -25,6 +25,7 @@ public class Engine {
 	@FXML private Label pauseLabel;
 	
 	private Game game = new Game();
+	private Renderer renderer;
 	private double gameTime = 0;
 	
 	
@@ -35,12 +36,12 @@ public class Engine {
 	}
 	
 	public void render() {
-		Renderer.render(game.getTileList(), gameGridPane);
+		renderer.render(game.getTileList(), gameGridPane);
 		
 	}
 	
 	public void initialize(){
-		
+		renderer = new Renderer(game.getTileList(), gameGridPane);
 		clockLabel.setText(Tools.elapsedSecondsFormatter(gameTime));
 		pauseButton.setGraphic(new ImageView(new Image("Button-Pause.png", 32,32,true,true)));
 		pauseButton.setBackground(Background.EMPTY);

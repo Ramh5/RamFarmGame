@@ -15,10 +15,9 @@ public class FarmPlot extends Tile {
 	private IntegerProperty yield ;
 	private String product;
 	private int quality;
-	private ContextMenu popup;
 	
-	public FarmPlot(String ID, Image image, double growthRate, int yield) {
-		super(ID, image);
+	public FarmPlot(String ID, double growthRate, int yield) {
+		super(ID);
 		this.growthRate = growthRate;
 		this.growth = new SimpleDoubleProperty(0);
 		this.yield = new SimpleIntegerProperty(yield);
@@ -28,8 +27,8 @@ public class FarmPlot extends Tile {
 		
 	}
 	
-	public FarmPlot(String ID, Image image, double growthRate, double growth, int yield, int quality) {
-		super(ID, image);
+	public FarmPlot(String ID, double growthRate, double growth, int yield, int quality) {
+		super(ID);
 		this.growthRate = growthRate;
 		this.growth = new SimpleDoubleProperty(growth);
 		this.yield = new SimpleIntegerProperty(yield);
@@ -38,26 +37,7 @@ public class FarmPlot extends Tile {
 	
 		
 	}
-	public FarmPlot(String ID, Image[] images, int[] map, double growthRate, double growth, int yield, int quality) {
-		super(ID, images, map);
-		this.growthRate = growthRate;
-		this.growth = new SimpleDoubleProperty(growth);
-		this.yield = new SimpleIntegerProperty(yield);
-		this.product = ID.substring(0, ID.indexOf("_"));
-		this.quality = quality;
 	
-		
-	}
-	public FarmPlot(String ID, Image[] images, int[] map, double growthRate, int yield) {
-		super(ID, images, map);
-		this.growthRate = growthRate;
-		this.growth = new SimpleDoubleProperty(0);
-		this.yield = new SimpleIntegerProperty(yield);
-		this.product = ID.substring(0, ID.indexOf("_"));
-		this.quality = 0;
-	
-		
-	}
 	
 	public double getGrowthRate() {
 		return growthRate;
@@ -95,21 +75,9 @@ public class FarmPlot extends Tile {
 		this.quality = quality;
 	}
 
-	public ContextMenu getPopup() {
-		return popup;
-	}
 
-	public void setPopup(ContextMenu popup) {
-		this.popup = popup;
-	}
 	
-	public ImageView[] getImageViews(){
-		return super.getImageViews();
-	}
 	
-	public int[] getMap(){
-		return super.getMap();
-	}
 	
 	public String toString(){
 		return (super.toString() + String.format("\tGrowth Rate: %.0f", growthRate) + String.format("\t  Growth: %.0f", growth) + "\tyield: " + yield + "\tproduct: " + "\tquality: " + quality);

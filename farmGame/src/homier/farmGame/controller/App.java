@@ -1,32 +1,25 @@
 package homier.farmGame.controller;
 
 
-import homier.farmGame.logic.Logic;
-import homier.farmGame.render.Render;
+
+
 import homier.farmGame.utils.Tools;
+import homier.farmGame.view.Renderer;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class App extends Application{
 	
 	public static float gameSpeed = 50;
 	public static int secondsInADay = 300;
-	public static int tileSize = 100, gridColumns = 10, gridRows = 9;
-	public static int width = gridColumns*tileSize;
-	public static int height = gridRows*tileSize;
-	public static Image emptyTileImage = new Image("empty_tile.png",tileSize,tileSize,true, true);
-	public static Image dirtTileImage = new Image("dirt_plot.png",tileSize,tileSize,true,true);
-	public static Image sown1Image = new Image("sown1_plot.png",tileSize,tileSize,true,true);
-	public static Image sown2Image = new Image("sown2_plot.png",tileSize,tileSize,true,true);
-	public static Image wheat1Image = new Image("wheat1_plot.png",tileSize,tileSize,true,true);
-	public static Image wheat2Image = new Image("wheat2_plot.png",tileSize,tileSize,true,true);
-	public static Image houseImage = new Image("farmhouse.png",tileSize,tileSize,true,true);
-	public static Image forestTileImage = new Image("summer_tile.png",tileSize,tileSize,true,true);
+	public static int gridColumns = 10, gridRows = 9;
+	public static int width = gridColumns*Renderer.tileSize;
+	public static int height = gridRows*Renderer.tileSize;
+	
 	
 	private Engine engine;
 	
