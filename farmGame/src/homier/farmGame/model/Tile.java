@@ -1,10 +1,5 @@
 package homier.farmGame.model;
 
-
-import homier.farmGame.controller.App;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
 public class Tile {
 
 	private String ID;
@@ -20,6 +15,9 @@ public class Tile {
 	}
 	
 	
+	public void update(double dTime){
+		
+	}
 	
 	public String getID(){
 		return ID;

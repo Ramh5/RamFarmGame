@@ -1,6 +1,8 @@
 package homier.farmGame.model;
 
 
+
+
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -38,6 +40,10 @@ public class FarmPlot extends Tile {
 		
 	}
 	
+	public void update(double dTime){
+		if(growth.get()<100)
+		growth.set(growth.get()+growthRate*dTime);
+	}
 	
 	public double getGrowthRate() {
 		return growthRate;
