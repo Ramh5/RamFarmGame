@@ -16,57 +16,107 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
-
 public class Engine {
-	
-	
-	@FXML private GridPane gameGridPane;
-	@FXML private Label clockLabel;
-	@FXML private ToggleButton pauseButton;
-	@FXML private Label pauseLabel;
-	@FXML private VBox mouseOverPanel;
-	
+
+	@FXML
+	private GridPane gameGridPane;
+	@FXML
+	private Label clockLabel;
+	@FXML
+	private ToggleButton pauseButton;
+	@FXML
+	private Label pauseLabel;
+	@FXML
+	private VBox mouseOverPanel;
+
 	private Game game = new Game();
 	private Renderer renderer;
 	private double gameTime = 0;
-	
-	
+	private boolean manPaused;
 	public void update(double dTime) {
-		
-		gameTime+=dTime;
+
+		gameTime += dTime;
 		clockLabel.setText(Tools.elapsedSecondsFormatter(gameTime));
-		for(int i=0;i<game.getTileList().size();i++){
-			game.getTileList().get(i).update(dTime/App.secondsInADay);
+		for (int i = 0; i < game.getTileList().size(); i++) {
+			game.getTileList().get(i).update(dTime / App.secondsInADay);
 		}
-		
+
 	}
-	
+
 	public void render() {
-		renderer.render(game.getTileList(), gameGridPane, pauseButton, mouseOverPanel);
-		
+		renderer.render(this);
+
 	}
-	
-	public void initialize(){
+
+	public void initialize() {
 		renderer = new Renderer(game.getTileList(), gameGridPane);
 		clockLabel.setText(Tools.elapsedSecondsFormatter(gameTime));
-		pauseButton.setGraphic(new ImageView(new Image("Button-Pause.png", 32,32,true,true)));
+		pauseButton.setGraphic(new ImageView(new Image("Button-Pause.png", 32, 32, true, true)));
 		pauseButton.setBackground(Background.EMPTY);
 	}
-	
+
 	@FXML
-	private void pauseButtonAction(ActionEvent event){
-		if(pauseButton.isSelected()){	
+	private void pauseButtonAction(ActionEvent event) {
+		updatePauseButton();
+		if(pauseButton.isSelected()){
+			manPaused=true;
+		}else{
+			manPaused=false;
+		}
+		
+	}
+
+	public void updatePauseButton(){
+		System.out.println("this is called twice");
+		if (pauseButton.isSelected()) {
 			pauseLabel.setText("Jeu en pause");
 			pauseLabel.setTextFill(Color.RED);
-			pauseLabel.setFont(new Font("Arial Bold",12));
-			pauseButton.setGraphic(new ImageView(new Image("Button-Play.png", 32,32,true,true)));
-		}else{
+			pauseLabel.setFont(new Font("Arial Bold", 12));
+			pauseButton.setGraphic(new ImageView(new Image("Button-Play.png", 32, 32, true, true)));
+		} else {
 			pauseLabel.setText("");
-			pauseButton.setGraphic(new ImageView(new Image("Button-Pause.png", 32,32,true,true)));
+			pauseButton.setGraphic(new ImageView(new Image("Button-Pause.png", 32, 32, true, true)));
 		}
 	}
 	
-	public boolean getPaused(){
+	public boolean getPaused() {
 		return pauseButton.isSelected();
+	}
+
+	public GridPane getGameGridPane() {
+		return gameGridPane;
+	}
+
+	public Label getClockLabel() {
+		return clockLabel;
+	}
+
+	public ToggleButton getPauseButton() {
+		return pauseButton;
+	}
+
+	public Label getPauseLabel() {
+		return pauseLabel;
+	}
+
+	public VBox getMouseOverPanel() {
+		return mouseOverPanel;
+	}
+
+	public Game getGame() {
+		return game;
+	}
+
+	public Renderer getRenderer() {
+		return renderer;
+	}
+
+	public double getGameTime() {
+		return gameTime;
+	}
+
+	public boolean getManPaused() {
+		
+		return manPaused;
 	}
 }

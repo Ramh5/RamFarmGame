@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import homier.farmGame.Game;
 import homier.farmGame.controller.App;
+import homier.farmGame.controller.Engine;
 import homier.farmGame.model.FarmPlot;
 import homier.farmGame.model.Tile;
 import javafx.beans.property.DoubleProperty;
@@ -42,8 +43,6 @@ public class Renderer {
 
 	private int[] previousMap;
 
-
-
 	public Renderer(ArrayList<Tile> tileList, GridPane grid) {
 		init(tileList, grid);
 	}
@@ -60,7 +59,12 @@ public class Renderer {
 		} // for i
 	}
 
-	public void render(ArrayList<Tile> tileList, GridPane grid, ToggleButton pauseButton, VBox mouseOverPanel) {
+	public void render(Engine engine) {
+
+		ArrayList<Tile> tileList = engine.getGame().getTileList();
+		GridPane grid = engine.getGameGridPane();
+		ToggleButton pauseButton = engine.getPauseButton();
+		VBox mouseOverPanel = engine.getMouseOverPanel();
 
 		for (int i = 0; i < App.gridColumns; i++) {
 			for (int j = 0; j < App.gridRows; j++) {
@@ -69,17 +73,21 @@ public class Renderer {
 				Tile tile = tileList.get(index);
 				String tileID = tile.getID();
 				int newIndexToRender;
-				
-				//create popup menu for the tiles
+
+				// create popup menu for the tiles and set to pause when shown and
+				// unpause when hidden only if the game was not manualy paused prior
 				MenuItem menuItem = new MenuItem();
 				ContextMenu popup = new ContextMenu();
 				popup.getItems().addAll(menuItem);
-				popup.setOnHidden(e -> { //try to find a solution to game unpausing on popup menu hidden even when manual paused was done.
-						pauseButton.fire();
+				popup.setOnHidden(e -> {
+					if (!engine.getManPaused()) {
+						pauseButton.setSelected(false);
+						engine.updatePauseButton();
+					}
 				});
 				popup.setOnShown(e -> {
-					if (!pauseButton.isSelected())
-						pauseButton.fire();
+					pauseButton.setSelected(true);
+					engine.updatePauseButton();
 				});
 
 				switch (tileID) {
@@ -98,18 +106,16 @@ public class Renderer {
 						GridPane.setConstraints(newImageView, i, j);
 						grid.getChildren().set(index, newImageView);
 						previousMap[index] = newIndexToRender;
-						
+
 						// set UI
 						newImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 							public void handle(MouseEvent event) {
 								if (event.getButton() == MouseButton.PRIMARY) {
-									pauseButton.fire();
 									menuItem.setText("Plant Wheat");
 									menuItem.setOnAction(e -> {
 										Tile newTile = new FarmPlot("WHEAT_PLOT", 15, 400);
 										tileList.set(index, newTile);
-										previousMap[index]=-1;
-										System.out.println("this");
+										previousMap[index] = -1;
 									});
 									popup.show(newImageView, event.getScreenX(), event.getScreenY());
 								}
@@ -126,28 +132,29 @@ public class Renderer {
 						GridPane.setConstraints(newImageView, i, j);
 						grid.getChildren().set(index, newImageView);
 						previousMap[index] = newIndexToRender;
-						
+
 						// set UI
-						newImageView.setOnMouseEntered(e->{
-							 ((Labeled) mouseOverPanel.getChildren().get(0)).textProperty().bind(growthProperty.asString("%.0f"));
-							 ((Labeled) mouseOverPanel.getChildren().get(1)).textProperty().bind(yieldProperty.asString());
+						newImageView.setOnMouseEntered(e -> {
+							((Labeled) mouseOverPanel.getChildren().get(0)).textProperty()
+									.bind(growthProperty.asString("%.0f"));
+							((Labeled) mouseOverPanel.getChildren().get(1)).textProperty()
+									.bind(yieldProperty.asString());
 						});
 						newImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 							public void handle(MouseEvent event) {
 								if (event.getButton() == MouseButton.PRIMARY) {
-									pauseButton.fire();
 									menuItem.setText("Harvest Wheat");
 									menuItem.setOnAction(e -> {
 										Tile newTile = new FarmPlot("FARM_PLOT", 0, 0);
 										tileList.set(index, newTile);
-										previousMap[index]=-1;
+										previousMap[index] = -1;
 									});
 									popup.show(newImageView, event.getScreenX(), event.getScreenY());
 								}
 							}
 						});// eventhandler mouse clicked
 					} // if
-					
+
 					break;
 				default:
 					break;
@@ -168,8 +175,4 @@ public class Renderer {
 		}
 	}
 
-	public void setManualPaused(boolean bool){
-		manualPaused = bool;
-	}
 }
-
