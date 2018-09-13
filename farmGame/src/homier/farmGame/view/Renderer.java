@@ -90,6 +90,8 @@ public class Renderer {
 					engine.updatePauseButton();
 				});
 
+				
+				
 				switch (tileID) {
 				case "FOREST_TILE":
 					newIndexToRender = forestViewData.getIndexToRender(0);
@@ -145,7 +147,8 @@ public class Renderer {
 								if (event.getButton() == MouseButton.PRIMARY) {
 									menuItem.setText("Harvest Wheat");
 									menuItem.setOnAction(e -> {
-										engine.getGame().getInventory().add("Wheat",((FarmPlot) tile).getYield());						
+										engine.getGame().getInventory().add("Wheat",((FarmPlot) tile).getYield());	
+										engine.getLeftTextArea().setText(engine.getGame().getInventory().toString());
 										Tile newTile = new FarmPlot("FARM_PLOT", 0, 0);
 										tileList.set(index, newTile);
 										previousMap[index] = -1;

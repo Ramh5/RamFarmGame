@@ -19,6 +19,7 @@ public class Game {
 			tileList.set(i, new FarmPlot("FARM_PLOT", 0, 0));
 		}
 		tileList.set(40, new Tile("HOUSE_TILE"));
+		inventory.add("Carrots", 52);
 	}
 	
 	public ArrayList<Tile> getTileList(){

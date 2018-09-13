@@ -1,13 +1,13 @@
 package homier.farmGame.controller;
 
-import javafx.scene.text.Font;
 import homier.farmGame.model.Game;
 import homier.farmGame.utils.Tools;
 import homier.farmGame.view.Renderer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,24 +15,22 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 public class Engine {
 
-	@FXML
-	private GridPane gameGridPane;
-	@FXML
-	private Label clockLabel;
-	@FXML
-	private ToggleButton pauseButton;
-	@FXML
-	private Label pauseLabel;
-	@FXML
-	private VBox mouseOverPanel;
-
+	@FXML private GridPane gameGridPane;
+	@FXML private Label clockLabel;
+	@FXML private ToggleButton pauseButton;
+	@FXML private Label pauseLabel;
+	@FXML private VBox mouseOverPanel;
+	@FXML private TextArea leftTextArea;
+	@FXML private ChoiceBox<Integer> gameSpeedChoice;
 	private Game game = new Game();
 	private Renderer renderer;
 	private double gameTime = 0;
 	private boolean manPaused;
+	
 	public void update(double dTime) {
 
 		gameTime += dTime;
@@ -53,6 +51,12 @@ public class Engine {
 		clockLabel.setText(Tools.elapsedSecondsFormatter(gameTime));
 		pauseButton.setGraphic(new ImageView(new Image("Button-Pause.png", 32, 32, true, true)));
 		pauseButton.setBackground(Background.EMPTY);
+		gameSpeedChoice.getItems().addAll(1,2,5,10,50,500);
+		gameSpeedChoice.getSelectionModel().selectFirst();
+		leftTextArea.setText(game.getInventory().toString());
+		gameSpeedChoice.setOnAction(e->{//TODO could add a call to a methode in the FXML instead of here
+			App.gameSpeed=gameSpeedChoice.getSelectionModel().getSelectedItem();
+		});
 	}
 
 	@FXML
@@ -100,6 +104,14 @@ public class Engine {
 
 	public VBox getMouseOverPanel() {
 		return mouseOverPanel;
+	}
+	
+	public ChoiceBox<Integer> getGameSpeedChoice(){
+		return gameSpeedChoice;
+	}
+	
+	public TextArea getLeftTextArea(){
+		return leftTextArea;
 	}
 
 	public Game getGame() {
