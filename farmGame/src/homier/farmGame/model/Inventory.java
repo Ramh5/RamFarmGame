@@ -1,30 +1,34 @@
 package homier.farmGame.model;
 
-import java.util.ArrayList;
+
+import java.util.Map.Entry;
+import java.util.TreeMap;
 
 public class Inventory {
 
-	private ArrayList<String> productList;
-	private ArrayList<Double> quantityList;
+	private TreeMap<String, Double> treeMap;  
 	
 	public Inventory(){
-		productList = new ArrayList<String>();
-		quantityList = new ArrayList<Double>();
+		treeMap = new TreeMap<>();
+		
 	}
 	
-	//TODO + fonctionality to add quantity to some already existing product in the list and append only if a new item is added.
+	
 	public void add(String product, double quantity){
-		productList.add(product);
-		quantityList.add(quantity);
+		Double oldValue=treeMap.get(product);
+		treeMap.put(product, oldValue==null ?quantity:oldValue+quantity);
 	}
 	
+	
+	public TreeMap<String, Double> getTreeMap(){
+		return treeMap;
+	}
 	
 	public String toString(){
 		String str="";
-		for(int i=0;i<productList.size();i++){
-			str += productList.get(i) +": "+ quantityList.get(i) + "kg\n";
+		for(Entry<String,Double> entry : treeMap.entrySet()){
+			str += entry.getKey() +": "+ entry.getValue()+ " kg\n";
 		}
-		
 		return str;
 	}
 }

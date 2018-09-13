@@ -145,6 +145,7 @@ public class Renderer {
 								if (event.getButton() == MouseButton.PRIMARY) {
 									menuItem.setText("Harvest Wheat");
 									menuItem.setOnAction(e -> {
+										engine.getGame().getInventory().add("Wheat",((FarmPlot) tile).getYield());						
 										Tile newTile = new FarmPlot("FARM_PLOT", 0, 0);
 										tileList.set(index, newTile);
 										previousMap[index] = -1;

@@ -67,7 +67,6 @@ public class Engine {
 	}
 
 	public void updatePauseButton(){
-		System.out.println("this is called twice");
 		if (pauseButton.isSelected()) {
 			pauseLabel.setText("Jeu en pause");
 			pauseLabel.setTextFill(Color.RED);
