@@ -3,6 +3,10 @@ package homier.farmGame.model;
 import java.util.ArrayList;
 
 import homier.farmGame.controller.App;
+import homier.farmGame.model.tile.BuildingTile;
+import homier.farmGame.model.tile.FarmPlot;
+import homier.farmGame.model.tile.ForestTile;
+import homier.farmGame.model.tile.Tile;
 
 public class Game {
 
@@ -12,13 +16,13 @@ public class Game {
 	public Game() {
 		for (int i = 0; i < App.gridColumns*App.gridRows; i++) {
 
-			tileList.add(new Tile("FOREST_TILE"));
+			tileList.add(new ForestTile("FOREST_TILE"));
 		}
 		int[] indexList = { 30, 31, 32, 39, 41, 48, 49, 50 };
 		for (int i : indexList) {
 			tileList.set(i, new FarmPlot("FARM_PLOT", 0, 0));
 		}
-		tileList.set(40, new Tile("HOUSE_TILE"));
+		tileList.set(40, new BuildingTile("HOUSE_TILE"));
 		inventory.add("Carrots", 52);
 	}
 	

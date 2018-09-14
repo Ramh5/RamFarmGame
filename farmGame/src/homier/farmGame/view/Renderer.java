@@ -2,16 +2,13 @@ package homier.farmGame.view;
 
 import java.util.ArrayList;
 
-import homier.farmGame.Game;
 import homier.farmGame.controller.App;
 import homier.farmGame.controller.Engine;
-import homier.farmGame.model.FarmPlot;
-import homier.farmGame.model.Tile;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
+import homier.farmGame.model.tile.FarmPlot;
+import homier.farmGame.model.tile.Tile;
+import javafx.beans.property.FloatProperty;
 import javafx.event.EventHandler;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ToggleButton;
@@ -126,8 +123,8 @@ public class Renderer {
 					} // if
 					break;
 				case "WHEAT_PLOT":
-					DoubleProperty growthProperty = ((FarmPlot) tile).growthProperty();
-					IntegerProperty yieldProperty = ((FarmPlot) tile).yieldProperty();
+					FloatProperty growthProperty = ((FarmPlot) tile).growthProperty();
+					FloatProperty yieldProperty = ((FarmPlot) tile).yieldProperty();
 					newIndexToRender = wheatViewData.getIndexToRender(growthProperty.get());
 					if (newIndexToRender != previousMap[index]) {
 						ImageView newImageView = wheatViewData.getImageToRender(newIndexToRender);
@@ -140,7 +137,7 @@ public class Renderer {
 							((Labeled) mouseOverPanel.getChildren().get(0)).textProperty()
 									.bind(growthProperty.asString("%.0f"));
 							((Labeled) mouseOverPanel.getChildren().get(1)).textProperty()
-									.bind(yieldProperty.asString());
+									.bind(yieldProperty.asString("%.0f"));
 						});
 						newImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 							public void handle(MouseEvent event) {
