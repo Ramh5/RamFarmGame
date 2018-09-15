@@ -5,18 +5,18 @@ package homier.farmGame.model.tile;
 
 import java.util.TreeMap;
 
-import javafx.beans.property.FloatProperty;
-import javafx.beans.property.SimpleFloatProperty;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 
 
 
 public class FarmPlot extends Tile {
 
-	private float growthRate;
-	private FloatProperty growth;
-	private FloatProperty yield;
+	private double growthRate;
+	private DoubleProperty growth;
+	private DoubleProperty yield;
 	private int maxYield;
-	private TreeMap<Float, Float> yieldMap;
+	private TreeMap<Double, Double> yieldMap;
 	private String product;
 	private int quality;
 	
@@ -24,8 +24,8 @@ public class FarmPlot extends Tile {
 	public FarmPlot(String ID, float growthRate, int maxYield) {
 		super(ID);
 		this.growthRate = growthRate;
-		this.growth = new SimpleFloatProperty(0);
-		this.yield= new SimpleFloatProperty(0);
+		this.growth = new SimpleDoubleProperty(0);
+		this.yield= new SimpleDoubleProperty(0);
 		this.maxYield = maxYield;
 		yieldMap = buildYieldMap();
 		this.product = ID.substring(0, ID.indexOf("_"));
@@ -55,13 +55,13 @@ public class FarmPlot extends Tile {
 
 	public final void setGrowth(float growth) {this.growth.set(growth);}
 
-	public FloatProperty growthProperty(){return growth;}
+	public DoubleProperty growthProperty(){return growth;}
 	
-	public final float getYield() {return yield.get();}
+	public final double getYield() {return yield.get();}
 
 	public final void setYield(int yield) {this.yield.set(yield);}
 	
-	public FloatProperty yieldProperty(){ return yield;}
+	public DoubleProperty yieldProperty(){ return yield;}
 
 	public String getProduct() {
 		return product;
@@ -88,30 +88,30 @@ public class FarmPlot extends Tile {
 	}
 	
 	//private helper methode to create the YieldMap
-	private TreeMap<Float, Float> buildYieldMap() {
-		TreeMap<Float, Float> treeMap = new TreeMap<Float,Float>();
-		treeMap.put(-10f,0f);
-		treeMap.put(0f,0f);
-		treeMap.put(50f,0f);
-		treeMap.put(80f,30f);
-		treeMap.put(95f,98f);
-		treeMap.put(100f,100f);
-		treeMap.put(110f,98f);
-		treeMap.put(115f,95f);
-		treeMap.put(130f,70f);
-		treeMap.put(150f,0f);
-		treeMap.put(160f,0f);
+	private TreeMap<Double, Double> buildYieldMap() {
+		TreeMap<Double, Double> treeMap = new TreeMap<Double,Double>();
+		treeMap.put(-10.0,0.0);
+		treeMap.put(0.0,0.0);
+		treeMap.put(50.0,0.0);
+		treeMap.put(80.0,30.0);
+		treeMap.put(95.0,98.0);
+		treeMap.put(100.0,100.0);
+		treeMap.put(110.0,98.0);
+		treeMap.put(115.0,95.0);
+		treeMap.put(130.0,70.0);
+		treeMap.put(150.0,0.0);
+		treeMap.put(160.0,0.0);
 		return treeMap;
 	}
 
 	//private helper methode to calculate the yield
-	private float calculateYield(){
-		float yield=0;
-		float yieldFactor;
-		float x1 =  yieldMap.floorKey(growth.get());
-		float x2 =  yieldMap.ceilingKey(growth.get());
-		float y1 =  yieldMap.get(x1).floatValue();
-		float y2 =  yieldMap.get(x2).floatValue();
+	private double calculateYield(){
+		double yield=0;
+		double yieldFactor;
+		double x1 =  yieldMap.floorKey(growth.get());
+		double x2 =  yieldMap.ceilingKey(growth.get());
+		double y1 =  yieldMap.get(x1).doubleValue();
+		double y2 =  yieldMap.get(x2).doubleValue();
 		//to prevent devision by zero
 		if(x2-x1==0){
 			yieldFactor = y1;

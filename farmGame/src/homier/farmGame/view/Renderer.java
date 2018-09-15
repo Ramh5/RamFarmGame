@@ -4,9 +4,10 @@ import java.util.ArrayList;
 
 import homier.farmGame.controller.App;
 import homier.farmGame.controller.Engine;
+import homier.farmGame.model.Inventory;
 import homier.farmGame.model.tile.FarmPlot;
-import homier.farmGame.model.tile.Tile;
-import javafx.beans.property.FloatProperty;
+import homier.farmGame.model.tile.*;
+import javafx.beans.property.DoubleProperty;
 import javafx.event.EventHandler;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Labeled;
@@ -62,7 +63,8 @@ public class Renderer {
 		GridPane grid = engine.getGameGridPane();
 		ToggleButton pauseButton = engine.getPauseButton();
 		VBox mouseOverPanel = engine.getMouseOverPanel();
-
+		Inventory inventory = engine.getGame().getInventory();
+		
 		for (int i = 0; i < App.gridColumns; i++) {
 			for (int j = 0; j < App.gridRows; j++) {
 
@@ -86,8 +88,6 @@ public class Renderer {
 					pauseButton.setSelected(true);
 					engine.updatePauseButton();
 				});
-
-				
 				
 				switch (tileID) {
 				case "FOREST_TILE":
@@ -96,7 +96,26 @@ public class Renderer {
 					break;
 				case "HOUSE_TILE":
 					newIndexToRender = houseViewData.getIndexToRender(0);
-					setImageView(i, j, index, newIndexToRender, houseViewData, grid);
+					if (newIndexToRender != previousMap[index]) {
+						ImageView newImageView = houseViewData.getImageToRender(newIndexToRender);
+						GridPane.setConstraints(newImageView, i, j);
+						grid.getChildren().set(index, newImageView);
+						previousMap[index] = newIndexToRender;
+
+						// set UI
+						newImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+							public void handle(MouseEvent event) {
+								if (event.getButton() == MouseButton.PRIMARY) {
+									menuItem.setText("Omelette");
+									menuItem.setOnAction(e -> {		
+										((BuildingTile) tile).cook(menuItem.getText(), inventory );
+										engine.getLeftTextArea().setText(engine.getGame().getInventory().toString());
+									});
+									popup.show(newImageView, event.getScreenX(), event.getScreenY());
+								}
+							}
+						});// eventhandler mouse clicked
+					} // if
 					break;
 				case "FARM_PLOT":
 					newIndexToRender = farmPlotViewData.getIndexToRender(0);
@@ -123,8 +142,8 @@ public class Renderer {
 					} // if
 					break;
 				case "WHEAT_PLOT":
-					FloatProperty growthProperty = ((FarmPlot) tile).growthProperty();
-					FloatProperty yieldProperty = ((FarmPlot) tile).yieldProperty();
+					DoubleProperty growthProperty = ((FarmPlot) tile).growthProperty();
+					DoubleProperty yieldProperty = ((FarmPlot) tile).yieldProperty();
 					newIndexToRender = wheatViewData.getIndexToRender(growthProperty.get());
 					if (newIndexToRender != previousMap[index]) {
 						ImageView newImageView = wheatViewData.getImageToRender(newIndexToRender);
@@ -144,7 +163,7 @@ public class Renderer {
 								if (event.getButton() == MouseButton.PRIMARY) {
 									menuItem.setText("Harvest Wheat");
 									menuItem.setOnAction(e -> {
-										engine.getGame().getInventory().add("Wheat",((FarmPlot) tile).getYield());	
+										inventory.addProd("Wheat",((FarmPlot) tile).getYield());	
 										engine.getLeftTextArea().setText(engine.getGame().getInventory().toString());
 										Tile newTile = new FarmPlot("FARM_PLOT", 0, 0);
 										tileList.set(index, newTile);
