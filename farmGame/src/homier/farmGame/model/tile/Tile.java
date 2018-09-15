@@ -1,6 +1,6 @@
 package homier.farmGame.model.tile;
 
-import homier.farmGame.model.WxEngine;
+import homier.farmGame.model.Weather;
 
 public abstract class Tile {
 
@@ -10,7 +10,7 @@ public abstract class Tile {
 		this.ID=ID;	
 	}
 	
-	public abstract void update(double dTime, WxEngine wx);
+	public abstract void update(double dTime, Weather wx);
 	
 	public String getID(){
 		return ID;

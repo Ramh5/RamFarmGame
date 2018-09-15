@@ -2,7 +2,7 @@ package homier.farmGame.model.tile;
 
 import homier.farmGame.model.Inventory;
 import homier.farmGame.model.RecipeBook;
-import homier.farmGame.model.WxEngine;
+import homier.farmGame.model.Weather;
 
 public class BuildingTile extends Tile{
 
@@ -25,7 +25,7 @@ public class BuildingTile extends Tile{
 	}
 	
 	@Override
-	public void update(double dTime, WxEngine wx) {
+	public void update(double dTime, Weather wx) {
 		
 	}
 	

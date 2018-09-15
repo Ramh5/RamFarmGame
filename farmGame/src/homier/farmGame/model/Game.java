@@ -12,7 +12,7 @@ public class Game {
 
 	private Inventory inventory = new Inventory();
 	private ArrayList<Tile> tileList = new ArrayList<Tile>();
-	private WxEngine wx = new WxEngine(21, Sky.RAIN2, Wind.WIND0);
+	private WxForcast wxForcast = new WxForcast();
 
 	public Game() {
 		for (int i = 0; i < App.gridColumns*App.gridRows; i++) {
@@ -37,8 +37,8 @@ public class Game {
 		return inventory;
 	}
 
-	public WxEngine getWxEngine() {
-		return wx;
+	public WxForcast getWxForcast() {
+		return wxForcast;
 	}
 
 }

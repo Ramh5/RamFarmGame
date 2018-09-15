@@ -26,17 +26,28 @@ public class Engine {
 	@FXML private VBox mouseOverPanel;
 	@FXML private TextArea leftTextArea;
 	@FXML private ChoiceBox<Integer> gameSpeedChoice;
+	@FXML private Label wxToday;
+	@FXML private Label wxTomorrow;
 	private Game game = new Game();
 	private Renderer renderer;
 	private GameClock gameClock;;
 	private boolean manPaused;
 	
+	
+	
 	public void update(double dTime) {
 
 		gameClock.update(dTime);
 		clockLabel.setText(gameClock.toString());
+		//if it is a new day, update the forcast
+		if(gameClock.isNewDay()){
+			game.getWxForcast().forcastNewDay(gameClock);
+			wxToday.setText("Today: "+game.getWxForcast().getToday().toString());
+			wxTomorrow.setText("Tomorrow: "+game.getWxForcast().getTomorrow().toString());
+			gameClock.setIsNewDay(false);
+		}
 		for (int i = 0; i < game.getTileList().size(); i++) {
-			game.getTileList().get(i).update(dTime / gameClock.getSecondsInADay(),game.getWxEngine());
+			game.getTileList().get(i).update(dTime / gameClock.getSecondsInADay(),game.getWxForcast().getToday());
 		}
 
 	}
@@ -47,8 +58,14 @@ public class Engine {
 	}
 
 	public void initialize() {
+		
+		
 		renderer = new Renderer(game.getTileList(), gameGridPane);
 		gameClock = new GameClock(300, 0);
+		game.getWxForcast().forcastNewDay(gameClock);
+		wxToday.setText("Today: "+game.getWxForcast().getToday().toString());
+		wxTomorrow.setText("Tomorrow: "+game.getWxForcast().getTomorrow().toString());
+		gameClock.setIsNewDay(false);
 		clockLabel.setText(gameClock.toString());
 		pauseButton.setGraphic(new ImageView(new Image("Button-Pause.png", 32, 32, true, true)));
 		pauseButton.setBackground(Background.EMPTY);

@@ -8,23 +8,22 @@
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="950" prefWidth="1210.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="homier.farmGame.controller.Engine">
+<BorderPane prefHeight="950" prefWidth="1210.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="homier.farmGame.controller.Engine">
 	<center>
 		<StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
 			<children>
-				<GridPane fx:id="gameGridPane" alignment="CENTER">
+				<GridPane fx:id="gameGridPane" alignment="CENTER" prefHeight="662.0" prefWidth="1010.0">
 
 				</GridPane>
 				<Canvas height="200.0" mouseTransparent="true" opacity="0.0" width="200.0" />
 			</children>
 		</StackPane>
 	</center>
-	<top>
-		<Label fx:id="clockLabel" text="Label" BorderPane.alignment="CENTER" />
-	</top>
 	<left>
 		<VBox alignment="CENTER" prefHeight="200.0" prefWidth="200.0">
 			<children>
@@ -42,4 +41,25 @@
 			</children>
 		</VBox>
 	</left>
+   <top>
+      <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="10">
+         <children>
+            <Label fx:id="clockLabel" alignment="CENTER" minWidth="-Infinity" prefWidth="200.0" text="Label" textAlignment="CENTER">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="wxToday" alignment="CENTER" prefWidth="200.0" text="Label" textAlignment="CENTER" textFill="#187911">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="wxTomorrow" alignment="CENTER" prefHeight="200.0" prefWidth="200.0" text="Label" textAlignment="CENTER" textFill="#150794">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+   </top>
 </BorderPane>

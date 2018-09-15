@@ -5,9 +5,9 @@ package homier.farmGame.model.tile;
 
 import java.util.TreeMap;
 
-import com.sun.beans.WeakCache;
 
-import homier.farmGame.model.WxEngine;
+
+import homier.farmGame.model.Weather;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
@@ -53,7 +53,7 @@ public class FarmPlot extends Tile {
 	
 
 	@Override
-	public void update(double dTime,WxEngine wx){
+	public void update(double dTime,Weather wx){
 		double wxFactor = wx.getFactor(tempRange);
 		if(growth.get()<150)
 			growth.set(growth.get()+growthRate*(float)dTime*wxFactor);
