@@ -3,7 +3,7 @@ package homier.farmGame.controller;
 
 
 
-import homier.farmGame.utils.Tools;
+
 import homier.farmGame.view.Renderer;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -15,7 +15,6 @@ import javafx.stage.Stage;
 public class App extends Application{
 	
 	public static float gameSpeed = 50;
-	public static int secondsInADay = 300;
 	public static int gridColumns = 10, gridRows = 9;
 	public static int width = gridColumns*Renderer.tileSize;
 	public static int height = gridRows*Renderer.tileSize;

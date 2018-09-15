@@ -1,7 +1,7 @@
 package homier.farmGame.controller;
 
 import homier.farmGame.model.Game;
-import homier.farmGame.utils.Tools;
+import homier.farmGame.utils.GameClock;
 import homier.farmGame.view.Renderer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,15 +28,15 @@ public class Engine {
 	@FXML private ChoiceBox<Integer> gameSpeedChoice;
 	private Game game = new Game();
 	private Renderer renderer;
-	private double gameTime = 0;
+	private GameClock gameClock;;
 	private boolean manPaused;
 	
 	public void update(double dTime) {
 
-		gameTime += dTime;
-		clockLabel.setText(Tools.elapsedSecondsFormatter(gameTime));
+		gameClock.update(dTime);
+		clockLabel.setText(gameClock.toString());
 		for (int i = 0; i < game.getTileList().size(); i++) {
-			game.getTileList().get(i).update(dTime / App.secondsInADay);
+			game.getTileList().get(i).update(dTime / gameClock.getSecondsInADay(),game.getWxEngine());
 		}
 
 	}
@@ -48,7 +48,8 @@ public class Engine {
 
 	public void initialize() {
 		renderer = new Renderer(game.getTileList(), gameGridPane);
-		clockLabel.setText(Tools.elapsedSecondsFormatter(gameTime));
+		gameClock = new GameClock(300, 0);
+		clockLabel.setText(gameClock.toString());
 		pauseButton.setGraphic(new ImageView(new Image("Button-Pause.png", 32, 32, true, true)));
 		pauseButton.setBackground(Background.EMPTY);
 		gameSpeedChoice.getItems().addAll(1,2,5,10,50,500);
@@ -122,8 +123,8 @@ public class Engine {
 		return renderer;
 	}
 
-	public double getGameTime() {
-		return gameTime;
+	public GameClock getGameClock() {
+		return gameClock;
 	}
 
 	public boolean getManPaused() {

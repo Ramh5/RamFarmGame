@@ -2,6 +2,7 @@ package homier.farmGame.model.tile;
 
 import homier.farmGame.model.Inventory;
 import homier.farmGame.model.RecipeBook;
+import homier.farmGame.model.WxEngine;
 
 public class BuildingTile extends Tile{
 
@@ -24,8 +25,7 @@ public class BuildingTile extends Tile{
 	}
 	
 	@Override
-	public void update(double dTime) {
-		// TODO Auto-generated method stub
+	public void update(double dTime, WxEngine wx) {
 		
 	}
 	

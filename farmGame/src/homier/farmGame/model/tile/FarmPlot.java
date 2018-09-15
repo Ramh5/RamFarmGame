@@ -5,6 +5,9 @@ package homier.farmGame.model.tile;
 
 import java.util.TreeMap;
 
+import com.sun.beans.WeakCache;
+
+import homier.farmGame.model.WxEngine;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
@@ -19,6 +22,8 @@ public class FarmPlot extends Tile {
 	private TreeMap<Double, Double> yieldMap;
 	private String product;
 	private int quality;
+	private int[] tempRange;
+
 	
 	
 	public FarmPlot(String ID, float growthRate, int maxYield) {
@@ -30,15 +35,28 @@ public class FarmPlot extends Tile {
 		yieldMap = buildYieldMap();
 		this.product = ID.substring(0, ID.indexOf("_"));
 		this.quality = 0;
-	
+		this.tempRange = new int[]{0,0};
 		
 	}
 	
+	public FarmPlot(String ID, float growthRate, int maxYield, int[] tempRange) {
+		super(ID);
+		this.growthRate = growthRate;
+		this.growth = new SimpleDoubleProperty(0);
+		this.yield= new SimpleDoubleProperty(0);
+		this.maxYield = maxYield;
+		yieldMap = buildYieldMap();
+		this.product = ID.substring(0, ID.indexOf("_"));
+		this.quality = 0;
+		this.tempRange = tempRange;
+	}
+	
 
-
-	public void update(double dTime){
+	@Override
+	public void update(double dTime,WxEngine wx){
+		double wxFactor = wx.getFactor(tempRange);
 		if(growth.get()<150)
-			growth.set(growth.get()+growthRate*(float)dTime);
+			growth.set(growth.get()+growthRate*(float)dTime*wxFactor);
 			
 		yield.set(calculateYield());
 	}

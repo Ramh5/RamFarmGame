@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import homier.farmGame.controller.App;
 import homier.farmGame.controller.Engine;
 import homier.farmGame.model.Inventory;
+import homier.farmGame.model.tile.BuildingTile;
 import homier.farmGame.model.tile.FarmPlot;
-import homier.farmGame.model.tile.*;
+import homier.farmGame.model.tile.Tile;
+import homier.farmGame.utils.GameClock;
 import javafx.beans.property.DoubleProperty;
 import javafx.event.EventHandler;
 import javafx.scene.control.ContextMenu;
@@ -31,12 +33,15 @@ public class Renderer {
 	private final Image wheat1Image = new Image("wheat1_plot.png", tileSize, tileSize, true, true);
 	private final Image wheat2Image = new Image("wheat2_plot.png", tileSize, tileSize, true, true);
 	private final Image houseImage = new Image("farmhouse.png", tileSize, tileSize, true, true);
-	private final Image forest1Image = new Image("summer_tile.png", tileSize, tileSize, true, true);
+	private final Image forest1Image = new Image("spring_tile.png", tileSize, tileSize, true, true);
+	private final Image forest2Image = new Image("summer_tile.png", tileSize, tileSize, true, true);
+	private final Image forest3Image = new Image("automn_tile.png", tileSize, tileSize, true, true);
+	private final Image forest4Image = new Image("winter_tile.png", tileSize, tileSize, true, true);
 
 	private final TileViewData wheatViewData = new TileViewData(
 			new Image[] { sown1Image, sown2Image, wheat1Image, wheat2Image }, new int[] { 0, 25, 50, 90 });
 	private final TileViewData houseViewData = new TileViewData(new Image[] { houseImage }, new int[] { 0 });
-	private final TileViewData forestViewData = new TileViewData(new Image[] { forest1Image }, new int[] { 0 });
+	private final TileViewData forestViewData = new TileViewData(new Image[] { forest4Image,forest1Image,forest2Image,forest3Image }, new int[] { 0,1,2,3});
 	private final TileViewData farmPlotViewData = new TileViewData(new Image[] { farmPlotImage }, new int[] { 0 });
 
 	private int[] previousMap;
@@ -64,7 +69,8 @@ public class Renderer {
 		ToggleButton pauseButton = engine.getPauseButton();
 		VBox mouseOverPanel = engine.getMouseOverPanel();
 		Inventory inventory = engine.getGame().getInventory();
-		
+		GameClock gameClock = engine.getGameClock();
+				
 		for (int i = 0; i < App.gridColumns; i++) {
 			for (int j = 0; j < App.gridRows; j++) {
 
@@ -91,7 +97,7 @@ public class Renderer {
 				
 				switch (tileID) {
 				case "FOREST_TILE":
-					newIndexToRender = forestViewData.getIndexToRender(0);
+					newIndexToRender = forestViewData.getIndexToRender((gameClock.getMonth()+1)/3%4);
 					setImageView(i, j, index, newIndexToRender, forestViewData, grid);
 					break;
 				case "HOUSE_TILE":
@@ -131,7 +137,7 @@ public class Renderer {
 								if (event.getButton() == MouseButton.PRIMARY) {
 									menuItem.setText("Plant Wheat");
 									menuItem.setOnAction(e -> {
-										Tile newTile = new FarmPlot("WHEAT_PLOT", 15, 400);
+										Tile newTile = new FarmPlot("WHEAT_PLOT", 15, 400,new int[]{15,25});
 										tileList.set(index, newTile);
 										previousMap[index] = -1;
 									});

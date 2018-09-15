@@ -12,6 +12,7 @@ public class Game {
 
 	private Inventory inventory = new Inventory();
 	private ArrayList<Tile> tileList = new ArrayList<Tile>();
+	private WxEngine wx = new WxEngine(21, Sky.RAIN2, Wind.WIND0);
 
 	public Game() {
 		for (int i = 0; i < App.gridColumns*App.gridRows; i++) {
@@ -34,6 +35,10 @@ public class Game {
 	
 	public Inventory getInventory(){
 		return inventory;
+	}
+
+	public WxEngine getWxEngine() {
+		return wx;
 	}
 
 }
