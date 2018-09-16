@@ -1,5 +1,6 @@
 package homier.farmGame.controller;
 
+import homier.farmGame.model.Employee;
 import homier.farmGame.model.Game;
 import homier.farmGame.utils.GameClock;
 import homier.farmGame.view.Renderer;
@@ -28,6 +29,8 @@ public class Engine {
 	@FXML private ChoiceBox<Integer> gameSpeedChoice;
 	@FXML private Label wxToday;
 	@FXML private Label wxTomorrow;
+	@FXML private Label energyLabel;
+	@FXML private ChoiceBox<Employee> employeeChoice;
 	private Game game = new Game();
 	private Renderer renderer;
 	private GameClock gameClock;;
@@ -49,6 +52,7 @@ public class Engine {
 		for (int i = 0; i < game.getTileList().size(); i++) {
 			game.getTileList().get(i).update(dTime / gameClock.getSecondsInADay(),game.getWxForcast().getToday());
 		}
+		
 
 	}
 
@@ -69,12 +73,23 @@ public class Engine {
 		clockLabel.setText(gameClock.toString());
 		pauseButton.setGraphic(new ImageView(new Image("Button-Pause.png", 32, 32, true, true)));
 		pauseButton.setBackground(Background.EMPTY);
-		gameSpeedChoice.getItems().addAll(1,2,5,10,50,500);
-		gameSpeedChoice.getSelectionModel().selectFirst();
 		leftTextArea.setText(game.getInventory().toString());
+		
+		gameSpeedChoice.getItems().addAll(1,2,5,10,50,500);
+		gameSpeedChoice.getSelectionModel().select(3);
+		App.gameSpeed=gameSpeedChoice.getSelectionModel().getSelectedItem();
 		gameSpeedChoice.setOnAction(e->{//TODO could add a call to a methode in the FXML instead of here
 			App.gameSpeed=gameSpeedChoice.getSelectionModel().getSelectedItem();
 		});
+		
+		employeeChoice.setOnAction(e->{
+			energyLabel.textProperty().bind(employeeChoice.getSelectionModel().getSelectedItem().energyProperty().asString("       Energy: %.0f"));
+		});
+		employeeChoice.getItems().addAll(game.getEmployees());
+		employeeChoice.getSelectionModel().select(0);
+		energyLabel.textProperty().bind(employeeChoice.getSelectionModel().getSelectedItem().energyProperty().asString("       Energy: %.0f"));
+		
+		employeeChoice.getSelectionModel().getSelectedItem().spendEnergy(100);
 	}
 
 	@FXML

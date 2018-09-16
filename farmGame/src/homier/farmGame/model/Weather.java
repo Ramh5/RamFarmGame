@@ -47,9 +47,7 @@ public class Weather {
 		double variance = Math.pow((r2-r1)/1.5, 2);
 		
 		factor = Math.exp(-Math.pow(temp-mean,2)/(2*variance))*sky.getFactor();
-		
-		
-		System.out.println(factor);
+
 		if(Double.isNaN(factor)) factor = 0;
 		
 		return factor;

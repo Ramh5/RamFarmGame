@@ -13,7 +13,10 @@ public class Game {
 	private Inventory inventory = new Inventory();
 	private ArrayList<Tile> tileList = new ArrayList<Tile>();
 	private WxForcast wxForcast = new WxForcast();
-
+	private Employee[] employees;
+	
+	
+	
 	public Game() {
 		for (int i = 0; i < App.gridColumns*App.gridRows; i++) {
 
@@ -24,6 +27,7 @@ public class Game {
 			tileList.set(i, new FarmPlot("FARM_PLOT", 0, 0));
 		}
 		tileList.set(40, new BuildingTile("HOUSE_TILE"));
+		employees = new Employee[]{new Employee("Ram",0),new Employee("EMPTY",200)};
 		inventory.addProd("Carrots", 52);
 		inventory.addProd("Onions", 12);
 		inventory.addProd("Eggs", 2);
@@ -40,5 +44,8 @@ public class Game {
 	public WxForcast getWxForcast() {
 		return wxForcast;
 	}
-
+	
+	public Employee[] getEmployees(){
+		return employees;
+	}
 }

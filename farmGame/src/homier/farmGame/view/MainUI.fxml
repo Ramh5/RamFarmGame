@@ -25,10 +25,25 @@
 		</StackPane>
 	</center>
 	<left>
-		<VBox alignment="CENTER" prefHeight="200.0" prefWidth="200.0">
+		<VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="200.0">
 			<children>
-            <Label style="-fx-font-size: 18;" text="Game Speed" />
-            <ChoiceBox fx:id="gameSpeedChoice" prefWidth="100.0" />
+            <HBox alignment="CENTER" prefHeight="32.0" prefWidth="200.0" spacing="5.0">
+               <children>
+                  <Label alignment="CENTER" style="-fx-font-size: 18;" text="Employee" />
+                  <ChoiceBox fx:id="employeeChoice" prefWidth="50.0" />
+               </children>
+            </HBox>
+            <Label fx:id="energyLabel" minWidth="-Infinity" prefWidth="200.0" text="Label" textAlignment="CENTER">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER" prefHeight="32.0" prefWidth="200.0" spacing="5.0">
+               <children>
+                  <Label alignment="CENTER" style="-fx-font-size: 18;" text="Game Speed" />
+                  <ChoiceBox fx:id="gameSpeedChoice" prefWidth="50.0" />
+               </children>
+            </HBox>
             <Separator prefHeight="44.0" prefWidth="100.0" />
 				<Label fx:id="pauseLabel" text="pauseLabel" />
 				<ToggleButton fx:id="pauseButton" onAction="#pauseButtonAction" />
@@ -42,19 +57,19 @@
 		</VBox>
 	</left>
    <top>
-      <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="10">
+      <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="10" BorderPane.alignment="CENTER">
          <children>
             <Label fx:id="clockLabel" alignment="CENTER" minWidth="-Infinity" prefWidth="200.0" text="Label" textAlignment="CENTER">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label fx:id="wxToday" alignment="CENTER" prefWidth="200.0" text="Label" textAlignment="CENTER" textFill="#187911">
+            <Label fx:id="wxToday" alignment="CENTER" prefWidth="220.0" text="Label" textAlignment="CENTER" textFill="#187911">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label fx:id="wxTomorrow" alignment="CENTER" prefHeight="200.0" prefWidth="200.0" text="Label" textAlignment="CENTER" textFill="#150794">
+            <Label fx:id="wxTomorrow" alignment="CENTER" prefWidth="270.0" text="Label" textAlignment="CENTER" textFill="#150794">
                <font>
                   <Font size="18.0" />
                </font>
