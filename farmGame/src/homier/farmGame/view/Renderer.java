@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import homier.farmGame.controller.App;
 import homier.farmGame.controller.Engine;
+import homier.farmGame.model.Employee;
 import homier.farmGame.model.FarmTask;
 import homier.farmGame.model.Inventory;
 import homier.farmGame.model.tile.BuildingTile;
@@ -12,6 +13,8 @@ import homier.farmGame.model.tile.Tile;
 import homier.farmGame.utils.GameClock;
 import javafx.animation.PauseTransition;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -78,6 +81,7 @@ public class Renderer {
 		VBox mouseOverPanel = engine.getMouseOverPanel();
 		Inventory inventory = engine.getGame().getInventory();
 		GameClock gameClock = engine.getGameClock();
+		Employee activeEmployee= engine.getActiveEmployee();
 		
 		// create popup menu for the tiles and set to pause when shown and
 		// unpause when hidden only if the game was not manualy paused prior
@@ -159,27 +163,28 @@ public class Renderer {
 								if (event.getButton() == MouseButton.PRIMARY) {
 									b1.setOnAction(e -> {
 										
-										//create task TODO
-										
-										FarmTask plantWheat = new FarmTask("Plant", 100, 20);
-										PauseTransition pt = new PauseTransition(new Duration(1000));
-										pt.setOnFinished(e2->{
-											Tile newTile = new FarmPlot("WHEAT_PLOT", 15, 400,new int[]{15,25});
-											tileList.set(index, newTile);
-											previousMap[index] = -1;
-										});
-										pt.play();
-										//create a new tile to be rendered next frame by setting previousMap to -1
-										
-										
-										
-										
-									});
+										//create the task, add it to the active employee and create a changelistener to finish the task
+										FarmTask plantWheat = new FarmTask("Plant", 100, 20, gameClock.getTotalSeconds());
+										activeEmployee.setTask(plantWheat);
+										activeEmployee.spendEnergy(plantWheat.getEnergyCost());
+										plantWheat.isCompleteProperty().addListener(new ChangeListener<Boolean>() {
+
+								            @Override
+								            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+								              if(newValue){
+								            	  Tile newTile = new FarmPlot("WHEAT_PLOT", 15, 400,new int[]{15,25});
+								            	  tileList.set(index, newTile);
+								            	  previousMap[index] = -1; 
+								            	  activeEmployee.setTask(new FarmTask());//set empty task
+								              }
+								            }
+								        });//changelistener on the task isComplete boolean property
+									});//plant button setOnAction event handler
 									popup.show(newImageView, event.getScreenX(), event.getScreenY());
-								}
-							}
+								}//if primary mouse click (ie left mouse click)
+							}//handle() for the ImageView mouse click event
 						});// eventhandler mouse clicked
-					} // if
+					} // if new image to render, ie if there was a change to be rendered
 					break;
 				case "WHEAT_PLOT":
 					DoubleProperty growthProperty = ((FarmPlot) tile).growthProperty();

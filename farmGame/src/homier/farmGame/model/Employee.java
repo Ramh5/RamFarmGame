@@ -11,10 +11,13 @@ public class Employee {
 	private boolean isWorking;
 	private FarmTask currentTask;
 	
+	
 	public Employee(String name, double salary) {
 		this.name=name;
 		energy=new SimpleDoubleProperty(1000);
 		isWorking=false;
+		
+		currentTask = new FarmTask();
 	}
 
 	public String getName(){
@@ -22,6 +25,7 @@ public class Employee {
 	}
 	
 	public void setTask(FarmTask task){
+		
 		currentTask=task;
 	}
 	

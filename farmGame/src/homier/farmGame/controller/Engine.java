@@ -36,7 +36,7 @@ public class Engine {
 	@FXML private ProgressIndicator taskProgress1;
 	private Game game = new Game();
 	private Renderer renderer;
-	private GameClock gameClock;;
+	private GameClock gameClock;
 	private boolean manPaused;
 	
 	
@@ -52,9 +52,17 @@ public class Engine {
 			wxTomorrow.setText("Tomorrow: "+game.getWxForcast().getTomorrow().toString());
 			gameClock.setIsNewDay(false);
 		}
+		
+		//update energy and task name when task is in progress
+		
+		taskProgress1.setProgress(getActiveEmployee().getTask().getTaskProgress(gameClock.getTotalSeconds()));
+		taskName1.setText(getActiveEmployee().getTask().getName());
+		
+		
 		for (int i = 0; i < game.getTileList().size(); i++) {
 			game.getTileList().get(i).update(dTime / gameClock.getSecondsInADay(),game.getWxForcast().getToday());
 		}
+		
 		
 
 	}
@@ -83,13 +91,14 @@ public class Engine {
 		gameSpeedChoice.setOnAction(e->{//TODO could add a call to a methode in the FXML instead of here
 			App.gameSpeed=gameSpeedChoice.getSelectionModel().getSelectedItem();
 		});
+		
 		 //employee choice
 		employeeChoice.setOnAction(e->{
-			energyLabel.textProperty().bind(employeeChoice.getSelectionModel().getSelectedItem().energyProperty().asString(" Energy: %.0f  "));
+			energyLabel.textProperty().bind(getActiveEmployee().energyProperty().asString(" Energy: %.0f  "));
 		});
 		employeeChoice.getItems().addAll(game.getEmployees());
 		employeeChoice.getSelectionModel().select(0);
-		energyLabel.textProperty().bind(employeeChoice.getSelectionModel().getSelectedItem().energyProperty().asString(" Energy: %.0f  "));
+		energyLabel.textProperty().bind(getActiveEmployee().energyProperty().asString(" Energy: %.0f  "));
 		//task
 		taskName1.setText("TASK");
 		
@@ -167,5 +176,12 @@ public class Engine {
 	public boolean getManPaused() {
 		
 		return manPaused;
+	}
+	
+	/**
+	 * @return the active employee as selected on the employee choice box
+	 */
+	public Employee getActiveEmployee(){
+		return employeeChoice.getSelectionModel().getSelectedItem();
 	}
 }

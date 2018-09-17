@@ -54,6 +54,10 @@ public class GameClock {
 		this.secondsInADay = secondsInADay;
 	}
 
+	/**
+	 * 
+	 * @return the total game time in seconds since the start of the game
+	 */
 	public double getTotalSeconds() {
 		return totalSeconds;
 	}
