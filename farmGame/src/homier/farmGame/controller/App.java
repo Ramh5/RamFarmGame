@@ -32,7 +32,9 @@ public class App extends Application{
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/homier/farmGame/view/MainUI.fxml"));
 		Parent root = loader.load();
 		engine=loader.getController();
-		primaryStage.setScene(new Scene(root));
+		Scene scene = new Scene(root);
+		scene.getStylesheets().add(getClass().getResource("/homier/farmGame/view/FarmGameStyle.css").toExternalForm());
+		primaryStage.setScene(scene);
 		primaryStage.show();
 		
 		

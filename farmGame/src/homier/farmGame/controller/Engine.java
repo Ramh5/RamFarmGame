@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
@@ -31,6 +32,8 @@ public class Engine {
 	@FXML private Label wxTomorrow;
 	@FXML private Label energyLabel;
 	@FXML private ChoiceBox<Employee> employeeChoice;
+	@FXML private Label taskName1;
+	@FXML private ProgressIndicator taskProgress1;
 	private Game game = new Game();
 	private Renderer renderer;
 	private GameClock gameClock;;
@@ -62,8 +65,7 @@ public class Engine {
 	}
 
 	public void initialize() {
-		
-		
+
 		renderer = new Renderer(game.getTileList(), gameGridPane);
 		gameClock = new GameClock(300, 0);
 		game.getWxForcast().forcastNewDay(gameClock);
@@ -81,15 +83,18 @@ public class Engine {
 		gameSpeedChoice.setOnAction(e->{//TODO could add a call to a methode in the FXML instead of here
 			App.gameSpeed=gameSpeedChoice.getSelectionModel().getSelectedItem();
 		});
-		
+		 //employee choice
 		employeeChoice.setOnAction(e->{
-			energyLabel.textProperty().bind(employeeChoice.getSelectionModel().getSelectedItem().energyProperty().asString("       Energy: %.0f"));
+			energyLabel.textProperty().bind(employeeChoice.getSelectionModel().getSelectedItem().energyProperty().asString(" Energy: %.0f  "));
 		});
 		employeeChoice.getItems().addAll(game.getEmployees());
 		employeeChoice.getSelectionModel().select(0);
-		energyLabel.textProperty().bind(employeeChoice.getSelectionModel().getSelectedItem().energyProperty().asString("       Energy: %.0f"));
+		energyLabel.textProperty().bind(employeeChoice.getSelectionModel().getSelectedItem().energyProperty().asString(" Energy: %.0f  "));
+		//task
+		taskName1.setText("TASK");
 		
-		employeeChoice.getSelectionModel().getSelectedItem().spendEnergy(100);
+		
+		
 	}
 
 	@FXML

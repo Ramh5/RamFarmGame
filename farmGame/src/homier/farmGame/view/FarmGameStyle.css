@@ -1,0 +1,26 @@
+
+.context-menu{
+  /*-fx-border-color: rgb(0,0,0);*/
+	-fx-padding: 0;
+}
+
+.custom-menu-item {
+    -fx-background-color: white;
+    -fx-padding: 0;
+   /*-fx-border-color: rgb(255,0,0);
+   	-fx-border-width: 3.0pt ;*/
+   	
+}
+
+.custom-menu-item:focused {
+    -fx-background-color: white;
+}
+
+.button-popup{
+	-fx-pref-width: 100;
+}
+
+.progress-indicator .percentage{
+	-fx-font-size: 10;
+	
+}

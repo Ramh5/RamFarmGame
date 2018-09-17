@@ -4,14 +4,19 @@ import java.util.ArrayList;
 
 import homier.farmGame.controller.App;
 import homier.farmGame.controller.Engine;
+import homier.farmGame.model.FarmTask;
 import homier.farmGame.model.Inventory;
 import homier.farmGame.model.tile.BuildingTile;
 import homier.farmGame.model.tile.FarmPlot;
 import homier.farmGame.model.tile.Tile;
 import homier.farmGame.utils.GameClock;
+import javafx.animation.PauseTransition;
 import javafx.beans.property.DoubleProperty;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ToggleButton;
@@ -19,8 +24,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 public class Renderer {
 
@@ -70,7 +78,36 @@ public class Renderer {
 		VBox mouseOverPanel = engine.getMouseOverPanel();
 		Inventory inventory = engine.getGame().getInventory();
 		GameClock gameClock = engine.getGameClock();
-				
+		
+		// create popup menu for the tiles and set to pause when shown and
+		// unpause when hidden only if the game was not manualy paused prior
+		Button b1 = new Button("");
+		Button b2 =	new Button("");
+		Button b3 =	new Button("");
+		Button b4 =	new Button("");
+		b1.getStyleClass().add("button-popup");
+		b2.getStyleClass().add("button-popup");
+		b3.getStyleClass().add("button-popup");
+		b4.getStyleClass().add("button-popup");
+		GridPane popupGrid = new GridPane();
+		popupGrid.add(b1, 0, 0);
+		popupGrid.add(b2, 1, 0);
+		popupGrid.add(b3, 0, 1);
+		popupGrid.add(b4, 1, 1);
+		CustomMenuItem customMI = new CustomMenuItem(popupGrid, true);
+		ContextMenu popup = new ContextMenu();
+		popup.getItems().setAll(customMI);
+		popup.setOnHidden(e -> {
+			if (!engine.getManPaused()) {
+				pauseButton.setSelected(false);
+				engine.updatePauseButton();
+			}
+		});
+		popup.setOnShown(e -> {
+			pauseButton.setSelected(true);
+			engine.updatePauseButton();
+		});
+		
 		for (int i = 0; i < App.gridColumns; i++) {
 			for (int j = 0; j < App.gridRows; j++) {
 
@@ -78,23 +115,7 @@ public class Renderer {
 				Tile tile = tileList.get(index);
 				String tileID = tile.getID();
 				int newIndexToRender;
-
-				// create popup menu for the tiles and set to pause when shown and
-				// unpause when hidden only if the game was not manualy paused prior
-				MenuItem menuItem = new MenuItem();
-				ContextMenu popup = new ContextMenu();
-				popup.getItems().addAll(menuItem);
-				popup.setOnHidden(e -> {
-					if (!engine.getManPaused()) {
-						pauseButton.setSelected(false);
-						engine.updatePauseButton();
-					}
-				});
-				popup.setOnShown(e -> {
-					pauseButton.setSelected(true);
-					engine.updatePauseButton();
-				});
-				
+								
 				switch (tileID) {
 				case "FOREST_TILE":
 					newIndexToRender = forestViewData.getIndexToRender((gameClock.getMonth()+1)/3%4);
@@ -112,9 +133,9 @@ public class Renderer {
 						newImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 							public void handle(MouseEvent event) {
 								if (event.getButton() == MouseButton.PRIMARY) {
-									menuItem.setText("Omelette");
-									menuItem.setOnAction(e -> {		
-										((BuildingTile) tile).cook(menuItem.getText(), inventory );
+									b1.setText("Omelette");
+									b1.setOnAction(e -> {		
+										((BuildingTile) tile).cook(b1.getText(), inventory );
 										engine.getLeftTextArea().setText(engine.getGame().getInventory().toString());
 									});
 									popup.show(newImageView, event.getScreenX(), event.getScreenY());
@@ -130,16 +151,29 @@ public class Renderer {
 						GridPane.setConstraints(newImageView, i, j);
 						grid.getChildren().set(index, newImageView);
 						previousMap[index] = newIndexToRender;
-
+		
+						b1.setText("Plant Wheat");
 						// set UI
-						newImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+						newImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {	
 							public void handle(MouseEvent event) {
 								if (event.getButton() == MouseButton.PRIMARY) {
-									menuItem.setText("Plant Wheat");
-									menuItem.setOnAction(e -> {
-										Tile newTile = new FarmPlot("WHEAT_PLOT", 15, 400,new int[]{15,25});
-										tileList.set(index, newTile);
-										previousMap[index] = -1;
+									b1.setOnAction(e -> {
+										
+										//create task TODO
+										
+										FarmTask plantWheat = new FarmTask("Plant", 100, 20);
+										PauseTransition pt = new PauseTransition(new Duration(1000));
+										pt.setOnFinished(e2->{
+											Tile newTile = new FarmPlot("WHEAT_PLOT", 15, 400,new int[]{15,25});
+											tileList.set(index, newTile);
+											previousMap[index] = -1;
+										});
+										pt.play();
+										//create a new tile to be rendered next frame by setting previousMap to -1
+										
+										
+										
+										
 									});
 									popup.show(newImageView, event.getScreenX(), event.getScreenY());
 								}
@@ -167,8 +201,8 @@ public class Renderer {
 						newImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 							public void handle(MouseEvent event) {
 								if (event.getButton() == MouseButton.PRIMARY) {
-									menuItem.setText("Harvest Wheat");
-									menuItem.setOnAction(e -> {
+									b1.setText("Harvest Wheat");
+									b1.setOnAction(e -> {
 										inventory.addProd("Wheat",((FarmPlot) tile).getYield());	
 										engine.getLeftTextArea().setText(engine.getGame().getInventory().toString());
 										Tile newTile = new FarmPlot("FARM_PLOT", 0, 0);
