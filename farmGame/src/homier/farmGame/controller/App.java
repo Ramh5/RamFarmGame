@@ -4,6 +4,7 @@ package homier.farmGame.controller;
 
 
 
+import homier.farmGame.model.Product;
 import homier.farmGame.view.Renderer;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -18,6 +19,7 @@ public class App extends Application{
 	public static int gridColumns = 10, gridRows = 9;
 	public static int width = gridColumns*Renderer.tileSize;
 	public static int height = gridRows*Renderer.tileSize;
+	
 	
 	
 	private Engine engine;

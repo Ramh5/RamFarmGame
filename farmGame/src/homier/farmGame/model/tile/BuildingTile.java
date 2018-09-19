@@ -20,7 +20,7 @@ public class BuildingTile extends Tile{
 		boolean success=inventory.removeList(recipeBook.getRecipeList().get(recipe).getIngredientList());
 		if(success)
 		inventory.addProd(recipe, recipeBook.getRecipeList().get(recipe).getQuantity());
-		System.out.println("cooking success?"+success);
+		
 	
 	}
 	

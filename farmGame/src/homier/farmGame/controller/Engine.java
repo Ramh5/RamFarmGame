@@ -45,6 +45,7 @@ public class Engine {
 
 		gameClock.update(dTime);
 		clockLabel.setText(gameClock.toString());
+		
 		//if it is a new day, update the forcast
 		if(gameClock.isNewDay()){
 			game.getWxForcast().forcastNewDay(gameClock);
@@ -58,7 +59,7 @@ public class Engine {
 		taskProgress1.setProgress(getActiveEmployee().getTask().getTaskProgress(gameClock.getTotalSeconds()));
 		taskName1.setText(getActiveEmployee().getTask().getName());
 		
-		
+		//update each tile (only update the model, ie growth, yield)
 		for (int i = 0; i < game.getTileList().size(); i++) {
 			game.getTileList().get(i).update(dTime / gameClock.getSecondsInADay(),game.getWxForcast().getToday());
 		}

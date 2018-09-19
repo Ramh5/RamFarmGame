@@ -5,7 +5,7 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 public class Inventory {
-
+ //TODO use the new Product class to incorporate spoiling in the inventory
 	private TreeMap<String, Double> inventory;  
 	
 	public Inventory(){
@@ -28,7 +28,7 @@ public class Inventory {
 				 return false;
 			}
 		}
-		
+		//if the inventory contains enough for all the ingredients, remove the ingredient list from the inventory
 		for(String ingredient:ingredients.keySet()){	
 			inventory.put(ingredient, inventory.get(ingredient)-ingredients.get(ingredient));
 		}	

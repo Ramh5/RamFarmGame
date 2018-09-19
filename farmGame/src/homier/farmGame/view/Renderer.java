@@ -170,8 +170,8 @@ public class Renderer {
 										plantWheat.isCompleteProperty().addListener(new ChangeListener<Boolean>() {
 
 								            @Override
-								            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-								              if(newValue){
+								            public void changed(ObservableValue<? extends Boolean> obs, Boolean old, Boolean val) {
+								              if(val){
 								            	  Tile newTile = new FarmPlot("WHEAT_PLOT", 15, 400,new int[]{15,25});
 								            	  tileList.set(index, newTile);
 								            	  previousMap[index] = -1; 
