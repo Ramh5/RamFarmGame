@@ -4,7 +4,7 @@ package homier.farmGame.controller;
 
 
 
-import homier.farmGame.model.Product;
+
 import homier.farmGame.view.Renderer;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;

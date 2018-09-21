@@ -4,21 +4,26 @@ import java.util.TreeMap;
 
 import homier.farmGame.utils.Tools;
 
-public class Product {
+enum Freshness{
+	Fresh
+}
+
+public class ProductData {
 	private String name;
 	private TreeMap<Double, Double> spoilMap;
 	
+	
 
-	/* TODO
+	/* TODO add parameters to ProductData
 	private double growthRate;
 	private int maxYield;
 	private TreeMap<Double, Double> yieldMap;
 	private int[] tempRange;
     */
 	
-	public Product(String name){
+	public ProductData(String name){
 		this.name=name;
-		spoilMap = Tools.buildTreeMap(cerealSpoilRate);
+		spoilMap = Tools.buildTreeMap(cerealSpoilRate); //TODO specific spoil for each type of product
 	}
 	
 	

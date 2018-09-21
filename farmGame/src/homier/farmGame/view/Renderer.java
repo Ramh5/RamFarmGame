@@ -208,7 +208,7 @@ public class Renderer {
 								if (event.getButton() == MouseButton.PRIMARY) {
 									b1.setText("Harvest Wheat");
 									b1.setOnAction(e -> {
-										inventory.addProd("Wheat",((FarmPlot) tile).getYield());	
+										inventory.addProd("Wheat",((FarmPlot) tile).getYield(),1);
 										engine.getLeftTextArea().setText(engine.getGame().getInventory().toString());
 										Tile newTile = new FarmPlot("FARM_PLOT", 0, 0);
 										tileList.set(index, newTile);

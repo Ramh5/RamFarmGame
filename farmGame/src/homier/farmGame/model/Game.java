@@ -28,9 +28,12 @@ public class Game {
 		}
 		tileList.set(40, new BuildingTile("HOUSE_TILE"));
 		employees = new Employee[]{new Employee("Ram",0),new Employee("EMPTY",200)};
-		inventory.addProd("Carrots", 52);
-		inventory.addProd("Onions", 12);
-		inventory.addProd("Eggs", 2);
+		inventory.addProd("Wheat", 10,2);
+		inventory.addProd("Onions", 10,3);
+		inventory.addProd("Carrots", 10,10);
+		inventory.addProd("Eggs", 10,5);
+	
+		
 	}
 	
 	public ArrayList<Tile> getTileList(){
