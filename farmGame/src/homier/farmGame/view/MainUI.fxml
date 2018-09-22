@@ -14,51 +14,60 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="950" prefWidth="1210.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="homier.farmGame.controller.Engine">
+<BorderPane prefHeight="950" prefWidth="1210.0"
+	xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="homier.farmGame.controller.Engine">
 	<center>
-		<StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+		<StackPane prefHeight="150.0" prefWidth="200.0"
+			BorderPane.alignment="CENTER">
 			<children>
-				<GridPane fx:id="gameGridPane" alignment="CENTER" prefHeight="662.0" prefWidth="1010.0">
+				<GridPane fx:id="gameGridPane" alignment="CENTER"
+					prefHeight="662.0" prefWidth="1010.0">
 
 				</GridPane>
-				<Canvas height="200.0" mouseTransparent="true" opacity="0.0" width="200.0" />
+				<Canvas height="200.0" mouseTransparent="true" opacity="0.0"
+					width="200.0" />
 			</children>
 		</StackPane>
 	</center>
 	<left>
 		<VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="200.0">
 			<children>
-            <HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0" spacing="5.0">
-               <children>
-                  <Label alignment="CENTER" style="-fx-font-size: 18;" text="Employee" />
-                  <ChoiceBox fx:id="employeeChoice" prefWidth="50.0" />
-               </children>
-            </HBox>
-            <HBox prefHeight="30.0" prefWidth="200.0">
-               <children>
-                  <Label fx:id="energyLabel"  text="Label" textAlignment="CENTER">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="taskName1" text="Label" >
-                  	<font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <ProgressIndicator fx:id="taskProgress1" progress="0.0" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0" spacing="5.0">
-               <children>
-                  <Label alignment="CENTER" style="-fx-font-size: 18;" text="Game Speed" />
-                  <ChoiceBox fx:id="gameSpeedChoice" prefWidth="50.0" />
-               </children>
-            </HBox>
-            <Separator prefHeight="44.0" prefWidth="100.0" />
+				<HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0"
+					spacing="5.0">
+					<children>
+						<Label alignment="CENTER" style="-fx-font-size: 18;" text="Employee" />
+						<ChoiceBox fx:id="employeeChoice" prefWidth="50.0" />
+					</children>
+				</HBox>
+				<HBox prefHeight="30.0" prefWidth="200.0">
+					<children>
+						<Label fx:id="energyLabel" text="Label" textAlignment="CENTER">
+							<font>
+								<Font size="18.0" />
+							</font>
+						</Label>
+						<Label fx:id="taskName1" text="Label">
+							<font>
+								<Font size="18.0" />
+							</font>
+						</Label>
+						<ProgressIndicator fx:id="taskProgress1"
+							progress="0.0" />
+					</children>
+				</HBox>
+				<HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0"
+					spacing="5.0">
+					<children>
+						<Label alignment="CENTER" style="-fx-font-size: 18;" text="Game Speed" />
+						<ChoiceBox fx:id="gameSpeedChoice" prefWidth="50.0" />
+					</children>
+				</HBox>
+				<Separator prefHeight="44.0" prefWidth="100.0" />
 				<Label fx:id="pauseLabel" text="pauseLabel" />
 				<ToggleButton fx:id="pauseButton" onAction="#pauseButtonAction" />
-            <TextArea fx:id="leftTextArea" prefHeight="441.0" prefWidth="100.0" />
+				<TextArea fx:id="leftTextArea" prefHeight="441.0"
+					prefWidth="100.0" />
 				<VBox fx:id="mouseOverPanel" alignment="CENTER">
 					<Label fx:id="productLabel" text="test" />
 					<Label fx:id="growthLabel" text="test" />
@@ -67,25 +76,29 @@
 			</children>
 		</VBox>
 	</left>
-   <top>
-      <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="10" BorderPane.alignment="CENTER">
-         <children>
-            <Label fx:id="clockLabel" alignment="CENTER" minWidth="-Infinity" prefWidth="200.0" text="Label" textAlignment="CENTER">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="wxToday" alignment="CENTER" prefWidth="230.0" text="Label" textAlignment="CENTER" textFill="#187911">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="wxTomorrow" alignment="CENTER" prefWidth="280.0" text="Label" textAlignment="CENTER" textFill="#150794">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-         </children>
-      </HBox>
-   </top>
+	<top>
+		<HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0"
+			spacing="10" BorderPane.alignment="CENTER">
+			<children>
+				<Label fx:id="clockLabel" alignment="CENTER" minWidth="-Infinity"
+					prefWidth="200.0" text="Label" textAlignment="CENTER">
+					<font>
+						<Font size="18.0" />
+					</font>
+				</Label>
+				<Label fx:id="wxToday" alignment="CENTER" prefWidth="230.0"
+					text="Label" textAlignment="CENTER" textFill="#187911">
+					<font>
+						<Font size="18.0" />
+					</font>
+				</Label>
+				<Label fx:id="wxTomorrow" alignment="CENTER" prefWidth="280.0"
+					text="Label" textAlignment="CENTER" textFill="#150794">
+					<font>
+						<Font size="18.0" />
+					</font>
+				</Label>
+			</children>
+		</HBox>
+	</top>
 </BorderPane>

@@ -18,8 +18,8 @@ public class WxForcast {
 		today = tomorrow;
 		
 		
-		//TODO fix first day of month forcast
-		//TODO fix raining during winter
+		//TODO Fix: first day of month forcast
+		//TODO Fix: raining during winter
 		tomorrow = new Weather(newTemp(gameClock.getMonth()), Sky.values()[random.nextInt(Sky.values().length)], 
 				Wind.values()[random.nextInt(Wind.values().length)]);
 		

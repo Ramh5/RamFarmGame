@@ -134,13 +134,34 @@ public class Renderer {
 						previousMap[index] = newIndexToRender;
 
 						// set UI
+						
+						
 						newImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 							public void handle(MouseEvent event) {
 								if (event.getButton() == MouseButton.PRIMARY) {
+									b1.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<100);
 									b1.setText("Omelette");
-									b1.setOnAction(e -> {		
-										((BuildingTile) tile).cook(b1.getText(), inventory );
-										engine.getLeftTextArea().setText(engine.getGame().getInventory().toString());
+									b1.setOnAction(e -> {	
+										//TODO prevent generating cooking task if not enough items
+										FarmTask cookOmelette = new FarmTask("Cook", 100, 40, gameClock.getTotalSeconds());
+										activeEmployee.setTask(cookOmelette);
+										activeEmployee.spendEnergy(cookOmelette.getEnergyCost());
+										//System.out.println("inside b1 OnAction of house_tile   tile: "+tile);
+										cookOmelette.isCompleteProperty().addListener(new ChangeListener<Boolean>() {
+										
+								            @Override
+								            public void changed(ObservableValue<? extends Boolean> obs, Boolean old, Boolean val) {
+								              if(val){
+								          
+								            	  ((BuildingTile) tile).cook("Omelette", inventory );
+								            	  engine.getLeftTextArea().setText(engine.getGame().getInventory().toString());
+								            	  activeEmployee.setIsWorking(false);
+								            	  //System.out.println("inside task changelistener cooking omelette tile: "+tile);
+								            	
+								              }
+								            }
+								        });//changelistener on the task isComplete boolean property
+										
 									});
 									popup.show(newImageView, event.getScreenX(), event.getScreenY());
 								}
@@ -155,14 +176,17 @@ public class Renderer {
 						GridPane.setConstraints(newImageView, i, j);
 						grid.getChildren().set(index, newImageView);
 						previousMap[index] = newIndexToRender;
-		
-						b1.setText("Plant Wheat");
 						// set UI
+						
+						
 						newImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {	
 							public void handle(MouseEvent event) {
 								if (event.getButton() == MouseButton.PRIMARY) {
+									b1.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<100);
+									b1.setText("Plant Wheat");
+									
 									b1.setOnAction(e -> {
-										
+										//TODO  pause while no task
 										//create the task, add it to the active employee and create a changelistener to finish the task
 										FarmTask plantWheat = new FarmTask("Plant", 100, 20, gameClock.getTotalSeconds());
 										activeEmployee.setTask(plantWheat);
@@ -175,7 +199,9 @@ public class Renderer {
 								            	  Tile newTile = new FarmPlot("WHEAT_PLOT", 15, 400,new int[]{15,25});
 								            	  tileList.set(index, newTile);
 								            	  previousMap[index] = -1; 
-								            	  activeEmployee.setTask(new FarmTask());//set empty task
+								            	  activeEmployee.setIsWorking(false);
+								            	 
+								            	  
 								              }
 								            }
 								        });//changelistener on the task isComplete boolean property
@@ -203,16 +229,33 @@ public class Renderer {
 							((Labeled) mouseOverPanel.getChildren().get(1)).textProperty()
 									.bind(yieldProperty.asString("%.0f"));
 						});
+						
 						newImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 							public void handle(MouseEvent event) {
 								if (event.getButton() == MouseButton.PRIMARY) {
+									
+									b1.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<100);
 									b1.setText("Harvest Wheat");
 									b1.setOnAction(e -> {
-										inventory.addProd("Wheat",((FarmPlot) tile).getYield(),1);
-										engine.getLeftTextArea().setText(engine.getGame().getInventory().toString());
-										Tile newTile = new FarmPlot("FARM_PLOT", 0, 0);
-										tileList.set(index, newTile);
-										previousMap[index] = -1;
+										
+										//create the task, add it to the active employee and create a changelistener to finish the task
+										FarmTask harvestWheat = new FarmTask("Harvest", 100, 30, gameClock.getTotalSeconds());
+										activeEmployee.setTask(harvestWheat);
+										activeEmployee.spendEnergy(harvestWheat.getEnergyCost());
+										harvestWheat.isCompleteProperty().addListener(new ChangeListener<Boolean>() {
+
+								            @Override
+								            public void changed(ObservableValue<? extends Boolean> obs, Boolean old, Boolean val) {
+								              if(val){
+								            	  inventory.addProd("Wheat",((FarmPlot) tile).getYield(),1);
+												  engine.getLeftTextArea().setText(engine.getGame().getInventory().toString());
+								            	  Tile newTile = new FarmPlot("FARM_PLOT", 0, 0);
+								            	  tileList.set(index, newTile);
+								            	  previousMap[index] = -1; 
+								            	  activeEmployee.setIsWorking(false);
+								              }
+								            }
+								        });//changelistener on the task isComplete boolean property
 									});
 									popup.show(newImageView, event.getScreenX(), event.getScreenY());
 								}

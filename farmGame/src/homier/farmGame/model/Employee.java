@@ -20,13 +20,21 @@ public class Employee {
 		currentTask = new FarmTask();
 	}
 
+	public boolean isWorking(){
+		return isWorking;
+	}
+	
+	public void setIsWorking(boolean isWorking){
+		this.isWorking=isWorking;
+	}
+	
 	public String getName(){
 		return name;
 	}
 	
 	public void setTask(FarmTask task){
-		
 		currentTask=task;
+		isWorking=true;
 	}
 	
 	public FarmTask getTask(){
@@ -52,6 +60,4 @@ public class Employee {
 	public String toString(){
 		return name;	
 	}
-
-	
 }

@@ -17,7 +17,9 @@ public class GameClock {
 		isNewDay=true;
 	}
 	
-	
+	public void addTime(double seconds){
+		totalSeconds += seconds;
+	}
 
 	public void update(double dTime){
 		

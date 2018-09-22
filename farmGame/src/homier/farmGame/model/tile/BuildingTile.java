@@ -1,7 +1,8 @@
 package homier.farmGame.model.tile;
 
 import java.util.Arrays;
-import java.util.Map;
+
+import java.util.Map.Entry;
 
 import homier.farmGame.model.Inventory;
 import homier.farmGame.model.Recipe;
@@ -27,14 +28,13 @@ public class BuildingTile extends Tile{
 		
 		int[] result = inventory.removeList(recipe.getIngredientList(), freshReqList);
 		if(result[0]==0) {
-			System.out.println("cooking not successfull" );
 			return;
 		}
 		//average the freshness of every ingredient
 		double averageFresh = 0;
 		double total = 0;
 		int i=0;
-		for(Map.Entry<String, Double> entry:recipe.getIngredientList().entrySet()){
+		for(Entry<String, Double> entry:recipe.getIngredientList().entrySet()){
 			averageFresh += entry.getValue()*result[i];
 			total += entry.getValue();	
 			i++;

@@ -1,16 +1,16 @@
 package homier.farmGame.model;
 
+import java.util.HashMap;
 import java.util.TreeMap;
 
 import homier.farmGame.utils.Tools;
 
-enum Freshness{
-	Fresh
-}
+
 
 public class ProductData {
-	private String name;
-	private TreeMap<Double, Double> spoilMap;
+	//private String name;
+	//private TreeMap<Double, Double> spoilMap;
+	private HashMap<String, TreeMap<Double,Double>> spoilMapList;
 	
 	
 
@@ -21,13 +21,19 @@ public class ProductData {
 	private int[] tempRange;
     */
 	
-	public ProductData(String name){
-		this.name=name;
-		spoilMap = Tools.buildTreeMap(cerealSpoilRate); //TODO specific spoil for each type of product
+	public ProductData(){
+		spoilMapList = new HashMap<String, TreeMap<Double,Double>>();
+		spoilMapList.put("Wheat",Tools.buildTreeMap(cerealSpoilRate)); //TODO Balance: specific spoil for each type of product
+		spoilMapList.put("Onions",Tools.buildTreeMap(cerealSpoilRate));
+		spoilMapList.put("Carrots",Tools.buildTreeMap(cerealSpoilRate));
+		spoilMapList.put("Eggs",Tools.buildTreeMap(cerealSpoilRate));
+		spoilMapList.put("Omelette",Tools.buildTreeMap(cerealSpoilRate));
 	}
 	
 	
-	
+	public TreeMap<Double,Double> getSpoilMap(String name){
+		return spoilMapList.get(name);
+	}
 	
 	//spoil list databases
 	

@@ -3,28 +3,80 @@ package homier.farmGame.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+
+
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
+import homier.farmGame.utils.Tools;
+
 public class Inventory {
  
-	private TreeMap<String, ArrayList<double[]>> inventory;  
-	private HashMap<String, ProductData> prodDataMap;
+	private TreeMap<String, ArrayList<double[]>> inventory; //clean up "0" products after spoiling and removing
+	private TreeMap<String, ArrayList<double[]>> todaySpoil;
+	private ProductData prodData;
 	
 	
 	public Inventory(){
 		inventory = new TreeMap<>();
-		prodDataMap = new HashMap<String,ProductData>();
-		prodDataMap.put("Wheat", new ProductData("Wheat"));
+		todaySpoil = new TreeMap<String, ArrayList<double[]>>();
+		todaySpoil.put("nothing", new ArrayList<double[]>());
+		prodData = new ProductData();
 	}
 	
-	public TreeMap<String, Double> update(){
-		TreeMap<String, Double> lastDaySpoil = new TreeMap<String, Double>();
+	public void update(){
 		
-		//TODO implement spoiling every day
-		
-		return lastDaySpoil;
+		spoil(calculateSpoil(0));
+		age();
+		todaySpoil = calculateSpoil(0);
+	}
+	
+	/** 
+	 * removes the spoiled products
+	 * @param todaySpoil is the list of product that will be removed due to spoiling
+	 */
+	
+	private void spoil(TreeMap<String, ArrayList<double[]>> todaySpoil){
+		for(Entry<String, ArrayList<double[]>> entry:todaySpoil.entrySet()){
+			for(double[] elem:entry.getValue()){
+				this.addProd(entry.getKey(), -elem[0], elem[1]);
+			}	
+		}
+	}
+	
+	 /**
+	  * ages the products by adding one day to every product and removes empty elements,
+	  * not the best performance because iterating again after calling the spoil(todaySpoil) method
+	  */
+	private void age(){
+		for(Entry<String, ArrayList<double[]>> entry:inventory.entrySet()){
+			entry.getValue().removeIf(elem->elem[0]<0.1);
+			for(double[] elem:entry.getValue()){ 
+				elem[1]++;
+			}	
+		}
+		inventory.values().removeIf(v->v.equals(new ArrayList<double[]>()));
+	}
+	
+	/**
+	 * 
+	 * @param day : 0 for today, 1 for tomorrow, 2...
+	 * @return TreeMap<String,ArrayList<double[]>> the treeMap of spoiling product
+	 */
+	
+	private TreeMap<String,ArrayList<double[]>> calculateSpoil(int day){
+		TreeMap<String, ArrayList<double[]>> result = new TreeMap<String,ArrayList<double[]>>();
+		for(Entry<String, ArrayList<double[]>> entry:inventory.entrySet()){
+			ArrayList<double[]> prodList = new ArrayList<double[]>();
+			for(double[]elem:entry.getValue()){
+				double[] spoilElem = new double[2];
+				spoilElem[0] = elem[0]*Tools.interpolateMap(prodData.getSpoilMap(entry.getKey()), elem[1] + day);
+				spoilElem[1] = elem[1];
+				prodList.add(spoilElem);
+			}
+			result.put(entry.getKey(), prodList);
+		}
+		return result;
 	}
 	
 	/** Add a product to the inventory.
@@ -169,6 +221,10 @@ public class Inventory {
 	public String toString(){
 		String str="";
 		for(Entry<String, ArrayList<double[]>> entry : inventory.entrySet()){
+			str += String.format("%s: %s kg\n", entry.getKey(), listToString(entry.getValue()));
+		}
+		str += "\n--tomorrow SPOIL--\n";
+		for(Entry<String, ArrayList<double[]>> entry : todaySpoil.entrySet()){
 			str += String.format("%s: %s kg\n", entry.getKey(), listToString(entry.getValue()));
 		}
 		return str;

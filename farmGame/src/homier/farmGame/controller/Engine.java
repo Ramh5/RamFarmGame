@@ -3,6 +3,7 @@ package homier.farmGame.controller;
 import homier.farmGame.model.Employee;
 import homier.farmGame.model.Game;
 import homier.farmGame.utils.GameClock;
+import homier.farmGame.utils.*;
 import homier.farmGame.view.Renderer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -39,7 +40,7 @@ public class Engine {
 	private GameClock gameClock;
 	private boolean manPaused;
 	
-	
+	//TODO add button to skip days, months...
 	
 	public void update(double dTime) {
 
@@ -52,6 +53,9 @@ public class Engine {
 			wxToday.setText("Today: "+game.getWxForcast().getToday().toString());
 			wxTomorrow.setText("Tomorrow: "+game.getWxForcast().getTomorrow().toString());
 			gameClock.setIsNewDay(false);
+			//update the inventory, especially for spoiling every day
+			game.getInventory().update();
+			leftTextArea.setText(game.getInventory().toString());
 		}
 		
 		//update energy and task name when task is in progress
@@ -77,6 +81,8 @@ public class Engine {
 
 		renderer = new Renderer(game.getTileList(), gameGridPane);
 		gameClock = new GameClock(300, 0);
+		gameClock.addTime(4*FarmTimeUnits.MONTH.seconds);
+		
 		game.getWxForcast().forcastNewDay(gameClock);
 		wxToday.setText("Today: "+game.getWxForcast().getToday().toString());
 		wxTomorrow.setText("Tomorrow: "+game.getWxForcast().getTomorrow().toString());
@@ -85,6 +91,8 @@ public class Engine {
 		pauseButton.setGraphic(new ImageView(new Image("Button-Pause.png", 32, 32, true, true)));
 		pauseButton.setBackground(Background.EMPTY);
 		leftTextArea.setText(game.getInventory().toString());
+		
+		
 		
 		gameSpeedChoice.getItems().addAll(1,2,5,10,50,500);
 		gameSpeedChoice.getSelectionModel().select(3);
