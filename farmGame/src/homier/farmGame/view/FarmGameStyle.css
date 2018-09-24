@@ -24,3 +24,11 @@
 	-fx-font-size: 10;
 	
 }
+
+.masking-pane {
+    -fx-background-color: -fx-background;
+}
+
+.table-column {
+  -fx-alignment: CENTER;
+}

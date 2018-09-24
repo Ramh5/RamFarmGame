@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Map.Entry;
 
 import homier.farmGame.model.Inventory;
+import homier.farmGame.model.Product;
 import homier.farmGame.model.Recipe;
 import homier.farmGame.model.RecipeBook;
 import homier.farmGame.model.Weather;
@@ -40,7 +41,7 @@ public class BuildingTile extends Tile{
 			i++;
 		}
 		averageFresh/=total;
-		inventory.addProd(recipeName, recipe.getQuantity(), (int)averageFresh );
+		inventory.addProd(new Product(recipeName, recipe.getQuantity(), (int)averageFresh, 1) );
 		
 	
 	}

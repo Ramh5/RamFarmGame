@@ -7,31 +7,26 @@ import homier.farmGame.controller.Engine;
 import homier.farmGame.model.Employee;
 import homier.farmGame.model.FarmTask;
 import homier.farmGame.model.Inventory;
+import homier.farmGame.model.Product;
 import homier.farmGame.model.tile.BuildingTile;
 import homier.farmGame.model.tile.FarmPlot;
 import homier.farmGame.model.tile.Tile;
 import homier.farmGame.utils.GameClock;
-import javafx.animation.PauseTransition;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.Labeled;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
-import javafx.util.Duration;
 
 public class Renderer {
 
@@ -247,7 +242,7 @@ public class Renderer {
 								            @Override
 								            public void changed(ObservableValue<? extends Boolean> obs, Boolean old, Boolean val) {
 								              if(val){
-								            	  inventory.addProd("Wheat",((FarmPlot) tile).getYield(),1);
+								            	  inventory.addProd(new Product(  "Wheat",((FarmPlot) tile).getYield(),1,1));
 												  engine.getLeftTextArea().setText(engine.getGame().getInventory().toString());
 								            	  Tile newTile = new FarmPlot("FARM_PLOT", 0, 0);
 								            	  tileList.set(index, newTile);

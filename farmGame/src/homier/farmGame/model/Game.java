@@ -11,6 +11,7 @@ import homier.farmGame.model.tile.Tile;
 public class Game {
 
 	private Inventory inventory = new Inventory();
+	private Shop shop = new Shop();
 	private ArrayList<Tile> tileList = new ArrayList<Tile>();
 	private WxForcast wxForcast = new WxForcast();
 	private Employee[] employees;
@@ -28,12 +29,11 @@ public class Game {
 		}
 		tileList.set(40, new BuildingTile("HOUSE_TILE"));
 		employees = new Employee[]{new Employee("Ram",0),new Employee("EMPTY",200)};
-		inventory.addProd("Wheat", 10,2);
-		inventory.addProd("Onions", 10,2);
-		inventory.addProd("Carrots", 10,2);
-		inventory.addProd("Eggs", 4,2);
-		inventory.addProd("Eggs", 1,2);
-		inventory.addProd("Eggs", 10,2);
+		inventory.addProd(new Product("Wheat",12,5,1));
+		inventory.addProd(new Product("Wheat",12,6,1));
+		inventory.addProd(new Product("Wheat",12,1,1));
+		inventory.addProd(new Product("Wheat",-2,5,1));
+		inventory.addProd(new Product("Wheat",1,6,1));
 	
 		
 	}
@@ -52,5 +52,9 @@ public class Game {
 	
 	public Employee[] getEmployees(){
 		return employees;
+	}
+	
+	public Shop getShop(){
+		return shop;
 	}
 }
