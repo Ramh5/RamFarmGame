@@ -8,11 +8,35 @@ import java.util.Map.Entry;
 
 public class Inventory {
 	private HashMap<String, ArrayList<Product>> data;
+	private HashMap<String, Product> averageData;
 	
 	public Inventory(){
 		data=new HashMap<>();
+		averageData=new HashMap<>();
 	}
 	
+	/**TODO find a way to calculate and display total Price
+	 * calculates the total quantity and average fresh and quality of each product in the inventory 
+	 * and stores it in HashMap<String, Product> averageData
+	 */
+	public void calculateAverageData(){
+		averageData.clear();
+		for(Entry<String, ArrayList<Product>> entry : data.entrySet()){
+			String prodName = entry.getKey();
+			
+			double totQty=0;
+			double avFresh=0;
+			double avQual=0;
+			
+			for(Product prod : entry.getValue()){
+				totQty += prod.getQty();
+				avFresh += prod.getQty()*prod.getFresh();
+				avQual += prod.getQty()*prod.getQual();
+			}
+			Product averageProd = new Product(prodName, totQty, (int)(avFresh/totQty), (int)(avQual/totQty));
+			averageData.put(prodName, averageProd);
+		}
+	}
 	
 	/**
 	 * Add a product to the inventory, can add a product with negative quantity to remove products
@@ -68,6 +92,11 @@ public class Inventory {
 		return data.get("Wheat").get(0);
 	}
 	
+	
+	public Product getAverageData(String name) {
+		return averageData.get(name);
+	}
+
 	public HashMap<String, ArrayList<Product>> getData(){
 		return data;
 	}
