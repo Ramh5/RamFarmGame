@@ -7,10 +7,12 @@ import java.util.TreeMap;
 import java.util.Map.Entry;
 
 public class Inventory {
+	private double money;
 	private HashMap<String, ArrayList<Product>> data;
 	private HashMap<String, Product> averageData;
 	
 	public Inventory(){
+		money = 0;
 		data=new HashMap<>();
 		averageData=new HashMap<>();
 	}
@@ -87,9 +89,8 @@ public class Inventory {
 	}
 
 
-	public Product getProd() {
-		
-		return data.get("Wheat").get(0);
+	public double getMoney( ){
+		return money;
 	}
 	
 	
@@ -100,5 +101,6 @@ public class Inventory {
 	public HashMap<String, ArrayList<Product>> getData(){
 		return data;
 	}
+	
 }
 

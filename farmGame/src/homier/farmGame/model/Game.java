@@ -29,7 +29,7 @@ public class Game {
 		}
 		tileList.set(40, new BuildingTile("HOUSE_TILE"));
 		employees = new Employee[]{new Employee("Ram",0),new Employee("EMPTY",200)};
-		inventory.addProd(new Product("Wheat",12,5,1));
+		inventory.addProd(new Product("Wheat",12.0220,5,1));
 		inventory.addProd(new Product("Wheat",12,6,1));
 		inventory.addProd(new Product("Wheat",12,1,1));
 		inventory.addProd(new Product("Wheat",-2,5,1));

@@ -7,15 +7,16 @@ import homier.farmGame.model.Employee;
 import homier.farmGame.model.Game;
 import homier.farmGame.model.Inventory;
 import homier.farmGame.model.Product;
+import homier.farmGame.model.Shop;
 import homier.farmGame.utils.FarmTimeUnits;
 import homier.farmGame.utils.GameClock;
 import homier.farmGame.view.Renderer;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ReadOnlyDoubleWrapper;
-import javafx.beans.value.ChangeListener;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -23,15 +24,21 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableRow;
 import javafx.scene.control.TreeTableView;
+import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.CheckBoxTreeTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -42,6 +49,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.util.Callback;
+import javafx.util.converter.NumberStringConverter;
 
 public class Engine {
 
@@ -60,14 +69,13 @@ public class Engine {
 	@FXML private ProgressIndicator taskProgress1;
 	@FXML private AnchorPane shopPane;
 	@FXML private TreeTableView<Product> tableInv, tableShop;
-	@FXML private TreeTableColumn<Product, String> colNameInv, colNameShop;
-	@FXML private TreeTableColumn<Product, Number> colQtyInv, colQtyShop, colFreshInv, colFreshShop,
-												   colQualInv, colQualShop, colPriceInv, colPriceShop;
+	@FXML private TreeTableColumn<Product, String> colNameInv, colNameShop,colQtyInv, colQtyShop, colPriceInv, colPriceShop;
+	@FXML private TreeTableColumn<Product, Number> colFreshInv, colFreshShop,colQualInv, colQualShop;
 	@FXML private TreeTableColumn<Product, Boolean> colActInv, colActShop;
 	@FXML private TableView<Product>  tableSell, tableBuy;
-	@FXML private TableColumn<Product, String> colNameSell, colNameBuy;
-	@FXML private TableColumn<Product, Number>  colQtySell, colQtyBuy, colFreshSell, colFreshBuy,  
-												colQualSell, colQualBuy, colPriceSell, colPriceBuy;				
+	@FXML private TableColumn<Product, String> colNameSell, colNameBuy, colQtySell, colQtyBuy, colPriceSell, colPriceBuy;
+	@FXML private TableColumn<Product, Number>  colFreshSell, colFreshBuy,  
+												colQualSell, colQualBuy;				
 	@FXML private TableColumn<Product, Boolean> colActSell, colActBuy;
 	@FXML private Button closeShopButton;
 
@@ -248,105 +256,167 @@ public class Engine {
 	
 	private void setupShop(){
 		
-	
 		
-		
-		
-		//inventory table
+		//------------inventory table-------------
 		TreeItem<Product> rootInv = new TreeItem<>(new Product("empty", 0, 0, 0));
 		tableInv.setPlaceholder(new Text("Empty Inventory"));
 		tableInv.setRoot(rootInv);
 		tableInv.setShowRoot(false);
 		tableInv.setEditable(true);
 		colActInv.setEditable(true);
-		//ObservableList<TreeItem<Product>> invList = FXCollections.observableList(new ArrayList<TreeItem<Product>>());
+		
+		
+		
+		//populate the inventory treetableview with the inventory data
 		Inventory inventory = game.getInventory();
+		Shop shop = game.getShop();
+		
 		inventory.calculateAverageData();
 		for(Entry<String, ArrayList<Product>> entry : inventory.getData().entrySet()){
-			
-			TreeItem<Product> averageProdDataItem = new TreeItem<Product>(inventory.getAverageData(entry.getKey())); //TODO prevent this product from being selectable
+			//TODO prevent this product from being selectable (already removed the listener so the selection does noting but still visual bug)
+			Product product = inventory.getAverageData(entry.getKey());
+			TreeItem<Product> averageProdDataItem = new TreeItem<Product>(product); 
+			product.updatePrice(shop);
+			averageProdDataItem.setExpanded(true);
 			rootInv.getChildren().add(averageProdDataItem);
 			for(Product prod : entry.getValue()){
+				prod.updatePrice(shop);
 				TreeItem<Product> treeItem = new TreeItem<Product>(prod);
 				averageProdDataItem.getChildren().add(treeItem);
 			}
-			
 		}
 		
+		//link the inventory table with the selling table
 		listenForSelection(rootInv, game.getShop().getDataSelling());
 		
+		//Setup the cell values
 		colNameInv.setCellValueFactory(new TreeItemPropertyValueFactory<>("name"));
-		colQtyInv.setCellValueFactory(new TreeItemPropertyValueFactory<>("qty"));
+		colQtyInv.setCellValueFactory(cellData ->Bindings.format("%.2f", cellData.getValue().getValue().qtyProperty()));
 		colFreshInv.setCellValueFactory(new TreeItemPropertyValueFactory<>("fresh"));
 		colQualInv.setCellValueFactory(new TreeItemPropertyValueFactory<>("qual"));
-		colPriceInv.setCellValueFactory( cellData-> {
-				ObservableValue<Number> price ;
-				price =new ReadOnlyDoubleWrapper(game.getShop().price(cellData.getValue().getValue())); 
-				return price;
-		});
+		colPriceInv.setCellValueFactory(cellData ->Bindings.format("%.2f", cellData.getValue().getValue().priceProperty()));
 		colActInv.setCellFactory(CheckBoxTreeTableCell.forTreeTableColumn(colActInv));
 		colActInv.setCellValueFactory(new TreeItemPropertyValueFactory<>("selected"));
 			
   
         
-		//sell table
+		//---------------sell table------------------
 		tableSell.setItems(game.getShop().getDataSelling());
-		//tableSell.setRoot(rootSell);
 		tableSell.setEditable(true);
 		colActSell.setEditable(true);
 		
-		//rootSell.getChildren().add(new TreeItem<Product>(new Product("Wheat", 1, 1, 1)));
+		
 		colNameSell.setCellValueFactory(new PropertyValueFactory<>("name"));
-		colQtySell.setCellValueFactory(new PropertyValueFactory<>("qty"));
+		colQtySell.setCellValueFactory(cellData ->Bindings.format("%.2f", cellData.getValue().qtyProperty()));
+		colQtySell.setCellFactory(TextFieldTableCell.forTableColumn());
 		colFreshSell.setCellValueFactory(new PropertyValueFactory<>("fresh"));
 		colQualSell.setCellValueFactory(new PropertyValueFactory<>("qual"));
-		colPriceSell.setCellValueFactory( cellData-> {
-				ObservableValue<Number> price ;
-				price =new ReadOnlyDoubleWrapper(game.getShop().price(cellData.getValue())); 
-				return price;
-		});
+		colPriceSell.setCellValueFactory(cellData ->Bindings.format("%.2f", cellData.getValue().priceProperty()));
 		colActSell.setCellFactory(CheckBoxTableCell.forTableColumn(colActSell));
 		colActSell.setCellValueFactory(new PropertyValueFactory<>("selected"));
+		
+		//-------------shop table---------------
+		TreeItem<Product> rootShop = new TreeItem<>(new Product("empty", 0, 0, 0));
+		tableShop.setPlaceholder(new Text("Empty Shop"));
+		tableShop.setRoot(rootShop);
+		tableShop.setShowRoot(false);
+		tableShop.setEditable(true);
+		final PseudoClass topLevelTTVPseudoClass = PseudoClass.getPseudoClass("top-level-treetableview");
+		tableShop.setRowFactory(ttv-> {
+			TreeTableRow<Product> row = new TreeTableRow<Product>();
+			row.treeItemProperty().addListener((obs,oldVal,newVal)->{
+				boolean isTopLevel =  ttv.getRoot().getChildren().contains(newVal);
+				//row.setEditable(false);
 				
+				//row.setDisable(true);
+				row.pseudoClassStateChanged(topLevelTTVPseudoClass, isTopLevel);
+				
+			});
+			return row;
+		});
+		colActShop.setEditable(true);
+
+
+		//populate the shop treetableview with the shop data
 		
+		shop.calculateAverageData();
+		for(Entry<String, ArrayList<Product>> entry : shop.getData().entrySet()){
+			//TODO prevent this product from being selectable (already removed the listener so the selection does noting but still visual bug)
+			Product product = shop.getAverageData(entry.getKey());
+			TreeItem<Product> averageProdDataItem = new TreeItem<Product>(product); 
+			product.updatePrice(shop);
+			averageProdDataItem.setExpanded(true);
+			rootShop.getChildren().add(averageProdDataItem);
+			for(Product prod : entry.getValue()){
+				prod.updatePrice(shop);
+				TreeItem<Product> treeItem = new TreeItem<Product>(prod);
+				averageProdDataItem.getChildren().add(treeItem);
+			}
+
+		}
+		//link the shop table with the buying table
+		listenForSelection(rootShop, game.getShop().getDataBuying());
+
+		//Setup the cell values
+		colNameShop.setCellValueFactory(new TreeItemPropertyValueFactory<>("name"));
+		colQtyShop.setCellValueFactory(cellData ->Bindings.format("%.2f", cellData.getValue().getValue().qtyProperty()));
+		colFreshShop.setCellValueFactory(new TreeItemPropertyValueFactory<>("fresh"));
+		colQualShop.setCellValueFactory(new TreeItemPropertyValueFactory<>("qual"));
+		colPriceShop.setCellValueFactory(cellData ->Bindings.format("%.2f", cellData.getValue().getValue().priceProperty()));
+		colActShop.setCellFactory(CheckBoxTreeTableCell.forTreeTableColumn(colActShop));
+		colActShop.setCellValueFactory(new TreeItemPropertyValueFactory<>("selected"));
+
+
+
+		//-------------buy table-----------------
+		tableBuy.setItems(game.getShop().getDataBuying());
+		tableBuy.setEditable(true);
+		colActBuy.setEditable(true);
+
+
+		colNameBuy.setCellValueFactory(new PropertyValueFactory<>("name"));
+		colQtyBuy.setCellValueFactory(cellData ->Bindings.format("%.2f", cellData.getValue().qtyProperty()));
+		colQtyBuy.setCellFactory(TextFieldTableCell.forTableColumn());
+		colFreshBuy.setCellValueFactory(new PropertyValueFactory<>("fresh"));
+		colQualBuy.setCellValueFactory(new PropertyValueFactory<>("qual"));
+		colPriceBuy.setCellValueFactory(cellData ->Bindings.format("%.2f", cellData.getValue().priceProperty()));
+		colActBuy.setCellFactory(CheckBoxTableCell.forTableColumn(colActBuy));
+		colActBuy.setCellValueFactory(new PropertyValueFactory<>("selected"));
+		colQtyBuy.setEditable(true);
+
+		//tableBuy.getColumns().get(3).getCellData(12)
 	}
 	
 	
 	
-	/*
-	private void updateTransactionTable(){
-		rootSell.getChildren().setAll(sellList);
-		//tableSell.setRoot(rootSell);
-		
-	}
-	*/
-	
-	private void addToTransactionTable(ObservableList<Product> list, Product prod){
-		prod.setSelected(true);
-		prod.selectedProperty().addListener((obs, oldVal, newVal) -> {
+	/**
+	 * Adds the appropriate changelisteners to products in the inventory treetableview (only for the leafs)
+	 * and populates the transaction table with copies of the selected products
+	 * @param rootTreeItem : the inventory root(top level) TreeItem
+	 * @param list : the transaction table list
+	 */
+	private void listenForSelection(TreeItem<Product> rootTreeItem, ObservableList<Product> list) {
+		BooleanProperty selected = rootTreeItem.getValue().selectedProperty();
+		Product copy = new Product(rootTreeItem.getValue());
+		copy.setSelected(true);
+		copy.selectedProperty().addListener((obs, oldVal, newVal)->{
 			if(!newVal){
-				list.remove(prod);
+				selected.set(false);
 			}
 		});
-		list.add(prod);
-	}
-	
-	private void transactionTableListener(Product prod,ChangeListener<Boolean> listener){
-		
-	}
-	
-	private void listenForSelection(TreeItem<Product> treeItem, ObservableList<Product> list) {
-		BooleanProperty selected = treeItem.getValue().selectedProperty();
-		selected.addListener((obs, oldVal, newVal) -> {
-		if(newVal){
-			list.add(treeItem.getValue());//TODO make a clone method in Produdct to allow editable??
-		}else{
-			list.remove(treeItem.getValue());
+		if(rootTreeItem.isLeaf()){
+			selected.addListener((obs, oldVal, newVal) -> {
+				if(newVal){
+					list.add(copy);
+				}else{
+					list.remove(copy);
+					copy.setSelected(true);
+				}
+			});
 		}
-		});
-		treeItem.getChildren().forEach(item -> listenForSelection(item,list));
+		rootTreeItem.getChildren().forEach(item -> listenForSelection(item,list));
 	}
-	
+
 }
 
    
