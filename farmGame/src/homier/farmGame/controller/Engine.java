@@ -14,6 +14,7 @@ import homier.farmGame.view.Renderer;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.css.PseudoClass;
@@ -84,6 +85,8 @@ public class Engine {
 	private GameClock gameClock;
 	private boolean manPaused;
 	
+	ChangeListener<TreeItem<Product>> rowListener;
+	ChangeListener<TreeItem<Product>> prevRowListener = (a,b,c)->{};
 	
 	
 	//TODO add button to skip days, months...
@@ -321,21 +324,33 @@ public class Engine {
 		tableShop.setRoot(rootShop);
 		tableShop.setShowRoot(false);
 		tableShop.setEditable(true);
+		
 		final PseudoClass topLevelTTVPseudoClass = PseudoClass.getPseudoClass("top-level-treetableview");
+		
 		tableShop.setRowFactory(ttv-> {
-			TreeTableRow<Product> row = new TreeTableRow<Product>();
-			row.treeItemProperty().addListener((obs,oldVal,newVal)->{
-				boolean isTopLevel =  ttv.getRoot().getChildren().contains(newVal);
-				//row.setEditable(false);
-				
-				//row.setDisable(true);
-				row.pseudoClassStateChanged(topLevelTTVPseudoClass, isTopLevel);
-				
-			});
-			return row;
+			return new TreeTableRow<Product>(){
+				@Override
+				public void updateItem(Product prod, boolean empty) {
+					super.updateItem(prod, empty);
+					boolean isTopLevel = ttv.getRoot().getChildren().contains(treeItemProperty().get());
+					if (!isEmpty()) {
+						this.pseudoClassStateChanged(topLevelTTVPseudoClass, isTopLevel);
+						//this.setEditable(false);
+						if(isTopLevel){
+							setEditable(false);
+						}
+						
+							//setDisable(true);
+						//topLevelrowList.add(this);
+						
+					}
+				}
+			};
 		});
-		colActShop.setEditable(true);
-
+		
+		//colActShop.setEditable(true);
+		
+		
 
 		//populate the shop treetableview with the shop data
 		

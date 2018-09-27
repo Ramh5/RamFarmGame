@@ -34,9 +34,11 @@
 }
 
 .tree-table-row-cell:top-level-treetableview{
-	-fx-font-size:20;
-	-fx-background: green ;
+	-fx-font-size:14;
+	-fx-background: lightgrey ;
 }
+
+
 /* 
 .tree-table-row-cell {
     -fx-background-color: -fx-table-cell-border-color, -fx-control-inner-background;
