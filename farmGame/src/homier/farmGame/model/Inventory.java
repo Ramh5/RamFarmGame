@@ -12,7 +12,7 @@ public class Inventory {
 	private HashMap<String, Product> averageData;
 	
 	public Inventory(){
-		money = 0;
+		money = 1000;
 		data=new HashMap<>();
 		averageData=new HashMap<>();
 	}
@@ -75,7 +75,7 @@ public class Inventory {
 	}
 	
 	public String toString(){
-		String str="";
+		String str="Cash : " + money + "$\n\n";
 		
 		for(Entry<String, ArrayList<Product>> entry : data.entrySet()){
 			str += entry.getKey();
@@ -89,8 +89,12 @@ public class Inventory {
 	}
 
 
-	public double getMoney( ){
+	public double getMoney(){
 		return money;
+	}
+	
+	public void addMoney(double transactionValue){
+		money+=transactionValue;
 	}
 	
 	

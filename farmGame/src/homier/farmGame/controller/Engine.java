@@ -56,17 +56,12 @@ import javafx.util.converter.NumberStringConverter;
 public class Engine {
 
 	@FXML private GridPane gameGridPane;
-	@FXML private Label clockLabel;
-	@FXML private ToggleButton pauseButton;
-	@FXML private Label pauseLabel;
+	@FXML private ToggleButton pauseButton, openShopButton;
 	@FXML private VBox mouseOverPanel;
 	@FXML private TextArea leftTextArea;
 	@FXML private ChoiceBox<Integer> gameSpeedChoice;
-	@FXML private Label wxToday;
-	@FXML private Label wxTomorrow;
-	@FXML private Label energyLabel;
+	@FXML private Label clockLabel, pauseLabel ,wxToday, wxTomorrow, energyLabel, taskName1, buyTotalLabel, sellTotalLabel;
 	@FXML private ChoiceBox<Employee> employeeChoice;
-	@FXML private Label taskName1;
 	@FXML private ProgressIndicator taskProgress1;
 	@FXML private AnchorPane shopPane;
 	@FXML private TreeTableView<Product> tableInv, tableShop;
@@ -78,7 +73,8 @@ public class Engine {
 	@FXML private TableColumn<Product, Number>  colFreshSell, colFreshBuy,  
 												colQualSell, colQualBuy;				
 	@FXML private TableColumn<Product, Boolean> colActSell, colActBuy;
-	@FXML private Button closeShopButton;
+	@FXML private Button closeShopButton, cancelTransactionButton, buyButton, sellButton;
+	
 
 	private Game game = new Game();
 	private Renderer renderer;
@@ -104,9 +100,9 @@ public class Engine {
 			gameClock.setIsNewDay(false);
 			//update the inventory, especially for spoiling every day
 			game.getInventory().update();
-			leftTextArea.setText(game.getInventory().toString());
+			
 		}
-		
+		leftTextArea.setText(game.getInventory().toString());
 		//update energy and task name when task is in progress
 		
 		taskProgress1.setProgress(getActiveEmployee().getTask().getTaskProgress(gameClock.getTotalSeconds()));
@@ -192,12 +188,49 @@ public class Engine {
 	@FXML
 	private void closeShopButtonAction(ActionEvent event) {
 		shopPane.toBack();
+		openShopButton.setSelected(false);
 	}
 
 	@FXML
 	private void openShopButtonAction(ActionEvent event) {
-		shopPane.toFront();
+		if(openShopButton.isSelected()){
+			shopPane.toFront();
+		}else{
+			shopPane.toBack();
+		}
+		 
 	}
+	
+	@FXML
+	private void buyButtonAction(ActionEvent event){
+		game.getInventory().addMoney(-Double.valueOf(buyTotalLabel.getText()));
+		for(Product prod:tableBuy.getItems() ){
+			game.getInventory().addProd(prod);
+		}
+		tableBuy.getItems().clear();
+		unselectTreeTable(tableShop.getRoot());	
+	}
+	
+	@FXML
+	private void sellButtonAction(ActionEvent event){
+		game.getInventory().addMoney(Double.valueOf(sellTotalLabel.getText()));
+		for(Product prod:tableBuy.getItems() ){
+			prod.setQty(-prod.getQty());
+			game.getInventory().addProd(prod);
+		}
+		tableSell.getItems().clear();
+		unselectTreeTable(tableInv.getRoot());
+		
+	}
+	
+	@FXML
+	private void cancelTransactionButtonAction(ActionEvent event){
+		tableBuy.getItems().clear();
+		tableSell.getItems().clear();
+		unselectTreeTable(tableInv.getRoot());
+		unselectTreeTable(tableShop.getRoot());
+	}
+	
 	
 	public boolean getPaused() {
 		return pauseButton.isSelected();
@@ -258,7 +291,7 @@ public class Engine {
 	
 	
 	private void setupShop(){
-		
+		final PseudoClass topLevelTTVPseudoClass = PseudoClass.getPseudoClass("top-level-treetableview");
 		
 		//------------inventory table-------------
 		TreeItem<Product> rootInv = new TreeItem<>(new Product("empty", 0, 0, 0));
@@ -298,7 +331,17 @@ public class Engine {
 		colFreshInv.setCellValueFactory(new TreeItemPropertyValueFactory<>("fresh"));
 		colQualInv.setCellValueFactory(new TreeItemPropertyValueFactory<>("qual"));
 		colPriceInv.setCellValueFactory(cellData ->Bindings.format("%.2f", cellData.getValue().getValue().priceProperty()));
-		colActInv.setCellFactory(CheckBoxTreeTableCell.forTreeTableColumn(colActInv));
+		colActInv.setCellFactory(column ->{ //TODO show the state of the checkbox depending on the children selected
+			return new CheckBoxTreeTableCell<Product, Boolean>(){
+				@Override
+				public void updateItem(Boolean item, boolean empty) {
+					super.updateItem(item, empty);
+					boolean isTopLevel = getTreeTableView().getRoot().getChildren().contains(getTreeTableRow().getTreeItem());
+					getTreeTableRow().pseudoClassStateChanged(topLevelTTVPseudoClass, isTopLevel);
+					setEditable(!isTopLevel);
+				}
+			};
+		});
 		colActInv.setCellValueFactory(new TreeItemPropertyValueFactory<>("selected"));
 			
   
@@ -325,38 +368,12 @@ public class Engine {
 		tableShop.setShowRoot(false);
 		tableShop.setEditable(true);
 		
-		final PseudoClass topLevelTTVPseudoClass = PseudoClass.getPseudoClass("top-level-treetableview");
-		
-		tableShop.setRowFactory(ttv-> {
-			return new TreeTableRow<Product>(){
-				@Override
-				public void updateItem(Product prod, boolean empty) {
-					super.updateItem(prod, empty);
-					boolean isTopLevel = ttv.getRoot().getChildren().contains(treeItemProperty().get());
-					if (!isEmpty()) {
-						this.pseudoClassStateChanged(topLevelTTVPseudoClass, isTopLevel);
-						//this.setEditable(false);
-						if(isTopLevel){
-							setEditable(false);
-						}
-						
-							//setDisable(true);
-						//topLevelrowList.add(this);
-						
-					}
-				}
-			};
-		});
-		
-		//colActShop.setEditable(true);
-		
-		
+	
 
 		//populate the shop treetableview with the shop data
 		
 		shop.calculateAverageData();
 		for(Entry<String, ArrayList<Product>> entry : shop.getData().entrySet()){
-			//TODO prevent this product from being selectable (already removed the listener so the selection does noting but still visual bug)
 			Product product = shop.getAverageData(entry.getKey());
 			TreeItem<Product> averageProdDataItem = new TreeItem<Product>(product); 
 			product.updatePrice(shop);
@@ -369,6 +386,7 @@ public class Engine {
 			}
 
 		}
+		
 		//link the shop table with the buying table
 		listenForSelection(rootShop, game.getShop().getDataBuying());
 
@@ -378,7 +396,21 @@ public class Engine {
 		colFreshShop.setCellValueFactory(new TreeItemPropertyValueFactory<>("fresh"));
 		colQualShop.setCellValueFactory(new TreeItemPropertyValueFactory<>("qual"));
 		colPriceShop.setCellValueFactory(cellData ->Bindings.format("%.2f", cellData.getValue().getValue().priceProperty()));
-		colActShop.setCellFactory(CheckBoxTreeTableCell.forTreeTableColumn(colActShop));
+		colActShop.setCellFactory(column ->{
+			return new CheckBoxTreeTableCell<Product, Boolean>(){
+				@Override
+				public void updateItem(Boolean item, boolean empty) {
+					super.updateItem(item, empty);
+					boolean isTopLevel = getTreeTableView().getRoot().getChildren().contains(getTreeTableRow().getTreeItem());
+					setEditable(!isTopLevel);
+					getTreeTableRow().pseudoClassStateChanged(topLevelTTVPseudoClass, isTopLevel);
+					
+				}
+			};
+		});
+		
+		
+		//setCellFactory(CheckBoxTreeTableCell.forTreeTableColumn(colActShop));
 		colActShop.setCellValueFactory(new TreeItemPropertyValueFactory<>("selected"));
 
 
@@ -411,11 +443,14 @@ public class Engine {
 	 * @param list : the transaction table list
 	 */
 	private void listenForSelection(TreeItem<Product> rootTreeItem, ObservableList<Product> list) {
+		//TODO figure out how to manage new products added in the inventory, maybe adding a listener property to the Product class
 		BooleanProperty selected = rootTreeItem.getValue().selectedProperty();
 		Product copy = new Product(rootTreeItem.getValue());
 		copy.setSelected(true);
 		copy.selectedProperty().addListener((obs, oldVal, newVal)->{
-			if(!newVal){
+			if(newVal){
+				
+			}else{
 				selected.set(false);
 			}
 		});
@@ -423,15 +458,28 @@ public class Engine {
 			selected.addListener((obs, oldVal, newVal) -> {
 				if(newVal){
 					list.add(copy);
+					
 				}else{
 					list.remove(copy);
 					copy.setSelected(true);
 				}
+				
+				sellTotalLabel.setText(String.format("%.2f", game.getShop().totalPrice(game.getShop().getDataSelling())));
+				buyTotalLabel.setText(String.format("%.2f", game.getShop().totalPrice(game.getShop().getDataBuying())));
 			});
 		}
 		rootTreeItem.getChildren().forEach(item -> listenForSelection(item,list));
 	}
 
+	/**
+	 * 
+	 * @param rootTreeItem : the root node of the treeItem we want to unselect all products
+	 * for example when we clear the transaction tables
+	 */
+	private void unselectTreeTable(TreeItem<Product> rootTreeItem){
+		rootTreeItem.getValue().setSelected(false);
+		rootTreeItem.getChildren().forEach(item->unselectTreeTable(item));
+	}
 }
 
    

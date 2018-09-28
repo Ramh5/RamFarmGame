@@ -1,6 +1,7 @@
 package homier.farmGame.model;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.TreeMap;
 
 import homier.farmGame.utils.Tools;
@@ -15,6 +16,7 @@ public class Shop extends Inventory {
 	
 	private final ObservableList<Product> dataSelling = FXCollections.observableArrayList();
 	private final ObservableList<Product> dataBuying = FXCollections.observableArrayList();
+
 	
 	public Shop(){
 		super();
@@ -48,4 +50,16 @@ public class Shop extends Inventory {
 		return dataBuying;
 	}
 	
+	/**
+	 * 
+	 * @param list of product
+	 * @return the total price of a list of product
+	 */
+	public double totalPrice(List<Product> list){
+		double totalPrice = 0;
+		for(Product prod:list){
+			totalPrice += prod.getPrice()*prod.getQty();
+		}
+		return totalPrice;
+	}
 }
