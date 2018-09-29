@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
+import com.sun.javafx.binding.SelectBinding.AsString;
+
 import homier.farmGame.model.Employee;
 import homier.farmGame.model.Game;
 import homier.farmGame.model.Inventory;
@@ -23,6 +25,7 @@ import javafx.collections.ObservableList;
 import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -31,10 +34,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableCell;
@@ -72,7 +77,8 @@ public class Engine {
 	@FXML private ProgressIndicator taskProgress1;
 	@FXML private AnchorPane shopPane;
 	@FXML private TreeTableView<Product> tableInv, tableShop;
-	@FXML private TreeTableColumn<Product, String> colNameInv, colNameShop,colQtyInv, colQtyShop, colPriceInv, colPriceShop;
+	@FXML private TreeTableColumn<Product, String> colNameInv, colNameShop, colQtyInv, colQtyShop, 
+												   colPriceInv, colPriceShop, colSpoilQtyInv, colSpoilQtyShop;
 	@FXML private TreeTableColumn<Product, Number> colFreshInv, colFreshShop,colQualInv, colQualShop;
 	@FXML private TreeTableColumn<Product, Boolean> colActInv, colActShop;
 	@FXML private TableView<Product>  tableSell, tableBuy;
@@ -107,6 +113,8 @@ public class Engine {
 			gameClock.setIsNewDay(false);
 			//update the inventory, especially for spoiling every day
 			game.getInventory().update();
+			game.getShop().update();
+			updateShopPanel();
 			
 		}
 		leftTextArea.setText(game.getInventory().toString());
@@ -164,6 +172,7 @@ public class Engine {
 		taskName1.setText("TASK");
 		
 		//shop
+		shopPane.toBack();
 		setupShop();
 		preventColumnReordering(tableInv);
 		preventColumnReordering(tableShop);
@@ -195,23 +204,36 @@ public class Engine {
 			pauseButton.setGraphic(new ImageView(new Image("Button-Pause.png", 32, 32, true, true)));
 		}
 	}
-	
+
 	@FXML
 	private void closeShopButtonAction(ActionEvent event) {
+		if (!manPaused) {
+			pauseButton.setSelected(false);
+		}
 		shopPane.toBack();
 		openShopButton.setSelected(false);
+		pauseButton.setDisable(false);
+		updatePauseButton();
 	}
 
 	@FXML
 	private void openShopButtonAction(ActionEvent event) {
 		if(openShopButton.isSelected()){
+			updateShopPanel();
 			shopPane.toFront();
+			pauseButton.setSelected(true);
+			pauseButton.setDisable(true);
 		}else{
+			if (!manPaused) {
+
+				pauseButton.setSelected(false);
+			}
 			shopPane.toBack();
+			pauseButton.setDisable(false);
 		}
-		 
+		updatePauseButton();
 	}
-	
+
 	@FXML
 	private void buyButtonAction(ActionEvent event){
 		game.getInventory().addMoney(-Double.valueOf(buyTotalLabel.getText()));
@@ -245,6 +267,8 @@ public class Engine {
 	private void cancelTransactionButtonAction(ActionEvent event){
 		tableBuy.getItems().clear();
 		tableSell.getItems().clear();
+		sellTotalLabel.setText(String.format("%.2f", 0.0));
+		buyTotalLabel.setText(String.format("%.2f", 0.0));
 		unselectTreeTable(tableInv.getRoot());
 		unselectTreeTable(tableShop.getRoot());
 	}
@@ -300,7 +324,7 @@ public class Engine {
 	private void setupShop(){
 		final PseudoClass topLevelTTVPseudoClass = PseudoClass.getPseudoClass("top-level-treetableview");
 		
-		//------------inventory table-------------
+		//------------inventory table------------- //TODO setup spoil colum (negative and red)
 		TreeItem<Product> rootInv = new TreeItem<>(new Product("empty", 0, 0, 0));
 		tableInv.setPlaceholder(new Text("Empty Inventory"));
 		tableInv.setRoot(rootInv);
@@ -350,12 +374,7 @@ public class Engine {
 		colNameSell.setCellValueFactory(new PropertyValueFactory<>("name"));
 		colQtySell.setCellValueFactory(cellData ->Bindings.format("%.2f", cellData.getValue().qtyProperty()));
 		colQtySell.setCellFactory(TextFieldTableCell.forTableColumn());
-		colQtySell.setOnEditCommit(event->{//TODO Prevent committing < 0 or > available
-			int row = event.getTablePosition().getRow();
-			Product prod = event.getTableView().getItems().get(row);
-			prod.setQty(Double.valueOf(event.getNewValue()));
-			sellTotalLabel.setText(String.format("%.2f", game.getShop().totalPrice(game.getShop().getDataSelling())));
-		});
+		colQtySell.setOnEditCommit(transactionQtyEditCommit(game.getInventory()));
 		colFreshSell.setCellValueFactory(new PropertyValueFactory<>("fresh"));
 		colQualSell.setCellValueFactory(new PropertyValueFactory<>("qual"));
 		colPriceSell.setCellValueFactory(cellData ->Bindings.format("%.2f", cellData.getValue().priceProperty()));
@@ -409,12 +428,7 @@ public class Engine {
 		colNameBuy.setCellValueFactory(new PropertyValueFactory<>("name"));
 		colQtyBuy.setCellValueFactory(cellData ->Bindings.format("%.2f", cellData.getValue().qtyProperty()));
 		colQtyBuy.setCellFactory(TextFieldTableCell.forTableColumn());
-		colQtyBuy.setOnEditCommit(event->{
-			int row = event.getTablePosition().getRow();
-			Product prod = event.getTableView().getItems().get(row);
-			prod.setQty(Double.valueOf(event.getNewValue()));
-			buyTotalLabel.setText(String.format("%.2f", game.getShop().totalPrice(game.getShop().getDataBuying())));
-		});
+		colQtyBuy.setOnEditCommit(transactionQtyEditCommit(game.getShop()));
 		colFreshBuy.setCellValueFactory(new PropertyValueFactory<>("fresh"));
 		colQualBuy.setCellValueFactory(new PropertyValueFactory<>("qual"));
 		colPriceBuy.setCellValueFactory(cellData ->Bindings.format("%.2f", cellData.getValue().priceProperty()));
@@ -433,7 +447,7 @@ public class Engine {
 		listenForSelection(tableInv.getRoot(), game.getShop().getDataSelling());
 		listenForSelection(tableShop.getRoot(), game.getShop().getDataBuying());
 	}
-	 /**TODO remove items when zero in table and in inventories, and pause on shop open
+	 /**
 	  * A method to update a TreeTableView every time backing data changes in the model,
 	  * without resetting the table by only adding and removing data when required.
 	  * @param root : the root TreeItem of the table to update
@@ -538,6 +552,26 @@ public class Engine {
 	private void unselectTreeTable(TreeItem<Product> rootTreeItem){
 		rootTreeItem.getValue().setSelected(false);
 		rootTreeItem.getChildren().forEach(item->unselectTreeTable(item));
+	}
+	
+	private EventHandler<TableColumn.CellEditEvent<Product,String>> transactionQtyEditCommit(Inventory inventory){
+		return event->{
+			int row = event.getTablePosition().getRow();
+			Product prod = event.getTableView().getItems().get(row);
+			double newValue = Double.valueOf(event.getNewValue());
+			if(newValue<0){
+				prod.setQty(0);
+			}else if(newValue > prod.getQty()){
+				prod.setQty(inventory.getMaxQty(prod));
+			}else{	
+				prod.setQty(newValue);
+			}
+			event.getTableView().refresh();
+			//update the transaction labels
+			Shop shop = game.getShop();
+			buyTotalLabel.setText(String.format("%.2f", shop.totalPrice(shop.getDataBuying())));
+			sellTotalLabel.setText(String.format("%.2f", shop.totalPrice(shop.getDataSelling())));
+		};
 	}
 	
 	public static <T> void preventColumnReordering(TableView<T> tableView) {

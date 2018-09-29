@@ -10,11 +10,13 @@ public class Inventory {
 	private double money;
 	private HashMap<String, ArrayList<Product>> data;
 	private HashMap<String, Product> averageData;
+	private ProductData prodData;
 	
 	public Inventory(){
 		money = 1000;
 		data=new HashMap<>();
 		averageData=new HashMap<>();
+		prodData = new ProductData();
 	}
 	
 	/**
@@ -27,11 +29,13 @@ public class Inventory {
 			String prodName = entry.getKey();
 			Product averageProd = averageData.get(prodName);
 			double totQty=0;
+			double totSpoilQty=0;
 			double avFresh=0;
 			double avQual=0;
 
 			for(Product prod : entry.getValue()){
 				totQty += prod.getQty();
+				totSpoilQty += prod.getSpoilQty();
 				avFresh += prod.getQty()*prod.getFresh();
 				avQual += prod.getQty()*prod.getQual();
 			}
@@ -41,9 +45,11 @@ public class Inventory {
 			}
 			if(averageProd==null){
 				averageProd = new Product(prodName, totQty, (int)avFresh, (int)avQual);
+				averageProd.setSpoilQty(totSpoilQty);
 				averageData.put(prodName, averageProd);
 			}else{
 				averageProd.setQty(totQty);
+				averageProd.setSpoilQty(totSpoilQty);
 				averageProd.setFresh((int)avFresh);
 				averageProd.setQual((int)avQual);
 			}
@@ -76,11 +82,34 @@ public class Inventory {
 
 
 	public void update() {
-		// TODO Auto-generated method stub
+		
+		spoilAndAge();
+		calculateSpoil(0);
+		clean();
 		
 	}
-
-
+	
+	/**
+	 * calculate and updates the spoilQty property of every product in the list
+	 * @param day, 0 if we want to calculate today spoil, 1 to calculate tomorrow spoil
+	 */
+	private void calculateSpoil(int day){
+		for(Entry<String, ArrayList<Product>> entry : data.entrySet()){
+			for(Product prod : entry.getValue()){
+				prod.updateSpoil(prodData, day);
+			}
+		}
+	}
+	
+	private void spoilAndAge(){
+		for(Entry<String, ArrayList<Product>> entry : data.entrySet()){
+			for(Product prod : entry.getValue()){
+				prod.setQty(prod.getQty()-prod.getSpoilQty());
+				prod.setFresh(prod.getFresh()+1);
+			}
+		}
+	}
+	
 	public int[] removeList(TreeMap<String, Double> ingredientList, int[] freshReqList) {
 		// TODO Auto-generated method stub
 		return new int[]{0};
@@ -99,6 +128,25 @@ public class Inventory {
 		
 		return str;
 	}
+	
+	/**
+	 * 
+	 * @param prod : the product for which we want to know the maximum quantity avalable in the inventory
+	 * @return the maximum quantity available in the inventory (matching fresh and qual)
+	 */
+	public double getMaxQty(Product prod){
+		ArrayList<Product> list = data.get(prod.getName());
+		if(list==null){
+			return 0;
+		}
+		for(Product invProd : list ){
+			if(prod.getFresh()==invProd.getFresh()&&prod.getQual()==invProd.getQual()){
+				return invProd.getQty();
+			}
+		}
+		return 0;
+	}
+	
 /**
  * removes products when quantity < 0.1 as well as empty categories
  */

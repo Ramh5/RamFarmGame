@@ -21,7 +21,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="950" prefWidth="1210.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="homier.farmGame.controller.Engine">
+<BorderPane prefHeight="950" prefWidth="1210.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="homier.farmGame.controller.Engine">
 	<center>
 		<StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
 			<children>
@@ -31,13 +31,14 @@
 				<Canvas height="200.0" mouseTransparent="true" opacity="0.0" width="200.0" />
             <AnchorPane fx:id="shopPane" prefHeight="200.0" prefWidth="200.0" styleClass="masking-pane">
                <children>
-                  <TreeTableView fx:id="tableInv" layoutX="14.0" layoutY="80.0" prefHeight="550.0" prefWidth="410.0">
+                  <TreeTableView fx:id="tableInv" layoutX="14.0" layoutY="80.0" prefHeight="550.0" prefWidth="470.0">
                     <columns>
                       <TreeTableColumn fx:id="colNameInv" prefWidth="170.0" text="Product" />
                       <TreeTableColumn fx:id="colQtyInv" prefWidth="60.0" text="Qty (kg)" />
                         <TreeTableColumn fx:id="colFreshInv" prefWidth="40.0" text="Fresh" />
                         <TreeTableColumn fx:id="colQualInv" prefWidth="40.0" text="Qual" />
                         <TreeTableColumn fx:id="colPriceInv" prefWidth="50.0" text="\$$$" />
+                        <TreeTableColumn fx:id="colSpoilQtyInv" prefWidth="60.0" text="Spoil" />
                         <TreeTableColumn fx:id="colActInv" prefWidth="35.0" text="X" />
                     </columns>
                   </TreeTableView>
@@ -53,13 +54,14 @@
                   </Label>
                   <Label layoutX="239.0" layoutY="46.0" text="Filter:" />
                   <TextField layoutX="275.0" layoutY="42.0" />
-                  <TreeTableView fx:id="tableShop" layoutX="586.0" layoutY="80.0" prefHeight="550.0" prefWidth="410.0">
+                  <TreeTableView fx:id="tableShop" layoutX="526.0" layoutY="80.0" prefHeight="550.0" prefWidth="470.0">
                      <columns>
                         <TreeTableColumn fx:id="colNameShop" prefWidth="170.0" text="Product" />
                         <TreeTableColumn fx:id="colQtyShop" prefWidth="60.0" text="Qty (kg)" />
                         <TreeTableColumn fx:id="colFreshShop" prefWidth="40.0" text="Fresh" />
                         <TreeTableColumn fx:id="colQualShop" prefWidth="40.0" text="Qual" />
                         <TreeTableColumn fx:id="colPriceShop" prefWidth="50.0" text="\$$$" />
+                        <TreeTableColumn fx:id="colSpoilQtyShop" prefWidth="60.0" text="Spoil" />
                         <TreeTableColumn fx:id="colActShop" prefWidth="35.0" text="X" />
                      </columns>
                   </TreeTableView>

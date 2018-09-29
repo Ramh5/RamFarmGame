@@ -16,6 +16,7 @@ import javafx.beans.value.ChangeListener;
 public class Product{
 	private StringProperty name;
 	private DoubleProperty qty;
+	private DoubleProperty spoilQty;
 	private IntegerProperty fresh;
 	private IntegerProperty qual;
 	private DoubleProperty price;
@@ -26,6 +27,7 @@ public class Product{
 
 		this.name = new SimpleStringProperty(name);
 		this.qty = new SimpleDoubleProperty(qty);
+		this.spoilQty = new SimpleDoubleProperty(0);
 		this.fresh = new SimpleIntegerProperty(fresh);
 		this.qual = new SimpleIntegerProperty(qual);
 		this.price = new SimpleDoubleProperty(0);
@@ -41,6 +43,7 @@ public class Product{
 	public Product(Product prod){
 		this.name = new SimpleStringProperty(prod.getName());
 		this.qty = new SimpleDoubleProperty(prod.getQty());
+		this.spoilQty = new SimpleDoubleProperty(prod.getSpoilQty());
 		this.fresh = new SimpleIntegerProperty(prod.getFresh());
 		this.qual = new SimpleIntegerProperty(prod.getQual());
 		this.price = new SimpleDoubleProperty(prod.getPrice());
@@ -52,6 +55,7 @@ public class Product{
 	
 	public void setName(String name) {this.name.set(name);}
 	public void setQty(double qty) {this.qty.set(qty);}
+	public void setSpoilQty(double spoilQty) {this.spoilQty.set(spoilQty);}
 	public void setFresh(int fresh) {this.fresh.set(fresh);}
 	public void setQual(int qual) {this.qual.set(qual);}
 	public void setPrice(double price) {this.price.set(price);}
@@ -62,12 +66,14 @@ public class Product{
 		selListener = listener;
 		}
 	public String getName() {return name.get();}
-	public double getQty(){return qty.get();}	
+	public double getQty(){return qty.get();}
+	public double getSpoilQty(){return spoilQty.get();}
 	public int getFresh() {return fresh.get();}
 	public int getQual() {return qual.get();}
 	public double getPrice() {return price.get();}
 	public StringProperty nameProperty(){return name;}	
-	public DoubleProperty qtyProperty(){return qty;}	
+	public DoubleProperty qtyProperty(){return qty;}
+	public DoubleProperty spoilQtyProperty(){return spoilQty;}
 	public IntegerProperty freshProperty(){return fresh;}
 	public IntegerProperty qualProperty(){return qual;}	
 	public DoubleProperty priceProperty(){return price;}
@@ -83,5 +89,9 @@ public class Product{
 		newPrice *= Tools.interpolateMap(shop.getFreshMod(), fresh.get());
 		newPrice *= Tools.interpolateMap(shop.getQualMod(), qual.get());
 		price.set(newPrice);
+	}
+	
+	public void updateSpoil(ProductData prodData, int day){
+		setSpoilQty((getQty()*Tools.interpolateMap(prodData.getSpoilMap(getName()),getFresh()+day)));
 	}
 }
