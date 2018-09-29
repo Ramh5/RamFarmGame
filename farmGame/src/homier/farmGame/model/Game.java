@@ -34,6 +34,11 @@ public class Game {
 		inventory.addProd(new Product("Wheat",12,1,1));
 		inventory.addProd(new Product("Wheat",-2,5,1));
 		inventory.addProd(new Product("Wheat",1,6,1));
+		inventory.addProd(new Product("Carrots",15,2,80));
+		inventory.addProd(new Product("Carrots",10,6,50));
+		inventory.addProd(new Product("Eggs",15,6,50));
+		inventory.addProd(new Product("Eggs",14,14,80));
+		inventory.addProd(new Product("Eggs",25,24,80));
 	
 		
 	}

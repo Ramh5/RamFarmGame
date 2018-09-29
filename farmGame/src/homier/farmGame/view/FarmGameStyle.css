@@ -33,31 +33,66 @@
   -fx-alignment: CENTER;
 }
 
-.tree-table-row-cell:top-level-treetableview{
-	-fx-font-size:14;
-	-fx-background: lightgrey ;
+
+
+
+
+  /* to disable selection highlighting */
+ .table-row-cell:filled:selected { 
+  -fx-background: -fx-control-inner-background ;
+  -fx-background-color: -fx-table-cell-border-color, -fx-background ;
+  -fx-background-insets: 0, 0 0 1 0 ;
+ -fx-table-cell-border-color: derive(-fx-color, 5%);
+}
+.table-row-cell:odd:filled:selected {
+  -fx-background: -fx-control-inner-background-alt ;
 }
 
 
-/* 
+ .tree-table-row-cell:filled:selected { 
+    -fx-background: -fx-control-inner-background ;
+  -fx-background-color: -fx-table-cell-border-color, -fx-background ;
+  -fx-background-insets: 0, 0 0 1 0 ;
+ -fx-table-cell-border-color: derive(-fx-color, 5%);
+ 
+}
+
+/*remove empty rows and add border */
+
+
 .tree-table-row-cell {
     -fx-background-color: -fx-table-cell-border-color, -fx-control-inner-background;
     -fx-background-insets: 0, 0 0 1 0;
-    -fx-padding: 0.0em;
-    -fx-text-fill: -fx-text-inner-color;
-}
-.tree-table-row-cell:selected {
-    -fx-background-color: -fx-focus-color, -fx-cell-focus-inner-border, -fx-focus-color;
-    -fx-background-insets: 0, 1, 2;
 }
 
-.tree-table-row-cell:odd {
-    -fx-background-color: -fx-table-cell-border-color, derive(-fx-control-inner-background,-5%);
-    -fx-background-insets: 0, 0 0 1 0;
+.tree-table-row-cell:empty {
+    -fx-background-color: transparent;
 }
 
-.tree-table-row-cell:selected:odd {
-    -fx-background-color: -fx-focus-color, -fx-cell-focus-inner-border, -fx-focus-color;
-    -fx-background-insets: 0, 1, 2;
+.tree-table-row-cell:empty .tree-table-cell {
+    -fx-border-width: 0px;
 }
- */
+
+
+ /*Top level categories of items in inventory treetableview pseudoclass style */
+.tree-table-row-cell:top-level-treetableview,
+.tree-table-row-cell:filled:selected:top-level-treetableview{
+	-fx-font-size:14;
+	-fx-background-color: 	#F0F0F0 ;
+	
+}
+
+
+/*for tableview cell editing */
+.text-field-table-cell>* { 
+	-fx-background-color: lightgrey;
+	-fx-padding: 0 ;
+	-fx-alignment: center;
+}
+
+.text-field-table-cell>*:focused { 
+	-fx-background-color: lightblue;
+	-fx-padding: 0 ;
+	-fx-alignment: center;
+}
+

@@ -1,5 +1,7 @@
 package homier.farmGame.model;
 
+
+
 import homier.farmGame.utils.Tools;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
@@ -9,14 +11,16 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
 
-public class Product {
+public class Product{
 	private StringProperty name;
 	private DoubleProperty qty;
 	private IntegerProperty fresh;
 	private IntegerProperty qual;
 	private DoubleProperty price;
 	private BooleanProperty selected;
+	private ChangeListener<Boolean> selListener;
 	
 	public Product(String name, double qty, int fresh, int qual) {
 
@@ -26,6 +30,7 @@ public class Product {
 		this.qual = new SimpleIntegerProperty(qual);
 		this.price = new SimpleDoubleProperty(0);
 		selected = new SimpleBooleanProperty(false);
+		selListener = (a,b,c)->{};
 		
 	}
 	/**
@@ -40,6 +45,7 @@ public class Product {
 		this.qual = new SimpleIntegerProperty(prod.getQual());
 		this.price = new SimpleDoubleProperty(prod.getPrice());
 		selected = new SimpleBooleanProperty(false);
+		selListener = (a,b,c)->{};
 	}
 
 	
@@ -49,7 +55,12 @@ public class Product {
 	public void setFresh(int fresh) {this.fresh.set(fresh);}
 	public void setQual(int qual) {this.qual.set(qual);}
 	public void setPrice(double price) {this.price.set(price);}
-	public void setSelected(boolean sel){selected.set(sel);}	
+	public void setSelected(boolean sel){selected.set(sel);}
+	public void setSelListener(ChangeListener<Boolean> listener){
+		selected.removeListener(selListener);
+		selected.addListener(listener);
+		selListener = listener;
+		}
 	public String getName() {return name.get();}
 	public double getQty(){return qty.get();}	
 	public int getFresh() {return fresh.get();}

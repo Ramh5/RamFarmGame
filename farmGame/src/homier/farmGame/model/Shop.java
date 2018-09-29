@@ -20,13 +20,18 @@ public class Shop extends Inventory {
 	
 	public Shop(){
 		super();
-		addProd(new Product("Wheat", 5, 1, 15));
-		addProd(new Product("Carrots",10,1,20));
+		addProd(new Product("Wheat",20,1,80));
+		addProd(new Product("Wheat",20,10,15));
+		addProd(new Product("Carrots",10,1,80));
+		addProd(new Product("Carrots",10,10,15));
+		addProd(new Product("Eggs",5,1,80));
+		addProd(new Product("Eggs",5,10,15));
 		basePrice = new HashMap<String, Double>();
 		basePrice.put("Wheat", 1.99);
 		basePrice.put("Carrots", 2.50);
-		freshMod = Tools.buildTreeMap(new double[][]{{1,1},{10,.75},{20,.5}});
-		qualMod = Tools.buildTreeMap(new double[][]{{1,.1},{10,.5},{20,.8}});
+		basePrice.put("Eggs", 3.2);
+		freshMod = Tools.buildTreeMap(new double[][]{{1,1},{20,.75},{50,.2}});
+		qualMod = Tools.buildTreeMap(new double[][]{{1,.1},{50,.5},{100,1}});
 	}
 
 	public HashMap<String, Double> getBasePrice() {

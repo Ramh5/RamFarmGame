@@ -17,27 +17,39 @@ public class Inventory {
 		averageData=new HashMap<>();
 	}
 	
-	/**TODO find a way to calculate and display total Price
+	/**
 	 * calculates the total quantity and average fresh and quality of each product in the inventory 
 	 * and stores it in HashMap<String, Product> averageData
 	 */
 	public void calculateAverageData(){
-		averageData.clear();
+
 		for(Entry<String, ArrayList<Product>> entry : data.entrySet()){
 			String prodName = entry.getKey();
-			
+			Product averageProd = averageData.get(prodName);
 			double totQty=0;
 			double avFresh=0;
 			double avQual=0;
-			
+
 			for(Product prod : entry.getValue()){
 				totQty += prod.getQty();
 				avFresh += prod.getQty()*prod.getFresh();
 				avQual += prod.getQty()*prod.getQual();
 			}
-			Product averageProd = new Product(prodName, totQty, (int)(avFresh/totQty), (int)(avQual/totQty));
-			averageData.put(prodName, averageProd);
+			if(totQty!=0){
+				avFresh /= totQty;
+				avQual /= totQty;
+			}
+			if(averageProd==null){
+				averageProd = new Product(prodName, totQty, (int)avFresh, (int)avQual);
+				averageData.put(prodName, averageProd);
+			}else{
+				averageProd.setQty(totQty);
+				averageProd.setFresh((int)avFresh);
+				averageProd.setQual((int)avQual);
+			}
+
 		}
+		averageData.values().removeIf(v->v.getQty()==0);
 	}
 	
 	/**
@@ -87,7 +99,16 @@ public class Inventory {
 		
 		return str;
 	}
-
+/**
+ * removes products when quantity < 0.1 as well as empty categories
+ */
+	public void clean(){
+		for(Entry<String, ArrayList<Product>> entry : data.entrySet()){
+			entry.getValue().removeIf(v->v.getQty()<0.1);
+		}
+		data.values().removeIf(v->v.size()==0);
+	}
+	
 
 	public double getMoney(){
 		return money;
