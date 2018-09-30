@@ -80,7 +80,10 @@ public class Inventory {
 		currList.add(product);
 	}
 
-
+/**
+ *  updates the data of this inventory by applying the spoil, increasing freshness
+ *  NOTE: meant to be called once at the start of every day.
+ */
 	public void update() {
 		
 		spoilAndAge();
@@ -101,6 +104,10 @@ public class Inventory {
 		}
 	}
 	
+	/**
+	 * apply the spoil for each item using the previously calculated spoil quantities,
+	 * and adds one day to the freshness
+	 */
 	private void spoilAndAge(){
 		for(Entry<String, ArrayList<Product>> entry : data.entrySet()){
 			for(Product prod : entry.getValue()){
