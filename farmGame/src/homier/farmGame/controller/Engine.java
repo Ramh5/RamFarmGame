@@ -1,10 +1,7 @@
 package homier.farmGame.controller;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map.Entry;
-
-import com.sun.javafx.binding.SelectBinding.AsString;
 
 import homier.farmGame.model.Employee;
 import homier.farmGame.model.Game;
@@ -16,11 +13,7 @@ import homier.farmGame.utils.GameClock;
 import homier.farmGame.view.Renderer;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
@@ -33,20 +26,12 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
-import javafx.scene.control.TableColumn.CellEditEvent;
-import javafx.scene.control.TablePosition;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTableRow;
 import javafx.scene.control.TreeTableView;
-import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.CheckBoxTreeTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -62,20 +47,18 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.util.Callback;
-import javafx.util.converter.NumberStringConverter;
 
 public class Engine {
 
 	@FXML private GridPane gameGridPane;
-	@FXML private ToggleButton pauseButton, openShopButton;
+	@FXML private ToggleButton pauseButton, openShopButton, openWSbutton;
 	@FXML private VBox mouseOverPanel;
 	@FXML private TextArea leftTextArea;
 	@FXML private ChoiceBox<Integer> gameSpeedChoice;
 	@FXML private Label clockLabel, pauseLabel ,wxToday, wxTomorrow, energyLabel, taskName1, buyTotalLabel, sellTotalLabel;
 	@FXML private ChoiceBox<Employee> employeeChoice;
 	@FXML private ProgressIndicator taskProgress1;
-	@FXML private AnchorPane shopPane;
+	@FXML private AnchorPane shopPane, workShopPane;
 	@FXML private TreeTableView<Product> tableInv, tableShop;
 	@FXML private TreeTableColumn<Product, String> colNameInv, colNameShop, colQtyInv, colQtyShop, 
 												   colPriceInv, colPriceShop, colSpoilQtyInv, colSpoilQtyShop;
@@ -179,9 +162,13 @@ public class Engine {
 		preventColumnReordering(tableSell);
 		preventColumnReordering(tableBuy);
 		
+		//workShop
+		workShopPane.toBack();
+		
 		
 	}
 
+	//-------------- BUTTON HANDELERS---------------------
 	@FXML
 	private void pauseButtonAction(ActionEvent event) {
 		updatePauseButton();
@@ -207,13 +194,16 @@ public class Engine {
 
 	@FXML
 	private void closeShopButtonAction(ActionEvent event) {
-		if (!manPaused) {
-			pauseButton.setSelected(false);
+		if(!openWSbutton.isSelected()) {
+			if (!manPaused) {
+				pauseButton.setSelected(false);
+			}
+			pauseButton.setDisable(false);
 		}
 		shopPane.toBack();
 		openShopButton.setSelected(false);
-		pauseButton.setDisable(false);
 		updatePauseButton();
+
 	}
 
 	@FXML
@@ -224,12 +214,13 @@ public class Engine {
 			pauseButton.setSelected(true);
 			pauseButton.setDisable(true);
 		}else{
-			if (!manPaused) {
-
-				pauseButton.setSelected(false);
+			if(!openWSbutton.isSelected()) {
+				if (!manPaused) {
+					pauseButton.setSelected(false);
+				}
+				pauseButton.setDisable(false);
 			}
 			shopPane.toBack();
-			pauseButton.setDisable(false);
 		}
 		updatePauseButton();
 	}
@@ -271,6 +262,47 @@ public class Engine {
 		buyTotalLabel.setText(String.format("%.2f", 0.0));
 		unselectTreeTable(tableInv.getRoot());
 		unselectTreeTable(tableShop.getRoot());
+	}
+	
+	@FXML
+	private void actionWSbuttonAction(ActionEvent event) {
+		//TODO handle action workshop button
+	}
+	
+	@FXML 
+	private void cancelWSbuttonAction(ActionEvent event) {
+		//TODO handle cancel workshop button
+	}
+	
+	@FXML
+	private void closeWSbuttonAction(ActionEvent event) {
+		if(!openShopButton.isSelected()) {
+			if (!manPaused) {
+				pauseButton.setSelected(false);
+			}
+			pauseButton.setDisable(false);
+		}
+		workShopPane.toBack();
+		openWSbutton.setSelected(false);
+		updatePauseButton();
+	}
+	
+	@FXML private void openWSbuttonAction(ActionEvent event) {
+		if(openWSbutton.isSelected()){
+			//updateShopPanel(); //TODO update workshoppane function
+			workShopPane.toFront();
+			pauseButton.setSelected(true);
+			pauseButton.setDisable(true);
+		}else{		
+			if(!openShopButton.isSelected()) {
+				if (!manPaused) {
+					pauseButton.setSelected(false);
+				}
+				pauseButton.setDisable(false);
+			}
+			workShopPane.toBack();
+		}
+		updatePauseButton();
 	}
 	
 	//SETTERS -- GETTERS

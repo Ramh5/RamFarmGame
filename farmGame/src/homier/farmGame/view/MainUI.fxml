@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
@@ -21,15 +21,77 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="950" prefWidth="1210.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="homier.farmGame.controller.Engine">
+<BorderPane prefHeight="950" prefWidth="1210.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="homier.farmGame.controller.Engine">
 	<center>
 		<StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
 			<children>
+            <AnchorPane fx:id="workShopPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: -fx-background;" styleClass="masking-pane">
+               <children>
+                  <TreeTableView fx:id="tableInvWS" layoutX="14.0" layoutY="80.0" prefHeight="550.0" prefWidth="470.0">
+                     <columns>
+                        <TreeTableColumn fx:id="colNameInv1" prefWidth="170.0" text="Product" />
+                        <TreeTableColumn fx:id="colQtyInv1" prefWidth="60.0" text="Qty (kg)" />
+                        <TreeTableColumn fx:id="colFreshInv1" prefWidth="40.0" text="Fresh" />
+                        <TreeTableColumn fx:id="colQualInv1" prefWidth="40.0" text="Qual" />
+                        <TreeTableColumn fx:id="colPriceInv1" prefWidth="50.0" text="\$$$" />
+                        <TreeTableColumn fx:id="colSpoilQtyInv1" prefWidth="60.0" text="Spoil" />
+                        <TreeTableColumn fx:id="colActInv1" prefWidth="35.0" text="X" />
+                     </columns>
+                  </TreeTableView>
+                  <ListView fx:id="listViewRecipe" layoutX="532.0" layoutY="80.0" prefHeight="550.0" prefWidth="470.0" />
+                  <Label layoutX="14.0" layoutY="37.0" prefHeight="34.0" prefWidth="116.0" text="Inventory">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="532.0" layoutY="37.0" prefHeight="35.0" prefWidth="127.0" text="Recipe List">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="239.0" layoutY="46.0" text="Filter:" />
+                  <TextField layoutX="275.0" layoutY="42.0" />
+                  <Separator layoutX="14.0" layoutY="669.0" prefHeight="11.0" prefWidth="982.0" />
+                  <Label layoutX="14.0" layoutY="643.0" text="Selected ingredient">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="actionWSbutton" layoutX="484.0" layoutY="779.0" mnemonicParsing="false" onAction="#actionWSbuttonAction" text="Cook" />
+                  <Button fx:id="cancelWSbutton" layoutX="475.0" layoutY="834.0" mnemonicParsing="false" onAction="#cancelWSbuttonAction" text="CANCEL" />
+                  <Button fx:id="closeWSbutton" layoutX="944.0" layoutY="14.0" mnemonicParsing="false" onAction="#closeWSbuttonAction" text="Close" />
+                  <TableView fx:id="tableSelectedIngr" layoutX="14.0" layoutY="680.0" prefHeight="148.0" prefWidth="410.0">
+                     <columns>
+                        <TableColumn fx:id="colNameSell1" prefWidth="170.0" text="Product" />
+                        <TableColumn fx:id="colQtySell1" prefWidth="60.0" text="Qty (kg)" />
+                        <TableColumn fx:id="colFreshSell1" prefWidth="40.0" text="Fresh" />
+                        <TableColumn fx:id="colQualSell1" prefWidth="40.0" text="Qual" />
+                        <TableColumn fx:id="colPriceSell1" prefWidth="50.0" text="\$$$" />
+                        <TableColumn fx:id="colActSell1" prefWidth="35.0" text="X" />
+                     </columns>
+                  </TableView>
+                  <Label layoutX="586.0" layoutY="643.0" text="Recipe details">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <ListView fx:id="listViewRecipeDetails" layoutX="603.0" layoutY="722.0" prefHeight="163.0" prefWidth="399.0" />
+                  <Label fx:id="labelSelectedRecipe" layoutX="603.0" layoutY="680.0" text="Recipe name and quantity and price">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="labelResultWS" layoutX="14.0" layoutY="844.0" text="result name, qty, fresh, qual, price">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
 				<GridPane fx:id="gameGridPane" alignment="CENTER" prefHeight="662.0" prefWidth="1010.0">
 
 				</GridPane>
-				<Canvas height="200.0" mouseTransparent="true" opacity="0.0" width="200.0" />
-            <AnchorPane fx:id="shopPane" prefHeight="200.0" prefWidth="200.0" styleClass="masking-pane">
+            <AnchorPane fx:id="shopPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: -fx-background;" styleClass="masking-pane">
                <children>
                   <TreeTableView fx:id="tableInv" layoutX="14.0" layoutY="80.0" prefHeight="550.0" prefWidth="470.0">
                     <columns>
@@ -133,6 +195,7 @@
 					</children>
 				</HBox>
 				<Separator prefHeight="44.0" prefWidth="100.0" />
+            <ToggleButton fx:id="openWSbutton" mnemonicParsing="false" onAction="#openWSbuttonAction" text="Workshops" />
             <ToggleButton fx:id="openShopButton" mnemonicParsing="false" onAction="#openShopButtonAction" text="Shop" />
 				<Label fx:id="pauseLabel" text="pauseLabel" />
 				<ToggleButton fx:id="pauseButton" onAction="#pauseButtonAction" />
