@@ -648,7 +648,6 @@ public class Engine {
 	}
 
 	
-	
 	/**
 	 * 
 	 * @param rootTreeItem : the root node of the treeItem we want to unselect all products
@@ -671,7 +670,7 @@ public class Engine {
 			double newValue = Double.valueOf(event.getNewValue());
 			if(newValue<0){
 				prod.setQty(0);
-			}else if(newValue >= prod.getQty()){
+			}else if(newValue >= inventory.getMaxQty(prod)){
 				prod.setQty(inventory.getMaxQty(prod));
 			}else{	
 				prod.setQty(newValue);
