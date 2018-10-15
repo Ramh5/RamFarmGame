@@ -12,9 +12,11 @@ public class Game {
 
 	private Inventory inventory = new Inventory();
 	private Shop shop = new Shop();
+	private WorkShop workShop = new WorkShop();
 	private ArrayList<Tile> tileList = new ArrayList<Tile>();
 	private WxForcast wxForcast = new WxForcast();
 	private Employee[] employees;
+	
 	
 	
 	
@@ -61,5 +63,9 @@ public class Game {
 	
 	public Shop getShop(){
 		return shop;
+	}
+	
+	public WorkShop getWorkShop() {
+		return workShop;
 	}
 }

@@ -138,7 +138,7 @@ public class Inventory {
 	
 	/**
 	 * 
-	 * @param prod : the product for which we want to know the maximum quantity avalable in the inventory
+	 * @param prod : the product for which we want to know the maximum quantity available in the inventory
 	 * @return the maximum quantity available in the inventory (matching fresh and qual)
 	 */
 	public double getMaxQty(Product prod){

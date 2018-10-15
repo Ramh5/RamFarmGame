@@ -29,13 +29,13 @@
                <children>
                   <TreeTableView fx:id="tableInvWS" layoutX="14.0" layoutY="80.0" prefHeight="550.0" prefWidth="470.0">
                      <columns>
-                        <TreeTableColumn fx:id="colNameInv1" prefWidth="170.0" text="Product" />
-                        <TreeTableColumn fx:id="colQtyInv1" prefWidth="60.0" text="Qty (kg)" />
-                        <TreeTableColumn fx:id="colFreshInv1" prefWidth="40.0" text="Fresh" />
-                        <TreeTableColumn fx:id="colQualInv1" prefWidth="40.0" text="Qual" />
-                        <TreeTableColumn fx:id="colPriceInv1" prefWidth="50.0" text="\$$$" />
-                        <TreeTableColumn fx:id="colSpoilQtyInv1" prefWidth="60.0" text="Spoil" />
-                        <TreeTableColumn fx:id="colActInv1" prefWidth="35.0" text="X" />
+                        <TreeTableColumn fx:id="colNameInvWS" prefWidth="170.0" text="Product" />
+                        <TreeTableColumn fx:id="colQtyInvWS" prefWidth="60.0" text="Qty (kg)" />
+                        <TreeTableColumn fx:id="colFreshInvWS" prefWidth="40.0" text="Fresh" />
+                        <TreeTableColumn fx:id="colQualInvWS" prefWidth="40.0" text="Qual" />
+                        <TreeTableColumn fx:id="colPriceInvWS" prefWidth="50.0" text="\$$$" />
+                        <TreeTableColumn fx:id="colSpoilQtyInvWS" prefWidth="60.0" text="Spoil" />
+                        <TreeTableColumn fx:id="colActInvWS" prefWidth="35.0" text="X" />
                      </columns>
                   </TreeTableView>
                   <ListView fx:id="listViewRecipe" layoutX="532.0" layoutY="80.0" prefHeight="550.0" prefWidth="470.0" />
@@ -60,14 +60,14 @@
                   <Button fx:id="actionWSbutton" layoutX="484.0" layoutY="779.0" mnemonicParsing="false" onAction="#actionWSbuttonAction" text="Cook" />
                   <Button fx:id="cancelWSbutton" layoutX="475.0" layoutY="834.0" mnemonicParsing="false" onAction="#cancelWSbuttonAction" text="CANCEL" />
                   <Button fx:id="closeWSbutton" layoutX="944.0" layoutY="14.0" mnemonicParsing="false" onAction="#closeWSbuttonAction" text="Close" />
-                  <TableView fx:id="tableSelectedIngr" layoutX="14.0" layoutY="680.0" prefHeight="148.0" prefWidth="410.0">
+                  <TableView fx:id="tableSelectedIngrWS" layoutX="14.0" layoutY="680.0" prefHeight="148.0" prefWidth="410.0">
                      <columns>
-                        <TableColumn fx:id="colNameSell1" prefWidth="170.0" text="Product" />
-                        <TableColumn fx:id="colQtySell1" prefWidth="60.0" text="Qty (kg)" />
-                        <TableColumn fx:id="colFreshSell1" prefWidth="40.0" text="Fresh" />
-                        <TableColumn fx:id="colQualSell1" prefWidth="40.0" text="Qual" />
-                        <TableColumn fx:id="colPriceSell1" prefWidth="50.0" text="\$$$" />
-                        <TableColumn fx:id="colActSell1" prefWidth="35.0" text="X" />
+                        <TableColumn fx:id="colNameIngrWS" prefWidth="170.0" text="Product" />
+                        <TableColumn fx:id="colQtyIngrWS" prefWidth="60.0" text="Qty (kg)" />
+                        <TableColumn fx:id="colFreshIngrWS" prefWidth="40.0" text="Fresh" />
+                        <TableColumn fx:id="colQualIngrWS" prefWidth="40.0" text="Qual" />
+                        <TableColumn fx:id="colPriceIngrWS" prefWidth="50.0" text="\$$$" />
+                        <TableColumn fx:id="colActIngrWS" prefWidth="35.0" text="X" />
                      </columns>
                   </TableView>
                   <Label layoutX="586.0" layoutY="643.0" text="Recipe details">

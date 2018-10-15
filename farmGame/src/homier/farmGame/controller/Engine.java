@@ -13,7 +13,6 @@ import homier.farmGame.utils.GameClock;
 import homier.farmGame.view.Renderer;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
-import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
 import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
@@ -59,16 +58,16 @@ public class Engine {
 	@FXML private ChoiceBox<Employee> employeeChoice;
 	@FXML private ProgressIndicator taskProgress1;
 	@FXML private AnchorPane shopPane, workShopPane;
-	@FXML private TreeTableView<Product> tableInv, tableShop;
-	@FXML private TreeTableColumn<Product, String> colNameInv, colNameShop, colQtyInv, colQtyShop, 
-												   colPriceInv, colPriceShop, colSpoilQtyInv, colSpoilQtyShop;
-	@FXML private TreeTableColumn<Product, Number> colFreshInv, colFreshShop,colQualInv, colQualShop;
-	@FXML private TreeTableColumn<Product, Boolean> colActInv, colActShop;
-	@FXML private TableView<Product>  tableSell, tableBuy;
-	@FXML private TableColumn<Product, String> colNameSell, colNameBuy, colQtySell, colQtyBuy, colPriceSell, colPriceBuy;
-	@FXML private TableColumn<Product, Number>  colFreshSell, colFreshBuy,  
-												colQualSell, colQualBuy;				
-	@FXML private TableColumn<Product, Boolean> colActSell, colActBuy;
+	@FXML private TreeTableView<Product> tableInv, tableShop, tableInvWS;
+	@FXML private TreeTableColumn<Product, String> colNameInv, colNameShop,colNameInvWS, colQtyInv, colQtyShop, colQtyInvWS, 
+												   colPriceInv, colPriceShop, colPriceInvWS, colSpoilQtyInv, colSpoilQtyShop, colSpoilQtyInvWS;
+	@FXML private TreeTableColumn<Product, Number> colFreshInv, colFreshShop, colFreshInvWS, colQualInv, colQualShop,colQualInvWS;
+	@FXML private TreeTableColumn<Product, Boolean> colActInv, colActShop, colActInvWS;
+	@FXML private TableView<Product>  tableSell, tableBuy, tableSelectedIngrWS;
+	@FXML private TableColumn<Product, String> colNameSell, colNameBuy, colNameIngrWS, colQtySell, colQtyBuy, colQtyIngrWS, colPriceSell, colPriceBuy, colPriceIngrWS;
+	@FXML private TableColumn<Product, Number>  colFreshSell, colFreshBuy, colFreshIngrWS,  
+												colQualSell, colQualBuy, colQualIngrWS;				
+	@FXML private TableColumn<Product, Boolean> colActSell, colActBuy, colActIngrWS;
 	@FXML private Button closeShopButton, cancelTransactionButton, buyButton, sellButton;
 	
 
@@ -76,9 +75,6 @@ public class Engine {
 	private Renderer renderer;
 	private GameClock gameClock;
 	private boolean manPaused;
-	
-	ChangeListener<TreeItem<Product>> rowListener;
-	ChangeListener<TreeItem<Product>> prevRowListener = (a,b,c)->{};
 	
 	
 	//TODO add button to skip days, months...
@@ -88,7 +84,7 @@ public class Engine {
 		gameClock.update(dTime);
 		clockLabel.setText(gameClock.toString());
 		
-		//if it is a new day, update the forcast
+		//if it is a new day, update the forecast
 		if(gameClock.isNewDay()){
 			game.getWxForcast().forcastNewDay(gameClock);
 			wxToday.setText("Today: "+game.getWxForcast().getToday().toString());
@@ -98,6 +94,7 @@ public class Engine {
 			game.getInventory().update();
 			game.getShop().update();
 			updateShopPanel();
+			updateWSPanel();
 			
 		}
 		leftTextArea.setText(game.getInventory().toString());
@@ -140,7 +137,7 @@ public class Engine {
 		gameSpeedChoice.getItems().addAll(1,2,5,10,50,500);
 		gameSpeedChoice.getSelectionModel().select(3);
 		App.gameSpeed=gameSpeedChoice.getSelectionModel().getSelectedItem();
-		gameSpeedChoice.setOnAction(e->{//TODO could add a call to a methode in the FXML instead of here
+		gameSpeedChoice.setOnAction(e->{//TODO could add a call to a method in the FXML instead of here
 			App.gameSpeed=gameSpeedChoice.getSelectionModel().getSelectedItem();
 		});
 		
@@ -164,6 +161,7 @@ public class Engine {
 		
 		//workShop
 		workShopPane.toBack();
+		setupWS();
 		
 		
 	}
@@ -287,7 +285,8 @@ public class Engine {
 		updatePauseButton();
 	}
 	
-	@FXML private void openWSbuttonAction(ActionEvent event) {
+	@FXML 
+	private void openWSbuttonAction(ActionEvent event) {
 		if(openWSbutton.isSelected()){
 			//updateShopPanel(); //TODO update workshoppane function
 			workShopPane.toFront();
@@ -352,7 +351,9 @@ public class Engine {
 	}
 	
 	
-	
+	/**
+	 * setup the Shop panel for the first time
+	 */
 	private void setupShop(){
 		final PseudoClass topLevelTTVPseudoClass = PseudoClass.getPseudoClass("top-level-treetableview");
 		
@@ -391,7 +392,6 @@ public class Engine {
 						getTreeTableRow().pseudoClassStateChanged(topLevelTTVPseudoClass, isTopLevel);
 						setEditable(!isTopLevel);	
 					}
-					
 				}
 			};
 		});
@@ -471,14 +471,87 @@ public class Engine {
 		
 	}
 	
+	/**
+	 * setup the workShop panel for the first time
+	 */
+	private void setupWS(){
+		final PseudoClass topLevelTTVPseudoClass = PseudoClass.getPseudoClass("top-level-treetableview");
+		
+		//------------ WS inventory table------------- //TODO setup spoil colum (negative and red)
+		TreeItem<Product> rootInv = new TreeItem<>(new Product("empty", 0, 0, 0));
+		tableInvWS.setPlaceholder(new Text("Empty Inventory"));
+		tableInvWS.setRoot(rootInv);
+		tableInvWS.setShowRoot(false);
+		tableInvWS.setEditable(true);
+		colActInvWS.setEditable(true);
+		
+		//populate the inventory treetableview with the inventory data on the workShop Panel
+		
+		updateWSPanel();
+		
+		//Setup the cell values
+		colNameInvWS.setCellValueFactory(new TreeItemPropertyValueFactory<>("name"));
+		colQtyInvWS.setCellValueFactory(cellData ->Bindings.format("%.2f", cellData.getValue().getValue().qtyProperty()));
+		colFreshInvWS.setCellValueFactory(new TreeItemPropertyValueFactory<>("fresh"));
+		colQualInvWS.setCellValueFactory(new TreeItemPropertyValueFactory<>("qual"));
+		colPriceInvWS.setCellValueFactory(cellData ->Bindings.format("%.2f", cellData.getValue().getValue().priceProperty()));
+		colActInvWS.setCellFactory(column ->{ //TODO show the state of the checkbox depending on the children selected
+			return new CheckBoxTreeTableCell<Product, Boolean>(){
+				@Override
+				public void updateItem(Boolean item, boolean empty) {
+					super.updateItem(item, empty);
+					boolean isTopLevel = getTreeTableView().getRoot().getChildren().contains(getTreeTableRow().getTreeItem());
+					if(item == null || empty){
+						setText(null);
+						setGraphic(null);
+						getTreeTableRow().pseudoClassStateChanged(topLevelTTVPseudoClass, false);
+					
+					}else{
+						getTreeTableRow().pseudoClassStateChanged(topLevelTTVPseudoClass, isTopLevel);
+						setEditable(!isTopLevel);	
+					}
+				}
+			};
+		});
+		colActInvWS.setCellValueFactory(new TreeItemPropertyValueFactory<>("selected"));
+			     
+		//---------------selected Ingredient table------------------
+		tableSelectedIngrWS.setItems(game.getWorkShop().getSelectedIngr());
+		tableSelectedIngrWS.setEditable(true);
+		colActIngrWS.setEditable(true);
 	
+		
+		colNameIngrWS.setCellValueFactory(new PropertyValueFactory<>("name"));
+		colQtyIngrWS.setCellValueFactory(cellData ->Bindings.format("%.2f", cellData.getValue().qtyProperty()));
+		colQtyIngrWS.setCellFactory(TextFieldTableCell.forTableColumn());
+		colQtyIngrWS.setOnEditCommit(transactionQtyEditCommit(game.getWorkShop()));
+		colFreshIngrWS.setCellValueFactory(new PropertyValueFactory<>("fresh"));
+		colQualIngrWS.setCellValueFactory(new PropertyValueFactory<>("qual"));
+		colPriceIngrWS.setCellValueFactory(cellData ->Bindings.format("%.2f", cellData.getValue().priceProperty()));
+		colActIngrWS.setCellFactory(CheckBoxTableCell.forTableColumn(colActSell));
+		colActIngrWS.setCellValueFactory(new PropertyValueFactory<>("selected"));
+
+	}
 	
+	/**
+	 * updates the workShop panel after it has been set up to show changed data
+	 */
+	private void updateWSPanel() {
+		game.getWorkShop().copyInventory(game.getInventory());
+		updateTreeItemRoot(tableInvWS.getRoot(), game.getWorkShop(), game.getShop());
+		listenForSelection(tableInvWS.getRoot(), game.getWorkShop().getSelectedIngr());
+	}
+	
+	/**
+	 * updates the Shop panel after it has been set up to show changed data
+	 */
 	private void updateShopPanel(){
 		updateTreeItemRoot(tableInv.getRoot(), game.getInventory(), game.getShop());
 		updateTreeItemRoot(tableShop.getRoot(), game.getShop(), game.getShop());
 		listenForSelection(tableInv.getRoot(), game.getShop().getDataSelling());
 		listenForSelection(tableShop.getRoot(), game.getShop().getDataBuying());
 	}
+	
 	 /**
 	  * A method to update a TreeTableView every time backing data changes in the model,
 	  * without resetting the table by only adding and removing data when required.
@@ -586,6 +659,11 @@ public class Engine {
 		rootTreeItem.getChildren().forEach(item->unselectTreeTable(item));
 	}
 	
+	/**
+	 * EventHandler to handle and validate editing of quantity the Qty column in a table
+	 * @param inventory : the inventory to check against for max values during edit of the cell
+	 * @return the eventHandler
+	 */
 	private EventHandler<TableColumn.CellEditEvent<Product,String>> transactionQtyEditCommit(Inventory inventory){
 		return event->{
 			int row = event.getTablePosition().getRow();
@@ -593,7 +671,7 @@ public class Engine {
 			double newValue = Double.valueOf(event.getNewValue());
 			if(newValue<0){
 				prod.setQty(0);
-			}else if(newValue > prod.getQty()){
+			}else if(newValue >= prod.getQty()){
 				prod.setQty(inventory.getMaxQty(prod));
 			}else{	
 				prod.setQty(newValue);
