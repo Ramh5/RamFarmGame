@@ -7,12 +7,17 @@ import homier.farmGame.model.Employee;
 import homier.farmGame.model.Game;
 import homier.farmGame.model.Inventory;
 import homier.farmGame.model.Product;
+import homier.farmGame.model.Recipe;
 import homier.farmGame.model.Shop;
 import homier.farmGame.utils.FarmTimeUnits;
 import homier.farmGame.utils.GameClock;
 import homier.farmGame.view.Renderer;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
@@ -23,6 +28,8 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -46,15 +53,17 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.util.Callback;
 
 public class Engine {
 
 	@FXML private GridPane gameGridPane;
+	//@FXML private Button closeShopButton, cancelTransactionButton, buyButton, sellButton;
 	@FXML private ToggleButton pauseButton, openShopButton, openWSbutton;
 	@FXML private VBox mouseOverPanel;
 	@FXML private TextArea leftTextArea;
 	@FXML private ChoiceBox<Integer> gameSpeedChoice;
-	@FXML private Label clockLabel, pauseLabel ,wxToday, wxTomorrow, energyLabel, taskName1, buyTotalLabel, sellTotalLabel;
+	@FXML private Label clockLabel, pauseLabel ,wxToday, wxTomorrow, energyLabel, taskName1, buyTotalLabel, sellTotalLabel, labelSelectedRecipe, labelResultWS;
 	@FXML private ChoiceBox<Employee> employeeChoice;
 	@FXML private ProgressIndicator taskProgress1;
 	@FXML private AnchorPane shopPane, workShopPane;
@@ -68,8 +77,8 @@ public class Engine {
 	@FXML private TableColumn<Product, Number>  colFreshSell, colFreshBuy, colFreshIngrWS,  
 												colQualSell, colQualBuy, colQualIngrWS;				
 	@FXML private TableColumn<Product, Boolean> colActSell, colActBuy, colActIngrWS;
-	@FXML private Button closeShopButton, cancelTransactionButton, buyButton, sellButton;
-	
+	@FXML private ListView<String>  listViewRecipeDetails;
+	@FXML private ListView<Recipe> listViewRecipe;
 
 	private Game game = new Game();
 	private Renderer renderer;
@@ -197,6 +206,8 @@ public class Engine {
 				pauseButton.setSelected(false);
 			}
 			pauseButton.setDisable(false);
+		}else {
+			updateWSPanel();
 		}
 		shopPane.toBack();
 		openShopButton.setSelected(false);
@@ -279,6 +290,8 @@ public class Engine {
 				pauseButton.setSelected(false);
 			}
 			pauseButton.setDisable(false);
+		}else {
+			updateShopPanel();
 		}
 		workShopPane.toBack();
 		openWSbutton.setSelected(false);
@@ -288,7 +301,7 @@ public class Engine {
 	@FXML 
 	private void openWSbuttonAction(ActionEvent event) {
 		if(openWSbutton.isSelected()){
-			//updateShopPanel(); //TODO update workshoppane function
+			updateWSPanel();
 			workShopPane.toFront();
 			pauseButton.setSelected(true);
 			pauseButton.setDisable(true);
@@ -357,7 +370,7 @@ public class Engine {
 	private void setupShop(){
 		final PseudoClass topLevelTTVPseudoClass = PseudoClass.getPseudoClass("top-level-treetableview");
 		
-		//------------inventory table------------- //TODO setup spoil colum (negative and red)
+		//------------inventory table------------- //TODO setup spoil column (negative and red)
 		TreeItem<Product> rootInv = new TreeItem<>(new Product("empty", 0, 0, 0));
 		tableInv.setPlaceholder(new Text("Empty Inventory"));
 		tableInv.setRoot(rootInv);
@@ -530,8 +543,59 @@ public class Engine {
 		colPriceIngrWS.setCellValueFactory(cellData ->Bindings.format("%.2f", cellData.getValue().priceProperty()));
 		colActIngrWS.setCellFactory(CheckBoxTableCell.forTableColumn(colActSell));
 		colActIngrWS.setCellValueFactory(new PropertyValueFactory<>("selected"));
+		
+		game.getWorkShop().getSelectedIngr().addListener(new ListChangeListener<Product>() {
+
+			@Override
+			public void onChanged(Change<? extends Product> c) {
+				if(listViewRecipe.getSelectionModel().getSelectedItem()!=null)
+					labelResultWS.setText(game.getWorkShop().getResult(listViewRecipe.getSelectionModel().getSelectedItem()).toString());
+				
+			}
+		});
+		
+		//-----------------setup recipe listview--------------------
+		listViewRecipe.setCellFactory(new Callback<ListView<Recipe>, ListCell<Recipe>>() {
+			@Override //overrides the Listcell to display the Recipe in a custom way
+			public ListCell<Recipe> call(ListView<Recipe> param) {
+				return new ListCell<Recipe>() {
+					@Override
+			        public void updateItem(Recipe item, boolean empty) {
+			            super.updateItem(item, empty);
+			            if (item == null) {
+			            	setText(null);
+			            }else {
+			            	setText(item.getName()+" "+item.getIngredientList().keySet().toString());
+			            }
+			        }
+				};
+			}
+		});
+
+		listViewRecipe.getSelectionModel().selectedItemProperty().addListener(
+				new ChangeListener<Recipe>() {
+					@Override // populate the recipe details label and table in the workshop panel with the selected item
+					public void changed(ObservableValue<? extends Recipe> observable, Recipe oldValue, Recipe newValue) {
+						if(newValue!=null) {
+							labelSelectedRecipe.setText(newValue.getName() + ", " + newValue.getQuantity() + " kg");
+						ObservableList<String> recipeDetailList = FXCollections.observableArrayList();
+						for(Entry<String,Double> entry: newValue.getIngredientList().entrySet()) {
+							recipeDetailList.add(entry.getKey() + ", " + entry.getValue() + " kg");
+						}
+						listViewRecipeDetails.getItems().setAll(recipeDetailList);
+						
+						//update the result label to reflect the new selected recipe
+						labelResultWS.setText(game.getWorkShop().getResult(newValue).toString());
+						
+						}
+						
+					}
+				});
+
 
 	}
+	
+	
 	
 	/**
 	 * updates the workShop panel after it has been set up to show changed data
@@ -540,6 +604,9 @@ public class Engine {
 		game.getWorkShop().copyInventory(game.getInventory());
 		updateTreeItemRoot(tableInvWS.getRoot(), game.getWorkShop(), game.getShop());
 		listenForSelection(tableInvWS.getRoot(), game.getWorkShop().getSelectedIngr());
+		
+		listViewRecipe.getItems().setAll(game.getWorkShop().getRecipeBook("Kitchen").getRecipeList().values());
+		//listViewRecipe.setItems(.toArray());
 	}
 	
 	/**

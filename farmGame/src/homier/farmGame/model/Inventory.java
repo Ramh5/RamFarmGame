@@ -72,7 +72,7 @@ public class Inventory {
 		
 		for(int i=0; i<currList.size();i++){
 			Product elem = currList.get(i);
-			if(product.getFresh()==elem.getFresh()){
+			if(product.getFresh()==elem.getFresh()){//TODO need to check for Qual also for adding products
 				elem.setQty(product.getQty()+elem.getQty());
 				return;
 			} 

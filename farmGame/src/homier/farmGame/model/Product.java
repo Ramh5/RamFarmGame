@@ -94,4 +94,21 @@ public class Product{
 	public void updateSpoil(ProductData prodData, int day){
 		setSpoilQty((getQty()*Tools.interpolateMap(prodData.getSpoilMap(getName()),getFresh()+day)));
 	}
+	
+	/**
+	 * adds a product to a product and averages fresh and qual (does not update spoil, price)
+	 * @param prod
+	 */
+	public void add(Product prod) {
+		double newQty = getQty()+prod.getQty();
+		setFresh((int)((getFresh()*getQty()+prod.getFresh()*prod.getQty())/newQty));
+		setQual((int)((getQual()*getQty()+prod.getQual()*prod.getQty())/newQty));
+		setQty(newQty);
+	}
+	
+	@Override
+	public String toString() {
+		return getName() +" | "+ getQty() + " kg\t " + "F: " + getFresh() + "\tQ: "+ getQual() + "|" ;
+		
+	}
 }

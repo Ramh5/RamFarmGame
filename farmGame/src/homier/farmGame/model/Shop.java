@@ -26,10 +26,13 @@ public class Shop extends Inventory {
 		addProd(new Product("Carrots",10,10,15));
 		addProd(new Product("Eggs",5,1,80));
 		addProd(new Product("Eggs",5,10,15));
+		addProd(new Product("Onions",5,10,50));
+		addProd(new Product("Onions",5,12,15));
 		basePrice = new HashMap<String, Double>();
 		basePrice.put("Wheat", 1.99);
 		basePrice.put("Carrots", 2.50);
 		basePrice.put("Eggs", 3.2);
+		basePrice.put("Onions", 1.2);
 		freshMod = Tools.buildTreeMap(new double[][]{{1,1},{20,.75},{50,.2}});
 		qualMod = Tools.buildTreeMap(new double[][]{{1,.1},{50,.5},{100,1}});
 	}
