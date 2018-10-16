@@ -85,7 +85,7 @@ public class Product{
 	 */
 	public void updatePrice(Shop shop){
 		
-		double newPrice = shop.getBasePrice().get(name.get());
+		double newPrice = shop.getBasePrice(name.get());
 		newPrice *= Tools.interpolateMap(shop.getFreshMod(), fresh.get());
 		newPrice *= Tools.interpolateMap(shop.getQualMod(), qual.get());
 		price.set(newPrice);
@@ -108,7 +108,8 @@ public class Product{
 	
 	@Override
 	public String toString() {
-		return getName() +" | "+ getQty() + " kg\t " + "F: " + getFresh() + "\tQ: "+ getQual() + "|" ;
+		return getName() +" | "+ getQty() + " kg  F: " + getFresh() + "  Q: "+ getQual() 
+			+ "  Spoil: " +  String.format("%.2f kg  Price: %.2f", getSpoilQty(), getPrice())+"$ |" ;
 		
 	}
 }

@@ -13,6 +13,11 @@ public class WorkShop extends Inventory {
 	
 	private HashMap<String,RecipeBook> workShopRecipeList = new HashMap<String, RecipeBook>();
 	private final ObservableList<Product> selectedIngr = FXCollections.observableArrayList();
+	private ArrayList<Product> ingrToBeUsed = new ArrayList<Product>();
+	private Product result = new Product("EMPTY",0,0,0);
+	private FarmTask task = new FarmTask();
+	
+	
 	
 	public WorkShop() {
 		super();
@@ -20,22 +25,20 @@ public class WorkShop extends Inventory {
 	}
 	
 	/**
-	 * Calculate the result of the selected recipe given the selected ingredients
+	 * Calculate and sets the result of the selected recipe given the selected ingredients
 	 * @param recipe : the selected recipe for which we want to calculate the result
-	 * @return the product resulting in the action (ex the cooked meal)
+	 * 
+	 * 
 	 */
-	public Product getResult(Recipe recipe) {
+	public void calculateResult(Recipe recipe) {
 		HashMap<String, Double> availProdFactor = new HashMap<String, Double>(recipe.getIngredientList());
 		for(Entry<String,Double> entry: availProdFactor.entrySet()) {
 			entry.setValue(0.0);
 		}
-		//availProdFactor.forEach((k,v)->v=0.0);
 		
 		ArrayList<Product> selectedIngrCopy = new ArrayList<>(selectedIngr);
 		
-		ArrayList<Product> ingrToBeUsed = new ArrayList<Product>();
-		
-		Product result = new Product(recipe.getName(), 0, 0, 0);
+		result=new Product(recipe.getName(),0,0,0);
 		
 		//make a map of ratios to determine the limfactor ingredient
 		for(Product prod:selectedIngr) {
@@ -43,7 +46,6 @@ public class WorkShop extends Inventory {
 			Double qtyNeeded = recipe.getIngredientList().get(name);
 			if(qtyNeeded!=null) {
 				availProdFactor.put(name, prod.getQty()/qtyNeeded+availProdFactor.get(name));
-				System.out.println(qtyNeeded);
 			}
 		}
 		
@@ -52,12 +54,12 @@ public class WorkShop extends Inventory {
 		double limFactor=0;
 		
 		for (Entry<String,Double> entry : availProdFactor.entrySet()) {
-			System.out.println(entry.getKey() + " " + entry.getValue());
+			
 			if(limIngr=="") {
-				System.out.println(limFactor);
+			
 				limIngr=entry.getKey();
 				limFactor=entry.getValue();
-				System.out.println(limFactor);
+				
 			}	
 			if(entry.getValue()<limFactor) {
 				limIngr=entry.getKey();
@@ -65,11 +67,10 @@ public class WorkShop extends Inventory {
 			}
 		}
 		
-		System.out.println(limFactor);
 		//use the limFactor to make the list of ingredients to be used with priority to 
 		//less fresh ingredients
 		if(limFactor==0) {
-			return result;
+			return;
 		}
 		
 		for(Entry<String,Double> entry : recipe.getIngredientList().entrySet()) {
@@ -88,18 +89,17 @@ public class WorkShop extends Inventory {
 						}
 					}
 				}
+				selectedIngrCopy.remove(leastFreshProd);
 				
+				leastFreshProd = new Product(leastFreshProd); // copy to not alter the displayed list
 				leastFreshProd.setQty(Math.min(limFactor*qtyNeeded-ingrProd.getQty(), leastFreshProd.getQty()));
 				ingrProd.add(leastFreshProd);
 
-				selectedIngrCopy.remove(leastFreshProd);
-				
 			}
 
 			ingrToBeUsed.add(ingrProd);
 		}
 
-		
 		//use the "list of ingredients to be used" to make the average fresh and qual result for the crafted product 
 		double totIngrQty = 0;
 		int totFresh = 0;
@@ -110,16 +110,28 @@ public class WorkShop extends Inventory {
 			totQual += prod.getQty()*prod.getQual();
 		}
 		
-		//TODO implement the crafting, update price, spoil, fix workshop inventory table getting deselected when closing the workshop		
 		result.setQty(recipe.getQuantity()*limFactor);
-		
 		result.setFresh((int)(totFresh/totIngrQty));
-		
 		result.setQual((int)(totQual/totIngrQty));
+		result.updateSpoil(getProdData(), 0);
 		
-		return result;
+		//set the energy and time cost for this task
+		task.setEnergyCost(20*limFactor);
+		task.setTimeCost((int)(10*limFactor));
 	}
 	
+	public void startTask(Employee employee,Inventory gameInv, double startedAt) {
+		employee.setTask(task); // TODO make the task do something after it completes, update UI as soon as employe tasked
+		task.startTask(startedAt);
+		
+		for(Product prod:ingrToBeUsed) {
+			System.out.println(prod);
+			prod.setQty(-prod.getQty());
+			gameInv.addProd(prod);
+		}
+		ingrToBeUsed.clear();
+		
+	}
 	public ObservableList<Product> getSelectedIngr(){
 		return selectedIngr;
 	}
@@ -131,7 +143,14 @@ public class WorkShop extends Inventory {
 	public String[] getWSList(){
 		return (String[]) workShopRecipeList.keySet().toArray();
 	}
-
+	
+	public Product getResult() {
+		return result;
+	}
+	
+	public FarmTask getTask() {
+		return task;
+	}
 	/**
 	 * Copies an inventory data to fill the WorkShop inventory data with copies of each products
 	 * @param inventory : the inventory to be copied into the workshop data

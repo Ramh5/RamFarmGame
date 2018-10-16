@@ -23,6 +23,7 @@ public class ProductData {
 	
 	public ProductData(){
 		spoilMapList = new HashMap<String, TreeMap<Double,Double>>();
+		spoilMapList.put("default",Tools.buildTreeMap(cerealSpoilRate));
 		spoilMapList.put("Wheat",Tools.buildTreeMap(cerealSpoilRate)); //TODO Balance: specific spoil for each type of product
 		spoilMapList.put("Onions",Tools.buildTreeMap(cerealSpoilRate));
 		spoilMapList.put("Carrots",Tools.buildTreeMap(cerealSpoilRate));
@@ -32,7 +33,8 @@ public class ProductData {
 	
 	
 	public TreeMap<Double,Double> getSpoilMap(String name){
-		return spoilMapList.get(name);
+		
+		return spoilMapList.get(name)==null? spoilMapList.get("default"):spoilMapList.get(name);
 	}
 	
 	//spoil list databases

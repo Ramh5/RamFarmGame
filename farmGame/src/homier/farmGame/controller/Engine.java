@@ -30,7 +30,9 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.SelectionModel;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -58,7 +60,7 @@ import javafx.util.Callback;
 public class Engine {
 
 	@FXML private GridPane gameGridPane;
-	//@FXML private Button closeShopButton, cancelTransactionButton, buyButton, sellButton;
+	@FXML private Button actionWSbutton;//closeShopButton, cancelTransactionButton, buyButton, sellButton;
 	@FXML private ToggleButton pauseButton, openShopButton, openWSbutton;
 	@FXML private VBox mouseOverPanel;
 	@FXML private TextArea leftTextArea;
@@ -235,55 +237,6 @@ public class Engine {
 	}
 
 	@FXML
-	private void buyButtonAction(ActionEvent event){
-		game.getInventory().addMoney(-Double.valueOf(buyTotalLabel.getText()));
-		for(Product prod:tableBuy.getItems() ){
-			game.getInventory().addProd(new Product(prod));
-			prod.setQty(-prod.getQty());
-			game.getShop().addProd(new Product(prod));
-		}
-		tableBuy.getItems().clear();
-		buyTotalLabel.setText(String.format("%.2f", 0.0));
-		
-		updateShopPanel();
-		unselectTreeTable(tableShop.getRoot());	
-	}
-	
-	@FXML
-	private void sellButtonAction(ActionEvent event){
-		game.getInventory().addMoney(Double.valueOf(sellTotalLabel.getText()));
-		for(Product prod:tableSell.getItems() ){
-			game.getShop().addProd(new Product(prod));
-			prod.setQty(-prod.getQty());
-			game.getInventory().addProd(new Product(prod));
-		}
-		tableSell.getItems().clear();
-		sellTotalLabel.setText(String.format("%.2f", 0.0));
-		updateShopPanel();
-		unselectTreeTable(tableInv.getRoot());
-	}
-	
-	@FXML
-	private void cancelTransactionButtonAction(ActionEvent event){
-		tableBuy.getItems().clear();
-		tableSell.getItems().clear();
-		sellTotalLabel.setText(String.format("%.2f", 0.0));
-		buyTotalLabel.setText(String.format("%.2f", 0.0));
-		unselectTreeTable(tableInv.getRoot());
-		unselectTreeTable(tableShop.getRoot());
-	}
-	
-	@FXML
-	private void actionWSbuttonAction(ActionEvent event) {
-		//TODO handle action workshop button
-	}
-	
-	@FXML 
-	private void cancelWSbuttonAction(ActionEvent event) {
-		//TODO handle cancel workshop button
-	}
-	
-	@FXML
 	private void closeWSbuttonAction(ActionEvent event) {
 		if(!openShopButton.isSelected()) {
 			if (!manPaused) {
@@ -316,6 +269,62 @@ public class Engine {
 		}
 		updatePauseButton();
 	}
+	@FXML
+	private void buyButtonAction(ActionEvent event){
+		game.getInventory().addMoney(-Double.valueOf(buyTotalLabel.getText()));
+		for(Product prod:tableBuy.getItems() ){
+			game.getInventory().addProd(new Product(prod));
+			prod.setQty(-prod.getQty());
+			game.getShop().addProd(new Product(prod));
+		}
+		tableBuy.getItems().clear();
+		buyTotalLabel.setText(String.format("%.2f", 0.0));
+		
+		updateShopPanel();
+		updateWSPanel();
+		unselectTreeTable(tableShop.getRoot());	
+	}
+	
+	@FXML
+	private void sellButtonAction(ActionEvent event){
+		game.getInventory().addMoney(Double.valueOf(sellTotalLabel.getText()));
+		for(Product prod:tableSell.getItems() ){
+			game.getShop().addProd(new Product(prod));
+			prod.setQty(-prod.getQty());
+			game.getInventory().addProd(new Product(prod));
+		}
+		tableSell.getItems().clear();
+		sellTotalLabel.setText(String.format("%.2f", 0.0));
+		updateShopPanel();
+		updateWSPanel();
+		unselectTreeTable(tableInv.getRoot());
+	}
+	
+	@FXML
+	private void cancelTransactionButtonAction(ActionEvent event){
+		tableBuy.getItems().clear();
+		tableSell.getItems().clear();
+		sellTotalLabel.setText(String.format("%.2f", 0.0));
+		buyTotalLabel.setText(String.format("%.2f", 0.0));
+		unselectTreeTable(tableInv.getRoot());
+		unselectTreeTable(tableShop.getRoot());
+	}
+	
+	@FXML
+	private void actionWSbuttonAction(ActionEvent event) {
+		game.getWorkShop().getResult();
+		game.getWorkShop().startTask(getActiveEmployee(),game.getInventory(),gameClock.getTotalSeconds());
+		updateShopPanel();
+		updateWSPanel();
+	}
+	
+	@FXML 
+	private void cancelWSbuttonAction(ActionEvent event) {
+		unselectTreeTable(tableInvWS.getRoot());
+		updateWSResultLabel();
+	}
+	
+	
 	
 	//SETTERS -- GETTERS
 	public boolean getPaused() {
@@ -547,10 +556,9 @@ public class Engine {
 		game.getWorkShop().getSelectedIngr().addListener(new ListChangeListener<Product>() {
 
 			@Override
-			public void onChanged(Change<? extends Product> c) {
-				if(listViewRecipe.getSelectionModel().getSelectedItem()!=null)
-					labelResultWS.setText(game.getWorkShop().getResult(listViewRecipe.getSelectionModel().getSelectedItem()).toString());
-				
+			public void onChanged(Change<? extends Product> c) {			
+					updateWSResultLabel();
+
 			}
 		});
 		
@@ -578,34 +586,57 @@ public class Engine {
 					public void changed(ObservableValue<? extends Recipe> observable, Recipe oldValue, Recipe newValue) {
 						if(newValue!=null) {
 							labelSelectedRecipe.setText(newValue.getName() + ", " + newValue.getQuantity() + " kg");
-						ObservableList<String> recipeDetailList = FXCollections.observableArrayList();
-						for(Entry<String,Double> entry: newValue.getIngredientList().entrySet()) {
-							recipeDetailList.add(entry.getKey() + ", " + entry.getValue() + " kg");
+							ObservableList<String> recipeDetailList = FXCollections.observableArrayList();
+							for(Entry<String,Double> entry: newValue.getIngredientList().entrySet()) {
+								recipeDetailList.add(entry.getKey() + ", " + entry.getValue() + " kg");
+							}
+							listViewRecipeDetails.getItems().setAll(recipeDetailList);
+							
+							
 						}
-						listViewRecipeDetails.getItems().setAll(recipeDetailList);
-						
-						//update the result label to reflect the new selected recipe
-						labelResultWS.setText(game.getWorkShop().getResult(newValue).toString());
-						
-						}
-						
+						updateWSResultLabel();
 					}
 				});
 
 
 	}
 	
-	
+	/**
+	 * update the result label to reflect the selected recipe and selected ingredients
+	 * @return the result (or anticipated result) of the craft
+	 */
+	public void updateWSResultLabel(){
+		Product result = game.getWorkShop().getResult();
+		Employee empl = getActiveEmployee();
+		if(listViewRecipe.getSelectionModel().getSelectedItem()!=null) {
+			game.getWorkShop().calculateResult(listViewRecipe.getSelectionModel().getSelectedItem());
+			result=game.getWorkShop().getResult();
+			result.updatePrice(game.getShop());			
+		}
+		if(result.getQty()==0 || empl.isWorking()|| empl.getEnergy()<empl.getTask().getEnergyCost()) {
+			actionWSbutton.setDisable(true);
+		}else {
+			actionWSbutton.setDisable(false);
+		}
+		labelResultWS.setText(result.toString()); 
+	}
+
 	
 	/**
 	 * updates the workShop panel after it has been set up to show changed data
 	 */
 	private void updateWSPanel() {
+		
 		game.getWorkShop().copyInventory(game.getInventory());
+		game.getWorkShop().getSelectedIngr().clear();
+		
 		updateTreeItemRoot(tableInvWS.getRoot(), game.getWorkShop(), game.getShop());
 		listenForSelection(tableInvWS.getRoot(), game.getWorkShop().getSelectedIngr());
 		
+		Recipe selectedRecipe = listViewRecipe.getSelectionModel().getSelectedItem();
 		listViewRecipe.getItems().setAll(game.getWorkShop().getRecipeBook("Kitchen").getRecipeList().values());
+		listViewRecipe.getSelectionModel().select(selectedRecipe);
+		updateWSResultLabel();
 		//listViewRecipe.setItems(.toArray());
 	}
 	
@@ -747,6 +778,8 @@ public class Engine {
 			Shop shop = game.getShop();
 			buyTotalLabel.setText(String.format("%.2f", shop.totalPrice(shop.getDataBuying())));
 			sellTotalLabel.setText(String.format("%.2f", shop.totalPrice(shop.getDataSelling())));
+			
+			updateWSResultLabel();
 		};
 	}
 	

@@ -33,14 +33,23 @@ public class Shop extends Inventory {
 		basePrice.put("Carrots", 2.50);
 		basePrice.put("Eggs", 3.2);
 		basePrice.put("Onions", 1.2);
+		basePrice.put("Soupe", 4.5);
+		basePrice.put("Omelette", 4.5);
 		freshMod = Tools.buildTreeMap(new double[][]{{1,1},{20,.75},{50,.2}});
-		qualMod = Tools.buildTreeMap(new double[][]{{1,.1},{50,.5},{100,1}});
+		qualMod = Tools.buildTreeMap(new double[][]{{0,0},{50,.5},{100,1}});
 	}
 
 	public HashMap<String, Double> getBasePrice() {
 		return basePrice;
 	}
-
+	 /**
+	  * gets the base price of a product returning 0 if not in the database
+	  * @param name : the name of the product
+	  * @return 0 if name is not in the database
+	  */
+	public double getBasePrice(String name) {
+		return basePrice.get(name)==null?0:basePrice.get(name);
+	}
 
 	public TreeMap<Double, Double> getFreshMod() {
 		return freshMod;

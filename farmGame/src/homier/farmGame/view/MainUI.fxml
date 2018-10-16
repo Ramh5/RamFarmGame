@@ -83,7 +83,7 @@
                   </Label>
                   <Label fx:id="labelResultWS" layoutX="14.0" layoutY="844.0" text="result name, qty, fresh, qual, price">
                      <font>
-                        <Font size="20.0" />
+                        <Font size="16.0" />
                      </font>
                   </Label>
                </children>

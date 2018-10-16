@@ -16,7 +16,7 @@ public class Inventory {
 		money = 1000;
 		data=new HashMap<>();
 		averageData=new HashMap<>();
-		prodData = new ProductData();
+		prodData = new ProductData();//TODO productData.getinstane to have just one instance of it accessible everywhere
 	}
 	
 	/**
@@ -80,18 +80,18 @@ public class Inventory {
 		currList.add(product);
 	}
 
-/**
- *  updates the data of this inventory by applying the spoil, increasing freshness
- *  NOTE: meant to be called once at the start of every day.
- */
+	/**
+	 *  updates the data of this inventory by applying the spoil, increasing freshness
+	 *  NOTE: meant to be called once at the start of every day.
+	 */
 	public void update() {
-		
+
 		spoilAndAge();
 		calculateSpoil(0);
 		clean();
-		
+
 	}
-	
+
 	/**
 	 * calculate and updates the spoilQty property of every product in the list
 	 * @param day, 0 if we want to calculate today spoil, 1 to calculate tomorrow spoil
@@ -180,6 +180,10 @@ public class Inventory {
 
 	public HashMap<String, ArrayList<Product>> getData(){
 		return data;
+	}
+	
+	public ProductData getProdData() {
+		return prodData;
 	}
 	
 }

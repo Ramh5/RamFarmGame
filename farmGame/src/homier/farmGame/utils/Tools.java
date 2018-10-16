@@ -28,7 +28,7 @@ public class Tools {
 		double y1;
 		double y2;
 		
-		if(map.containsKey(x)){//if x is an exact key valu in the map
+		if(map.containsKey(x)){//if x is an exact key in the map
 			return map.get(x);	
 		}
 		

@@ -26,7 +26,9 @@ public class FarmTask {
 		isComplete.set(false);
 	}
 
-	
+	public void startTask(double startedAt) {
+		this.startedAt=startedAt;
+	}
 
 	public String getName() {
 		return name;
@@ -51,7 +53,7 @@ public class FarmTask {
 	}
 
 	/**
-	 * 
+	 * This method must be called in order for the task to complete(isComplete to turn true) when time is up.
 	 * @param currentTime : game clock time in seconds
 	 * @return the progress of the task from 0 to 1 and sets 
 	 * the isComplete booleanProperty of the task to true when progress reaches 1
@@ -64,6 +66,19 @@ public class FarmTask {
 	
 	public BooleanProperty isCompleteProperty(){
 		return isComplete;
+	}
+
+	public void setName(String name) {
+		this.name=name;
+	}
+	
+	public void setEnergyCost(double energyCost) {
+		this.energyCost=energyCost;
+		
+	}
+
+	public void setTimeCost(int timeCost) {
+		this.timeCost=timeCost;
 	}
 	
 }
