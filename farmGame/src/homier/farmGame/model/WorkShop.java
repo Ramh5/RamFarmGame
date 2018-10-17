@@ -118,14 +118,14 @@ public class WorkShop extends Inventory {
 		//set the energy and time cost for this task
 		task.setEnergyCost(20*limFactor);
 		task.setTimeCost((int)(10*limFactor));
+		task.setName("Cook");//TODO set the task name depending on the workshop selected
 	}
 	
 	public void startTask(Employee employee,Inventory gameInv, double startedAt) {
-		employee.setTask(task); // TODO make the task do something after it completes, update UI as soon as employe tasked
+		employee.setTask(task); 
 		task.startTask(startedAt);
 		
 		for(Product prod:ingrToBeUsed) {
-			System.out.println(prod);
 			prod.setQty(-prod.getQty());
 			gameInv.addProd(prod);
 		}

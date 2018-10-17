@@ -30,7 +30,7 @@ public class Game {
 			tileList.set(i, new FarmPlot("FARM_PLOT", 0, 0));
 		}
 		tileList.set(40, new BuildingTile("HOUSE_TILE"));
-		employees = new Employee[]{new Employee("Ram",0),new Employee("EMPTY",200)};
+		employees = new Employee[]{new Employee("Ram",0,1000),new Employee("EMPTY",200,900)};
 		inventory.addProd(new Product("Wheat",12.0220,5,1));
 		inventory.addProd(new Product("Wheat",12,6,1));
 		inventory.addProd(new Product("Wheat",12,1,1));

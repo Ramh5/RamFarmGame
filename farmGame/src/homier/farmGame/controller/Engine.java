@@ -9,6 +9,7 @@ import homier.farmGame.model.Inventory;
 import homier.farmGame.model.Product;
 import homier.farmGame.model.Recipe;
 import homier.farmGame.model.Shop;
+import homier.farmGame.model.tile.BuildingTile;
 import homier.farmGame.utils.FarmTimeUnits;
 import homier.farmGame.utils.GameClock;
 import homier.farmGame.view.Renderer;
@@ -155,6 +156,8 @@ public class Engine {
 		 //employee choice
 		employeeChoice.setOnAction(e->{
 			energyLabel.textProperty().bind(getActiveEmployee().energyProperty().asString(" Energy: %.0f  "));
+			taskProgress1.setProgress(getActiveEmployee().getTask().getTaskProgress(gameClock.getTotalSeconds()));
+			taskName1.setText(getActiveEmployee().getTask().getName());
 		});
 		employeeChoice.getItems().addAll(game.getEmployees());
 		employeeChoice.getSelectionModel().select(0);
@@ -312,8 +315,19 @@ public class Engine {
 	
 	@FXML
 	private void actionWSbuttonAction(ActionEvent event) {
-		game.getWorkShop().getResult();
+		Product result = new Product(game.getWorkShop().getResult());
 		game.getWorkShop().startTask(getActiveEmployee(),game.getInventory(),gameClock.getTotalSeconds());
+		getActiveEmployee().getTask().isCompleteProperty().addListener((obs, old, val)->{
+			if(val){
+				System.out.println(result);
+		    game.getInventory().addProd(result);     
+		    getActiveEmployee().setIsWorking(false);	
+            }
+		});
+		
+		taskProgress1.setProgress(getActiveEmployee().getTask().getTaskProgress(gameClock.getTotalSeconds()));
+		taskName1.setText(getActiveEmployee().getTask().getName());
+		
 		updateShopPanel();
 		updateWSPanel();
 	}

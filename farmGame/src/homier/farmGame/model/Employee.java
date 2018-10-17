@@ -12,11 +12,10 @@ public class Employee {
 	private FarmTask currentTask;
 	
 	
-	public Employee(String name, double salary) {
+	public Employee(String name, double salary, double energy) {
 		this.name=name;
-		energy=new SimpleDoubleProperty(1000);
+		this.energy=new SimpleDoubleProperty(energy);
 		isWorking=false;
-		
 		currentTask = new FarmTask();
 	}
 
