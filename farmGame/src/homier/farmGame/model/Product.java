@@ -108,7 +108,7 @@ public class Product{
 	
 	@Override
 	public String toString() {
-		return getName() +" | "+ getQty() + " kg  F: " + getFresh() + "  Q: "+ getQual() 
+		return getName() +" | "+ String.format("%.2f kg  F: ", getQty())  + getFresh() + "  Q: "+ getQual() 
 			+ "  Spoil: " +  String.format("%.2f kg  Price: %.2f", getSpoilQty(), getPrice())+"$ |" ;
 		
 	}

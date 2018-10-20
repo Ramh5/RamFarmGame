@@ -155,6 +155,7 @@ public class Engine {
 		
 		 //employee choice
 		employeeChoice.setOnAction(e->{
+			updateWSResultLabel();//to update the action button disable or not with the new employee
 			energyLabel.textProperty().bind(getActiveEmployee().energyProperty().asString(" Energy: %.0f  "));
 			taskProgress1.setProgress(getActiveEmployee().getTask().getTaskProgress(gameClock.getTotalSeconds()));
 			taskName1.setText(getActiveEmployee().getTask().getName());
@@ -312,22 +313,16 @@ public class Engine {
 		unselectTreeTable(tableInv.getRoot());
 		unselectTreeTable(tableShop.getRoot());
 	}
-	
+	/**
+	 * creates the task for crafting a recipe in the workshop 
+	 * 
+	 * @param event
+	 */
 	@FXML
 	private void actionWSbuttonAction(ActionEvent event) {
-		Product result = new Product(game.getWorkShop().getResult());
 		game.getWorkShop().startTask(getActiveEmployee(),game.getInventory(),gameClock.getTotalSeconds());
-		getActiveEmployee().getTask().isCompleteProperty().addListener((obs, old, val)->{
-			if(val){
-				System.out.println(result);
-		    game.getInventory().addProd(result);     
-		    getActiveEmployee().setIsWorking(false);	
-            }
-		});
-		
 		taskProgress1.setProgress(getActiveEmployee().getTask().getTaskProgress(gameClock.getTotalSeconds()));
 		taskName1.setText(getActiveEmployee().getTask().getName());
-		
 		updateShopPanel();
 		updateWSPanel();
 	}
@@ -393,7 +388,7 @@ public class Engine {
 	private void setupShop(){
 		final PseudoClass topLevelTTVPseudoClass = PseudoClass.getPseudoClass("top-level-treetableview");
 		
-		//------------inventory table------------- //TODO setup spoil column (negative and red)
+		//------------inventory table------------- 
 		TreeItem<Product> rootInv = new TreeItem<>(new Product("empty", 0, 0, 0));
 		tableInv.setPlaceholder(new Text("Empty Inventory"));
 		tableInv.setRoot(rootInv);
@@ -531,7 +526,7 @@ public class Engine {
 		colFreshInvWS.setCellValueFactory(new TreeItemPropertyValueFactory<>("fresh"));
 		colQualInvWS.setCellValueFactory(new TreeItemPropertyValueFactory<>("qual"));
 		colPriceInvWS.setCellValueFactory(cellData ->Bindings.format("%.2f", cellData.getValue().getValue().priceProperty()));
-		colActInvWS.setCellFactory(column ->{ //TODO show the state of the checkbox depending on the children selected
+		colActInvWS.setCellFactory(column ->{ 
 			return new CheckBoxTreeTableCell<Product, Boolean>(){
 				@Override
 				public void updateItem(Boolean item, boolean empty) {

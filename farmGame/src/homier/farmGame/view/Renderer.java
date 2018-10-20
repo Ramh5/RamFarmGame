@@ -134,29 +134,10 @@ public class Renderer {
 						newImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 							public void handle(MouseEvent event) {
 								if (event.getButton() == MouseButton.PRIMARY) {
-									b1.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<100);
-									b1.setText("Omelette");
+									
+									b1.setText("Cuisine");
 									b1.setOnAction(e -> {	
-										//TODO prevent generating cooking task if not enough items
-										FarmTask cookOmelette = new FarmTask("Cook", 100, 40, gameClock.getTotalSeconds());
-										activeEmployee.setTask(cookOmelette);
-										activeEmployee.spendEnergy(cookOmelette.getEnergyCost());
-										//System.out.println("inside b1 OnAction of house_tile   tile: "+tile);
-										cookOmelette.isCompleteProperty().addListener(new ChangeListener<Boolean>() {
-										
-								            @Override
-								            public void changed(ObservableValue<? extends Boolean> obs, Boolean old, Boolean val) {
-								              if(val){
-								          
-								            	  ((BuildingTile) tile).cook("Omelette", inventory );
-								            	  engine.getLeftTextArea().setText(engine.getGame().getInventory().toString());
-								            	  activeEmployee.setIsWorking(false);
-								            	  //System.out.println("inside task changelistener cooking omelette tile: "+tile);
-								            	
-								              }
-								            }
-								        });//changelistener on the task isComplete boolean property
-										
+										//TODO open the workshop to cuisine
 									});
 									popup.show(newImageView, event.getScreenX(), event.getScreenY());
 								}

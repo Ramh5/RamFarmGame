@@ -121,17 +121,34 @@ public class WorkShop extends Inventory {
 		task.setName("Cook");//TODO set the task name depending on the workshop selected
 	}
 	
+	/**
+	 * Starts a task, removes ingredients from inventory
+	 * @param employee  employee to be tasked
+	 * @param gameInv  inventory to be used for ingredients and result
+	 * @param startedAt  the time in game seconds the tasks starts
+	 */
 	public void startTask(Employee employee,Inventory gameInv, double startedAt) {
 		employee.setTask(task); 
 		task.startTask(startedAt);
 		
+		//remove used ingredients from the inventory
 		for(Product prod:ingrToBeUsed) {
 			prod.setQty(-prod.getQty());
 			gameInv.addProd(prod);
 		}
 		ingrToBeUsed.clear();
+		//add the listener to to isComplete of the task to add the result of the crafting
+		//to the inventory when completed
+		Product resultCopy = new Product(result);
+		employee.getTask().isCompleteProperty().addListener((obs, old, val)->{
+			if(val){
+		    gameInv.addProd(resultCopy);     
+		    employee.setIsWorking(false);	
+            }
+		});
 		
 	}
+	
 	public ObservableList<Product> getSelectedIngr(){
 		return selectedIngr;
 	}
