@@ -643,7 +643,7 @@ public class Engine {
 		listenForSelection(tableInvWS.getRoot(), game.getWorkShop().getSelectedIngr());
 		
 		Recipe selectedRecipe = listViewRecipe.getSelectionModel().getSelectedItem();
-		listViewRecipe.getItems().setAll(game.getWorkShop().getRecipeBook("Kitchen").getRecipeList().values());
+		listViewRecipe.getItems().setAll(game.getWorkShop().getRecipeList("Cuisine").values());
 		listViewRecipe.getSelectionModel().select(selectedRecipe);
 		updateWSResultLabel();
 		//listViewRecipe.setItems(.toArray());

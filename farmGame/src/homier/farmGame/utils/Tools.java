@@ -6,6 +6,8 @@ import java.util.TreeMap;
 
 public class Tools {
 
+	
+	
 	public static TreeMap<Double,Double> buildTreeMap(double[][] listToMap){
 		TreeMap<Double,Double> map = new TreeMap<Double,Double>();
 		for(double[] elem:listToMap){

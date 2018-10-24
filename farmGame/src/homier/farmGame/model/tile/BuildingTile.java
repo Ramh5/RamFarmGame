@@ -21,30 +21,6 @@ public class BuildingTile extends Tile{
 		recipeBook=new RecipeBook();
 	}
 
-	public void cook(String recipeName, Inventory inventory){
-		Recipe recipe = recipeBook.getRecipeList().get(recipeName);
-		//generate default freshness request
-		int[] freshReqList = new int[recipe.getIngredientList().size()];
-		Arrays.fill(freshReqList, 10);
-		
-		int[] result = inventory.removeList(recipe.getIngredientList(), freshReqList);
-		if(result[0]==0) {
-			return;
-		}
-		//average the freshness of every ingredient
-		double averageFresh = 0;
-		double total = 0;
-		int i=0;
-		for(Entry<String, Double> entry:recipe.getIngredientList().entrySet()){
-			averageFresh += entry.getValue()*result[i];
-			total += entry.getValue();	
-			i++;
-		}
-		averageFresh/=total;
-		inventory.addProd(new Product(recipeName, recipe.getQuantity(), (int)averageFresh, 1) );
-		
-	
-	}
 	
 	@Override
 	public void update(double dTime, Weather wx) {

@@ -5,13 +5,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class WorkShop extends Inventory {
 	
-	private HashMap<String,RecipeBook> workShopRecipeList = new HashMap<String, RecipeBook>();
+	private RecipeBook recipeBook;
 	private final ObservableList<Product> selectedIngr = FXCollections.observableArrayList();
 	private ArrayList<Product> ingrToBeUsed = new ArrayList<Product>();
 	private Product result = new Product("EMPTY",0,0,0);
@@ -21,7 +22,12 @@ public class WorkShop extends Inventory {
 	
 	public WorkShop() {
 		super();
-		workShopRecipeList.put("Kitchen", new RecipeBook());//TODO create recipe lists from a database
+		recipeBook = new RecipeBook(getClass().getResource("/database/recipe_list.txt").getPath());
+		
+		
+		
+		//recipeBook = new RecipeBook("C:/Users/Ram/workspace/git/farmGame/farmGame/res/database/recipe_list.txt");
+		//recipeBook = new RecipeBook();
 	}
 	
 	/**
@@ -37,7 +43,7 @@ public class WorkShop extends Inventory {
 		}
 		
 		ArrayList<Product> selectedIngrCopy = new ArrayList<>(selectedIngr);
-		
+		ingrToBeUsed.clear();
 		result=new Product(recipe.getName(),0,0,0);
 		
 		//make a map of ratios to determine the limfactor ingredient
@@ -153,12 +159,21 @@ public class WorkShop extends Inventory {
 		return selectedIngr;
 	}
 	
-	public RecipeBook getRecipeBook(String workShopName) {
-		return workShopRecipeList.get(workShopName);
+	/**
+	 * 
+	 * @param workShopName
+	 * @return the recipes TreeMap of a particular workshop
+	 */
+	public TreeMap<String, Recipe> getRecipeList(String workShopName) {
+		return recipeBook.getRecipeList(workShopName);
 	}
 	
+	/**
+	 * 
+	 * @return the String array of all workshop names
+	 */
 	public String[] getWSList(){
-		return (String[]) workShopRecipeList.keySet().toArray();
+		return recipeBook.getWSList();
 	}
 	
 	public Product getResult() {

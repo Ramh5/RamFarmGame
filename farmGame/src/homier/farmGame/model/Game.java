@@ -31,17 +31,17 @@ public class Game {
 		}
 		tileList.set(40, new BuildingTile("HOUSE_TILE"));
 		employees = new Employee[]{new Employee("Ram",0,1000),new Employee("EMPTY",200,900)};
-		inventory.addProd(new Product("Wheat",12.0220,5,1));
-		inventory.addProd(new Product("Wheat",12,6,1));
-		inventory.addProd(new Product("Wheat",12,1,1));
-		inventory.addProd(new Product("Wheat",-2,5,1));
-		inventory.addProd(new Product("Wheat",1,6,1));
-		inventory.addProd(new Product("Carrots",15,2,80));
-		inventory.addProd(new Product("Carrots",10,6,50));
-		inventory.addProd(new Product("Eggs",15,6,50));
-		inventory.addProd(new Product("Eggs",14,14,80));
-		inventory.addProd(new Product("Eggs",25,24,80));
-		inventory.addProd(new Product("Onions",30,2,50));
+		inventory.addProd(new Product("Blé",12.0220,5,1));
+		inventory.addProd(new Product("Blé",12,6,1));
+		inventory.addProd(new Product("Blé",12,1,1));
+		inventory.addProd(new Product("Blé",-2,5,1));
+		inventory.addProd(new Product("Blé",1,6,1));
+		inventory.addProd(new Product("Carottes",15,2,80));
+		inventory.addProd(new Product("Carottes",10,6,50));
+		inventory.addProd(new Product("Oeufs",15,6,50));
+		inventory.addProd(new Product("Oeufs",14,14,80));
+		inventory.addProd(new Product("Oeufs",25,24,80));
+		inventory.addProd(new Product("Oignons",30,2,50));
 	
 		
 	}

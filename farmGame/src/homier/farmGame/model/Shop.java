@@ -20,21 +20,22 @@ public class Shop extends Inventory {
 	
 	public Shop(){
 		super();
-		addProd(new Product("Wheat",20,1,80));
-		addProd(new Product("Wheat",20,10,15));
-		addProd(new Product("Carrots",10,1,80));
-		addProd(new Product("Carrots",10,10,15));
-		addProd(new Product("Eggs",5,1,80));
-		addProd(new Product("Eggs",5,10,15));
-		addProd(new Product("Onions",5,10,50));
-		addProd(new Product("Onions",5,12,15));
+		addProd(new Product("Blé",20,1,80));
+		addProd(new Product("Blé",20,10,15));
+		addProd(new Product("Carottes",10,1,80));
+		addProd(new Product("Carottes",10,10,15));
+		addProd(new Product("Oeufs",5,1,80));
+		addProd(new Product("Oeufs",5,10,15));
+		addProd(new Product("Oignons",5,10,50));
+		addProd(new Product("Oignons",5,12,15));
 		basePrice = new HashMap<String, Double>();
-		basePrice.put("Wheat", 1.99);
-		basePrice.put("Carrots", 2.50);
-		basePrice.put("Eggs", 3.2);
-		basePrice.put("Onions", 1.2);
+		basePrice.put("Blé", 1.99);
+		basePrice.put("Carottes", 2.50);
+		basePrice.put("Oeufs", 3.2);
+		basePrice.put("Oignons", 1.2);
 		basePrice.put("Soupe", 4.5);
 		basePrice.put("Omelette", 4.5);
+		basePrice.put("Oeufs brouillés", 4.5);
 		freshMod = Tools.buildTreeMap(new double[][]{{1,1},{20,.75},{50,.2}});
 		qualMod = Tools.buildTreeMap(new double[][]{{0,0},{50,.5},{100,1}});
 	}
