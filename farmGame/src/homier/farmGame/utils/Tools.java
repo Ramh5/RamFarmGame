@@ -1,26 +1,57 @@
 package homier.farmGame.utils;
 
-import homier.farmGame.Game;
+
+import java.util.TreeMap;
+
 
 public class Tools {
 
-	public static String elapsedSecondsFormatter(double seconds){
-		//based on 5 minutes (300s) real time is 14 hours is 1 day, 12 days is 1 month, 12 months is one year
+	
+	
+	public static TreeMap<Double,Double> buildTreeMap(double[][] listToMap){
+		TreeMap<Double,Double> map = new TreeMap<Double,Double>();
+		for(double[] elem:listToMap){
+			map.put(elem[0], elem[1]);
+		}
 		
-		int years = (int)(seconds/Game.secondsInADay/12/12);
-		int months = (int)(seconds%(Game.secondsInADay*12*12)/Game.secondsInADay/12);
-		int days = (int)(seconds%(Game.secondsInADay*12)/Game.secondsInADay);
-		int hours = (int)(seconds%(Game.secondsInADay)/Game.secondsInADay*14);
+		return map;
+	}
+	/**
+	 * interpolates a TreeMap of double values given a double as an input 
+	 * @param map: a TreeMap of double
+	 * @param x: input
+	 * @return the y value that matches x
+	 */
+	public static double interpolateMap(TreeMap<Double,Double> map, double x){
 		
-		return  (days+1) +" "+ monthStr(months) +", " + (hours+6) + "h  |  " + "Annee: " + (years+1) ;
-				//years + " y " + months + " m " + days + " d " + (hours+6) + " h " + "  Real seconds: "+ (int)seconds;
+		double y;
+		double x1;
+		double x2;
+		double y1;
+		double y2;
+		
+		if(map.containsKey(x)){//if x is an exact key in the map
+			return map.get(x);	
+		}
+		
+		if(x<map.firstKey()){// if x is lower than the map, extrapolate
+			x1=map.firstKey();
+			x2=map.higherKey(map.firstKey());
+		}else if(x>map.lastKey()){//if x is bigger than the map, extrapolate
+			x1=map.lowerKey(map.lastKey());
+			x2=map.lastKey();
+		}else{
+			x1 =  map.floorKey(x);
+			x2 =  map.ceilingKey(x);
+		}
+		
+		y1 =  map.get(x1).doubleValue();
+		y2 =  map.get(x2).doubleValue();
+		y =  ((y2-y1)/((x2-x1)))*(x-x1)+y1;
+
+		return y;
 	}
 	
-	//helper method to get the month string from a month number
-	private static String monthStr(int monthNum){
-		String[] monthList = new String[]{"Jan","Fev","Mar","Avr","Mai","Jun","Jul","Aou","Sep","Oct","Nov","Dec"};
-		return monthList[monthNum];
-	}
 }
 
 
