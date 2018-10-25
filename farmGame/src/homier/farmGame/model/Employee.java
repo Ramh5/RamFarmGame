@@ -12,6 +12,7 @@ public class Employee {
 	private FarmTask currentTask;
 	
 	
+	
 	public Employee(String name, double salary, double energy) {
 		this.name=name;
 		this.energy=new SimpleDoubleProperty(energy);

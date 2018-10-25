@@ -1,7 +1,19 @@
 package homier.farmGame.controller;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Map.Entry;
+
+import org.hildan.fxgson.FxGson;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.stream.JsonReader;
 
 import homier.farmGame.model.Employee;
 import homier.farmGame.model.Game;
@@ -10,8 +22,12 @@ import homier.farmGame.model.Product;
 import homier.farmGame.model.Recipe;
 import homier.farmGame.model.Shop;
 import homier.farmGame.model.tile.BuildingTile;
+import homier.farmGame.model.tile.FarmPlot;
+import homier.farmGame.model.tile.ForestTile;
+import homier.farmGame.model.tile.Tile;
 import homier.farmGame.utils.FarmTimeUnits;
 import homier.farmGame.utils.GameClock;
+import homier.farmGame.utils.RuntimeTypeAdapterFactory;
 import homier.farmGame.view.Renderer;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -31,9 +47,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.SelectionModel;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -83,9 +97,9 @@ public class Engine {
 	@FXML private ListView<String>  listViewRecipeDetails;
 	@FXML private ListView<Recipe> listViewRecipe;
 
-	private Game game = new Game();
+	private Game game;
 	private Renderer renderer;
-	private GameClock gameClock;
+	
 	private boolean manPaused;
 	
 	
@@ -93,15 +107,15 @@ public class Engine {
 	
 	public void update(double dTime) {
 
-		gameClock.update(dTime);
-		clockLabel.setText(gameClock.toString());
+		game.getClock().update(dTime);
+		clockLabel.setText(game.getClock().toString());
 		
 		//if it is a new day, update the forecast
-		if(gameClock.isNewDay()){
-			game.getWxForcast().forcastNewDay(gameClock);
+		if(game.getClock().isNewDay()){
+			game.getWxForcast().forcastNewDay();
 			wxToday.setText("Today: "+game.getWxForcast().getToday().toString());
 			wxTomorrow.setText("Tomorrow: "+game.getWxForcast().getTomorrow().toString());
-			gameClock.setIsNewDay(false);
+			game.getClock().setIsNewDay(false);
 			//update the inventory, especially for spoiling every day
 			game.getInventory().update();
 			game.getShop().update();
@@ -112,12 +126,12 @@ public class Engine {
 		leftTextArea.setText(game.getInventory().toString());
 		//update energy and task name when task is in progress
 		
-		taskProgress1.setProgress(getActiveEmployee().getTask().getTaskProgress(gameClock.getTotalSeconds()));
+		taskProgress1.setProgress(getActiveEmployee().getTask().getTaskProgress(game.getClock().getTotalSeconds()));
 		taskName1.setText(getActiveEmployee().getTask().getName());
 		
 		//update each tile (only update the model, ie growth, yield)
 		for (int i = 0; i < game.getTileList().size(); i++) {
-			game.getTileList().get(i).update(dTime / gameClock.getSecondsInADay(),game.getWxForcast().getToday());
+			game.getTileList().get(i).update(dTime / game.getClock().getSecondsInADay(),game.getWxForcast().getToday());
 		}
 		
 		
@@ -130,16 +144,44 @@ public class Engine {
 	}
 
 	public void initialize() {
-
-		renderer = new Renderer(game.getTileList(), gameGridPane);
-		gameClock = new GameClock(300, 0);
-		gameClock.addTime(4*FarmTimeUnits.MONTH.seconds);
+		//game = new Game();
 		
-		game.getWxForcast().forcastNewDay(gameClock);
+		// Json testing
+		//-----------------------------------------------------------------
+		if (game==null){
+		final RuntimeTypeAdapterFactory<Tile> typeFactory = RuntimeTypeAdapterFactory  
+		        .of(Tile.class, "type") // Here you specify which is the parent class and what field particularizes the child class.
+		        .registerSubtype(ForestTile.class) 
+		        .registerSubtype(FarmPlot.class)
+		        .registerSubtype(BuildingTile.class);
+
+		// add the polymorphic specialization
+		final Gson gson = FxGson.fullBuilder().registerTypeAdapterFactory(typeFactory).create();
+		
+		try {
+			
+			game=gson.fromJson(new JsonReader(new FileReader("Output.json")), Game.class);
+		} catch (JsonIOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonSyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		}
+		//-----------------------------------------------------------------
+		
+		renderer = new Renderer(game.getTileList(), gameGridPane);
+		
+		//TO ADD TIME to the clock : game.getClock().addTime(4*FarmTimeUnits.MONTH.seconds);
+		
 		wxToday.setText("Today: "+game.getWxForcast().getToday().toString());
 		wxTomorrow.setText("Tomorrow: "+game.getWxForcast().getTomorrow().toString());
-		gameClock.setIsNewDay(false);
-		clockLabel.setText(gameClock.toString());
+		game.getClock().setIsNewDay(false);
+		clockLabel.setText(game.getClock().toString());
 		pauseButton.setGraphic(new ImageView(new Image("Button-Pause.png", 32, 32, true, true)));
 		pauseButton.setBackground(Background.EMPTY);
 		leftTextArea.setText(game.getInventory().toString());
@@ -157,7 +199,7 @@ public class Engine {
 		employeeChoice.setOnAction(e->{
 			updateWSResultLabel();//to update the action button disable or not with the new employee
 			energyLabel.textProperty().bind(getActiveEmployee().energyProperty().asString(" Energy: %.0f  "));
-			taskProgress1.setProgress(getActiveEmployee().getTask().getTaskProgress(gameClock.getTotalSeconds()));
+			taskProgress1.setProgress(getActiveEmployee().getTask().getTaskProgress(game.getClock().getTotalSeconds()));
 			taskName1.setText(getActiveEmployee().getTask().getName());
 		});
 		employeeChoice.getItems().addAll(game.getEmployees());
@@ -179,17 +221,45 @@ public class Engine {
 		setupWS();
 		
 		
+		
+		
+		
 	}
 
 	//-------------- BUTTON HANDELERS---------------------
 	@FXML
 	private void pauseButtonAction(ActionEvent event) {
 		updatePauseButton();
+		// Json testing
+		final RuntimeTypeAdapterFactory<Tile> typeFactory = RuntimeTypeAdapterFactory  
+		        .of(Tile.class,"type") 
+		        .registerSubtype(ForestTile.class) 
+		        .registerSubtype(FarmPlot.class)
+		        .registerSubtype(BuildingTile.class);
+
+		// add the polymorphic specialization
+		final Gson gson = FxGson.fullBuilder().registerTypeAdapterFactory(typeFactory).setPrettyPrinting().create();
+		
 		if(pauseButton.isSelected()){
 			manPaused=true;
+			
+			
+			try {
+				Writer writer = new FileWriter("Output.json");
+				gson.toJson(game,writer);
+				writer.close();
+				System.out.println(gson.toJson(game));
+			} catch (IOException e1) {
+				
+				e1.printStackTrace();
+			}
+			
 		}else{
+			
 			manPaused=false;
 		}
+		
+		
 		
 	}
 
@@ -320,8 +390,8 @@ public class Engine {
 	 */
 	@FXML
 	private void actionWSbuttonAction(ActionEvent event) {
-		game.getWorkShop().startTask(getActiveEmployee(),game.getInventory(),gameClock.getTotalSeconds());
-		taskProgress1.setProgress(getActiveEmployee().getTask().getTaskProgress(gameClock.getTotalSeconds()));
+		game.getWorkShop().startTask(getActiveEmployee(),game.getInventory(),game.getClock().getTotalSeconds());
+		taskProgress1.setProgress(getActiveEmployee().getTask().getTaskProgress(game.getClock().getTotalSeconds()));
 		taskName1.setText(getActiveEmployee().getTask().getName());
 		updateShopPanel();
 		updateWSPanel();
@@ -367,7 +437,7 @@ public class Engine {
 		return renderer;
 	}
 	public GameClock getGameClock() {
-		return gameClock;
+		return game.getClock();
 	}
 	public boolean getManPaused() {
 		

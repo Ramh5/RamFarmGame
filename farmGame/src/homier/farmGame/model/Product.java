@@ -21,7 +21,7 @@ public class Product{
 	private IntegerProperty qual;
 	private DoubleProperty price;
 	private BooleanProperty selected;
-	private ChangeListener<Boolean> selListener;
+	transient private ChangeListener<Boolean> selListener;
 	
 	public Product(String name, double qty, int fresh, int qual) {
 
@@ -61,7 +61,7 @@ public class Product{
 	public void setPrice(double price) {this.price.set(price);}
 	public void setSelected(boolean sel){selected.set(sel);}
 	public void setSelListener(ChangeListener<Boolean> listener){
-		selected.removeListener(selListener);
+		selected.removeListener(selListener!=null?selListener:(a,b,c)->{});
 		selected.addListener(listener);
 		selListener = listener;
 		}

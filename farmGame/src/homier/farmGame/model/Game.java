@@ -7,20 +7,33 @@ import homier.farmGame.model.tile.BuildingTile;
 import homier.farmGame.model.tile.FarmPlot;
 import homier.farmGame.model.tile.ForestTile;
 import homier.farmGame.model.tile.Tile;
+import homier.farmGame.utils.GameClock;
 
 public class Game {
 
-	private Inventory inventory = new Inventory();
-	private Shop shop = new Shop();
-	private WorkShop workShop = new WorkShop();
-	private ArrayList<Tile> tileList = new ArrayList<Tile>();
-	private WxForcast wxForcast = new WxForcast();
+
+
+	
+	private Inventory inventory;
+	private Shop shop;
+	private WorkShop workShop;
+	private ArrayList<Tile> tileList;
+	private WxForcast wxForcast;
 	private Employee[] employees;
+	private GameClock gameClock;
 	
 	
 	
 	
 	public Game() {
+		
+		inventory = new Inventory();
+		shop = new Shop();
+		workShop = new WorkShop();
+		tileList = new ArrayList<Tile>();
+		gameClock = new GameClock(300, 0);
+		wxForcast = new WxForcast(gameClock);
+		
 		for (int i = 0; i < App.gridColumns*App.gridRows; i++) {
 
 			tileList.add(new ForestTile("FOREST_TILE"));
@@ -68,5 +81,9 @@ public class Game {
 	
 	public WorkShop getWorkShop() {
 		return workShop;
+	}
+	
+	public GameClock getClock(){
+		return gameClock;
 	}
 }

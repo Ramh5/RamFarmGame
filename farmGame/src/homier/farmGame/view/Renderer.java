@@ -189,6 +189,7 @@ public class Renderer {
 					} // if new image to render, ie if there was a change to be rendered
 					break;
 				case "WHEAT_PLOT":
+					
 					DoubleProperty growthProperty = ((FarmPlot) tile).growthProperty();
 					DoubleProperty yieldProperty = ((FarmPlot) tile).yieldProperty();
 					newIndexToRender = wheatViewData.getIndexToRender(growthProperty.get());

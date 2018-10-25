@@ -5,9 +5,13 @@ import homier.farmGame.model.Weather;
 public abstract class Tile {
 
 	private String ID;
-
-	public Tile(String ID){
-		this.ID=ID;	
+	@SuppressWarnings("unused")
+	transient private String type;// flag for Gson parsing
+	
+	
+	public Tile(String ID, String type){
+		this.ID=ID;
+		this.type = type;
 	}
 	
 	public abstract void update(double dTime, Weather wx);

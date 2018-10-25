@@ -27,7 +27,7 @@ public class FarmPlot extends Tile {
 	
 	
 	public FarmPlot(String ID, float growthRate, int maxYield) {
-		super(ID);
+		super(ID, "FarmPlot");
 		this.growthRate = growthRate;
 		this.growth = new SimpleDoubleProperty(0);
 		this.yield= new SimpleDoubleProperty(0);
@@ -40,7 +40,7 @@ public class FarmPlot extends Tile {
 	}
 	
 	public FarmPlot(String ID, float growthRate, int maxYield, int[] tempRange) {
-		super(ID);
+		super(ID, "FarmPlot");
 		this.growthRate = growthRate;
 		this.growth = new SimpleDoubleProperty(0);
 		this.yield= new SimpleDoubleProperty(0);
@@ -102,7 +102,7 @@ public class FarmPlot extends Tile {
 	
 	
 	public String toString(){
-		return (super.toString() + String.format("\tGrowth Rate: %.0f", growthRate) + String.format("\t  Growth: %.0f", growth) + "\tyield: " + yield + "\tproduct: " + "\tquality: " + quality);
+		return (super.toString() + String.format("\tGrowth Rate: %.0f", growthRate) + String.format("\t  Growth: %.0f", growth.get()) + "\tyield: " + yield.get() + "\tproduct: " + "\tquality: " + quality);
 	}
 	
 	//private helper methode to create the YieldMap

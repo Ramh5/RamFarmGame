@@ -8,21 +8,33 @@ public class WxForcast {
 	private Weather today;
 	private Weather tomorrow;
 	private Random random;
-	public WxForcast(){
-		today = new Weather(0, Sky.SKC, Wind.WIND0);
-		tomorrow = new Weather(0, Sky.SKC, Wind.WIND0);
+	private GameClock gameClock;
+	
+	public WxForcast(GameClock gameClock){
+		this.gameClock=gameClock;
 		random = new Random();
+		today = randomWx(gameClock.getMonth());
+		tomorrow = randomWx(tomorrowMonth());
 	}
 	
-	public void forcastNewDay(GameClock gameClock) {
+	public void forcastNewDay() {
 		today = tomorrow;
-		
-		
-		//TODO Fix: first day of month forcast
 		//TODO Fix: raining during winter
-		tomorrow = new Weather(newTemp(gameClock.getMonth()), Sky.values()[random.nextInt(Sky.values().length)], 
+		tomorrow = randomWx(tomorrowMonth());
+	}
+	
+	private int tomorrowMonth(){
+		int month = gameClock.getMonth();
+		if(gameClock.getDay()==12){
+			month++;
+			month = month%12;
+		}
+		return month;
+	}
+	
+	private Weather randomWx(int month){
+		return new Weather(newTemp(month), Sky.values()[random.nextInt(Sky.values().length)], 
 				Wind.values()[random.nextInt(Wind.values().length)]);
-		
 	}
 	
 	private int newTemp(int month){

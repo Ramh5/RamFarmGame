@@ -30,6 +30,7 @@ public class Weather {
 	private Wind wind;
 	
 	
+	
 	public Weather(double temp, Sky sky, Wind wind){
 		this.temp=temp;
 		this.sky=sky;
