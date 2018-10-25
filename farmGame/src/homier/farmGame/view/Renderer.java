@@ -166,21 +166,8 @@ public class Renderer {
 										//create the task, add it to the active employee and create a changelistener to finish the task
 										FarmTask plantWheat = new FarmTask("Plant", 100, 20, gameClock.getTotalSeconds());
 										activeEmployee.setTask(plantWheat);
-										activeEmployee.spendEnergy(plantWheat.getEnergyCost());
-										plantWheat.isCompleteProperty().addListener(new ChangeListener<Boolean>() {
-
-								            @Override
-								            public void changed(ObservableValue<? extends Boolean> obs, Boolean old, Boolean val) {
-								              if(val){
-								            	  Tile newTile = new FarmPlot("WHEAT_PLOT", 15, 400,new int[]{15,25});
-								            	  tileList.set(index, newTile);
-								            	  previousMap[index] = -1; 
-								            	  activeEmployee.setIsWorking(false);
-								            	 
-								            	  
-								              }
-								            }
-								        });//changelistener on the task isComplete boolean property
+										plantWheat.setNewTile( new FarmPlot("WHEAT_PLOT", 15, 400,new int[]{15,25}), index);
+										plantWheat.startTask(gameClock.getTotalSeconds(), activeEmployee);
 									});//plant button setOnAction event handler
 									popup.show(newImageView, event.getScreenX(), event.getScreenY());
 								}//if primary mouse click (ie left mouse click)
@@ -218,21 +205,10 @@ public class Renderer {
 										//create the task, add it to the active employee and create a changelistener to finish the task
 										FarmTask harvestWheat = new FarmTask("Harvest", 100, 30, gameClock.getTotalSeconds());
 										activeEmployee.setTask(harvestWheat);
-										activeEmployee.spendEnergy(harvestWheat.getEnergyCost());
-										harvestWheat.isCompleteProperty().addListener(new ChangeListener<Boolean>() {
-
-								            @Override
-								            public void changed(ObservableValue<? extends Boolean> obs, Boolean old, Boolean val) {
-								              if(val){
-								            	  inventory.addProd(new Product(  "Wheat",((FarmPlot) tile).getYield(),1,1));
-												  engine.getLeftTextArea().setText(engine.getGame().getInventory().toString());
-								            	  Tile newTile = new FarmPlot("FARM_PLOT", 0, 0);
-								            	  tileList.set(index, newTile);
-								            	  previousMap[index] = -1; 
-								            	  activeEmployee.setIsWorking(false);
-								              }
-								            }
-								        });//changelistener on the task isComplete boolean property
+										harvestWheat.setResult(new Product(  "Wheat",((FarmPlot) tile).getYield(),1,1));
+										harvestWheat.setNewTile(new FarmPlot("FARM_PLOT", 0, 0), index);
+										harvestWheat.startTask(gameClock.getTotalSeconds(), activeEmployee);
+										
 									});
 									popup.show(newImageView, event.getScreenX(), event.getScreenY());
 								}
@@ -258,6 +234,10 @@ public class Renderer {
 			previousMap[index] = newIndexToRender;
 
 		}
+	}
+
+	public int[] getPreviousMap() {
+		return previousMap;
 	}
 
 }

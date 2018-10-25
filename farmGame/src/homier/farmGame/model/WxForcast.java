@@ -51,6 +51,9 @@ public class WxForcast {
 		return tomorrow;
 	}
 
+	public void setGameClock(GameClock gameClock){
+		this.gameClock=gameClock;
+	}
 	public String toString(){
 		return "weatherForcast";
 	}

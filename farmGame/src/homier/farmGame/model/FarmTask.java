@@ -1,5 +1,9 @@
 package homier.farmGame.model;
 
+import java.util.ArrayList;
+
+import homier.farmGame.model.tile.FarmPlot;
+import homier.farmGame.model.tile.Tile;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
@@ -8,14 +12,22 @@ public class FarmTask {
 	private double energyCost;
 	private int timeCost;
 	private double startedAt;
-	private BooleanProperty isComplete = new SimpleBooleanProperty();
+	private boolean isComplete;
+	
+	//optional properties related to the result when task completes
+	//depending on the type of task
+	private Product result;
+	private Tile newTile;
+	private int newTileIndex;
+	
+	
 	
 	public FarmTask() {
 		name="-----";
 		energyCost = 0;
 		timeCost = 0;
 		startedAt = 0;
-		isComplete.set(false);
+		isComplete=true;
 	}
 	
 	public FarmTask(String name, double energyCost, int timeCost, double startedAt){
@@ -23,10 +35,14 @@ public class FarmTask {
 		this.energyCost=energyCost;
 		this.timeCost=timeCost;
 		this.startedAt=startedAt;
-		isComplete.set(false);
+		isComplete=true;
 	}
 
-	public void startTask(double startedAt) {
+	public void startTask(double startedAt, Employee employee) {
+		employee.spendEnergy(energyCost);
+		employee.setIsWorking(true);
+		isComplete=false;
+		
 		this.startedAt=startedAt;
 	}
 
@@ -58,13 +74,23 @@ public class FarmTask {
 	 * @return the progress of the task from 0 to 1 and sets 
 	 * the isComplete booleanProperty of the task to true when progress reaches 1
 	 */
-	public double getTaskProgress(double currentTime){
+	public double taskProgress(double currentTime, Inventory inventory, Employee employee, ArrayList<Tile> tileList, int[] previousMap){
 		double taskProgress = (currentTime-startedAt)/timeCost;
-		if(taskProgress>=1) isComplete.set(true);
+		if(taskProgress>=1&&!isComplete){
+			if(result!=null){
+				inventory.addProd(result);
+			}
+			if(newTile!=null){
+				tileList.set(newTileIndex, newTile);
+				previousMap[newTileIndex]=-1;
+			}
+			isComplete=true;
+			employee.setIsWorking(false);
+		}
 		return taskProgress;
 	}
 	
-	public BooleanProperty isCompleteProperty(){
+	public boolean isComplete(){
 		return isComplete;
 	}
 
@@ -81,4 +107,13 @@ public class FarmTask {
 		this.timeCost=timeCost;
 	}
 	
+	public void setResult(Product prod){
+		this.result=new Product(prod);
+	}
+
+	public void setNewTile(Tile newTile, int index) {
+		this.newTile=newTile;
+		this.newTileIndex = index;
+		
+	}
 }

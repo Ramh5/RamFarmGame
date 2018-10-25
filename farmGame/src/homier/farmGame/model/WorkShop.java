@@ -2,7 +2,6 @@ package homier.farmGame.model;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.TreeMap;
@@ -135,7 +134,7 @@ public class WorkShop extends Inventory {
 	 */
 	public void startTask(Employee employee,Inventory gameInv, double startedAt) {
 		employee.setTask(task); 
-		task.startTask(startedAt);
+		task.startTask(startedAt, employee);
 		
 		//remove used ingredients from the inventory
 		for(Product prod:ingrToBeUsed) {
@@ -145,14 +144,7 @@ public class WorkShop extends Inventory {
 		ingrToBeUsed.clear();
 		//add the listener to to isComplete of the task to add the result of the crafting
 		//to the inventory when completed
-		Product resultCopy = new Product(result);
-		employee.getTask().isCompleteProperty().addListener((obs, old, val)->{
-			if(val){
-		    gameInv.addProd(resultCopy);     
-		    employee.setIsWorking(false);	
-            }
-		});
-		
+		employee.getTask().setResult(result);	
 	}
 	
 	public ObservableList<Product> getSelectedIngr(){

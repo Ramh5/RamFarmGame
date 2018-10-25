@@ -126,7 +126,7 @@ public class Engine {
 		leftTextArea.setText(game.getInventory().toString());
 		//update energy and task name when task is in progress
 		
-		taskProgress1.setProgress(getActiveEmployee().getTask().getTaskProgress(game.getClock().getTotalSeconds()));
+		taskProgress1.setProgress(getActiveEmployee().getTask().taskProgress(game.getClock().getTotalSeconds(), game.getInventory(),getActiveEmployee(), game.getTileList(), renderer.getPreviousMap()));
 		taskName1.setText(getActiveEmployee().getTask().getName());
 		
 		//update each tile (only update the model, ie growth, yield)
@@ -149,28 +149,29 @@ public class Engine {
 		// Json testing
 		//-----------------------------------------------------------------
 		if (game==null){
-		final RuntimeTypeAdapterFactory<Tile> typeFactory = RuntimeTypeAdapterFactory  
-		        .of(Tile.class, "type") // Here you specify which is the parent class and what field particularizes the child class.
-		        .registerSubtype(ForestTile.class) 
-		        .registerSubtype(FarmPlot.class)
-		        .registerSubtype(BuildingTile.class);
+			final RuntimeTypeAdapterFactory<Tile> typeFactory = RuntimeTypeAdapterFactory  
+					.of(Tile.class, "type") // Here you specify which is the parent class and what field particularizes the child class.
+					.registerSubtype(ForestTile.class) 
+					.registerSubtype(FarmPlot.class)
+					.registerSubtype(BuildingTile.class);
 
-		// add the polymorphic specialization
-		final Gson gson = FxGson.fullBuilder().registerTypeAdapterFactory(typeFactory).create();
-		
-		try {
-			
-			game=gson.fromJson(new JsonReader(new FileReader("Output.json")), Game.class);
-		} catch (JsonIOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonSyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			// add the polymorphic specialization
+			final Gson gson = FxGson.fullBuilder().registerTypeAdapterFactory(typeFactory).create();
+
+			try {
+
+				game=gson.fromJson(new JsonReader(new FileReader("Output.json")), Game.class);
+			} catch (JsonIOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JsonSyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			game.getWxForcast().setGameClock(game.getClock()); // reinitialise the gameclock in wxforcast object after a json game load
 		}
 		//-----------------------------------------------------------------
 		
@@ -199,7 +200,7 @@ public class Engine {
 		employeeChoice.setOnAction(e->{
 			updateWSResultLabel();//to update the action button disable or not with the new employee
 			energyLabel.textProperty().bind(getActiveEmployee().energyProperty().asString(" Energy: %.0f  "));
-			taskProgress1.setProgress(getActiveEmployee().getTask().getTaskProgress(game.getClock().getTotalSeconds()));
+			taskProgress1.setProgress(getActiveEmployee().getTask().taskProgress(game.getClock().getTotalSeconds(), game.getInventory(),getActiveEmployee(), game.getTileList(), renderer.getPreviousMap()));
 			taskName1.setText(getActiveEmployee().getTask().getName());
 		});
 		employeeChoice.getItems().addAll(game.getEmployees());
@@ -391,7 +392,7 @@ public class Engine {
 	@FXML
 	private void actionWSbuttonAction(ActionEvent event) {
 		game.getWorkShop().startTask(getActiveEmployee(),game.getInventory(),game.getClock().getTotalSeconds());
-		taskProgress1.setProgress(getActiveEmployee().getTask().getTaskProgress(game.getClock().getTotalSeconds()));
+		taskProgress1.setProgress(getActiveEmployee().getTask().taskProgress(game.getClock().getTotalSeconds(), game.getInventory(),getActiveEmployee(), game.getTileList(), renderer.getPreviousMap()));
 		taskName1.setText(getActiveEmployee().getTask().getName());
 		updateShopPanel();
 		updateWSPanel();

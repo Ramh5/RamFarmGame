@@ -1,7 +1,19 @@
 {
   "inventory": {
     "money": 1000.0,
-    "data": {},
+    "data": {
+      "Wheat": [
+        {
+          "name": "Wheat",
+          "qty": 91.9140769203093,
+          "spoilQty": 0.0,
+          "fresh": 1,
+          "qual": 1,
+          "price": 0.0,
+          "selected": false
+        }
+      ]
+    },
     "averageData": {
       "Oeufs": {
         "name": "Oeufs",
@@ -316,7 +328,10 @@
       "energyCost": 0.0,
       "timeCost": 0,
       "startedAt": 0.0,
-      "isComplete": false
+      "isComplete": true,
+      "result": null,
+      "newTile": null,
+      "newTileIndex": 0
     },
     "money": 1000.0,
     "data": {},
@@ -665,10 +680,10 @@
     },
     {
       "type": "FarmPlot",
-      "growthRate": 0.0,
-      "growth": 0.0,
-      "yield": 0.0,
-      "maxYield": 0,
+      "growthRate": 15.0,
+      "growth": 76.00551596514063,
+      "yield": 104.02206386056253,
+      "maxYield": 400,
       "yieldMap": {
         "-10.0": 0.0,
         "0.0": 0.0,
@@ -682,13 +697,13 @@
         "150.0": 0.0,
         "160.0": 0.0
       },
-      "product": "FARM",
+      "product": "WHEAT",
       "quality": 0,
       "tempRange": [
-        0,
-        0
+        15,
+        25
       ],
-      "ID": "FARM_PLOT"
+      "ID": "WHEAT_PLOT"
     },
     {
       "type": "BuildingTile",
@@ -1011,27 +1026,27 @@
   ],
   "wxForcast": {
     "today": {
-      "temp": 8.0,
-      "sky": "CLOUD2",
+      "temp": 16.0,
+      "sky": "SKC",
       "wind": "WIND1"
     },
     "tomorrow": {
-      "temp": 10.0,
-      "sky": "SKC",
-      "wind": "WIND0"
+      "temp": 20.0,
+      "sky": "RAIN1",
+      "wind": "WIND2"
     },
     "random": {
-      "seed": 192607266769222,
-      "nextNextGaussian": 0.3059909301958853,
-      "haveNextNextGaussian": true
+      "seed": 9177524574086,
+      "nextNextGaussian": 0.04128925107999716,
+      "haveNextNextGaussian": false
     },
     "gameClock": {
       "secondsInADay": 300,
-      "totalSeconds": 17463.277095580004,
+      "totalSeconds": 21453.139908849953,
       "year": 1,
-      "month": 4,
-      "day": 11,
-      "hour": 8,
+      "month": 5,
+      "day": 12,
+      "hour": 13,
       "isNewDay": false
     }
   },
@@ -1039,14 +1054,51 @@
     {
       "name": "Ram",
       "salary": 0.0,
-      "energy": 1000.0,
-      "isWorking": false,
+      "energy": 600.0,
+      "isWorking": true,
       "currentTask": {
-        "name": "-----",
-        "energyCost": 0.0,
-        "timeCost": 0,
-        "startedAt": 0.0,
-        "isComplete": true
+        "name": "Harvest",
+        "energyCost": 100.0,
+        "timeCost": 30,
+        "startedAt": 21443.539831409966,
+        "isComplete": false,
+        "result": {
+          "name": "Wheat",
+          "qty": 102.41833212479901,
+          "spoilQty": 0.0,
+          "fresh": 1,
+          "qual": 1,
+          "price": 0.0,
+          "selected": false
+        },
+        "newTile": {
+          "type": "FarmPlot",
+          "growthRate": 0.0,
+          "growth": 0.0,
+          "yield": 0.0,
+          "maxYield": 0,
+          "yieldMap": {
+            "-10.0": 0.0,
+            "0.0": 0.0,
+            "50.0": 0.0,
+            "80.0": 30.0,
+            "95.0": 98.0,
+            "100.0": 100.0,
+            "110.0": 98.0,
+            "115.0": 95.0,
+            "130.0": 70.0,
+            "150.0": 0.0,
+            "160.0": 0.0
+          },
+          "product": "FARM",
+          "quality": 0,
+          "tempRange": [
+            0,
+            0
+          ],
+          "ID": "FARM_PLOT"
+        },
+        "newTileIndex": 39
       }
     },
     {
@@ -1059,17 +1111,20 @@
         "energyCost": 0.0,
         "timeCost": 0,
         "startedAt": 0.0,
-        "isComplete": false
+        "isComplete": true,
+        "result": null,
+        "newTile": null,
+        "newTileIndex": 0
       }
     }
   ],
   "gameClock": {
     "secondsInADay": 300,
-    "totalSeconds": 18628.55235755001,
+    "totalSeconds": 21453.139908849953,
     "year": 1,
     "month": 5,
-    "day": 3,
-    "hour": 7,
+    "day": 12,
+    "hour": 13,
     "isNewDay": false
   }
 }

@@ -8,6 +8,8 @@ import homier.farmGame.model.tile.FarmPlot;
 import homier.farmGame.model.tile.ForestTile;
 import homier.farmGame.model.tile.Tile;
 import homier.farmGame.utils.GameClock;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
 public class Game {
 
