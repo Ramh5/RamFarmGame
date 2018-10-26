@@ -1,5 +1,6 @@
 package homier.farmGame.controller;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -47,6 +48,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -70,6 +72,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.util.Callback;
 
 public class Engine {
@@ -96,12 +99,14 @@ public class Engine {
 	@FXML private TableColumn<Product, Boolean> colActSell, colActBuy, colActIngrWS;
 	@FXML private ListView<String>  listViewRecipeDetails;
 	@FXML private ListView<Recipe> listViewRecipe;
+	@FXML private MenuItem save,load;
 
 	private Game game;
 	private Renderer renderer;
 	
 	private boolean manPaused;
 	
+	FileChooser fileChooser = new FileChooser();
 	
 	//TODO add button to skip days, months...
 	
@@ -112,6 +117,7 @@ public class Engine {
 		
 		//if it is a new day, update the forecast
 		if(game.getClock().isNewDay()){
+			game.getEmployees()[0].energyProperty().set(1000);
 			game.getWxForcast().forcastNewDay();
 			wxToday.setText("Today: "+game.getWxForcast().getToday().toString());
 			wxTomorrow.setText("Tomorrow: "+game.getWxForcast().getTomorrow().toString());
@@ -144,38 +150,14 @@ public class Engine {
 	}
 
 	public void initialize() {
-		//game = new Game();
-		
-		// Json testing
-		//-----------------------------------------------------------------
 		if (game==null){
-			final RuntimeTypeAdapterFactory<Tile> typeFactory = RuntimeTypeAdapterFactory  
-					.of(Tile.class, "type") // Here you specify which is the parent class and what field particularizes the child class.
-					.registerSubtype(ForestTile.class) 
-					.registerSubtype(FarmPlot.class)
-					.registerSubtype(BuildingTile.class);
-
-			// add the polymorphic specialization
-			final Gson gson = FxGson.fullBuilder().registerTypeAdapterFactory(typeFactory).create();
-
-			try {
-
-				game=gson.fromJson(new JsonReader(new FileReader("Output.json")), Game.class);
-			} catch (JsonIOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JsonSyntaxException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			game.getWxForcast().setGameClock(game.getClock()); // reinitialise the gameclock in wxforcast object after a json game load
+			game = new Game();//create a new game if not loaded save game
+			fileChooser.setInitialDirectory(new File(getClass().getResource("/homier").getFile()));
 		}
-		//-----------------------------------------------------------------
 		
+		gameGridPane.getChildren().clear();
 		renderer = new Renderer(game.getTileList(), gameGridPane);
+		renderer.render(this);
 		
 		//TO ADD TIME to the clock : game.getClock().addTime(4*FarmTimeUnits.MONTH.seconds);
 		
@@ -183,18 +165,12 @@ public class Engine {
 		wxTomorrow.setText("Tomorrow: "+game.getWxForcast().getTomorrow().toString());
 		game.getClock().setIsNewDay(false);
 		clockLabel.setText(game.getClock().toString());
-		pauseButton.setGraphic(new ImageView(new Image("Button-Pause.png", 32, 32, true, true)));
-		pauseButton.setBackground(Background.EMPTY);
+		updatePauseButton();
 		leftTextArea.setText(game.getInventory().toString());
-		
-		
-		
-		gameSpeedChoice.getItems().addAll(1,2,5,10,50,500);
+
+		gameSpeedChoice.getItems().setAll(1,2,5,10,50,500);
 		gameSpeedChoice.getSelectionModel().select(3);
 		App.gameSpeed=gameSpeedChoice.getSelectionModel().getSelectedItem();
-		gameSpeedChoice.setOnAction(e->{//TODO could add a call to a method in the FXML instead of here
-			App.gameSpeed=gameSpeedChoice.getSelectionModel().getSelectedItem();
-		});
 		
 		 //employee choice
 		employeeChoice.setOnAction(e->{
@@ -203,14 +179,13 @@ public class Engine {
 			taskProgress1.setProgress(getActiveEmployee().getTask().taskProgress(game.getClock().getTotalSeconds(), game.getInventory(),getActiveEmployee(), game.getTileList(), renderer.getPreviousMap()));
 			taskName1.setText(getActiveEmployee().getTask().getName());
 		});
-		employeeChoice.getItems().addAll(game.getEmployees());
+		employeeChoice.getItems().setAll(game.getEmployees());
 		employeeChoice.getSelectionModel().select(0);
 		energyLabel.textProperty().bind(getActiveEmployee().energyProperty().asString(" Energy: %.0f  "));
 		//task
-		taskName1.setText("TASK");
+		taskName1.setText(getActiveEmployee().getTask().getName());
 		
 		//shop
-		shopPane.toBack();
 		setupShop();
 		preventColumnReordering(tableInv);
 		preventColumnReordering(tableShop);
@@ -218,20 +193,22 @@ public class Engine {
 		preventColumnReordering(tableBuy);
 		
 		//workShop
-		workShopPane.toBack();
 		setupWS();
-		
-		
-		
-		
+	
 		
 	}
 
 	//-------------- BUTTON HANDELERS---------------------
 	@FXML
-	private void pauseButtonAction(ActionEvent event) {
-		updatePauseButton();
-		// Json testing
+	private void gameSpeedChoiceAction(ActionEvent event){
+		if(gameSpeedChoice.getSelectionModel().getSelectedItem()==null)gameSpeedChoice.getSelectionModel().select(3);
+		App.gameSpeed=gameSpeedChoice.getSelectionModel().getSelectedItem();
+	}
+	
+	
+	
+	@FXML 
+	private void saveMenuAction(ActionEvent event){
 		final RuntimeTypeAdapterFactory<Tile> typeFactory = RuntimeTypeAdapterFactory  
 		        .of(Tile.class,"type") 
 		        .registerSubtype(ForestTile.class) 
@@ -241,30 +218,65 @@ public class Engine {
 		// add the polymorphic specialization
 		final Gson gson = FxGson.fullBuilder().registerTypeAdapterFactory(typeFactory).setPrettyPrinting().create();
 		
-		if(pauseButton.isSelected()){
-			manPaused=true;
+		try {
+			Writer writer = new FileWriter("Output.json");
+			gson.toJson(game,writer);
+			writer.close();
+			System.out.println(gson.toJson(game));
+		} catch (IOException e1) {
 			
-			
-			try {
-				Writer writer = new FileWriter("Output.json");
-				gson.toJson(game,writer);
-				writer.close();
-				System.out.println(gson.toJson(game));
-			} catch (IOException e1) {
-				
-				e1.printStackTrace();
-			}
-			
-		}else{
-			
-			manPaused=false;
+			e1.printStackTrace();
 		}
-		
-		
-		
 	}
 
+	@FXML 
+	private void loadMenuAction(ActionEvent event){
+		
+		
+		fileChooser.setTitle("Open save file");
+		File file = fileChooser.showOpenDialog(gameGridPane.getScene().getWindow());
+		
+		if(file!=null){
+			fileChooser.setInitialDirectory(file.getParentFile());
+			final RuntimeTypeAdapterFactory<Tile> typeFactory = RuntimeTypeAdapterFactory  
+					.of(Tile.class, "type") 
+					.registerSubtype(ForestTile.class) 
+					.registerSubtype(FarmPlot.class)
+					.registerSubtype(BuildingTile.class);
+
+			// add the polymorphic specialization
+			final Gson gson = FxGson.fullBuilder().registerTypeAdapterFactory(typeFactory).create();
+
+			try {
+
+				game=gson.fromJson(new JsonReader(new FileReader(file)), Game.class);
+			} catch (JsonIOException e) {
+				e.printStackTrace();
+			} catch (JsonSyntaxException e) {	
+				e.printStackTrace();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+
+			game.getWxForcast().setGameClock(game.getClock()); // reinitialise the gameclock in wxforcast object after a json game load
+			initialize();	
+		}
+	}
+
+	
+	@FXML
+	private void pauseButtonAction(ActionEvent event) {
+		updatePauseButton();
+		if(pauseButton.isSelected()){
+			manPaused=true;
+		}else{
+			manPaused=false;
+		}
+	}
+
+
 	public void updatePauseButton(){
+		pauseButton.setBackground(Background.EMPTY);
 		if (pauseButton.isSelected()) {
 			pauseLabel.setText("Jeu en pause");
 			pauseLabel.setTextFill(Color.RED);
@@ -358,6 +370,7 @@ public class Engine {
 		updateShopPanel();
 		updateWSPanel();
 		unselectTreeTable(tableShop.getRoot());	
+		leftTextArea.setText(game.getInventory().toString());
 	}
 	
 	@FXML
@@ -373,6 +386,7 @@ public class Engine {
 		updateShopPanel();
 		updateWSPanel();
 		unselectTreeTable(tableInv.getRoot());
+		leftTextArea.setText(game.getInventory().toString());
 	}
 	
 	@FXML

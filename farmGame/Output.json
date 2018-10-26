@@ -2,14 +2,92 @@
   "inventory": {
     "money": 1000.0,
     "data": {
-      "Wheat": [
+      "Oeufs": [
         {
-          "name": "Wheat",
-          "qty": 91.9140769203093,
-          "spoilQty": 0.0,
-          "fresh": 1,
+          "name": "Oeufs",
+          "qty": 14.016529834824722,
+          "spoilQty": 0.13175538044735238,
+          "fresh": 19,
+          "qual": 50,
+          "price": 1.2210526315789476,
+          "selected": false
+        },
+        {
+          "name": "Oeufs",
+          "qty": 12.000195781763033,
+          "spoilQty": 0.28800469876231277,
+          "fresh": 27,
+          "qual": 80,
+          "price": 1.591466666666667,
+          "selected": false
+        },
+        {
+          "name": "Oeufs",
+          "qty": 15.336017470211388,
+          "spoilQty": 1.2115453801467,
+          "fresh": 37,
+          "qual": 80,
+          "price": 1.1221333333333334,
+          "selected": false
+        }
+      ],
+      "Oignons": [
+        {
+          "name": "Oignons",
+          "qty": 28.68672762619345,
+          "spoilQty": 0.20080709338335415,
+          "fresh": 15,
+          "qual": 50,
+          "price": 0.4894736842105263,
+          "selected": false
+        }
+      ],
+      "Blé": [
+        {
+          "name": "Blé",
+          "qty": 9.422858862832998,
+          "spoilQty": 0.08292115799293039,
+          "fresh": 18,
           "qual": 1,
-          "price": 0.0,
+          "price": 0.015448684210526318,
+          "selected": false
+        },
+        {
+          "name": "Blé",
+          "qty": 12.147659190181423,
+          "spoilQty": 0.11418799638770538,
+          "fresh": 19,
+          "qual": 1,
+          "price": 0.015186842105263158,
+          "selected": false
+        },
+        {
+          "name": "Blé",
+          "qty": 11.533203967804022,
+          "spoilQty": 0.07381250539394575,
+          "fresh": 14,
+          "qual": 1,
+          "price": 0.01649605263157895,
+          "selected": false
+        }
+      ],
+      "Carottes": [
+        {
+          "name": "Carottes",
+          "qty": 14.343363813096724,
+          "spoilQty": 0.10040354669167707,
+          "fresh": 15,
+          "qual": 80,
+          "price": 1.631578947368421,
+          "selected": false
+        },
+        {
+          "name": "Carottes",
+          "qty": 9.34435322321648,
+          "spoilQty": 0.08783692029823491,
+          "fresh": 19,
+          "qual": 50,
+          "price": 0.9539473684210527,
           "selected": false
         }
       ]
@@ -17,38 +95,38 @@
     "averageData": {
       "Oeufs": {
         "name": "Oeufs",
-        "qty": 0.2088373602979878,
-        "spoilQty": 0.1148605481638933,
-        "fresh": 49,
-        "qual": 50,
-        "price": 0.34933333333333344,
+        "qty": 41.352743086799144,
+        "spoilQty": 1.6313054593563652,
+        "fresh": 27,
+        "qual": 69,
+        "price": 1.37264,
         "selected": false
       },
       "Oignons": {
         "name": "Oignons",
-        "qty": 0.18632992725881897,
-        "spoilQty": 0.11179795635529138,
-        "fresh": 50,
+        "qty": 28.68672762619345,
+        "spoilQty": 0.20080709338335415,
+        "fresh": 15,
         "qual": 50,
-        "price": 0.12,
+        "price": 0.4894736842105263,
         "selected": false
       },
       "Blé": {
         "name": "Blé",
-        "qty": 0.1654057665384953,
-        "spoilQty": 0.09097317159617244,
-        "fresh": 49,
+        "qty": 33.103722020818445,
+        "spoilQty": 0.2709216597745815,
+        "fresh": 16,
         "qual": 1,
-        "price": 0.004344833333333334,
+        "price": 0.01597236842105263,
         "selected": false
       },
       "Carottes": {
         "name": "Carottes",
-        "qty": 0.20703325250979887,
-        "spoilQty": 0.11386828888038938,
-        "fresh": 49,
-        "qual": 80,
-        "price": 0.43666666666666676,
+        "qty": 23.687717036313202,
+        "spoilQty": 0.18824046698991198,
+        "fresh": 16,
+        "qual": 68,
+        "price": 1.364473684210526,
         "selected": false
       }
     },
@@ -154,42 +232,123 @@
     "dataSelling": [],
     "dataBuying": [],
     "money": 1000.0,
-    "data": {},
+    "data": {
+      "Oeufs": [
+        {
+          "name": "Oeufs",
+          "qty": 4.805501653251675,
+          "spoilQty": 0.030755210580810724,
+          "fresh": 14,
+          "qual": 80,
+          "price": 2.122105263157895,
+          "selected": false
+        },
+        {
+          "name": "Oeufs",
+          "qty": 4.526656482789719,
+          "spoilQty": 0.07242650372463551,
+          "fresh": 23,
+          "qual": 15,
+          "price": 0.33359999999999995,
+          "selected": false
+        }
+      ],
+      "Oignons": [
+        {
+          "name": "Oignons",
+          "qty": 4.526656482789719,
+          "spoilQty": 0.07242650372463551,
+          "fresh": 23,
+          "qual": 50,
+          "price": 0.417,
+          "selected": false
+        },
+        {
+          "name": "Oignons",
+          "qty": 4.417237102737239,
+          "spoilQty": 0.08834474205474477,
+          "fresh": 25,
+          "qual": 15,
+          "price": 0.11849999999999998,
+          "selected": false
+        }
+      ],
+      "Blé": [
+        {
+          "name": "Blé",
+          "qty": 19.2220066130067,
+          "spoilQty": 0.1230208423232429,
+          "fresh": 14,
+          "qual": 80,
+          "price": 1.319684210526316,
+          "selected": false
+        },
+        {
+          "name": "Blé",
+          "qty": 18.106625931158877,
+          "spoilQty": 0.28970601489854203,
+          "fresh": 23,
+          "qual": 15,
+          "price": 0.2074575,
+          "selected": false
+        }
+      ],
+      "Carottes": [
+        {
+          "name": "Carottes",
+          "qty": 9.61100330650335,
+          "spoilQty": 0.06151042116162145,
+          "fresh": 14,
+          "qual": 80,
+          "price": 1.6578947368421055,
+          "selected": false
+        },
+        {
+          "name": "Carottes",
+          "qty": 9.053312965579439,
+          "spoilQty": 0.14485300744927102,
+          "fresh": 23,
+          "qual": 15,
+          "price": 0.26062499999999994,
+          "selected": false
+        }
+      ]
+    },
     "averageData": {
       "Oeufs": {
         "name": "Oeufs",
-        "qty": 0.1378381387820794,
-        "spoilQty": 0.0689190693910397,
-        "fresh": 48,
-        "qual": 80,
-        "price": 0.6058666666666668,
+        "qty": 9.332158136041395,
+        "spoilQty": 0.10318171430544623,
+        "fresh": 18,
+        "qual": 48,
+        "price": 1.1924210526315793,
         "selected": false
       },
       "Oignons": {
         "name": "Oignons",
-        "qty": 0.1411912702290232,
-        "spoilQty": 0.0705956351145116,
-        "fresh": 48,
-        "qual": 50,
-        "price": 0.14200000000000002,
+        "qty": 8.943893585526958,
+        "spoilQty": 0.1607712457793803,
+        "fresh": 23,
+        "qual": 32,
+        "price": 0.26688,
         "selected": false
       },
       "Blé": {
         "name": "Blé",
-        "qty": 0.12405432490387144,
-        "spoilQty": 0.07443259494232286,
-        "fresh": 50,
-        "qual": 80,
-        "price": 0.3184,
+        "qty": 37.32863254416558,
+        "spoilQty": 0.4127268572217849,
+        "fresh": 18,
+        "qual": 48,
+        "price": 0.7415368421052633,
         "selected": false
       },
       "Carottes": {
         "name": "Carottes",
-        "qty": 0.1378381387820794,
-        "spoilQty": 0.07581097633014368,
-        "fresh": 49,
-        "qual": 80,
-        "price": 0.43666666666666676,
+        "qty": 18.66431627208279,
+        "spoilQty": 0.20636342861089246,
+        "fresh": 18,
+        "qual": 48,
+        "price": 0.9315789473684211,
         "selected": false
       }
     },
@@ -334,42 +493,132 @@
       "newTileIndex": 0
     },
     "money": 1000.0,
-    "data": {},
+    "data": {
+      "Oeufs": [
+        {
+          "name": "Oeufs",
+          "qty": 14.016529834824722,
+          "spoilQty": 0.13175538044735238,
+          "fresh": 19,
+          "qual": 50,
+          "price": 1.2210526315789476,
+          "selected": false
+        },
+        {
+          "name": "Oeufs",
+          "qty": 12.000195781763033,
+          "spoilQty": 0.28800469876231277,
+          "fresh": 27,
+          "qual": 80,
+          "price": 1.591466666666667,
+          "selected": false
+        },
+        {
+          "name": "Oeufs",
+          "qty": 15.336017470211388,
+          "spoilQty": 1.2115453801467,
+          "fresh": 37,
+          "qual": 80,
+          "price": 1.1221333333333334,
+          "selected": false
+        }
+      ],
+      "Oignons": [
+        {
+          "name": "Oignons",
+          "qty": 28.68672762619345,
+          "spoilQty": 0.20080709338335415,
+          "fresh": 15,
+          "qual": 50,
+          "price": 0.4894736842105263,
+          "selected": false
+        }
+      ],
+      "Blé": [
+        {
+          "name": "Blé",
+          "qty": 9.422858862832998,
+          "spoilQty": 0.08292115799293039,
+          "fresh": 18,
+          "qual": 1,
+          "price": 0.015448684210526318,
+          "selected": false
+        },
+        {
+          "name": "Blé",
+          "qty": 12.147659190181423,
+          "spoilQty": 0.11418799638770538,
+          "fresh": 19,
+          "qual": 1,
+          "price": 0.015186842105263158,
+          "selected": false
+        },
+        {
+          "name": "Blé",
+          "qty": 11.533203967804022,
+          "spoilQty": 0.07381250539394575,
+          "fresh": 14,
+          "qual": 1,
+          "price": 0.01649605263157895,
+          "selected": false
+        }
+      ],
+      "Carottes": [
+        {
+          "name": "Carottes",
+          "qty": 14.343363813096724,
+          "spoilQty": 0.10040354669167707,
+          "fresh": 15,
+          "qual": 80,
+          "price": 1.631578947368421,
+          "selected": false
+        },
+        {
+          "name": "Carottes",
+          "qty": 9.34435322321648,
+          "spoilQty": 0.08783692029823491,
+          "fresh": 19,
+          "qual": 50,
+          "price": 0.9539473684210527,
+          "selected": false
+        }
+      ]
+    },
     "averageData": {
       "Oeufs": {
         "name": "Oeufs",
-        "qty": 0.2088373602979878,
-        "spoilQty": 0.1148605481638933,
-        "fresh": 49,
-        "qual": 50,
-        "price": 0.34933333333333344,
+        "qty": 41.352743086799144,
+        "spoilQty": 1.6313054593563652,
+        "fresh": 27,
+        "qual": 69,
+        "price": 1.37264,
         "selected": false
       },
       "Oignons": {
         "name": "Oignons",
-        "qty": 0.18632992725881897,
-        "spoilQty": 0.11179795635529138,
-        "fresh": 50,
+        "qty": 28.68672762619345,
+        "spoilQty": 0.20080709338335415,
+        "fresh": 15,
         "qual": 50,
-        "price": 0.12,
+        "price": 0.4894736842105263,
         "selected": false
       },
       "Blé": {
         "name": "Blé",
-        "qty": 0.1654057665384953,
-        "spoilQty": 0.09097317159617244,
-        "fresh": 49,
+        "qty": 33.103722020818445,
+        "spoilQty": 0.2709216597745815,
+        "fresh": 16,
         "qual": 1,
-        "price": 0.004344833333333334,
+        "price": 0.01597236842105263,
         "selected": false
       },
       "Carottes": {
         "name": "Carottes",
-        "qty": 0.20703325250979887,
-        "spoilQty": 0.11386828888038938,
-        "fresh": 49,
-        "qual": 80,
-        "price": 0.43666666666666676,
+        "qty": 23.687717036313202,
+        "spoilQty": 0.18824046698991198,
+        "fresh": 16,
+        "qual": 68,
+        "price": 1.364473684210526,
         "selected": false
       }
     },
@@ -680,10 +929,10 @@
     },
     {
       "type": "FarmPlot",
-      "growthRate": 15.0,
-      "growth": 76.00551596514063,
-      "yield": 104.02206386056253,
-      "maxYield": 400,
+      "growthRate": 0.0,
+      "growth": 0.0,
+      "yield": 0.0,
+      "maxYield": 0,
       "yieldMap": {
         "-10.0": 0.0,
         "0.0": 0.0,
@@ -697,13 +946,13 @@
         "150.0": 0.0,
         "160.0": 0.0
       },
-      "product": "WHEAT",
+      "product": "FARM",
       "quality": 0,
       "tempRange": [
-        15,
-        25
+        0,
+        0
       ],
-      "ID": "WHEAT_PLOT"
+      "ID": "FARM_PLOT"
     },
     {
       "type": "BuildingTile",
@@ -1026,27 +1275,27 @@
   ],
   "wxForcast": {
     "today": {
-      "temp": 16.0,
-      "sky": "SKC",
+      "temp": -10.0,
+      "sky": "CLOUD2",
       "wind": "WIND1"
     },
     "tomorrow": {
-      "temp": 20.0,
+      "temp": -7.0,
       "sky": "RAIN1",
-      "wind": "WIND2"
+      "wind": "WIND0"
     },
     "random": {
-      "seed": 9177524574086,
-      "nextNextGaussian": 0.04128925107999716,
-      "haveNextNextGaussian": false
+      "seed": 120808009349510,
+      "nextNextGaussian": -0.0713797686832478,
+      "haveNextNextGaussian": true
     },
     "gameClock": {
       "secondsInADay": 300,
-      "totalSeconds": 21453.139908849953,
+      "totalSeconds": 3789.79491555,
       "year": 1,
-      "month": 5,
-      "day": 12,
-      "hour": 13,
+      "month": 1,
+      "day": 1,
+      "hour": 14,
       "isNewDay": false
     }
   },
@@ -1054,51 +1303,17 @@
     {
       "name": "Ram",
       "salary": 0.0,
-      "energy": 600.0,
-      "isWorking": true,
+      "energy": 1000.0,
+      "isWorking": false,
       "currentTask": {
-        "name": "Harvest",
-        "energyCost": 100.0,
-        "timeCost": 30,
-        "startedAt": 21443.539831409966,
-        "isComplete": false,
-        "result": {
-          "name": "Wheat",
-          "qty": 102.41833212479901,
-          "spoilQty": 0.0,
-          "fresh": 1,
-          "qual": 1,
-          "price": 0.0,
-          "selected": false
-        },
-        "newTile": {
-          "type": "FarmPlot",
-          "growthRate": 0.0,
-          "growth": 0.0,
-          "yield": 0.0,
-          "maxYield": 0,
-          "yieldMap": {
-            "-10.0": 0.0,
-            "0.0": 0.0,
-            "50.0": 0.0,
-            "80.0": 30.0,
-            "95.0": 98.0,
-            "100.0": 100.0,
-            "110.0": 98.0,
-            "115.0": 95.0,
-            "130.0": 70.0,
-            "150.0": 0.0,
-            "160.0": 0.0
-          },
-          "product": "FARM",
-          "quality": 0,
-          "tempRange": [
-            0,
-            0
-          ],
-          "ID": "FARM_PLOT"
-        },
-        "newTileIndex": 39
+        "name": "-----",
+        "energyCost": 0.0,
+        "timeCost": 0,
+        "startedAt": 0.0,
+        "isComplete": true,
+        "result": null,
+        "newTile": null,
+        "newTileIndex": 0
       }
     },
     {
@@ -1120,11 +1335,11 @@
   ],
   "gameClock": {
     "secondsInADay": 300,
-    "totalSeconds": 21453.139908849953,
+    "totalSeconds": 3789.79491555,
     "year": 1,
-    "month": 5,
-    "day": 12,
-    "hour": 13,
+    "month": 1,
+    "day": 1,
+    "hour": 14,
     "isNewDay": false
   }
 }
