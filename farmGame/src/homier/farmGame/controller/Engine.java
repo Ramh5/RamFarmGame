@@ -22,6 +22,7 @@ import homier.farmGame.model.Inventory;
 import homier.farmGame.model.Product;
 import homier.farmGame.model.Recipe;
 import homier.farmGame.model.Shop;
+import homier.farmGame.model.WorkShop;
 import homier.farmGame.model.tile.BuildingTile;
 import homier.farmGame.model.tile.FarmPlot;
 import homier.farmGame.model.tile.ForestTile;
@@ -85,6 +86,7 @@ public class Engine {
 	@FXML private ChoiceBox<Integer> gameSpeedChoice;
 	@FXML private Label clockLabel, pauseLabel ,wxToday, wxTomorrow, energyLabel, taskName1, buyTotalLabel, sellTotalLabel, labelSelectedRecipe, labelResultWS;
 	@FXML private ChoiceBox<Employee> employeeChoice;
+	@FXML private ChoiceBox<String> wsChoiceBox;
 	@FXML private ProgressIndicator taskProgress1;
 	@FXML private AnchorPane shopPane, workShopPane;
 	@FXML private TreeTableView<Product> tableInv, tableShop, tableInvWS;
@@ -193,8 +195,16 @@ public class Engine {
 		preventColumnReordering(tableBuy);
 		
 		//workShop
+		
+		wsChoiceBox.getItems().setAll(game.getWorkShop().getWSList());
+		wsChoiceBox.getSelectionModel().select(0);
+		wsChoiceBox.getSelectionModel().selectedItemProperty().addListener((obs,oldVal,newVal)->{
+			//default selection to fix a bug when loading a new save game
+			if(newVal==null)wsChoiceBox.getSelectionModel().select(0);
+			updateWSPanel();
+		});
 		setupWS();
-	
+		
 		
 	}
 
@@ -209,23 +219,28 @@ public class Engine {
 	
 	@FXML 
 	private void saveMenuAction(ActionEvent event){
-		final RuntimeTypeAdapterFactory<Tile> typeFactory = RuntimeTypeAdapterFactory  
-		        .of(Tile.class,"type") 
-		        .registerSubtype(ForestTile.class) 
-		        .registerSubtype(FarmPlot.class)
-		        .registerSubtype(BuildingTile.class);
+		fileChooser.setTitle("Save game");
+		File file = fileChooser.showSaveDialog(gameGridPane.getScene().getWindow());
+		if(file!=null){
+			fileChooser.setInitialDirectory(file.getParentFile());
+			final RuntimeTypeAdapterFactory<Tile> typeFactory = RuntimeTypeAdapterFactory  
+					.of(Tile.class,"type") 
+					.registerSubtype(ForestTile.class) 
+					.registerSubtype(FarmPlot.class)
+					.registerSubtype(BuildingTile.class);
 
-		// add the polymorphic specialization
-		final Gson gson = FxGson.fullBuilder().registerTypeAdapterFactory(typeFactory).setPrettyPrinting().create();
-		
-		try {
-			Writer writer = new FileWriter("Output.json");
-			gson.toJson(game,writer);
-			writer.close();
-			System.out.println(gson.toJson(game));
-		} catch (IOException e1) {
-			
-			e1.printStackTrace();
+			// add the polymorphic specialization
+			final Gson gson = FxGson.fullBuilder().registerTypeAdapterFactory(typeFactory).setPrettyPrinting().create();
+
+			try {
+				Writer writer = new FileWriter(file);
+				gson.toJson(game,writer);
+				writer.close();
+				System.out.println("game saved");
+			} catch (IOException e1) {
+
+				e1.printStackTrace();
+			}
 		}
 	}
 
@@ -398,6 +413,9 @@ public class Engine {
 		unselectTreeTable(tableInv.getRoot());
 		unselectTreeTable(tableShop.getRoot());
 	}
+
+	
+
 	/**
 	 * creates the task for crafting a recipe in the workshop 
 	 * 
@@ -720,18 +738,18 @@ public class Engine {
 	 * updates the workShop panel after it has been set up to show changed data
 	 */
 	private void updateWSPanel() {
+		WorkShop ws = game.getWorkShop();
+		ws.copyInventory(game.getInventory());
+		ws.getSelectedIngr().clear();
 		
-		game.getWorkShop().copyInventory(game.getInventory());
-		game.getWorkShop().getSelectedIngr().clear();
-		
-		updateTreeItemRoot(tableInvWS.getRoot(), game.getWorkShop(), game.getShop());
-		listenForSelection(tableInvWS.getRoot(), game.getWorkShop().getSelectedIngr());
+		updateTreeItemRoot(tableInvWS.getRoot(), ws, game.getShop());
+		listenForSelection(tableInvWS.getRoot(), ws.getSelectedIngr());
 		
 		Recipe selectedRecipe = listViewRecipe.getSelectionModel().getSelectedItem();
-		listViewRecipe.getItems().setAll(game.getWorkShop().getRecipeList("Cuisine").values());
+		listViewRecipe.getItems().setAll(ws.getRecipeList(wsChoiceBox.getSelectionModel().getSelectedItem()).values());
 		listViewRecipe.getSelectionModel().select(selectedRecipe);
 		updateWSResultLabel();
-		//listViewRecipe.setItems(.toArray());
+		
 	}
 	
 	/**

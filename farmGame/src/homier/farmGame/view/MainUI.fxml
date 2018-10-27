@@ -29,69 +29,6 @@
 	<center>
 		<StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
 			<children>
-            <AnchorPane fx:id="workShopPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: -fx-background;" styleClass="masking-pane">
-               <children>
-                  <TreeTableView fx:id="tableInvWS" layoutX="14.0" layoutY="80.0" prefHeight="550.0" prefWidth="470.0">
-                     <columns>
-                        <TreeTableColumn fx:id="colNameInvWS" prefWidth="170.0" text="Product" />
-                        <TreeTableColumn fx:id="colQtyInvWS" prefWidth="60.0" text="Qty (kg)" />
-                        <TreeTableColumn fx:id="colFreshInvWS" prefWidth="40.0" text="Fresh" />
-                        <TreeTableColumn fx:id="colQualInvWS" prefWidth="40.0" text="Qual" />
-                        <TreeTableColumn fx:id="colPriceInvWS" prefWidth="50.0" text="\$$$" />
-                        <TreeTableColumn fx:id="colSpoilQtyInvWS" prefWidth="60.0" text="Spoil" />
-                        <TreeTableColumn fx:id="colActInvWS" prefWidth="35.0" text="X" />
-                     </columns>
-                  </TreeTableView>
-                  <ListView fx:id="listViewRecipe" layoutX="532.0" layoutY="80.0" prefHeight="550.0" prefWidth="470.0" />
-                  <Label layoutX="14.0" layoutY="37.0" prefHeight="34.0" prefWidth="116.0" text="Inventory">
-                     <font>
-                        <Font name="System Bold" size="24.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="532.0" layoutY="37.0" prefHeight="35.0" prefWidth="127.0" text="Recipe List">
-                     <font>
-                        <Font name="System Bold" size="24.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="239.0" layoutY="46.0" text="Filter:" />
-                  <TextField layoutX="275.0" layoutY="42.0" />
-                  <Separator layoutX="14.0" layoutY="669.0" prefHeight="11.0" prefWidth="982.0" />
-                  <Label layoutX="14.0" layoutY="643.0" text="Selected ingredient">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
-                  <Button fx:id="actionWSbutton" layoutX="484.0" layoutY="779.0" mnemonicParsing="false" onAction="#actionWSbuttonAction" text="Cook" />
-                  <Button fx:id="cancelWSbutton" layoutX="475.0" layoutY="834.0" mnemonicParsing="false" onAction="#cancelWSbuttonAction" text="CANCEL" />
-                  <Button fx:id="closeWSbutton" layoutX="944.0" layoutY="14.0" mnemonicParsing="false" onAction="#closeWSbuttonAction" text="Close" />
-                  <TableView fx:id="tableSelectedIngrWS" layoutX="14.0" layoutY="680.0" prefHeight="148.0" prefWidth="410.0">
-                     <columns>
-                        <TableColumn fx:id="colNameIngrWS" prefWidth="170.0" text="Product" />
-                        <TableColumn fx:id="colQtyIngrWS" prefWidth="60.0" text="Qty (kg)" />
-                        <TableColumn fx:id="colFreshIngrWS" prefWidth="40.0" text="Fresh" />
-                        <TableColumn fx:id="colQualIngrWS" prefWidth="40.0" text="Qual" />
-                        <TableColumn fx:id="colPriceIngrWS" prefWidth="50.0" text="\$$$" />
-                        <TableColumn fx:id="colActIngrWS" prefWidth="35.0" text="X" />
-                     </columns>
-                  </TableView>
-                  <Label layoutX="586.0" layoutY="643.0" text="Recipe details">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
-                  <ListView fx:id="listViewRecipeDetails" layoutX="603.0" layoutY="722.0" prefHeight="163.0" prefWidth="399.0" />
-                  <Label fx:id="labelSelectedRecipe" layoutX="603.0" layoutY="680.0" text="Recipe name and quantity and price">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="labelResultWS" layoutX="14.0" layoutY="844.0" text="result name, qty, fresh, qual, price">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
-               </children>
-            </AnchorPane>
             <AnchorPane fx:id="shopPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: -fx-background;" styleClass="masking-pane">
                <children>
                   <TreeTableView fx:id="tableInv" layoutX="14.0" layoutY="80.0" prefHeight="550.0" prefWidth="470.0">
@@ -160,6 +97,71 @@
                         <TableColumn fx:id="colActBuy" prefWidth="35.0" text="X" />
                      </columns>
                   </TableView>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="workShopPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: -fx-background;" styleClass="masking-pane">
+               <children>
+                  <TreeTableView fx:id="tableInvWS" layoutX="14.0" layoutY="80.0" prefHeight="550.0" prefWidth="470.0">
+                     <columns>
+                        <TreeTableColumn fx:id="colNameInvWS" prefWidth="170.0" text="Product" />
+                        <TreeTableColumn fx:id="colQtyInvWS" prefWidth="60.0" text="Qty (kg)" />
+                        <TreeTableColumn fx:id="colFreshInvWS" prefWidth="40.0" text="Fresh" />
+                        <TreeTableColumn fx:id="colQualInvWS" prefWidth="40.0" text="Qual" />
+                        <TreeTableColumn fx:id="colPriceInvWS" prefWidth="50.0" text="\$$$" />
+                        <TreeTableColumn fx:id="colSpoilQtyInvWS" prefWidth="60.0" text="Spoil" />
+                        <TreeTableColumn fx:id="colActInvWS" prefWidth="35.0" text="X" />
+                     </columns>
+                  </TreeTableView>
+                  <ListView fx:id="listViewRecipe" layoutX="532.0" layoutY="80.0" prefHeight="550.0" prefWidth="470.0" />
+                  <Label layoutX="14.0" layoutY="37.0" prefHeight="34.0" prefWidth="116.0" text="Inventory">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="532.0" layoutY="37.0" prefHeight="35.0" prefWidth="127.0" text="Recipe List">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="239.0" layoutY="46.0" text="Filter:" />
+                  <TextField layoutX="275.0" layoutY="42.0" />
+                  <Separator layoutX="14.0" layoutY="669.0" prefHeight="11.0" prefWidth="982.0" />
+                  <Label layoutX="14.0" layoutY="643.0" text="Selected ingredient">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="actionWSbutton" layoutX="484.0" layoutY="779.0" mnemonicParsing="false" onAction="#actionWSbuttonAction" text="Cook" />
+                  <Button fx:id="cancelWSbutton" layoutX="475.0" layoutY="834.0" mnemonicParsing="false" onAction="#cancelWSbuttonAction" text="CANCEL" />
+                  <Button fx:id="closeWSbutton" layoutX="944.0" layoutY="14.0" mnemonicParsing="false" onAction="#closeWSbuttonAction" text="Close" />
+                  <TableView fx:id="tableSelectedIngrWS" layoutX="14.0" layoutY="680.0" prefHeight="148.0" prefWidth="410.0">
+                     <columns>
+                        <TableColumn fx:id="colNameIngrWS" prefWidth="170.0" text="Product" />
+                        <TableColumn fx:id="colQtyIngrWS" prefWidth="60.0" text="Qty (kg)" />
+                        <TableColumn fx:id="colFreshIngrWS" prefWidth="40.0" text="Fresh" />
+                        <TableColumn fx:id="colQualIngrWS" prefWidth="40.0" text="Qual" />
+                        <TableColumn fx:id="colPriceIngrWS" prefWidth="50.0" text="\$$$" />
+                        <TableColumn fx:id="colActIngrWS" prefWidth="35.0" text="X" />
+                     </columns>
+                  </TableView>
+                  <Label layoutX="586.0" layoutY="643.0" text="Recipe details">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <ListView fx:id="listViewRecipeDetails" layoutX="603.0" layoutY="722.0" prefHeight="163.0" prefWidth="399.0" />
+                  <Label fx:id="labelSelectedRecipe" layoutX="603.0" layoutY="680.0" text="">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="labelResultWS" layoutX="14.0" layoutY="844.0" text="">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <ChoiceBox fx:id="wsChoiceBox" layoutX="14.0" layoutY="14.0" prefWidth="150.0" />
+                  <Separator layoutX="14.0" layoutY="6.0" prefHeight="16.0" prefWidth="990.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="6.0" />
                </children>
             </AnchorPane>
 				<GridPane fx:id="gameGridPane" alignment="CENTER" prefHeight="662.0" prefWidth="1010.0">

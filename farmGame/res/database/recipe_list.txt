@@ -6,4 +6,4 @@ REC Oeufs brouillés ING Oeufs,2,Oignons,0.5 RES Oeufs brouillés,2
 
 WORKSHOP Silo
 
-REC Aliment de base ING Ble,1 RES Aliment de base,1
+REC Aliment de base ING Blé,1 RES Aliment de base,1

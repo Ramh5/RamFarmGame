@@ -3,6 +3,7 @@ package homier.farmGame.model;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.TreeMap;
 
@@ -103,7 +104,8 @@ public class RecipeBook {
 	 * @return the recipeList of the specified workshop
 	 */
 	public TreeMap<String,Recipe> getRecipeList(String workShopName){
-		return allRecipes.get(workShopName);
+		
+		return allRecipes.get(workShopName)!=null?allRecipes.get(workShopName):new TreeMap<String,Recipe>();
 	}
 	
 	/**
@@ -111,7 +113,9 @@ public class RecipeBook {
 	 * @return the workshop names as an array of string
 	 */
 	public String[] getWSList(){
-		return (String[]) allRecipes.keySet().toArray();
+		
+		Object[] objArray = allRecipes.keySet().toArray();
+		return Arrays.copyOf(objArray, objArray.length, String[].class);
 	}
 	
 }

@@ -1,0 +1,1383 @@
+{
+  "inventory": {
+    "money": 1000.0,
+    "data": {
+      "Oeufs": [
+        {
+          "name": "Oeufs",
+          "qty": 15.0,
+          "spoilQty": 0.045,
+          "fresh": 7,
+          "qual": 50,
+          "price": 1.473684210526316,
+          "selected": false
+        },
+        {
+          "name": "Oeufs",
+          "qty": 14.0,
+          "spoilQty": 0.098,
+          "fresh": 15,
+          "qual": 80,
+          "price": 2.088421052631579,
+          "selected": false
+        },
+        {
+          "name": "Oeufs",
+          "qty": 25.0,
+          "spoilQty": 0.49999999999999994,
+          "fresh": 25,
+          "qual": 80,
+          "price": 1.6853333333333336,
+          "selected": false
+        }
+      ],
+      "Oignons": [
+        {
+          "name": "Oignons",
+          "qty": 30.0,
+          "spoilQty": 0.049999999999999996,
+          "fresh": 3,
+          "qual": 50,
+          "price": 0.5842105263157895,
+          "selected": false
+        }
+      ],
+      "Blé": [
+        {
+          "name": "Blé",
+          "qty": 10.022,
+          "spoilQty": 0.026725333333333334,
+          "fresh": 6,
+          "qual": 1,
+          "price": 0.01859078947368421,
+          "selected": false
+        },
+        {
+          "name": "Blé",
+          "qty": 13.0,
+          "spoilQty": 0.039,
+          "fresh": 7,
+          "qual": 1,
+          "price": 0.018328947368421052,
+          "selected": false
+        },
+        {
+          "name": "Blé",
+          "qty": 12.0,
+          "spoilQty": 0.016,
+          "fresh": 2,
+          "qual": 1,
+          "price": 0.01963815789473684,
+          "selected": false
+        }
+      ],
+      "Carottes": [
+        {
+          "name": "Carottes",
+          "qty": 15.0,
+          "spoilQty": 0.024999999999999998,
+          "fresh": 3,
+          "qual": 80,
+          "price": 1.9473684210526316,
+          "selected": false
+        },
+        {
+          "name": "Carottes",
+          "qty": 10.0,
+          "spoilQty": 0.03,
+          "fresh": 7,
+          "qual": 50,
+          "price": 1.151315789473684,
+          "selected": false
+        }
+      ]
+    },
+    "averageData": {
+      "Oeufs": {
+        "name": "Oeufs",
+        "qty": 54.0,
+        "spoilQty": 0.643,
+        "fresh": 17,
+        "qual": 71,
+        "price": 1.793684210526316,
+        "selected": false
+      },
+      "Oignons": {
+        "name": "Oignons",
+        "qty": 30.0,
+        "spoilQty": 0.049999999999999996,
+        "fresh": 3,
+        "qual": 50,
+        "price": 0.5842105263157895,
+        "selected": false
+      },
+      "Blé": {
+        "name": "Blé",
+        "qty": 35.022,
+        "spoilQty": 0.08172533333333333,
+        "fresh": 5,
+        "qual": 1,
+        "price": 0.01885263157894737,
+        "selected": false
+      },
+      "Carottes": {
+        "name": "Carottes",
+        "qty": 25.0,
+        "spoilQty": 0.05499999999999999,
+        "fresh": 4,
+        "qual": 68,
+        "price": 1.632894736842105,
+        "selected": false
+      }
+    },
+    "prodData": {
+      "spoilMapList": {
+        "default": {
+          "1.0": 0.001,
+          "10.0": 0.004,
+          "20.0": 0.01,
+          "30.0": 0.03,
+          "40.0": 0.1,
+          "50.0": 0.6
+        },
+        "Oeufs": {
+          "1.0": 0.001,
+          "10.0": 0.004,
+          "20.0": 0.01,
+          "30.0": 0.03,
+          "40.0": 0.1,
+          "50.0": 0.6
+        },
+        "Omelette": {
+          "1.0": 0.001,
+          "10.0": 0.004,
+          "20.0": 0.01,
+          "30.0": 0.03,
+          "40.0": 0.1,
+          "50.0": 0.6
+        },
+        "Oignons": {
+          "1.0": 0.001,
+          "10.0": 0.004,
+          "20.0": 0.01,
+          "30.0": 0.03,
+          "40.0": 0.1,
+          "50.0": 0.6
+        },
+        "Blé": {
+          "1.0": 0.001,
+          "10.0": 0.004,
+          "20.0": 0.01,
+          "30.0": 0.03,
+          "40.0": 0.1,
+          "50.0": 0.6
+        },
+        "Carrotes": {
+          "1.0": 0.001,
+          "10.0": 0.004,
+          "20.0": 0.01,
+          "30.0": 0.03,
+          "40.0": 0.1,
+          "50.0": 0.6
+        }
+      },
+      "cerealSpoilRate": [
+        [
+          1.0,
+          0.001
+        ],
+        [
+          10.0,
+          0.004
+        ],
+        [
+          20.0,
+          0.01
+        ],
+        [
+          30.0,
+          0.03
+        ],
+        [
+          40.0,
+          0.1
+        ],
+        [
+          50.0,
+          0.6
+        ]
+      ]
+    }
+  },
+  "shop": {
+    "basePrice": {
+      "Oeufs brouillés": 4.5,
+      "Oeufs": 3.2,
+      "Omelette": 4.5,
+      "Oignons": 1.2,
+      "Soupe": 4.5,
+      "Blé": 1.99,
+      "Carottes": 2.5
+    },
+    "freshMod": {
+      "1.0": 1.0,
+      "20.0": 0.75,
+      "50.0": 0.2
+    },
+    "qualMod": {
+      "0.0": 0.0,
+      "50.0": 0.5,
+      "100.0": 1.0
+    },
+    "dataSelling": [],
+    "dataBuying": [],
+    "money": 1000.0,
+    "data": {
+      "Oeufs": [
+        {
+          "name": "Oeufs",
+          "qty": 5.0,
+          "spoilQty": 0.006666666666666666,
+          "fresh": 2,
+          "qual": 80,
+          "price": 2.5263157894736845,
+          "selected": false
+        },
+        {
+          "name": "Oeufs",
+          "qty": 5.0,
+          "spoilQty": 0.023,
+          "fresh": 11,
+          "qual": 15,
+          "price": 0.4168421052631579,
+          "selected": false
+        }
+      ],
+      "Oignons": [
+        {
+          "name": "Oignons",
+          "qty": 5.0,
+          "spoilQty": 0.023,
+          "fresh": 11,
+          "qual": 50,
+          "price": 0.5210526315789473,
+          "selected": false
+        },
+        {
+          "name": "Oignons",
+          "qty": 5.0,
+          "spoilQty": 0.029,
+          "fresh": 13,
+          "qual": 15,
+          "price": 0.151578947368421,
+          "selected": false
+        }
+      ],
+      "Blé": [
+        {
+          "name": "Blé",
+          "qty": 20.0,
+          "spoilQty": 0.026666666666666665,
+          "fresh": 2,
+          "qual": 80,
+          "price": 1.5710526315789473,
+          "selected": false
+        },
+        {
+          "name": "Blé",
+          "qty": 20.0,
+          "spoilQty": 0.092,
+          "fresh": 11,
+          "qual": 15,
+          "price": 0.25922368421052633,
+          "selected": false
+        }
+      ],
+      "Carottes": [
+        {
+          "name": "Carottes",
+          "qty": 10.0,
+          "spoilQty": 0.013333333333333332,
+          "fresh": 2,
+          "qual": 80,
+          "price": 1.973684210526316,
+          "selected": false
+        },
+        {
+          "name": "Carottes",
+          "qty": 10.0,
+          "spoilQty": 0.046,
+          "fresh": 11,
+          "qual": 15,
+          "price": 0.3256578947368421,
+          "selected": false
+        }
+      ]
+    },
+    "averageData": {
+      "Oeufs": {
+        "name": "Oeufs",
+        "qty": 10.0,
+        "spoilQty": 0.029666666666666668,
+        "fresh": 6,
+        "qual": 47,
+        "price": 1.4050526315789476,
+        "selected": false
+      },
+      "Oignons": {
+        "name": "Oignons",
+        "qty": 10.0,
+        "spoilQty": 0.052000000000000005,
+        "fresh": 12,
+        "qual": 32,
+        "price": 0.3284210526315789,
+        "selected": false
+      },
+      "Blé": {
+        "name": "Blé",
+        "qty": 40.0,
+        "spoilQty": 0.11866666666666667,
+        "fresh": 6,
+        "qual": 47,
+        "price": 0.8737671052631579,
+        "selected": false
+      },
+      "Carottes": {
+        "name": "Carottes",
+        "qty": 20.0,
+        "spoilQty": 0.059333333333333335,
+        "fresh": 6,
+        "qual": 47,
+        "price": 1.0976973684210527,
+        "selected": false
+      }
+    },
+    "prodData": {
+      "spoilMapList": {
+        "default": {
+          "1.0": 0.001,
+          "10.0": 0.004,
+          "20.0": 0.01,
+          "30.0": 0.03,
+          "40.0": 0.1,
+          "50.0": 0.6
+        },
+        "Oeufs": {
+          "1.0": 0.001,
+          "10.0": 0.004,
+          "20.0": 0.01,
+          "30.0": 0.03,
+          "40.0": 0.1,
+          "50.0": 0.6
+        },
+        "Omelette": {
+          "1.0": 0.001,
+          "10.0": 0.004,
+          "20.0": 0.01,
+          "30.0": 0.03,
+          "40.0": 0.1,
+          "50.0": 0.6
+        },
+        "Oignons": {
+          "1.0": 0.001,
+          "10.0": 0.004,
+          "20.0": 0.01,
+          "30.0": 0.03,
+          "40.0": 0.1,
+          "50.0": 0.6
+        },
+        "Blé": {
+          "1.0": 0.001,
+          "10.0": 0.004,
+          "20.0": 0.01,
+          "30.0": 0.03,
+          "40.0": 0.1,
+          "50.0": 0.6
+        },
+        "Carrotes": {
+          "1.0": 0.001,
+          "10.0": 0.004,
+          "20.0": 0.01,
+          "30.0": 0.03,
+          "40.0": 0.1,
+          "50.0": 0.6
+        }
+      },
+      "cerealSpoilRate": [
+        [
+          1.0,
+          0.001
+        ],
+        [
+          10.0,
+          0.004
+        ],
+        [
+          20.0,
+          0.01
+        ],
+        [
+          30.0,
+          0.03
+        ],
+        [
+          40.0,
+          0.1
+        ],
+        [
+          50.0,
+          0.6
+        ]
+      ]
+    }
+  },
+  "workShop": {
+    "recipeBook": {
+      "allRecipes": {
+        "Cuisine": {
+          "Oeufs brouillés": {
+            "name": "Oeufs brouillés",
+            "ingredientList": {
+              "Oeufs": 2.0,
+              "Oignons": 0.5
+            },
+            "quantity": 2.0
+          },
+          "Omelette": {
+            "name": "Omelette",
+            "ingredientList": {
+              "Oeufs": 1.0,
+              "Oignons": 1.5
+            },
+            "quantity": 2.0
+          },
+          "Soupe": {
+            "name": "Soupe",
+            "ingredientList": {
+              "Carottes": 2.0,
+              "Patates": 2.0
+            },
+            "quantity": 3.5
+          }
+        },
+        "Silo": {
+          "Aliment de base": {
+            "name": "Aliment de base",
+            "ingredientList": {
+              "Blé": 1.0
+            },
+            "quantity": 1.0
+          }
+        }
+      }
+    },
+    "selectedIngr": [
+      {
+        "name": "Oignons",
+        "qty": 30.0,
+        "spoilQty": 0.049999999999999996,
+        "fresh": 3,
+        "qual": 50,
+        "price": 0.5842105263157895,
+        "selected": true
+      },
+      {
+        "name": "Oeufs",
+        "qty": 15.0,
+        "spoilQty": 0.045,
+        "fresh": 7,
+        "qual": 50,
+        "price": 1.473684210526316,
+        "selected": true
+      }
+    ],
+    "ingrToBeUsed": [
+      {
+        "name": "Oeufs",
+        "qty": 15.0,
+        "spoilQty": 0.0,
+        "fresh": 7,
+        "qual": 50,
+        "price": 0.0,
+        "selected": false
+      },
+      {
+        "name": "Oignons",
+        "qty": 3.75,
+        "spoilQty": 0.0,
+        "fresh": 3,
+        "qual": 50,
+        "price": 0.0,
+        "selected": false
+      }
+    ],
+    "result": {
+      "name": "Oeufs brouillés",
+      "qty": 15.0,
+      "spoilQty": 0.04,
+      "fresh": 6,
+      "qual": 50,
+      "price": 2.1019736842105265,
+      "selected": false
+    },
+    "task": {
+      "name": "Cook",
+      "energyCost": 150.0,
+      "timeCost": 75,
+      "startedAt": 0.0,
+      "isComplete": true,
+      "result": null,
+      "newTile": null,
+      "newTileIndex": 0
+    },
+    "money": 1000.0,
+    "data": {
+      "Oeufs": [
+        {
+          "name": "Oeufs",
+          "qty": 15.0,
+          "spoilQty": 0.045,
+          "fresh": 7,
+          "qual": 50,
+          "price": 1.473684210526316,
+          "selected": true
+        },
+        {
+          "name": "Oeufs",
+          "qty": 14.0,
+          "spoilQty": 0.098,
+          "fresh": 15,
+          "qual": 80,
+          "price": 2.088421052631579,
+          "selected": false
+        },
+        {
+          "name": "Oeufs",
+          "qty": 25.0,
+          "spoilQty": 0.49999999999999994,
+          "fresh": 25,
+          "qual": 80,
+          "price": 1.6853333333333336,
+          "selected": false
+        }
+      ],
+      "Oignons": [
+        {
+          "name": "Oignons",
+          "qty": 30.0,
+          "spoilQty": 0.049999999999999996,
+          "fresh": 3,
+          "qual": 50,
+          "price": 0.5842105263157895,
+          "selected": true
+        }
+      ],
+      "Blé": [
+        {
+          "name": "Blé",
+          "qty": 10.022,
+          "spoilQty": 0.026725333333333334,
+          "fresh": 6,
+          "qual": 1,
+          "price": 0.01859078947368421,
+          "selected": false
+        },
+        {
+          "name": "Blé",
+          "qty": 13.0,
+          "spoilQty": 0.039,
+          "fresh": 7,
+          "qual": 1,
+          "price": 0.018328947368421052,
+          "selected": false
+        },
+        {
+          "name": "Blé",
+          "qty": 12.0,
+          "spoilQty": 0.016,
+          "fresh": 2,
+          "qual": 1,
+          "price": 0.01963815789473684,
+          "selected": false
+        }
+      ],
+      "Carottes": [
+        {
+          "name": "Carottes",
+          "qty": 15.0,
+          "spoilQty": 0.024999999999999998,
+          "fresh": 3,
+          "qual": 80,
+          "price": 1.9473684210526316,
+          "selected": false
+        },
+        {
+          "name": "Carottes",
+          "qty": 10.0,
+          "spoilQty": 0.03,
+          "fresh": 7,
+          "qual": 50,
+          "price": 1.151315789473684,
+          "selected": false
+        }
+      ]
+    },
+    "averageData": {
+      "Oeufs": {
+        "name": "Oeufs",
+        "qty": 54.0,
+        "spoilQty": 0.643,
+        "fresh": 17,
+        "qual": 71,
+        "price": 1.793684210526316,
+        "selected": false
+      },
+      "Oignons": {
+        "name": "Oignons",
+        "qty": 30.0,
+        "spoilQty": 0.049999999999999996,
+        "fresh": 3,
+        "qual": 50,
+        "price": 0.5842105263157895,
+        "selected": false
+      },
+      "Blé": {
+        "name": "Blé",
+        "qty": 35.022,
+        "spoilQty": 0.08172533333333333,
+        "fresh": 5,
+        "qual": 1,
+        "price": 0.01885263157894737,
+        "selected": false
+      },
+      "Carottes": {
+        "name": "Carottes",
+        "qty": 25.0,
+        "spoilQty": 0.05499999999999999,
+        "fresh": 4,
+        "qual": 68,
+        "price": 1.632894736842105,
+        "selected": false
+      }
+    },
+    "prodData": {
+      "spoilMapList": {
+        "default": {
+          "1.0": 0.001,
+          "10.0": 0.004,
+          "20.0": 0.01,
+          "30.0": 0.03,
+          "40.0": 0.1,
+          "50.0": 0.6
+        },
+        "Oeufs": {
+          "1.0": 0.001,
+          "10.0": 0.004,
+          "20.0": 0.01,
+          "30.0": 0.03,
+          "40.0": 0.1,
+          "50.0": 0.6
+        },
+        "Omelette": {
+          "1.0": 0.001,
+          "10.0": 0.004,
+          "20.0": 0.01,
+          "30.0": 0.03,
+          "40.0": 0.1,
+          "50.0": 0.6
+        },
+        "Oignons": {
+          "1.0": 0.001,
+          "10.0": 0.004,
+          "20.0": 0.01,
+          "30.0": 0.03,
+          "40.0": 0.1,
+          "50.0": 0.6
+        },
+        "Blé": {
+          "1.0": 0.001,
+          "10.0": 0.004,
+          "20.0": 0.01,
+          "30.0": 0.03,
+          "40.0": 0.1,
+          "50.0": 0.6
+        },
+        "Carrotes": {
+          "1.0": 0.001,
+          "10.0": 0.004,
+          "20.0": 0.01,
+          "30.0": 0.03,
+          "40.0": 0.1,
+          "50.0": 0.6
+        }
+      },
+      "cerealSpoilRate": [
+        [
+          1.0,
+          0.001
+        ],
+        [
+          10.0,
+          0.004
+        ],
+        [
+          20.0,
+          0.01
+        ],
+        [
+          30.0,
+          0.03
+        ],
+        [
+          40.0,
+          0.1
+        ],
+        [
+          50.0,
+          0.6
+        ]
+      ]
+    }
+  },
+  "tileList": [
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "FarmPlot",
+      "growthRate": 0.0,
+      "growth": 0.0,
+      "yield": 0.0,
+      "maxYield": 0,
+      "yieldMap": {
+        "-10.0": 0.0,
+        "0.0": 0.0,
+        "50.0": 0.0,
+        "80.0": 30.0,
+        "95.0": 98.0,
+        "100.0": 100.0,
+        "110.0": 98.0,
+        "115.0": 95.0,
+        "130.0": 70.0,
+        "150.0": 0.0,
+        "160.0": 0.0
+      },
+      "product": "FARM",
+      "quality": 0,
+      "tempRange": [
+        0,
+        0
+      ],
+      "ID": "FARM_PLOT"
+    },
+    {
+      "type": "FarmPlot",
+      "growthRate": 0.0,
+      "growth": 0.0,
+      "yield": 0.0,
+      "maxYield": 0,
+      "yieldMap": {
+        "-10.0": 0.0,
+        "0.0": 0.0,
+        "50.0": 0.0,
+        "80.0": 30.0,
+        "95.0": 98.0,
+        "100.0": 100.0,
+        "110.0": 98.0,
+        "115.0": 95.0,
+        "130.0": 70.0,
+        "150.0": 0.0,
+        "160.0": 0.0
+      },
+      "product": "FARM",
+      "quality": 0,
+      "tempRange": [
+        0,
+        0
+      ],
+      "ID": "FARM_PLOT"
+    },
+    {
+      "type": "FarmPlot",
+      "growthRate": 0.0,
+      "growth": 0.0,
+      "yield": 0.0,
+      "maxYield": 0,
+      "yieldMap": {
+        "-10.0": 0.0,
+        "0.0": 0.0,
+        "50.0": 0.0,
+        "80.0": 30.0,
+        "95.0": 98.0,
+        "100.0": 100.0,
+        "110.0": 98.0,
+        "115.0": 95.0,
+        "130.0": 70.0,
+        "150.0": 0.0,
+        "160.0": 0.0
+      },
+      "product": "FARM",
+      "quality": 0,
+      "tempRange": [
+        0,
+        0
+      ],
+      "ID": "FARM_PLOT"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "FarmPlot",
+      "growthRate": 0.0,
+      "growth": 0.0,
+      "yield": 0.0,
+      "maxYield": 0,
+      "yieldMap": {
+        "-10.0": 0.0,
+        "0.0": 0.0,
+        "50.0": 0.0,
+        "80.0": 30.0,
+        "95.0": 98.0,
+        "100.0": 100.0,
+        "110.0": 98.0,
+        "115.0": 95.0,
+        "130.0": 70.0,
+        "150.0": 0.0,
+        "160.0": 0.0
+      },
+      "product": "FARM",
+      "quality": 0,
+      "tempRange": [
+        0,
+        0
+      ],
+      "ID": "FARM_PLOT"
+    },
+    {
+      "type": "BuildingTile",
+      "recipeBook": {
+        "allRecipes": {
+          "Kitchen": {
+            "Omelette": {
+              "name": "Omelette",
+              "ingredientList": {
+                "Carrots": 1.0,
+                "Eggs": 2.0,
+                "Onions": 1.0
+              },
+              "quantity": 3.0
+            },
+            "Soupe": {
+              "name": "Soupe",
+              "ingredientList": {
+                "Beef": 1.5,
+                "Carrots": 0.5,
+                "Onions": 1.5,
+                "Potatoes": 2.2
+              },
+              "quantity": 4.5
+            }
+          }
+        }
+      },
+      "state": 0,
+      "ID": "HOUSE_TILE"
+    },
+    {
+      "type": "FarmPlot",
+      "growthRate": 0.0,
+      "growth": 0.0,
+      "yield": 0.0,
+      "maxYield": 0,
+      "yieldMap": {
+        "-10.0": 0.0,
+        "0.0": 0.0,
+        "50.0": 0.0,
+        "80.0": 30.0,
+        "95.0": 98.0,
+        "100.0": 100.0,
+        "110.0": 98.0,
+        "115.0": 95.0,
+        "130.0": 70.0,
+        "150.0": 0.0,
+        "160.0": 0.0
+      },
+      "product": "FARM",
+      "quality": 0,
+      "tempRange": [
+        0,
+        0
+      ],
+      "ID": "FARM_PLOT"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "FarmPlot",
+      "growthRate": 0.0,
+      "growth": 0.0,
+      "yield": 0.0,
+      "maxYield": 0,
+      "yieldMap": {
+        "-10.0": 0.0,
+        "0.0": 0.0,
+        "50.0": 0.0,
+        "80.0": 30.0,
+        "95.0": 98.0,
+        "100.0": 100.0,
+        "110.0": 98.0,
+        "115.0": 95.0,
+        "130.0": 70.0,
+        "150.0": 0.0,
+        "160.0": 0.0
+      },
+      "product": "FARM",
+      "quality": 0,
+      "tempRange": [
+        0,
+        0
+      ],
+      "ID": "FARM_PLOT"
+    },
+    {
+      "type": "FarmPlot",
+      "growthRate": 0.0,
+      "growth": 0.0,
+      "yield": 0.0,
+      "maxYield": 0,
+      "yieldMap": {
+        "-10.0": 0.0,
+        "0.0": 0.0,
+        "50.0": 0.0,
+        "80.0": 30.0,
+        "95.0": 98.0,
+        "100.0": 100.0,
+        "110.0": 98.0,
+        "115.0": 95.0,
+        "130.0": 70.0,
+        "150.0": 0.0,
+        "160.0": 0.0
+      },
+      "product": "FARM",
+      "quality": 0,
+      "tempRange": [
+        0,
+        0
+      ],
+      "ID": "FARM_PLOT"
+    },
+    {
+      "type": "FarmPlot",
+      "growthRate": 0.0,
+      "growth": 0.0,
+      "yield": 0.0,
+      "maxYield": 0,
+      "yieldMap": {
+        "-10.0": 0.0,
+        "0.0": 0.0,
+        "50.0": 0.0,
+        "80.0": 30.0,
+        "95.0": 98.0,
+        "100.0": 100.0,
+        "110.0": 98.0,
+        "115.0": 95.0,
+        "130.0": 70.0,
+        "150.0": 0.0,
+        "160.0": 0.0
+      },
+      "product": "FARM",
+      "quality": 0,
+      "tempRange": [
+        0,
+        0
+      ],
+      "ID": "FARM_PLOT"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    },
+    {
+      "type": "ForestTile",
+      "ID": "FOREST_TILE"
+    }
+  ],
+  "wxForcast": {
+    "today": {
+      "temp": -13.0,
+      "sky": "RAIN1",
+      "wind": "WIND0"
+    },
+    "tomorrow": {
+      "temp": -9.0,
+      "sky": "CLOUD1",
+      "wind": "WIND1"
+    },
+    "random": {
+      "seed": 50786796900449,
+      "nextNextGaussian": 1.1077961365698727,
+      "haveNextNextGaussian": true
+    },
+    "gameClock": {
+      "secondsInADay": 300,
+      "totalSeconds": 71.62849658999998,
+      "year": 1,
+      "month": 0,
+      "day": 1,
+      "hour": 9,
+      "isNewDay": false
+    }
+  },
+  "employees": [
+    {
+      "name": "Ram",
+      "salary": 0.0,
+      "energy": 1000.0,
+      "isWorking": false,
+      "currentTask": {
+        "name": "-----",
+        "energyCost": 0.0,
+        "timeCost": 0,
+        "startedAt": 0.0,
+        "isComplete": true,
+        "result": null,
+        "newTile": null,
+        "newTileIndex": 0
+      }
+    },
+    {
+      "name": "EMPTY",
+      "salary": 0.0,
+      "energy": 900.0,
+      "isWorking": false,
+      "currentTask": {
+        "name": "-----",
+        "energyCost": 0.0,
+        "timeCost": 0,
+        "startedAt": 0.0,
+        "isComplete": true,
+        "result": null,
+        "newTile": null,
+        "newTileIndex": 0
+      }
+    }
+  ],
+  "gameClock": {
+    "secondsInADay": 300,
+    "totalSeconds": 71.62849658999998,
+    "year": 1,
+    "month": 0,
+    "day": 1,
+    "hour": 9,
+    "isNewDay": false
+  }
+}

@@ -22,11 +22,6 @@ public class WorkShop extends Inventory {
 	public WorkShop() {
 		super();
 		recipeBook = new RecipeBook(getClass().getResource("/database/recipe_list.txt").getPath());
-		
-		
-		
-		//recipeBook = new RecipeBook("C:/Users/Ram/workspace/git/farmGame/farmGame/res/database/recipe_list.txt");
-		//recipeBook = new RecipeBook();
 	}
 	
 	/**
@@ -116,8 +111,8 @@ public class WorkShop extends Inventory {
 		}
 		
 		result.setQty(recipe.getQuantity()*limFactor);
-		result.setFresh((int)(totFresh/totIngrQty));
-		result.setQual((int)(totQual/totIngrQty));
+		result.setFresh((int)Math.round(totFresh/totIngrQty));
+		result.setQual((int)(Math.round(totQual/totIngrQty)));
 		result.updateSpoil(getProdData(), 0);
 		
 		//set the energy and time cost for this task
