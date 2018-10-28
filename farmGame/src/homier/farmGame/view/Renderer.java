@@ -76,7 +76,7 @@ public class Renderer {
 		VBox mouseOverPanel = engine.getMouseOverPanel();
 		Inventory inventory = engine.getGame().getInventory();
 		GameClock gameClock = engine.getGameClock();
-		Employee activeEmployee= engine.getActiveEmployee();
+		//Employee activeEmployee= engine.getActiveEmployee();
 		
 		// create popup menu for the tiles and set to pause when shown and
 		// unpause when hidden only if the game was not manualy paused prior
@@ -158,16 +158,17 @@ public class Renderer {
 						newImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {	
 							public void handle(MouseEvent event) {
 								if (event.getButton() == MouseButton.PRIMARY) {
+									Employee activeEmployee= engine.getActiveEmployee();
+									//System.out.println(engine.getActiveEmployee());
 									b1.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<100);
 									b1.setText("Plant Wheat");
 									
 									b1.setOnAction(e -> {
 										//TODO  pause while no task
-										//create the task, add it to the active employee and create a changelistener to finish the task
-										FarmTask plantWheat = new FarmTask("Plant", 100, 20, gameClock.getTotalSeconds());
-										activeEmployee.setTask(plantWheat);
-										plantWheat.setNewTile( new FarmPlot("WHEAT_PLOT", 15, 400,new int[]{15,25}), index);
-										plantWheat.startTask(gameClock.getTotalSeconds(), activeEmployee);
+										engine.getSeedPane().toFront();
+										engine.getSeedPane().setUserData(index);
+										engine.updateSeedPanel();
+										
 									});//plant button setOnAction event handler
 									popup.show(newImageView, event.getScreenX(), event.getScreenY());
 								}//if primary mouse click (ie left mouse click)
@@ -197,12 +198,13 @@ public class Renderer {
 						newImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 							public void handle(MouseEvent event) {
 								if (event.getButton() == MouseButton.PRIMARY) {
-									
+									Employee activeEmployee= engine.getActiveEmployee();
 									b1.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<100);
 									b1.setText("Harvest Wheat");
 									b1.setOnAction(e -> {
 										
 										//create the task, add it to the active employee and create a changelistener to finish the task
+										
 										FarmTask harvestWheat = new FarmTask("Harvest", 100, 30, gameClock.getTotalSeconds());
 										activeEmployee.setTask(harvestWheat);
 										harvestWheat.setResult(new Product(  "Wheat",((FarmPlot) tile).getYield(),1,1));

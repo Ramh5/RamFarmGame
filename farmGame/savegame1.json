@@ -471,59 +471,21 @@
         }
       }
     },
-    "selectedIngr": [
-      {
-        "name": "Oignons",
-        "qty": 30.0,
-        "spoilQty": 0.049999999999999996,
-        "fresh": 3,
-        "qual": 50,
-        "price": 0.5842105263157895,
-        "selected": true
-      },
-      {
-        "name": "Oeufs",
-        "qty": 15.0,
-        "spoilQty": 0.045,
-        "fresh": 7,
-        "qual": 50,
-        "price": 1.473684210526316,
-        "selected": true
-      }
-    ],
-    "ingrToBeUsed": [
-      {
-        "name": "Oeufs",
-        "qty": 15.0,
-        "spoilQty": 0.0,
-        "fresh": 7,
-        "qual": 50,
-        "price": 0.0,
-        "selected": false
-      },
-      {
-        "name": "Oignons",
-        "qty": 3.75,
-        "spoilQty": 0.0,
-        "fresh": 3,
-        "qual": 50,
-        "price": 0.0,
-        "selected": false
-      }
-    ],
+    "selectedIngr": [],
+    "ingrToBeUsed": [],
     "result": {
-      "name": "Oeufs brouillés",
-      "qty": 15.0,
-      "spoilQty": 0.04,
-      "fresh": 6,
-      "qual": 50,
-      "price": 2.1019736842105265,
+      "name": "EMPTY",
+      "qty": 0.0,
+      "spoilQty": 0.0,
+      "fresh": 0,
+      "qual": 0,
+      "price": 0.0,
       "selected": false
     },
     "task": {
-      "name": "Cook",
-      "energyCost": 150.0,
-      "timeCost": 75,
+      "name": "-----",
+      "energyCost": 0.0,
+      "timeCost": 0,
       "startedAt": 0.0,
       "isComplete": true,
       "result": null,
@@ -540,7 +502,7 @@
           "fresh": 7,
           "qual": 50,
           "price": 1.473684210526316,
-          "selected": true
+          "selected": false
         },
         {
           "name": "Oeufs",
@@ -569,7 +531,7 @@
           "fresh": 3,
           "qual": 50,
           "price": 0.5842105263157895,
-          "selected": true
+          "selected": false
         }
       ],
       "Blé": [
@@ -1313,27 +1275,27 @@
   ],
   "wxForcast": {
     "today": {
-      "temp": -13.0,
-      "sky": "RAIN1",
+      "temp": -11.0,
+      "sky": "CLOUD2",
       "wind": "WIND0"
     },
     "tomorrow": {
-      "temp": -9.0,
-      "sky": "CLOUD1",
-      "wind": "WIND1"
+      "temp": -17.0,
+      "sky": "CLOUD2",
+      "wind": "WIND0"
     },
     "random": {
-      "seed": 50786796900449,
-      "nextNextGaussian": 1.1077961365698727,
+      "seed": 58913033623301,
+      "nextNextGaussian": -0.5340384228313617,
       "haveNextNextGaussian": true
     },
     "gameClock": {
       "secondsInADay": 300,
-      "totalSeconds": 71.62849658999998,
+      "totalSeconds": 123.20187327999994,
       "year": 1,
       "month": 0,
       "day": 1,
-      "hour": 9,
+      "hour": 11,
       "isNewDay": false
     }
   },
@@ -1373,11 +1335,11 @@
   ],
   "gameClock": {
     "secondsInADay": 300,
-    "totalSeconds": 71.62849658999998,
+    "totalSeconds": 123.20187327999994,
     "year": 1,
     "month": 0,
     "day": 1,
-    "hour": 9,
+    "hour": 11,
     "isNewDay": false
   }
 }

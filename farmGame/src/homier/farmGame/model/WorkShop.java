@@ -75,11 +75,11 @@ public class WorkShop extends Inventory {
 		
 		for(Entry<String,Double> entry : recipe.getIngredientList().entrySet()) {
 			String name = entry.getKey();
-			Product ingrProd = new Product(entry.getKey(),0,0,0);
+			//Product ingrProd = new Product(entry.getKey(),0,0,0);
 			double qtyNeeded = recipe.getIngredientList().get(name);
-			
-			while(ingrProd.getQty()/qtyNeeded<limFactor) {
-				//System.out.println("in the loop" + ingrProd.getQty()/qtyNeeded);
+			double qtyAvail = 0;
+			while(qtyAvail/qtyNeeded<limFactor) {
+				
 				Product leastFreshProd = new Product(name,0,0,0);
 
 				for(Product prod:selectedIngrCopy) {
@@ -92,12 +92,10 @@ public class WorkShop extends Inventory {
 				selectedIngrCopy.remove(leastFreshProd);
 				
 				leastFreshProd = new Product(leastFreshProd); // copy to not alter the displayed list
-				leastFreshProd.setQty(Math.min(limFactor*qtyNeeded-ingrProd.getQty(), leastFreshProd.getQty()));
-				ingrProd.add(leastFreshProd);
-
+				leastFreshProd.setQty(Math.min(limFactor*qtyNeeded-qtyAvail, leastFreshProd.getQty()));
+				qtyAvail+=leastFreshProd.getQty();
+				ingrToBeUsed.add(leastFreshProd);
 			}
-
-			ingrToBeUsed.add(ingrProd);
 		}
 
 		//use the "list of ingredients to be used" to make the average fresh and qual result for the crafted product 

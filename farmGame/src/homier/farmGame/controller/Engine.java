@@ -44,8 +44,11 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -69,11 +72,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
 
 public class Engine {
@@ -88,12 +94,12 @@ public class Engine {
 	@FXML private ChoiceBox<Employee> employeeChoice;
 	@FXML private ChoiceBox<String> wsChoiceBox;
 	@FXML private ProgressIndicator taskProgress1;
-	@FXML private AnchorPane shopPane, workShopPane;
-	@FXML private TreeTableView<Product> tableInv, tableShop, tableInvWS;
-	@FXML private TreeTableColumn<Product, String> colNameInv, colNameShop,colNameInvWS, colQtyInv, colQtyShop, colQtyInvWS, 
-												   colPriceInv, colPriceShop, colPriceInvWS, colSpoilQtyInv, colSpoilQtyShop, colSpoilQtyInvWS;
-	@FXML private TreeTableColumn<Product, Number> colFreshInv, colFreshShop, colFreshInvWS, colQualInv, colQualShop,colQualInvWS;
-	@FXML private TreeTableColumn<Product, Boolean> colActInv, colActShop, colActInvWS;
+	@FXML private AnchorPane shopPane, workShopPane, seedPane;
+	@FXML private TreeTableView<Product> tableInv, tableShop, tableInvWS, tableSeed;
+	@FXML private TreeTableColumn<Product, String> colNameInv, colNameShop,colNameInvWS,colNameSeed, colQtyInv, colQtyShop, colQtyInvWS,colQtySeed, 
+												   colPriceInv, colPriceShop, colPriceInvWS,colPriceSeed, colSpoilQtyInv, colSpoilQtyShop, colSpoilQtyInvWS,colSpoilQtySeed;
+	@FXML private TreeTableColumn<Product, Number> colFreshInv, colFreshShop, colFreshInvWS,colFreshSeed, colQualInv, colQualShop,colQualInvWS,colQualSeed;
+	@FXML private TreeTableColumn<Product, Boolean> colActInv, colActShop, colActInvWS,colActSeed;
 	@FXML private TableView<Product>  tableSell, tableBuy, tableSelectedIngrWS;
 	@FXML private TableColumn<Product, String> colNameSell, colNameBuy, colNameIngrWS, colQtySell, colQtyBuy, colQtyIngrWS, colPriceSell, colPriceBuy, colPriceIngrWS;
 	@FXML private TableColumn<Product, Number>  colFreshSell, colFreshBuy, colFreshIngrWS,  
@@ -102,6 +108,8 @@ public class Engine {
 	@FXML private ListView<String>  listViewRecipeDetails;
 	@FXML private ListView<Recipe> listViewRecipe;
 	@FXML private MenuItem save,load;
+	@FXML private TextFlow seedDetailTextFlow;
+	@FXML private StackPane leftStackPane;
 
 	private Game game;
 	private Renderer renderer;
@@ -113,7 +121,16 @@ public class Engine {
 	//TODO add button to skip days, months...
 	
 	public void update(double dTime) {
-
+		//Pause game when in the seed selection pane
+		if(leftStackPane.getChildren().indexOf(seedPane)==leftStackPane.getChildren().size()-1){
+			pauseButton.setSelected(true);
+			updatePauseButton();
+			openShopButton.setDisable(true);
+			openWSbutton.setDisable(true);
+			pauseButton.setDisable(true);
+			return;//not sure if this could introduce a bug since game might unpause for a tick after popup is hidden
+		}
+		
 		game.getClock().update(dTime);
 		clockLabel.setText(game.getClock().toString());
 		
@@ -131,9 +148,10 @@ public class Engine {
 			updateWSPanel();
 			
 		}
-		leftTextArea.setText(game.getInventory().toString());
-		//update energy and task name when task is in progress
 		
+		leftTextArea.setText(game.getInventory().toString());
+		
+		//update energy and task name when task is in progress
 		taskProgress1.setProgress(getActiveEmployee().getTask().taskProgress(game.getClock().getTotalSeconds(), game.getInventory(),getActiveEmployee(), game.getTileList(), renderer.getPreviousMap()));
 		taskName1.setText(getActiveEmployee().getTask().getName());
 		
@@ -152,6 +170,7 @@ public class Engine {
 	}
 
 	public void initialize() {
+		
 		if (game==null){
 			game = new Game();//create a new game if not loaded save game
 			fileChooser.setInitialDirectory(new File(getClass().getResource("/homier").getFile()));
@@ -205,6 +224,9 @@ public class Engine {
 		});
 		setupWS();
 		
+		//seedPane
+		setupSeedPane();
+		seedDetailTextFlow.getChildren().setAll(new Text("Choisissez une semence"));
 		
 	}
 
@@ -215,7 +237,28 @@ public class Engine {
 		App.gameSpeed=gameSpeedChoice.getSelectionModel().getSelectedItem();
 	}
 	
+	@FXML 
+	private void seedCancelButtonAction(ActionEvent event){
+		seedPane.toBack();
+		if (!manPaused) {
+			pauseButton.setSelected(false);
+			updatePauseButton();
+		}
+		unselectTreeTable(tableSeed.getRoot());
+		openShopButton.setDisable(false);
+		openWSbutton.setDisable(false);
+		pauseButton.setDisable(false);
+	}
 	
+	@FXML 
+	private void seedOKButtonAction(ActionEvent event){
+		/*
+		FarmTask plantWheat = new FarmTask("Plant", 100, 20, gameClock.getTotalSeconds());
+		activeEmployee.setTask(plantWheat);
+		plantWheat.setNewTile( new FarmPlot("WHEAT_PLOT", 15, 400,new int[]{15,25}), index);
+		plantWheat.startTask(gameClock.getTotalSeconds(), activeEmployee);
+		*/
+	}
 	
 	@FXML 
 	private void saveMenuAction(ActionEvent event){
@@ -278,7 +321,6 @@ public class Engine {
 		}
 	}
 
-	
 	@FXML
 	private void pauseButtonAction(ActionEvent event) {
 		updatePauseButton();
@@ -288,7 +330,6 @@ public class Engine {
 			manPaused=false;
 		}
 	}
-
 
 	public void updatePauseButton(){
 		pauseButton.setBackground(Background.EMPTY);
@@ -476,6 +517,9 @@ public class Engine {
 		
 		return manPaused;
 	}
+	public AnchorPane getSeedPane(){
+		return seedPane;
+	}
 	
 	/**
 	 * @return the active employee as selected on the employee choice box
@@ -662,7 +706,7 @@ public class Engine {
 		colFreshIngrWS.setCellValueFactory(new PropertyValueFactory<>("fresh"));
 		colQualIngrWS.setCellValueFactory(new PropertyValueFactory<>("qual"));
 		colPriceIngrWS.setCellValueFactory(cellData ->Bindings.format("%.2f", cellData.getValue().priceProperty()));
-		colActIngrWS.setCellFactory(CheckBoxTableCell.forTableColumn(colActSell));
+		colActIngrWS.setCellFactory(CheckBoxTableCell.forTableColumn(colActIngrWS));
 		colActIngrWS.setCellValueFactory(new PropertyValueFactory<>("selected"));
 		
 		game.getWorkShop().getSelectedIngr().addListener(new ListChangeListener<Product>() {
@@ -713,6 +757,57 @@ public class Engine {
 
 	}
 	
+	private void setupSeedPane(){
+		final PseudoClass topLevelTTVPseudoClass = PseudoClass.getPseudoClass("top-level-treetableview");
+		
+		//------------ Seed inventory table------------- //TODO setup spoil colum (negative and red)
+		TreeItem<Product> rootSeed = new TreeItem<>(new Product("empty", 0, 0, 0));
+		tableSeed.setPlaceholder(new Text("Empty Inventory"));
+		tableSeed.setRoot(rootSeed);
+		tableSeed.setShowRoot(false);
+		tableSeed.setEditable(true);
+		colActSeed.setEditable(true);
+		
+		//populate the seed panel with the inventory data filtered for seeds
+		
+		updateSeedPanel();
+		
+		//Setup the cell values
+		colNameSeed.setCellValueFactory(new TreeItemPropertyValueFactory<>("name"));
+		colQtySeed.setCellValueFactory(cellData ->Bindings.format("%.2f", cellData.getValue().getValue().qtyProperty()));
+		colFreshSeed.setCellValueFactory(new TreeItemPropertyValueFactory<>("fresh"));
+		colQualSeed.setCellValueFactory(new TreeItemPropertyValueFactory<>("qual"));
+		colPriceSeed.setCellValueFactory(cellData ->Bindings.format("%.2f", cellData.getValue().getValue().priceProperty()));
+		colActSeed.setCellFactory(column ->{ 
+			return new CheckBoxTreeTableCell<Product, Boolean>(){
+				@Override
+				public void updateItem(Boolean item, boolean empty) {
+					super.updateItem(item, empty);
+					boolean isTopLevel = getTreeTableView().getRoot().getChildren().contains(getTreeTableRow().getTreeItem());
+					if(item == null || empty){
+						setText(null);
+						setGraphic(null);
+						getTreeTableRow().pseudoClassStateChanged(topLevelTTVPseudoClass, false);
+					
+					}else{
+						getTreeTableRow().pseudoClassStateChanged(topLevelTTVPseudoClass, isTopLevel);
+						setEditable(!isTopLevel);	
+					}
+				}
+			};
+		});
+		colActSeed.setCellValueFactory(new TreeItemPropertyValueFactory<>("selected"));
+		
+	}
+	
+	/**
+	 * updates the seed panel after it has been set up to show changed data
+	 */
+	public void updateSeedPanel(){
+		updateTreeItemRoot(tableSeed.getRoot(), game.getInventory(), game.getShop());
+		listenForSelectionSeedPane(tableSeed.getRoot());
+	}
+	
 	/**
 	 * update the result label to reflect the selected recipe and selected ingredients
 	 * @return the result (or anticipated result) of the craft
@@ -733,7 +828,6 @@ public class Engine {
 		labelResultWS.setText(result.toString()); 
 	}
 
-	
 	/**
 	 * updates the workShop panel after it has been set up to show changed data
 	 */
@@ -856,7 +950,25 @@ public class Engine {
 		}
 		rootTreeItem.getChildren().forEach(item -> listenForSelection(item,list));
 	}
-
+	/**
+	 * Adds the appropriate changelisteners to Seeds in the tableSeed treetableview (only for the leafs)
+	 * and adds the details to the seedDetailTextFlow
+	 * @param rootTreeItem : the tableSeed root(top level) TreeItem
+	 */
+	private void listenForSelectionSeedPane(TreeItem<Product> rootTreeItem) {
+		if(rootTreeItem.isLeaf()){
+			rootTreeItem.getValue().setSelListener((obs, oldVal, newVal) -> {
+				if(newVal){
+					seedDetailTextFlow.getChildren().setAll(new Text(rootTreeItem.getValue().toString()));
+					unselectTreeTableButOne(tableSeed.getRoot(),rootTreeItem);
+				}else{
+					seedDetailTextFlow.getChildren().setAll(new Text("Choisissez une semence"));
+				}
+				
+			});
+		}
+		rootTreeItem.getChildren().forEach(item -> listenForSelectionSeedPane(item));
+	}
 	
 	/**
 	 * 
@@ -866,6 +978,19 @@ public class Engine {
 	private void unselectTreeTable(TreeItem<Product> rootTreeItem){
 		rootTreeItem.getValue().setSelected(false);
 		rootTreeItem.getChildren().forEach(item->unselectTreeTable(item));
+	}
+	
+	/**
+	 * Unselect all but one of a treeTableView, usefull when we want to force just one selected
+	 * @param rootTreeItem : the root node of the treeItem we want to unselect all products but one
+	 * @param one : the one treeItem that is selected on purpose
+	 */
+	private void unselectTreeTableButOne(TreeItem<Product> rootTreeItem, TreeItem<Product> one){
+		if(!rootTreeItem.equals(one)){
+			rootTreeItem.getValue().setSelected(false);
+		}
+		rootTreeItem.getChildren().forEach(item->unselectTreeTableButOne(item,one));
+		seedDetailTextFlow.getChildren().setAll(new Text(one.getValue().toString()));
 	}
 	
 	/**
