@@ -14,7 +14,7 @@ public class WorkShop extends Inventory {
 	private RecipeBook recipeBook;
 	private final ObservableList<Product> selectedIngr = FXCollections.observableArrayList();
 	private ArrayList<Product> ingrToBeUsed = new ArrayList<Product>();
-	private Product result = new Product("EMPTY",0,0,0);
+	private Product result = new Product(null,"EMPTY",0,0,0);
 	private FarmTask task = new FarmTask();
 	
 	
@@ -38,7 +38,10 @@ public class WorkShop extends Inventory {
 		
 		ArrayList<Product> selectedIngrCopy = new ArrayList<>(selectedIngr);
 		ingrToBeUsed.clear();
-		result=new Product(recipe.getName(),0,0,0);
+		//TODO implement categories depending on the recipes
+		ArrayList<String> categoriesCereal = new ArrayList<String>();
+		categoriesCereal.add("Frais,Céréale");
+		result=new Product(categoriesCereal,recipe.getName(),0,0,0);
 		
 		//make a map of ratios to determine the limfactor ingredient
 		for(Product prod:selectedIngr) {
@@ -80,7 +83,7 @@ public class WorkShop extends Inventory {
 			double qtyAvail = 0;
 			while(qtyAvail/qtyNeeded<limFactor) {
 				
-				Product leastFreshProd = new Product(name,0,0,0);
+				Product leastFreshProd = new Product(null,name,0,0,0);
 
 				for(Product prod:selectedIngrCopy) {
 					if(prod.getName().equals(entry.getKey())) {

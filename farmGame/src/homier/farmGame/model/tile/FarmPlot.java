@@ -26,28 +26,21 @@ public class FarmPlot extends Tile {
 
 	
 	
-	public FarmPlot(String ID, float growthRate, int maxYield) {
-		super(ID, "FarmPlot");
+	public FarmPlot(String prodName, float growthRate, int maxYield) {
+		super(prodName.toUpperCase()+"_PLOT", "FarmPlot");
 		this.growthRate = growthRate;
 		this.growth = new SimpleDoubleProperty(0);
 		this.yield= new SimpleDoubleProperty(0);
 		this.maxYield = maxYield;
 		yieldMap = buildYieldMap();
-		this.product = ID.substring(0, ID.indexOf("_"));
+		this.product = prodName;
 		this.quality = 0;
 		this.tempRange = new int[]{0,0};
 		
 	}
 	
-	public FarmPlot(String ID, float growthRate, int maxYield, int[] tempRange) {
-		super(ID, "FarmPlot");
-		this.growthRate = growthRate;
-		this.growth = new SimpleDoubleProperty(0);
-		this.yield= new SimpleDoubleProperty(0);
-		this.maxYield = maxYield;
-		yieldMap = buildYieldMap();
-		this.product = ID.substring(0, ID.indexOf("_"));
-		this.quality = 0;
+	public FarmPlot(String prodName, float growthRate, int maxYield, int[] tempRange) {
+		this(prodName,growthRate,maxYield);
 		this.tempRange = tempRange;
 	}
 	

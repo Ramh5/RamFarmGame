@@ -42,21 +42,27 @@ public class Game {
 		}
 		int[] indexList = { 30, 31, 32, 39, 41, 48, 49, 50 };
 		for (int i : indexList) {
-			tileList.set(i, new FarmPlot("FARM_PLOT", 0, 0));
+			tileList.set(i, new FarmPlot("FARM", 0, 0));
 		}
 		tileList.set(40, new BuildingTile("HOUSE_TILE"));
 		employees = new Employee[]{new Employee("Ram",0,1000),new Employee("EMPTY",200,900)};
-		inventory.addProd(new Product("Blé",12.0220,5,1));
-		inventory.addProd(new Product("Blé",12,6,1));
-		inventory.addProd(new Product("Blé",12,1,1));
-		inventory.addProd(new Product("Blé",-2,5,1));
-		inventory.addProd(new Product("Blé",1,6,1));
-		inventory.addProd(new Product("Carottes",15,2,80));
-		inventory.addProd(new Product("Carottes",10,6,50));
-		inventory.addProd(new Product("Oeufs",15,6,50));
-		inventory.addProd(new Product("Oeufs",14,14,80));
-		inventory.addProd(new Product("Oeufs",25,24,80));
-		inventory.addProd(new Product("Oignons",30,2,50));
+		ArrayList<String> categoriesCereal = new ArrayList<String>();
+		categoriesCereal.add("Frais,Céréale");
+		ArrayList<String> categoriesLegume = new ArrayList<String>();
+		categoriesLegume.add("Frais,Légume");
+		ArrayList<String> categoriesAnimal = new ArrayList<String>();
+		categoriesLegume.add("Frais,Animal");
+		inventory.addProd(new Product(categoriesCereal,"Blé",12.0220,5,1));
+		inventory.addProd(new Product(categoriesCereal,"Blé",12,6,1));
+		inventory.addProd(new Product(categoriesCereal,"Blé",12,1,1));
+		inventory.addProd(new Product(categoriesCereal,"Blé",-2,5,1));
+		inventory.addProd(new Product(categoriesCereal,"Blé",1,6,1));
+		inventory.addProd(new Product(categoriesLegume,"Carottes",15,2,80));
+		inventory.addProd(new Product(categoriesLegume,"Carottes",10,6,50));
+		inventory.addProd(new Product(categoriesAnimal,"Oeufs",15,6,50));
+		inventory.addProd(new Product(categoriesAnimal,"Oeufs",14,14,80));
+		inventory.addProd(new Product(categoriesAnimal,"Oeufs",25,24,80));
+		inventory.addProd(new Product(categoriesLegume,"Oignons",30,2,50));
 	
 		
 	}

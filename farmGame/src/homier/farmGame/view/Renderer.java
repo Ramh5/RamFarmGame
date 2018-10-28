@@ -176,7 +176,7 @@ public class Renderer {
 						});// eventhandler mouse clicked
 					} // if new image to render, ie if there was a change to be rendered
 					break;
-				case "WHEAT_PLOT":
+				case "BLÉ_PLOT":
 					
 					DoubleProperty growthProperty = ((FarmPlot) tile).growthProperty();
 					DoubleProperty yieldProperty = ((FarmPlot) tile).yieldProperty();
@@ -189,9 +189,9 @@ public class Renderer {
 
 						// set UI
 						newImageView.setOnMouseEntered(e -> {
-							((Labeled) mouseOverPanel.getChildren().get(0)).textProperty()
-									.bind(growthProperty.asString("%.0f"));
 							((Labeled) mouseOverPanel.getChildren().get(1)).textProperty()
+									.bind(growthProperty.asString("%.0f"));
+							((Labeled) mouseOverPanel.getChildren().get(2)).textProperty()
 									.bind(yieldProperty.asString("%.0f"));
 						});
 						
@@ -207,10 +207,12 @@ public class Renderer {
 										
 										FarmTask harvestWheat = new FarmTask("Harvest", 100, 30, gameClock.getTotalSeconds());
 										activeEmployee.setTask(harvestWheat);
-										harvestWheat.setResult(new Product(  "Wheat",((FarmPlot) tile).getYield(),1,1));
-										harvestWheat.setNewTile(new FarmPlot("FARM_PLOT", 0, 0), index);
+										ArrayList<String> categoriesCereal = new ArrayList<String>();
+										categoriesCereal.add("Frais,Céréale");
+										harvestWheat.setResult(new Product(categoriesCereal,"Blé",((FarmPlot) tile).getYield(),1,1));
+										harvestWheat.setNewTile(new FarmPlot("FARM", 0, 0), index);
 										harvestWheat.startTask(gameClock.getTotalSeconds(), activeEmployee);
-										
+										//System.out.println("harvest task started " + previousMap + " index "+ index + " value " + previousMap[index]);
 									});
 									popup.show(newImageView, event.getScreenX(), event.getScreenY());
 								}

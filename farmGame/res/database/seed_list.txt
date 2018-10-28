@@ -1,0 +1,3 @@
+COMMENTLINE format is CAT cat1,cat2 DETAILS name,qty,fresh,qual
+CAT Semence,Légume DETAILS Semences d'oignons,1,1,1
+CAT Semence,Céréale DETAILS Semences de blé,1,1,1

@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
+import homier.farmGame.utils.ReadFile;
+import javafx.util.Pair;
+
 public class Inventory {
 	private double money;
 	private HashMap<String, ArrayList<Product>> data;
@@ -13,12 +16,32 @@ public class Inventory {
 	private ProductData prodData;
 	
 	public Inventory(){
-		money = 1000;
+		money = 0;
 		data=new HashMap<>();
 		averageData=new HashMap<>();
 		prodData = new ProductData();//TODO productData.getinstane to have just one instance of it accessible everywhere
 	}
+	/**
+	 * Creates a Inventory using a path to a file containing Products
+	 * @param path
+	 */
+	public Inventory(String path){
+		this();
+		String fileString = ReadFile.getString(path);
+		String[] strList = fileString.split("\r\n");
+		for(String line:strList){
+			System.out.println(line);
+			if(line.contains("COMMENTLINE")) continue; //skips a commentline in the file
+			ArrayList<String> categories = new ArrayList<String>(Arrays.asList(line.substring(line.indexOf("CAT")+4, line.indexOf(" DETAILS")).split(",")));
+			String[] prodStr = line.substring(line.indexOf("DETAILS")+8).split(",");
+			
+			Product prod = new Product(categories, prodStr[0], Double.valueOf(prodStr[1]), Integer.valueOf(prodStr[2]), Integer.valueOf(prodStr[3]));
+			addProd(prod);
+		}
+		
+	}
 	
+
 	/**
 	 * calculates the total quantity and average fresh and quality of each product in the inventory 
 	 * and stores it in HashMap<String, Product> averageData
@@ -27,6 +50,7 @@ public class Inventory {
 
 		for(Entry<String, ArrayList<Product>> entry : data.entrySet()){
 			String prodName = entry.getKey();
+			ArrayList<String> categories = entry.getValue().get(0).getCategories();
 			Product averageProd = averageData.get(prodName);
 			double totQty=0;
 			double totSpoilQty=0;
@@ -44,7 +68,7 @@ public class Inventory {
 				avQual /= totQty;
 			}
 			if(averageProd==null){
-				averageProd = new Product(prodName, totQty, (int)avFresh, (int)avQual);
+				averageProd = new Product(categories, prodName, totQty, (int)Math.round(avFresh), (int)Math.round(avQual));
 				averageProd.setSpoilQty(totSpoilQty);
 				averageData.put(prodName, averageProd);
 			}else{

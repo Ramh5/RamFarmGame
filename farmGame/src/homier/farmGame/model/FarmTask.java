@@ -83,6 +83,7 @@ public class FarmTask {
 			if(newTile!=null){
 				tileList.set(newTileIndex, newTile);
 				previousMap[newTileIndex]=-1;
+				//System.out.println( name+ " task completed " + previousMap + " index "+ newTileIndex + " value " + previousMap[newTileIndex]);
 			}
 			isComplete=true;
 			employee.setIsWorking(false);
@@ -111,9 +112,9 @@ public class FarmTask {
 		this.result=new Product(prod);
 	}
 
-	public void setNewTile(Tile newTile, int index) {
+	public void setNewTile(Tile newTile, int newTileIndex) {
 		this.newTile=newTile;
-		this.newTileIndex = index;
+		this.newTileIndex = newTileIndex;
 		
 	}
 }

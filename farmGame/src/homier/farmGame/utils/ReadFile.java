@@ -24,8 +24,19 @@ public class ReadFile{
 		return new String(encoded);
 	}
 	
-	static public String getString(String path) throws IOException {
-		byte[] encoded = Files.readAllBytes(new File(path).toPath());
+	/**
+	 * 
+	 * @param path : loads the file at the specified path
+	 * @return the string in the file
+	 */
+	public static String getString(String path) {
+		byte[] encoded = new byte[0];
+		try {
+			encoded = Files.readAllBytes(new File(path).toPath());
+		} catch (IOException e) {
+			System.out.println("error reading  file at " + path);
+			e.printStackTrace();
+		}
 		return new String(encoded);
 	}
 }

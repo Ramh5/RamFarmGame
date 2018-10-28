@@ -2,6 +2,9 @@ package homier.farmGame.model;
 
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import homier.farmGame.utils.Tools;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
@@ -14,6 +17,7 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 
 public class Product{
+	private ArrayList<String> categories;
 	private StringProperty name;
 	private DoubleProperty qty;
 	private DoubleProperty spoilQty;
@@ -23,8 +27,8 @@ public class Product{
 	private BooleanProperty selected;
 	transient private ChangeListener<Boolean> selListener;
 	
-	public Product(String name, double qty, int fresh, int qual) {
-
+	public Product(ArrayList<String> categories, String name, double qty, int fresh, int qual) {
+		this.categories = categories;
 		this.name = new SimpleStringProperty(name);
 		this.qty = new SimpleDoubleProperty(qty);
 		this.spoilQty = new SimpleDoubleProperty(0);
@@ -111,5 +115,8 @@ public class Product{
 		return getName() +" | "+ String.format("%.2f kg  F: ", getQty())  + getFresh() + "  Q: "+ getQual() 
 			+ "  Spoil: " +  String.format("%.2f kg  Price: %.2f", getSpoilQty(), getPrice())+"$ |" ;
 		
+	}
+	public ArrayList<String> getCategories() {
+		return categories;
 	}
 }

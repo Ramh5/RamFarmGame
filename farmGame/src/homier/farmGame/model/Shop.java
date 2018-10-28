@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
 
+import homier.farmGame.controller.App;
 import homier.farmGame.utils.Tools;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,7 +20,10 @@ public class Shop extends Inventory {
 
 	
 	public Shop(){
-		super();
+		
+		super(App.SEED_LIST_PATH);
+		
+		/*
 		addProd(new Product("Blé",20,1,80));
 		addProd(new Product("Blé",20,10,15));
 		addProd(new Product("Carottes",10,1,80));
@@ -28,6 +32,7 @@ public class Shop extends Inventory {
 		addProd(new Product("Oeufs",5,10,15));
 		addProd(new Product("Oignons",5,10,50));
 		addProd(new Product("Oignons",5,12,15));
+		*/
 		basePrice = new HashMap<String, Double>();
 		basePrice.put("Blé", 1.99);
 		basePrice.put("Carottes", 2.50);

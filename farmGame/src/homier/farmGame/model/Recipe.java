@@ -3,8 +3,9 @@ package homier.farmGame.model;
 import java.util.TreeMap;
 
 public class Recipe {
-	
+	//TODO implement Recipe with products instead of strings and doubles
 	private String name;
+	//TODO add categories
 	private TreeMap<String,Double> ingredientList;
 	private double quantity;
 	

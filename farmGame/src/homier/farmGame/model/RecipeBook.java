@@ -41,7 +41,7 @@ public class RecipeBook {
 	 * @param path
 	 */
 	public RecipeBook(String path){
-		String fileString = fileToString(path);
+		String fileString = ReadFile.getString(path);
 		ArrayList<Pair<String,String>> parseStr = parseWSstr(fileString);
 		for(Pair<String, String> pair:parseStr){
 			allRecipes.put(pair.getKey(), parseRECstr(pair.getValue()));
@@ -82,21 +82,7 @@ public class RecipeBook {
 		return recipeList;
 	}
 	
-	/**
-	 * 
-	 * @param path : loads the file at the specified path
-	 * @return the string in the file
-	 */
-	private String fileToString(String path){
-		String fileString = "";
-		try {
-			fileString = ReadFile.getString(path);
-		} catch (IOException e) {
-			System.out.println("error in RecipeBook reading the workshop file database at " + path);
-			e.printStackTrace();
-		}
-		return fileString;
-	}
+	
 	
 	/**
 	 * 

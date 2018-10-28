@@ -17,6 +17,7 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.JsonReader;
 
 import homier.farmGame.model.Employee;
+import homier.farmGame.model.FarmTask;
 import homier.farmGame.model.Game;
 import homier.farmGame.model.Inventory;
 import homier.farmGame.model.Product;
@@ -252,12 +253,13 @@ public class Engine {
 	
 	@FXML 
 	private void seedOKButtonAction(ActionEvent event){
-		/*
-		FarmTask plantWheat = new FarmTask("Plant", 100, 20, gameClock.getTotalSeconds());
-		activeEmployee.setTask(plantWheat);
-		plantWheat.setNewTile( new FarmPlot("WHEAT_PLOT", 15, 400,new int[]{15,25}), index);
-		plantWheat.startTask(gameClock.getTotalSeconds(), activeEmployee);
-		*/
+		
+		FarmTask plantWheat = new FarmTask("Plant", 100, 20, game.getClock().getTotalSeconds());
+		getActiveEmployee().setTask(plantWheat);
+		plantWheat.setNewTile( new FarmPlot(((Product)tableSeed.getUserData()).getName(), 15, 400,new int[]{15,25}), (int)seedPane.getUserData());
+		plantWheat.startTask(game.getClock().getTotalSeconds(), getActiveEmployee());
+		seedCancelButtonAction(new ActionEvent());
+		
 	}
 	
 	@FXML 
@@ -536,7 +538,7 @@ public class Engine {
 		final PseudoClass topLevelTTVPseudoClass = PseudoClass.getPseudoClass("top-level-treetableview");
 		
 		//------------inventory table------------- 
-		TreeItem<Product> rootInv = new TreeItem<>(new Product("empty", 0, 0, 0));
+		TreeItem<Product> rootInv = new TreeItem<>(new Product(null,"empty", 0, 0, 0));
 		tableInv.setPlaceholder(new Text("Empty Inventory"));
 		tableInv.setRoot(rootInv);
 		tableInv.setShowRoot(false);
@@ -545,7 +547,7 @@ public class Engine {
 		
 		//populate the inventory treetableview with the inventory data
 		
-		TreeItem<Product> rootShop = new TreeItem<>(new Product("empty", 0, 0, 0));
+		TreeItem<Product> rootShop = new TreeItem<>(new Product(null,"empty", 0, 0, 0));
 		tableShop.setRoot(rootShop);
 		updateShopPanel();
 		
@@ -656,9 +658,9 @@ public class Engine {
 		final PseudoClass topLevelTTVPseudoClass = PseudoClass.getPseudoClass("top-level-treetableview");
 		
 		//------------ WS inventory table------------- //TODO setup spoil colum (negative and red)
-		TreeItem<Product> rootInv = new TreeItem<>(new Product("empty", 0, 0, 0));
+		TreeItem<Product> rootInvWS = new TreeItem<>(new Product(null,"empty", 0, 0, 0));
 		tableInvWS.setPlaceholder(new Text("Empty Inventory"));
-		tableInvWS.setRoot(rootInv);
+		tableInvWS.setRoot(rootInvWS);
 		tableInvWS.setShowRoot(false);
 		tableInvWS.setEditable(true);
 		colActInvWS.setEditable(true);
@@ -761,7 +763,7 @@ public class Engine {
 		final PseudoClass topLevelTTVPseudoClass = PseudoClass.getPseudoClass("top-level-treetableview");
 		
 		//------------ Seed inventory table------------- //TODO setup spoil colum (negative and red)
-		TreeItem<Product> rootSeed = new TreeItem<>(new Product("empty", 0, 0, 0));
+		TreeItem<Product> rootSeed = new TreeItem<>(new Product(null,"empty", 0, 0, 0));
 		tableSeed.setPlaceholder(new Text("Empty Inventory"));
 		tableSeed.setRoot(rootSeed);
 		tableSeed.setShowRoot(false);
@@ -960,6 +962,7 @@ public class Engine {
 			rootTreeItem.getValue().setSelListener((obs, oldVal, newVal) -> {
 				if(newVal){
 					seedDetailTextFlow.getChildren().setAll(new Text(rootTreeItem.getValue().toString()));
+					tableSeed.setUserData(rootTreeItem.getValue());//store the selected product in the treetableview userdata
 					unselectTreeTableButOne(tableSeed.getRoot(),rootTreeItem);
 				}else{
 					seedDetailTextFlow.getChildren().setAll(new Text("Choisissez une semence"));
