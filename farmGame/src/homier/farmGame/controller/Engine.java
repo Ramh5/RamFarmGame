@@ -58,6 +58,7 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
@@ -111,7 +112,8 @@ public class Engine {
 	@FXML private MenuItem save,load;
 	@FXML private TextFlow seedDetailTextFlow;
 	@FXML private StackPane leftStackPane;
-
+	@FXML private TextField seedFilterTextField;
+	
 	private Game game;
 	private Renderer renderer;
 	
@@ -760,6 +762,11 @@ public class Engine {
 	}
 	
 	private void setupSeedPane(){
+		
+		seedFilterTextField.textProperty().addListener((obs, oldStr, newStr)->{
+			updateSeedPanel();
+		});
+		
 		final PseudoClass topLevelTTVPseudoClass = PseudoClass.getPseudoClass("top-level-treetableview");
 		
 		//------------ Seed inventory table------------- //TODO setup spoil colum (negative and red)
@@ -806,7 +813,7 @@ public class Engine {
 	 * updates the seed panel after it has been set up to show changed data
 	 */
 	public void updateSeedPanel(){
-		updateTreeItemRoot(tableSeed.getRoot(), game.getInventory(), game.getShop());
+		updateTreeItemRoot(tableSeed.getRoot(), game.getInventory(), game.getShop(),seedFilterTextField.getText());
 		listenForSelectionSeedPane(tableSeed.getRoot());
 	}
 	
@@ -838,7 +845,7 @@ public class Engine {
 		ws.copyInventory(game.getInventory());
 		ws.getSelectedIngr().clear();
 		
-		updateTreeItemRoot(tableInvWS.getRoot(), ws, game.getShop());
+		updateTreeItemRoot(tableInvWS.getRoot(), ws, game.getShop(),"");
 		listenForSelection(tableInvWS.getRoot(), ws.getSelectedIngr());
 		
 		Recipe selectedRecipe = listViewRecipe.getSelectionModel().getSelectedItem();
@@ -852,8 +859,8 @@ public class Engine {
 	 * updates the Shop panel after it has been set up to show changed data
 	 */
 	private void updateShopPanel(){
-		updateTreeItemRoot(tableInv.getRoot(), game.getInventory(), game.getShop());
-		updateTreeItemRoot(tableShop.getRoot(), game.getShop(), game.getShop());
+		updateTreeItemRoot(tableInv.getRoot(), game.getInventory(), game.getShop(),"");
+		updateTreeItemRoot(tableShop.getRoot(), game.getShop(), game.getShop(),"");
 		listenForSelection(tableInv.getRoot(), game.getShop().getDataSelling());
 		listenForSelection(tableShop.getRoot(), game.getShop().getDataBuying());
 	}
@@ -865,7 +872,7 @@ public class Engine {
 	  * @param inventory : the inventory backing this table
 	  * @param shop : the shop to calculate the price of products
 	  */
-	private void updateTreeItemRoot(TreeItem<Product> root, Inventory inventory, Shop shop){
+	private void updateTreeItemRoot(TreeItem<Product> root, Inventory inventory, Shop shop, String filter){
 		inventory.clean();
 		shop.clean();
 		inventory.calculateAverageData();
@@ -878,8 +885,11 @@ public class Engine {
 		}
 		
 		for(Entry<String, ArrayList<Product>> entry : inventory.getData().entrySet()){
-
+			
 			Product product = inventory.getAverageData(entry.getKey());
+			//Filtering the TreeTableView 
+			if(filter.length()>0&&!product.getName().matches( "(?i:.*"+filter+".*)")) continue;
+			
 			product.updatePrice(shop);
 			TreeItem<Product> averageProdDataItem; ;
 			

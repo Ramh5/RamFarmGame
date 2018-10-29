@@ -30,7 +30,7 @@ public class Inventory {
 		String fileString = ReadFile.getString(path);
 		String[] strList = fileString.split("\r\n");
 		for(String line:strList){
-			System.out.println(line);
+			
 			if(line.contains("COMMENTLINE")) continue; //skips a commentline in the file
 			ArrayList<String> categories = new ArrayList<String>(Arrays.asList(line.substring(line.indexOf("CAT")+4, line.indexOf(" DETAILS")).split(",")));
 			String[] prodStr = line.substring(line.indexOf("DETAILS")+8).split(",");
@@ -74,8 +74,8 @@ public class Inventory {
 			}else{
 				averageProd.setQty(totQty);
 				averageProd.setSpoilQty(totSpoilQty);
-				averageProd.setFresh((int)avFresh);
-				averageProd.setQual((int)avQual);
+				averageProd.setFresh((int)Math.round(avFresh));
+				averageProd.setQual((int)Math.round(avQual));
 			}
 
 		}
