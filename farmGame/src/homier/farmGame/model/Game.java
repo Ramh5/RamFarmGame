@@ -47,11 +47,14 @@ public class Game {
 		tileList.set(40, new BuildingTile("HOUSE_TILE"));
 		employees = new Employee[]{new Employee("Ram",0,1000),new Employee("EMPTY",200,900)};
 		ArrayList<String> categoriesCereal = new ArrayList<String>();
-		categoriesCereal.add("Frais,Céréale");
+		categoriesCereal.add("Frais");
+		categoriesCereal.add("Céréale");
 		ArrayList<String> categoriesLegume = new ArrayList<String>();
-		categoriesLegume.add("Frais,Légume");
+		categoriesLegume.add("Frais");
+		categoriesLegume.add("Légume");
 		ArrayList<String> categoriesAnimal = new ArrayList<String>();
-		categoriesLegume.add("Frais,Animal");
+		categoriesAnimal.add("Frais");
+		categoriesAnimal.add("Animal");
 		inventory.addProd(new Product(categoriesCereal,"Blé",12.0220,5,1));
 		inventory.addProd(new Product(categoriesCereal,"Blé",12,6,1));
 		inventory.addProd(new Product(categoriesCereal,"Blé",12,1,1));

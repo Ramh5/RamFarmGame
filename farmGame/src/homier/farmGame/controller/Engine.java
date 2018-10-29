@@ -94,7 +94,7 @@ public class Engine {
 	@FXML private ChoiceBox<Integer> gameSpeedChoice;
 	@FXML private Label clockLabel, pauseLabel ,wxToday, wxTomorrow, energyLabel, taskName1, buyTotalLabel, sellTotalLabel, labelSelectedRecipe, labelResultWS;
 	@FXML private ChoiceBox<Employee> employeeChoice;
-	@FXML private ChoiceBox<String> wsChoiceBox;
+	@FXML private ChoiceBox<String> wsChoiceBox,seedCatChoiceBox ;
 	@FXML private ProgressIndicator taskProgress1;
 	@FXML private AnchorPane shopPane, workShopPane, seedPane;
 	@FXML private TreeTableView<Product> tableInv, tableShop, tableInvWS, tableSeed;
@@ -762,10 +762,18 @@ public class Engine {
 	}
 	
 	private void setupSeedPane(){
+		seedCatChoiceBox.getItems().setAll("Toutes les semences","Légume","Céréale");
+		seedCatChoiceBox.getSelectionModel().select(0);
 		
 		seedFilterTextField.textProperty().addListener((obs, oldStr, newStr)->{
 			updateSeedPanel();
 		});
+		
+		seedCatChoiceBox.getSelectionModel().selectedItemProperty().addListener((obs, oldStr, newStr)->{
+			updateSeedPanel();
+			//System.out.println(newStr);
+		});
+		
 		
 		final PseudoClass topLevelTTVPseudoClass = PseudoClass.getPseudoClass("top-level-treetableview");
 		
@@ -813,8 +821,12 @@ public class Engine {
 	 * updates the seed panel after it has been set up to show changed data
 	 */
 	public void updateSeedPanel(){
-		updateTreeItemRoot(tableSeed.getRoot(), game.getInventory(), game.getShop(),seedFilterTextField.getText());
+		ArrayList<String> catFilter = new ArrayList<>();
+		catFilter.add(seedCatChoiceBox.getSelectionModel().getSelectedItem());
+		catFilter.add("Semence seulement");	
+		updateTreeItemRoot(tableSeed.getRoot(), game.getInventory(), game.getShop(),seedFilterTextField.getText(),catFilter);
 		listenForSelectionSeedPane(tableSeed.getRoot());
+		
 	}
 	
 	/**
@@ -845,7 +857,7 @@ public class Engine {
 		ws.copyInventory(game.getInventory());
 		ws.getSelectedIngr().clear();
 		
-		updateTreeItemRoot(tableInvWS.getRoot(), ws, game.getShop(),"");
+		updateTreeItemRoot(tableInvWS.getRoot(), ws, game.getShop(),"",null);
 		listenForSelection(tableInvWS.getRoot(), ws.getSelectedIngr());
 		
 		Recipe selectedRecipe = listViewRecipe.getSelectionModel().getSelectedItem();
@@ -859,8 +871,8 @@ public class Engine {
 	 * updates the Shop panel after it has been set up to show changed data
 	 */
 	private void updateShopPanel(){
-		updateTreeItemRoot(tableInv.getRoot(), game.getInventory(), game.getShop(),"");
-		updateTreeItemRoot(tableShop.getRoot(), game.getShop(), game.getShop(),"");
+		updateTreeItemRoot(tableInv.getRoot(), game.getInventory(), game.getShop(),"",null);
+		updateTreeItemRoot(tableShop.getRoot(), game.getShop(), game.getShop(),"",null);
 		listenForSelection(tableInv.getRoot(), game.getShop().getDataSelling());
 		listenForSelection(tableShop.getRoot(), game.getShop().getDataBuying());
 	}
@@ -872,7 +884,7 @@ public class Engine {
 	  * @param inventory : the inventory backing this table
 	  * @param shop : the shop to calculate the price of products
 	  */
-	private void updateTreeItemRoot(TreeItem<Product> root, Inventory inventory, Shop shop, String filter){
+	private void updateTreeItemRoot(TreeItem<Product> root, Inventory inventory, Shop shop, String filter, ArrayList<String> catFilter){
 		inventory.clean();
 		shop.clean();
 		inventory.calculateAverageData();
@@ -887,52 +899,89 @@ public class Engine {
 		for(Entry<String, ArrayList<Product>> entry : inventory.getData().entrySet()){
 			
 			Product product = inventory.getAverageData(entry.getKey());
+			
 			//Filtering the TreeTableView 
-			if(filter.length()>0&&!product.getName().matches( "(?i:.*"+filter+".*)")) continue;
+			boolean filterOK = false;
 			
-			product.updatePrice(shop);
-			TreeItem<Product> averageProdDataItem; ;
-			
-			//if this product category is not yet present in the table add it.
-			if(!oldProdCategoryList.contains(product)){
-				averageProdDataItem = new TreeItem<Product>(product);
-				averageProdDataItem.setExpanded(true);
-				root.getChildren().add(averageProdDataItem);
+			if(catFilter!=null){
+				if(catFilter.contains("Toutes")||catFilter.contains("Toutes les semences")){
+					filterOK = true;
+					//System.out.println(catFilter +" "+ filterOK);
+				}else{
+					//else look for any matching categories
+					for(String str:catFilter){
+						if(product.getCategories().stream().anyMatch(s -> s.equals(str))){
+							filterOK = true;
+							break;
+						}
+					}
+				}
+
+				//turn filterOK to false if we want only seeds and the product is not a seed
+				if(catFilter.contains("Semence seulement")){
+					if(!(product.getCategories().stream().anyMatch(s -> s.equals("Semence")))){
+						filterOK = false;
+						//System.out.println(" " +catFilter +" Product Name "+ product.getName()+" product.getCategories() "+product.getCategories() + filterOK);
+					}
+				}
 			}else{
-			//else if this product category is already in the table, retrieve the reference and remove it from the 
-			//	"old" Lists to see if something needs to be removed from the table in the end
-				averageProdDataItem = oldTreeItemCategoryList.get(oldProdCategoryList.indexOf(product));
-				oldTreeItemCategoryList.remove(oldProdCategoryList.indexOf(product));
-				oldProdCategoryList.remove(product);
+				filterOK = true;
 			}
 			
-			//retrieve the product list for this category category of the previous TreeTableView structure before updating
-			ArrayList<Product> oldProdList= new ArrayList<Product>();
-			ArrayList<TreeItem<Product>> oldTreeItemList= new ArrayList<>(averageProdDataItem.getChildren());
-			for(TreeItem<Product> treeItem : oldTreeItemList){
-				oldProdList.add(treeItem.getValue());
+			if(filter.length()>0&&!product.getName().matches( "(?i:.*"+filter+".*)")){
+				filterOK = false;
+				//System.out.println(filterOK + " product " + product.getName() + " categories " + product.getCategories().get(0));
 			}
 
-			for(Product prod : entry.getValue()){
-				prod.updatePrice(shop);
-				TreeItem<Product> treeItem;
-				
-				//if the table does not contain this prod, add it
-				if(!oldProdList.contains(prod)){
-					treeItem = new TreeItem<Product>(prod);
-					averageProdDataItem.getChildren().add(treeItem);
+			if(filterOK){
+
+			
+				product.updatePrice(shop);
+				TreeItem<Product> averageProdDataItem; ;
+
+				//if this product category is not yet present in the table add it.
+				if(!oldProdCategoryList.contains(product)){
+					averageProdDataItem = new TreeItem<Product>(product);
+					averageProdDataItem.setExpanded(true);
+					root.getChildren().add(averageProdDataItem);
 				}else{
-					
-					oldTreeItemList.remove(oldProdList.indexOf(prod));
-					
-					oldProdList.remove(prod);
+					//else if this product category is already in the table, retrieve the reference and remove it from the 
+					//	"old" Lists to see if something needs to be removed from the table in the end
+					averageProdDataItem = oldTreeItemCategoryList.get(oldProdCategoryList.indexOf(product));
+					oldTreeItemCategoryList.remove(oldProdCategoryList.indexOf(product));
+					oldProdCategoryList.remove(product);
 				}
-			}
-			averageProdDataItem.getChildren().removeAll(oldTreeItemList); //clean up empty products
-		}
+
+				//retrieve the product list for this category category of the previous TreeTableView structure before updating
+				ArrayList<Product> oldProdList= new ArrayList<Product>();
+				ArrayList<TreeItem<Product>> oldTreeItemList= new ArrayList<>(averageProdDataItem.getChildren());
+				for(TreeItem<Product> treeItem : oldTreeItemList){
+					oldProdList.add(treeItem.getValue());
+				}
+
+				for(Product prod : entry.getValue()){
+					prod.updatePrice(shop);
+					TreeItem<Product> treeItem;
+
+					//if the table does not contain this prod, add it
+					if(!oldProdList.contains(prod)){
+						treeItem = new TreeItem<Product>(prod);
+						averageProdDataItem.getChildren().add(treeItem);
+					}else{
+
+						oldTreeItemList.remove(oldProdList.indexOf(prod));
+
+						oldProdList.remove(prod);
+					}
+				}
+				averageProdDataItem.getChildren().removeAll(oldTreeItemList); //clean up empty products
+			}// if filterOK
+		}//for
 		root.getChildren().removeAll(oldTreeItemCategoryList);// clean up empty categories
+
+
 	}
-	
+
 
 	/**
 	 * Adds the appropriate changelisteners to products in the inventory treetableview (only for the leafs)

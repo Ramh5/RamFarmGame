@@ -3,6 +3,7 @@ package homier.farmGame.model;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import homier.farmGame.utils.Tools;
@@ -28,7 +29,7 @@ public class Product{
 	transient private ChangeListener<Boolean> selListener;
 	
 	public Product(ArrayList<String> categories, String name, double qty, int fresh, int qual) {
-		this.categories = categories;
+		this.categories = categories!=null?categories:new ArrayList<>(Arrays.asList("default"));
 		this.name = new SimpleStringProperty(name);
 		this.qty = new SimpleDoubleProperty(qty);
 		this.spoilQty = new SimpleDoubleProperty(0);
@@ -45,6 +46,7 @@ public class Product{
 	 */
 	
 	public Product(Product prod){
+		this.categories = new ArrayList<String>(prod.getCategories());
 		this.name = new SimpleStringProperty(prod.getName());
 		this.qty = new SimpleDoubleProperty(prod.getQty());
 		this.spoilQty = new SimpleDoubleProperty(prod.getSpoilQty());

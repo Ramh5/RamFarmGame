@@ -49,6 +49,7 @@ public class Inventory {
 	public void calculateAverageData(){
 
 		for(Entry<String, ArrayList<Product>> entry : data.entrySet()){
+			
 			String prodName = entry.getKey();
 			ArrayList<String> categories = entry.getValue().get(0).getCategories();
 			Product averageProd = averageData.get(prodName);
@@ -57,6 +58,8 @@ public class Inventory {
 			double avFresh=0;
 			double avQual=0;
 
+			//System.out.println(getClass() + " product name " +prodName);
+			
 			for(Product prod : entry.getValue()){
 				totQty += prod.getQty();
 				totSpoilQty += prod.getSpoilQty();
