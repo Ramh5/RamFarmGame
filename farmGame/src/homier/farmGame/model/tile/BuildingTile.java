@@ -8,8 +8,8 @@ public class BuildingTile extends Tile{
 	private RecipeBook recipeBook;
 	private int state;//level of the house
 	
-	public BuildingTile(String ID) {
-		super(ID,"BuildingTile");
+	public BuildingTile() {
+		super("BuildingTile");
 		state=0;
 		recipeBook=new RecipeBook();
 	}

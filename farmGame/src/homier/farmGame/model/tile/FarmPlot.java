@@ -5,27 +5,41 @@ package homier.farmGame.model.tile;
 
 import java.util.TreeMap;
 
-
-
+import homier.farmGame.model.ProductData;
+import homier.farmGame.model.SeedData;
 import homier.farmGame.model.Weather;
+import homier.farmGame.utils.Tools;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 
 
 
 public class FarmPlot extends Tile {
 
-	private double growthRate;
+	private SeedData seed;
+	private boolean plowed;
+	private boolean sown;
+	//private double growthRate;
 	private DoubleProperty growth;
 	private DoubleProperty yield;
+	private IntegerProperty quality;
+	/*
 	private int maxYield;
 	private TreeMap<Double, Double> yieldMap;
 	private String product;
 	private int quality;
 	private int[] tempRange;
+	*/
 
-	
-	
+	public FarmPlot(){
+		super("FarmPlot");
+		this.growth = new SimpleDoubleProperty(0);
+		this.yield= new SimpleDoubleProperty(0);
+		this.quality = new SimpleIntegerProperty(0);
+	}
+	/*
 	public FarmPlot(String prodName, float growthRate, int maxYield) {
 		super(prodName.toUpperCase()+"_PLOT", "FarmPlot");
 		this.growthRate = growthRate;
@@ -44,16 +58,41 @@ public class FarmPlot extends Tile {
 		this.tempRange = tempRange;
 	}
 	
-
+*/
 	@Override
 	public void update(double dTime,Weather wx){
-		double wxFactor = wx.getFactor(tempRange);
+		if(!plowed||!sown){
+			return;
+		}
+		double wxFactor = wx.getFactor(seed.getTempRange());
 		if(growth.get()<150)
-			growth.set(growth.get()+growthRate*(float)dTime*wxFactor);
+			growth.set(growth.get()+seed.getGrowthRate()*(float)dTime*wxFactor);
 			
 		yield.set(calculateYield());
 	}
 	
+	public void plow(){
+		this.plowed=true;
+	}
+	
+	public void sow(String seedName){
+		this.sown = true;
+		this.seed = ProductData.getSeedData(seedName);
+	}
+	
+	public SeedData getSeed(){
+		return seed;
+	}
+	
+	public boolean isPlowed(){
+		return plowed;
+	}
+	
+	public boolean isSown(){
+		return sown;
+	}
+	
+	/*
 	public double getGrowthRate() {
 		return growthRate;
 	}
@@ -61,7 +100,7 @@ public class FarmPlot extends Tile {
 	public void setGrowthRate(float growthRate) {
 		this.growthRate = growthRate;
 	}
-
+*/
 	public final double getGrowth() {return growth.get();}
 
 	public final void setGrowth(float growth) {this.growth.set(growth);}
@@ -73,7 +112,7 @@ public class FarmPlot extends Tile {
 	public final void setYield(int yield) {this.yield.set(yield);}
 	
 	public DoubleProperty yieldProperty(){ return yield;}
-
+/*
 	public String getProduct() {
 		return product;
 	}
@@ -90,14 +129,15 @@ public class FarmPlot extends Tile {
 		this.quality = quality;
 	}
 
-
+*/
 	
 	
 	
 	public String toString(){
-		return (super.toString() + String.format("\tGrowth Rate: %.0f", growthRate) + String.format("\t  Growth: %.0f", growth.get()) + "\tyield: " + yield.get() + "\tproduct: " + "\tquality: " + quality);
+		return (super.toString() + String.format("\tGrowth Rate: %.0f", seed.getGrowthRate()) + 
+				String.format("\t  Growth: %.0f", growth.get()) + "\tyield: " + yield.get() + "\tproduct: " + "\tquality: " + quality.get());
 	}
-	
+	/*
 	//private helper methode to create the YieldMap
 	private TreeMap<Double, Double> buildYieldMap() {
 		TreeMap<Double, Double> treeMap = new TreeMap<Double,Double>();
@@ -113,9 +153,11 @@ public class FarmPlot extends Tile {
 		treeMap.put(160.0,0.0);
 		return treeMap;
 	}
-
+*/
 	//private helper methode to calculate the yield
 	private double calculateYield(){
+		return Tools.interpolateMap(seed.getYieldMap(), growth.get())/100*seed.getMaxYield();
+		/*
 		double yield=0;
 		double yieldFactor;
 		double x1 =  yieldMap.floorKey(growth.get());
@@ -132,6 +174,7 @@ public class FarmPlot extends Tile {
 			yield = (yieldFactor/100*maxYield);
 			
 		return yield;
+		*/
 	}
 	
 }

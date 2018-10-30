@@ -29,31 +29,34 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
 public class Renderer {
+	
+	
 
-	public static int tileSize = 100;
-
-	private final Image emptyTileImage = new Image("empty_tile.png", tileSize, tileSize, true, true);
-	private final Image farmPlotImage = new Image("dirt_plot.png", tileSize, tileSize, true, true);
-	private final Image sown1Image = new Image("sown1_plot.png", tileSize, tileSize, true, true);
-	private final Image sown2Image = new Image("sown2_plot.png", tileSize, tileSize, true, true);
-	private final Image wheat1Image = new Image("wheat1_plot.png", tileSize, tileSize, true, true);
-	private final Image wheat2Image = new Image("wheat2_plot.png", tileSize, tileSize, true, true);
-	private final Image houseImage = new Image("farmhouse.png", tileSize, tileSize, true, true);
-	private final Image forest1Image = new Image("spring_tile.png", tileSize, tileSize, true, true);
-	private final Image forest2Image = new Image("summer_tile.png", tileSize, tileSize, true, true);
-	private final Image forest3Image = new Image("automn_tile.png", tileSize, tileSize, true, true);
-	private final Image forest4Image = new Image("winter_tile.png", tileSize, tileSize, true, true);
+	private final static Image emptyTileImage = new Image("empty_tile.png", 100, 100, true, true);
+/*	private final static Image farmPlotImage = new Image("dirt_plot.png", tileSize, tileSize, true, true);
+	private final static Image sown1Image = new Image("sown1_plot.png", tileSize, tileSize, true, true);
+	private final static Image sown2Image = new Image("sown2_plot.png", tileSize, tileSize, true, true);
+	private final static Image wheat1Image = new Image("wheat1_plot.png", tileSize, tileSize, true, true);
+	private final static Image wheat2Image = new Image("wheat2_plot.png", tileSize, tileSize, true, true);
+	private final static Image houseImage = new Image("farmhouse.png", tileSize, tileSize, true, true);
+	private final static Image forest1Image = new Image("spring_tile.png", tileSize, tileSize, true, true);
+	private final static Image forest2Image = new Image("summer_tile.png", tileSize, tileSize, true, true);
+	private final static Image forest3Image = new Image("automn_tile.png", tileSize, tileSize, true, true);
+	private final static Image forest4Image = new Image("winter_tile.png", tileSize, tileSize, true, true);
 
 	private final TileViewData wheatViewData = new TileViewData(
 			new Image[] { sown1Image, sown2Image, wheat1Image, wheat2Image }, new int[] { 0, 25, 50, 90 });
 	private final TileViewData houseViewData = new TileViewData(new Image[] { houseImage }, new int[] { 0 });
 	private final TileViewData forestViewData = new TileViewData(new Image[] { forest4Image,forest1Image,forest2Image,forest3Image }, new int[] { 0,1,2,3});
 	private final TileViewData farmPlotViewData = new TileViewData(new Image[] { farmPlotImage }, new int[] { 0 });
-
+*/
+	private RenderingData renderingData;
 	private int[] previousMap;
 
 	public Renderer(ArrayList<Tile> tileList, GridPane grid) {
+		renderingData = new RenderingData();
 		init(tileList, grid);
+		
 	}
 
 	public void init(ArrayList<Tile> tileList, GridPane grid) {
@@ -112,18 +115,20 @@ public class Renderer {
 
 				int index = App.gridRows * i + j;
 				Tile tile = tileList.get(index);
-				String tileID = tile.getID();
+				String tileType = tile.getType();
 				int newIndexToRender;
 								
-				switch (tileID) {
-				case "FOREST_TILE":
-					newIndexToRender = forestViewData.getIndexToRender((gameClock.getMonth()+1)/3%4);
-					setImageView(i, j, index, newIndexToRender, forestViewData, grid);
+				switch (tileType) {
+				case "ForestTile":
+					TileViewData forestTVD = RenderingData.getTVD("forest");
+					newIndexToRender = forestTVD.getIndexToRender((gameClock.getMonth()+1)/3%4);
+					setImageView(i, j, index, newIndexToRender, forestTVD, grid);
 					break;
-				case "HOUSE_TILE":
-					newIndexToRender = houseViewData.getIndexToRender(0);
+				case "BuildingTile":
+					TileViewData houseTVD = RenderingData.getTVD("house");
+					newIndexToRender = houseTVD.getIndexToRender(0);
 					if (newIndexToRender != previousMap[index]) {
-						ImageView newImageView = houseViewData.getImageToRender(newIndexToRender);
+						ImageView newImageView = houseTVD.getImageToRender(newIndexToRender);
 						GridPane.setConstraints(newImageView, i, j);
 						grid.getChildren().set(index, newImageView);
 						previousMap[index] = newIndexToRender;
@@ -145,85 +150,94 @@ public class Renderer {
 						});// eventhandler mouse clicked
 					} // if
 					break;
-				case "FARM_PLOT":
-					newIndexToRender = farmPlotViewData.getIndexToRender(0);
-					if (newIndexToRender != previousMap[index]) {
-						ImageView newImageView = farmPlotViewData.getImageToRender(newIndexToRender);
-						GridPane.setConstraints(newImageView, i, j);
-						grid.getChildren().set(index, newImageView);
-						previousMap[index] = newIndexToRender;
-						// set UI
-						
-						
-						newImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {	
-							public void handle(MouseEvent event) {
-								if (event.getButton() == MouseButton.PRIMARY) {
-									Employee activeEmployee= engine.getActiveEmployee();
-									//System.out.println(engine.getActiveEmployee());
-									b1.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<100);
-									b1.setText("Plant Wheat");
-									
-									b1.setOnAction(e -> {
-										//TODO  pause while no task
-										engine.getSeedPane().toFront();
-										engine.getSeedPane().setUserData(index);
-										engine.updateSeedPanel();
-										
-									});//plant button setOnAction event handler
-									popup.show(newImageView, event.getScreenX(), event.getScreenY());
-								}//if primary mouse click (ie left mouse click)
-							}//handle() for the ImageView mouse click event
-						});// eventhandler mouse clicked
-					} // if new image to render, ie if there was a change to be rendered
-					break;
-				case "BLÉ_PLOT":
+				case "FarmPlot":
 					
-					DoubleProperty growthProperty = ((FarmPlot) tile).growthProperty();
-					DoubleProperty yieldProperty = ((FarmPlot) tile).yieldProperty();
-					newIndexToRender = wheatViewData.getIndexToRender(growthProperty.get());
-					if (newIndexToRender != previousMap[index]) {
-						ImageView newImageView = wheatViewData.getImageToRender(newIndexToRender);
-						GridPane.setConstraints(newImageView, i, j);
-						grid.getChildren().set(index, newImageView);
-						previousMap[index] = newIndexToRender;
-
-						// set UI
-						newImageView.setOnMouseEntered(e -> {
-							((Labeled) mouseOverPanel.getChildren().get(1)).textProperty()
-							        .set(tile.getID());
-							((Labeled) mouseOverPanel.getChildren().get(2)).textProperty()
-									.bind(growthProperty.asString("%.0f"));
-							((Labeled) mouseOverPanel.getChildren().get(3)).textProperty()
-									.bind(yieldProperty.asString("%.0f"));
+					FarmPlot farmTile = (FarmPlot) tile;
+					farmTile.plow();//TODO create task to plow
+					if(farmTile.isPlowed()&&!farmTile.isSown()){
+						TileViewData farmTVD = RenderingData.getTVD("plowed");
+						newIndexToRender = farmTVD.getIndexToRender(0);
+						if (newIndexToRender != previousMap[index]) {
+							ImageView newImageView = farmTVD.getImageToRender(newIndexToRender);
+							GridPane.setConstraints(newImageView, i, j);
+							grid.getChildren().set(index, newImageView);
+							previousMap[index] = newIndexToRender;
+							// set UI
 							
-						});
-						
-						newImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-							public void handle(MouseEvent event) {
-								if (event.getButton() == MouseButton.PRIMARY) {
-									Employee activeEmployee= engine.getActiveEmployee();
-									b1.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<100);
-									b1.setText("Harvest Wheat");
-									b1.setOnAction(e -> {
+							
+							newImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {	
+								public void handle(MouseEvent event) {
+									if (event.getButton() == MouseButton.PRIMARY) {
+										Employee activeEmployee= engine.getActiveEmployee();
+										//System.out.println(engine.getActiveEmployee());
+										b1.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<100);
+										b1.setText("Plant Wheat");
 										
-										//create the task, add it to the active employee and create a changelistener to finish the task
-										
-										FarmTask harvestWheat = new FarmTask("Harvest", 100, 30, gameClock.getTotalSeconds());
-										activeEmployee.setTask(harvestWheat);
-										ArrayList<String> categoriesCereal = new ArrayList<String>();
-										categoriesCereal.add("Frais,Céréale");
-										harvestWheat.setResult(new Product(categoriesCereal,"Blé",((FarmPlot) tile).getYield(),1,1));
-										harvestWheat.setNewTile(new FarmPlot("FARM", 0, 0), index);
-										harvestWheat.startTask(gameClock.getTotalSeconds(), activeEmployee);
-										//System.out.println("harvest task started " + previousMap + " index "+ index + " value " + previousMap[index]);
-									});
-									popup.show(newImageView, event.getScreenX(), event.getScreenY());
-								}
-							}
-						});// eventhandler mouse clicked
-					} // if
+										b1.setOnAction(e -> {
+											//TODO  pause while no task
+											engine.getSeedPane().toFront();
+											engine.getSeedPane().setUserData(index);
+											engine.updateSeedPanel();
+											
+										});//plant button setOnAction event handler
+										popup.show(newImageView, event.getScreenX(), event.getScreenY());
+									}//if primary mouse click (ie left mouse click)
+								}//handle() for the ImageView mouse click event
+							});// eventhandler mouse clicked
+						} // if new image to render, ie if there was a change to be rendered
+					}
+					
+					if(farmTile.isSown()){
+						DoubleProperty growthProperty = farmTile.growthProperty();
+						DoubleProperty yieldProperty = farmTile.yieldProperty();
+						TileViewData sownTVD = RenderingData.getTVD(farmTile.getSeed());
+						newIndexToRender = sownTVD.getIndexToRender(growthProperty.get());
+						if (newIndexToRender != previousMap[index]) {
+							ImageView newImageView = sownTVD.getImageToRender(newIndexToRender);
+							GridPane.setConstraints(newImageView, i, j);
+							grid.getChildren().set(index, newImageView);
+							previousMap[index] = newIndexToRender;
 
+							// set UI
+							newImageView.setOnMouseEntered(e -> {
+								((Labeled) mouseOverPanel.getChildren().get(1)).textProperty()
+								        .set(farmTile.getSeed().getName());
+								((Labeled) mouseOverPanel.getChildren().get(2)).textProperty()
+										.bind(growthProperty.asString("%.0f"));
+								((Labeled) mouseOverPanel.getChildren().get(3)).textProperty()
+										.bind(yieldProperty.asString("%.0f"));
+								
+							});
+							
+							newImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+								public void handle(MouseEvent event) {
+									if (event.getButton() == MouseButton.PRIMARY) {
+										Employee activeEmployee= engine.getActiveEmployee();
+										b1.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<100);
+										b1.setText("Harvest Wheat");
+										b1.setOnAction(e -> {
+											
+											//create the task, add it to the active employee and create a changelistener to finish the task
+											/* TODO implement harvest in the new mecanic
+											FarmTask harvestWheat = new FarmTask("Harvest", 100, 30, gameClock.getTotalSeconds());
+											activeEmployee.setTask(harvestWheat);
+											ArrayList<String> categoriesCereal = new ArrayList<String>();
+											categoriesCereal.add("Frais,Céréale");
+											harvestWheat.setResult(new Product(categoriesCereal,"Blé",((FarmPlot) tile).getYield(),1,1));
+											harvestWheat.setNewTile(new FarmPlot("FARM", 0, 0), index);
+											harvestWheat.startTask(gameClock.getTotalSeconds(), activeEmployee);
+											*/ 
+											//System.out.println("harvest task started " + previousMap + " index "+ index + " value " + previousMap[index]);
+										});
+										popup.show(newImageView, event.getScreenX(), event.getScreenY());
+									}
+								}
+							});// eventhandler mouse clicked
+						} // if
+					}
+					
 					break;
+				
 				default:
 					break;
 				}// switch

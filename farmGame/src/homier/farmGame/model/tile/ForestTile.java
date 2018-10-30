@@ -4,8 +4,8 @@ import homier.farmGame.model.Weather;
 
 public class ForestTile extends Tile {
 
-	public ForestTile(String ID) {
-		super(ID, "ForestTile");
+	public ForestTile() {
+		super("ForestTile");
 	}
 
 	@Override

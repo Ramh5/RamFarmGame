@@ -238,7 +238,7 @@
                   <AnchorPane style="-fx-background-color: -fx-background;" styleClass="masking-pane">
                      <children>
             				<VBox fx:id="mouseOverPanel" alignment="CENTER">
-               				<TextArea fx:id="leftTextArea" prefHeight="441.0" prefWidth="100.0" />
+               				<TextArea fx:id="leftTextArea" prefHeight="441.0" prefWidth="300.0" />
             					<Label fx:id="productLabel" text="test" />
             					<Label fx:id="growthLabel" text="test" />
             					<Label fx:id="yieldLabel" text="test" />

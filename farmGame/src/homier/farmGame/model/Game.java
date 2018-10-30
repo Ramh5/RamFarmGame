@@ -38,13 +38,13 @@ public class Game {
 		
 		for (int i = 0; i < App.gridColumns*App.gridRows; i++) {
 
-			tileList.add(new ForestTile("FOREST_TILE"));
+			tileList.add(new ForestTile());
 		}
 		int[] indexList = { 30, 31, 32, 39, 41, 48, 49, 50 };
 		for (int i : indexList) {
-			tileList.set(i, new FarmPlot("FARM", 0, 0));
+			tileList.set(i, new FarmPlot());
 		}
-		tileList.set(40, new BuildingTile("HOUSE_TILE"));
+		tileList.set(40, new BuildingTile());
 		employees = new Employee[]{new Employee("Ram",0,1000),new Employee("EMPTY",200,900)};
 		ArrayList<String> categoriesCereal = new ArrayList<String>();
 		categoriesCereal.add("Frais");

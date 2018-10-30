@@ -257,8 +257,10 @@ public class Engine {
 	private void seedOKButtonAction(ActionEvent event){
 		FarmTask plantWheat = new FarmTask("Plant", 100, 20, game.getClock().getTotalSeconds());
 		getActiveEmployee().setTask(plantWheat);
-		String prodName = game.getInventory().getProdData().getSeedData(((Product)tableSeed.getUserData()).getName()).getProdName();
-		plantWheat.setNewTile( new FarmPlot(prodName, 15, 400,new int[]{15,25}), (int)seedPane.getUserData());
+		plantWheat.setNewTile( new FarmPlot(), (int)seedPane.getUserData());//seedPane userData stores the tile index of the tile it was called from in Renderer.java
+		Product selectedSeed = (Product)tableSeed.getUserData();//tableSeed userData stores the selected seed
+		selectedSeed.setQty(selectedSeed.getQty()-0.5);//remove 0.5 kg when sowing TODO make it dependend on seed data
+		plantWheat.setSow(true, selectedSeed.getName());
 		plantWheat.startTask(game.getClock().getTotalSeconds(), getActiveEmployee());
 		seedCancelButtonAction(new ActionEvent());
 	}

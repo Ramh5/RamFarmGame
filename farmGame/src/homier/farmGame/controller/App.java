@@ -6,6 +6,7 @@ package homier.farmGame.controller;
 
 
 import homier.farmGame.view.Renderer;
+import homier.farmGame.view.RenderingData;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -17,10 +18,11 @@ public class App extends Application{
 	
 	public static float gameSpeed = 50;
 	public static int gridColumns = 10, gridRows = 9;
-	public static int width = gridColumns*Renderer.tileSize;
-	public static int height = gridRows*Renderer.tileSize;
+	public static int width = gridColumns*RenderingData.tileSize;
+	public static int height = gridRows*RenderingData.tileSize;
 	public static String SEED_LIST_PATH;
 	public static String SEED_DATA_PATH;
+	public static String TILE_IMAGES_PATH;
 	
 	
 	private Engine engine;
@@ -32,8 +34,10 @@ public class App extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		
 		SEED_LIST_PATH = getClass().getResource("/database/seed_list.txt").getPath();
 		SEED_DATA_PATH = getClass().getResource("/database/seed_data.txt").getPath();
+		TILE_IMAGES_PATH = getClass().getResource("/tiles").getPath();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/homier/farmGame/view/MainUI.fxml"));
 		Parent root = loader.load();
 		engine=loader.getController();

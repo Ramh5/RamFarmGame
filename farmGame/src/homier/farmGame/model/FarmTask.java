@@ -19,7 +19,9 @@ public class FarmTask {
 	private Product result;
 	private Tile newTile;
 	private int newTileIndex;
-	
+	private boolean plow=false;
+	private boolean sow=false;
+	private String seedName;
 	
 	
 	public FarmTask() {
@@ -45,6 +47,7 @@ public class FarmTask {
 		
 		this.startedAt=startedAt;
 	}
+	
 
 	public String getName() {
 		return name;
@@ -83,8 +86,17 @@ public class FarmTask {
 			if(newTile!=null){
 				tileList.set(newTileIndex, newTile);
 				previousMap[newTileIndex]=-1;
+				if(plow){
+					((FarmPlot) newTile).plow();
+					plow=false;
+				}
+				if(sow){
+					((FarmPlot) newTile).sow(seedName);
+					sow=false;
+				}
 				//System.out.println( name+ " task completed " + previousMap + " index "+ newTileIndex + " value " + previousMap[newTileIndex]);
 			}
+			
 			isComplete=true;
 			employee.setIsWorking(false);
 		}
@@ -115,6 +127,14 @@ public class FarmTask {
 	public void setNewTile(Tile newTile, int newTileIndex) {
 		this.newTile=newTile;
 		this.newTileIndex = newTileIndex;
-		
+	}
+	
+	public void setPlow(boolean plow){
+		this.plow=plow;
+	}
+	
+	public void setSow(boolean sow, String seedName){
+		this.seedName=seedName;
+		this.sow=sow;
 	}
 }
