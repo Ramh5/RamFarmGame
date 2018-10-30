@@ -190,9 +190,12 @@ public class Renderer {
 						// set UI
 						newImageView.setOnMouseEntered(e -> {
 							((Labeled) mouseOverPanel.getChildren().get(1)).textProperty()
-									.bind(growthProperty.asString("%.0f"));
+							        .set(tile.getID());
 							((Labeled) mouseOverPanel.getChildren().get(2)).textProperty()
+									.bind(growthProperty.asString("%.0f"));
+							((Labeled) mouseOverPanel.getChildren().get(3)).textProperty()
 									.bind(yieldProperty.asString("%.0f"));
+							
 						});
 						
 						newImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
