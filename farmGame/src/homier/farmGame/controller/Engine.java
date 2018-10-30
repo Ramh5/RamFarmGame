@@ -112,7 +112,7 @@ public class Engine {
 	@FXML private MenuItem save,load;
 	@FXML private TextFlow seedDetailTextFlow;
 	@FXML private StackPane leftStackPane;
-	@FXML private TextField seedFilterTextField;
+	@FXML private TextField shopFilterTextField,wsFilterTextField,seedFilterTextField;
 	
 	private Game game;
 	private Renderer renderer;
@@ -255,13 +255,12 @@ public class Engine {
 	
 	@FXML 
 	private void seedOKButtonAction(ActionEvent event){
-		
 		FarmTask plantWheat = new FarmTask("Plant", 100, 20, game.getClock().getTotalSeconds());
 		getActiveEmployee().setTask(plantWheat);
-		plantWheat.setNewTile( new FarmPlot(((Product)tableSeed.getUserData()).getName(), 15, 400,new int[]{15,25}), (int)seedPane.getUserData());
+		String prodName = game.getInventory().getProdData().getSeedData(((Product)tableSeed.getUserData()).getName()).getProdName();
+		plantWheat.setNewTile( new FarmPlot(prodName, 15, 400,new int[]{15,25}), (int)seedPane.getUserData());
 		plantWheat.startTask(game.getClock().getTotalSeconds(), getActiveEmployee());
 		seedCancelButtonAction(new ActionEvent());
-		
 	}
 	
 	@FXML 
@@ -537,6 +536,11 @@ public class Engine {
 	 * setup the Shop panel for the first time
 	 */
 	private void setupShop(){
+		
+		shopFilterTextField.textProperty().addListener((obs, oldStr, newStr)->{
+			updateShopPanel();
+		});
+		
 		final PseudoClass topLevelTTVPseudoClass = PseudoClass.getPseudoClass("top-level-treetableview");
 		
 		//------------inventory table------------- 
@@ -657,6 +661,10 @@ public class Engine {
 	 * setup the workShop panel for the first time
 	 */
 	private void setupWS(){
+		wsFilterTextField.textProperty().addListener((obs, oldStr, newStr)->{
+			updateWSPanel();
+		});
+		
 		final PseudoClass topLevelTTVPseudoClass = PseudoClass.getPseudoClass("top-level-treetableview");
 		
 		//------------ WS inventory table------------- //TODO setup spoil colum (negative and red)
@@ -857,7 +865,7 @@ public class Engine {
 		ws.copyInventory(game.getInventory());
 		ws.getSelectedIngr().clear();
 		
-		updateTreeItemRoot(tableInvWS.getRoot(), ws, game.getShop(),"",null);
+		updateTreeItemRoot(tableInvWS.getRoot(), ws, game.getShop(),wsFilterTextField.getText(),null);
 		listenForSelection(tableInvWS.getRoot(), ws.getSelectedIngr());
 		
 		Recipe selectedRecipe = listViewRecipe.getSelectionModel().getSelectedItem();
@@ -871,8 +879,8 @@ public class Engine {
 	 * updates the Shop panel after it has been set up to show changed data
 	 */
 	private void updateShopPanel(){
-		updateTreeItemRoot(tableInv.getRoot(), game.getInventory(), game.getShop(),"",null);
-		updateTreeItemRoot(tableShop.getRoot(), game.getShop(), game.getShop(),"",null);
+		updateTreeItemRoot(tableInv.getRoot(), game.getInventory(), game.getShop(),shopFilterTextField.getText(),null);
+		updateTreeItemRoot(tableShop.getRoot(), game.getShop(), game.getShop(),shopFilterTextField.getText(),null);
 		listenForSelection(tableInv.getRoot(), game.getShop().getDataSelling());
 		listenForSelection(tableShop.getRoot(), game.getShop().getDataBuying());
 	}

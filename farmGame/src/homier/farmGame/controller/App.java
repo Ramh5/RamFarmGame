@@ -20,6 +20,7 @@ public class App extends Application{
 	public static int width = gridColumns*Renderer.tileSize;
 	public static int height = gridRows*Renderer.tileSize;
 	public static String SEED_LIST_PATH;
+	public static String SEED_DATA_PATH;
 	
 	
 	private Engine engine;
@@ -32,6 +33,7 @@ public class App extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		SEED_LIST_PATH = getClass().getResource("/database/seed_list.txt").getPath();
+		SEED_DATA_PATH = getClass().getResource("/database/seed_data.txt").getPath();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/homier/farmGame/view/MainUI.fxml"));
 		Parent root = loader.load();
 		engine=loader.getController();

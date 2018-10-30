@@ -1,0 +1,5 @@
+COMMENTLINE data for SeedData.java
+COMMENTLINE format is : name, prodName, growthRate, maxYield, yieldMap, minTemp, maxTemp
+Semences d'oignons,Oignons,10,300,norm,5,20
+Semences de carottes,Carottes,10,300,norm,5,20
+Semences de blé,Blé,15,400,norm,15,25

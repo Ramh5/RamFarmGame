@@ -101,7 +101,6 @@ public class FarmPlot extends Tile {
 	//private helper methode to create the YieldMap
 	private TreeMap<Double, Double> buildYieldMap() {
 		TreeMap<Double, Double> treeMap = new TreeMap<Double,Double>();
-		treeMap.put(-10.0,0.0);
 		treeMap.put(0.0,0.0);
 		treeMap.put(50.0,0.0);
 		treeMap.put(80.0,30.0);
