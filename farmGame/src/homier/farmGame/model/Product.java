@@ -91,14 +91,15 @@ public class Product{
 	 */
 	public void updatePrice(Shop shop){
 		
-		double newPrice = shop.getBasePrice(name.get());
+		//double newPrice = shop.getBasePrice(name.get());
+		double newPrice = MyData.basePriceOf(name.get());
 		newPrice *= Tools.interpolateMap(shop.getFreshMod(), fresh.get());
 		newPrice *= Tools.interpolateMap(shop.getQualMod(), qual.get());
 		price.set(newPrice);
 	}
 	
-	public void updateSpoil(ProductData prodData, int day){
-		setSpoilQty((getQty()*Tools.interpolateMap(prodData.getSpoilMap(getName()),getFresh()+day)));
+	public void updateSpoil(int day){
+		setSpoilQty((getQty()*Tools.interpolateMap(MyData.spoilMapOf(getName()),getFresh()+day)));
 	}
 	
 	/**

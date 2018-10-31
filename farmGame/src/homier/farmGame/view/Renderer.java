@@ -7,6 +7,7 @@ import homier.farmGame.controller.Engine;
 import homier.farmGame.model.Employee;
 import homier.farmGame.model.FarmTask;
 import homier.farmGame.model.Inventory;
+import homier.farmGame.model.MyData;
 import homier.farmGame.model.Product;
 import homier.farmGame.model.tile.BuildingTile;
 import homier.farmGame.model.tile.FarmPlot;
@@ -33,28 +34,13 @@ public class Renderer {
 	
 
 	private final static Image emptyTileImage = new Image("empty_tile.png", 100, 100, true, true);
-/*	private final static Image farmPlotImage = new Image("dirt_plot.png", tileSize, tileSize, true, true);
-	private final static Image sown1Image = new Image("sown1_plot.png", tileSize, tileSize, true, true);
-	private final static Image sown2Image = new Image("sown2_plot.png", tileSize, tileSize, true, true);
-	private final static Image wheat1Image = new Image("wheat1_plot.png", tileSize, tileSize, true, true);
-	private final static Image wheat2Image = new Image("wheat2_plot.png", tileSize, tileSize, true, true);
-	private final static Image houseImage = new Image("farmhouse.png", tileSize, tileSize, true, true);
-	private final static Image forest1Image = new Image("spring_tile.png", tileSize, tileSize, true, true);
-	private final static Image forest2Image = new Image("summer_tile.png", tileSize, tileSize, true, true);
-	private final static Image forest3Image = new Image("automn_tile.png", tileSize, tileSize, true, true);
-	private final static Image forest4Image = new Image("winter_tile.png", tileSize, tileSize, true, true);
 
-	private final TileViewData wheatViewData = new TileViewData(
-			new Image[] { sown1Image, sown2Image, wheat1Image, wheat2Image }, new int[] { 0, 25, 50, 90 });
-	private final TileViewData houseViewData = new TileViewData(new Image[] { houseImage }, new int[] { 0 });
-	private final TileViewData forestViewData = new TileViewData(new Image[] { forest4Image,forest1Image,forest2Image,forest3Image }, new int[] { 0,1,2,3});
-	private final TileViewData farmPlotViewData = new TileViewData(new Image[] { farmPlotImage }, new int[] { 0 });
-*/
-	private RenderingData renderingData;
+	
 	private int[] previousMap;
-
+	public static boolean popupShown = false;
+	
 	public Renderer(ArrayList<Tile> tileList, GridPane grid) {
-		renderingData = new RenderingData();
+		new RenderingData();
 		init(tileList, grid);
 		
 	}
@@ -75,11 +61,11 @@ public class Renderer {
 
 		ArrayList<Tile> tileList = engine.getGame().getTileList();
 		GridPane grid = engine.getGameGridPane();
-		ToggleButton pauseButton = engine.getPauseButton();
+		//ToggleButton pauseButton = engine.getPauseButton();
 		VBox mouseOverPanel = engine.getMouseOverPanel();
-		Inventory inventory = engine.getGame().getInventory();
+		
 		GameClock gameClock = engine.getGameClock();
-		//Employee activeEmployee= engine.getActiveEmployee();
+		
 		
 		// create popup menu for the tiles and set to pause when shown and
 		// unpause when hidden only if the game was not manualy paused prior
@@ -99,17 +85,16 @@ public class Renderer {
 		CustomMenuItem customMI = new CustomMenuItem(popupGrid, true);
 		ContextMenu popup = new ContextMenu();
 		popup.getItems().setAll(customMI);
+		
 		popup.setOnHidden(e -> {
-			if (!engine.getManPaused()) {
-				pauseButton.setSelected(false);
-				engine.updatePauseButton();
-			}
-		});
-		popup.setOnShown(e -> {
-			pauseButton.setSelected(true);
+			popupShown = false;
 			engine.updatePauseButton();
 		});
-		
+		popup.setOnShown(e -> {
+			popupShown = true;
+			engine.updatePauseButton();
+		});
+
 		for (int i = 0; i < App.gridColumns; i++) {
 			for (int j = 0; j < App.gridRows; j++) {
 
@@ -142,7 +127,7 @@ public class Renderer {
 									
 									b1.setText("Cuisine");
 									b1.setOnAction(e -> {	
-										//TODO open the workshop to cuisine
+										engine.getOpenWSbutton().fire();
 									});
 									popup.show(newImageView, event.getScreenX(), event.getScreenY());
 								}
@@ -153,7 +138,41 @@ public class Renderer {
 				case "FarmPlot":
 					
 					FarmPlot farmTile = (FarmPlot) tile;
-					farmTile.plow();//TODO create task to plow
+					
+					if(!farmTile.isPlowed()){
+						TileViewData dirtTVD = RenderingData.getTVD("dirt");
+						newIndexToRender = dirtTVD.getIndexToRender(0);
+						if (newIndexToRender != previousMap[index]) {
+							ImageView newImageView = dirtTVD.getImageToRender(newIndexToRender);
+							GridPane.setConstraints(newImageView, i, j);
+							grid.getChildren().set(index, newImageView);
+							previousMap[index] = newIndexToRender;
+							// set UI
+							
+							
+							newImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {	
+								public void handle(MouseEvent event) {
+									if (event.getButton() == MouseButton.PRIMARY) {
+										Employee activeEmployee= engine.getActiveEmployee();
+										//System.out.println(engine.getActiveEmployee());
+										b1.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<100);
+										b1.setText("Labourer");
+										
+										b1.setOnAction(e -> {
+											FarmTask plow = new FarmTask("Labourer", 100, 30, gameClock.getTotalSeconds());
+											activeEmployee.setTask(plow);
+											plow.setPlow(true);
+											plow.setNewTile(farmTile, index);
+											plow.startTask(gameClock.getTotalSeconds(), activeEmployee);
+											
+										});//plant button setOnAction event handler
+										popup.show(newImageView, event.getScreenX(), event.getScreenY());
+									}//if primary mouse click (ie left mouse click)
+								}//handle() for the ImageView mouse click event
+							});// eventhandler mouse clicked
+						} // if new image to render, ie if there was a change to be rendered
+					}
+					
 					if(farmTile.isPlowed()&&!farmTile.isSown()){
 						TileViewData farmTVD = RenderingData.getTVD("plowed");
 						newIndexToRender = farmTVD.getIndexToRender(0);
@@ -171,7 +190,7 @@ public class Renderer {
 										Employee activeEmployee= engine.getActiveEmployee();
 										//System.out.println(engine.getActiveEmployee());
 										b1.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<100);
-										b1.setText("Plant Wheat");
+										b1.setText("Semer");
 										
 										b1.setOnAction(e -> {
 											//TODO  pause while no task
@@ -214,19 +233,19 @@ public class Renderer {
 									if (event.getButton() == MouseButton.PRIMARY) {
 										Employee activeEmployee= engine.getActiveEmployee();
 										b1.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<100);
-										b1.setText("Harvest Wheat");
+										b1.setText("Récolter");
 										b1.setOnAction(e -> {
 											
 											//create the task, add it to the active employee and create a changelistener to finish the task
-											/* TODO implement harvest in the new mecanic
-											FarmTask harvestWheat = new FarmTask("Harvest", 100, 30, gameClock.getTotalSeconds());
+											
+											FarmTask harvestWheat = new FarmTask("Récolter", 100, 30, gameClock.getTotalSeconds());
 											activeEmployee.setTask(harvestWheat);
-											ArrayList<String> categoriesCereal = new ArrayList<String>();
-											categoriesCereal.add("Frais,Céréale");
-											harvestWheat.setResult(new Product(categoriesCereal,"Blé",((FarmPlot) tile).getYield(),1,1));
-											harvestWheat.setNewTile(new FarmPlot("FARM", 0, 0), index);
+											
+											harvestWheat.setResult(new Product(MyData.categoriesOf(farmTile.getSeed().getProdName()),
+																	   		farmTile.getSeed().getProdName(),farmTile.getYield(),1,farmTile.getQual()));
+											harvestWheat.setNewTile(new FarmPlot(), index);
 											harvestWheat.startTask(gameClock.getTotalSeconds(), activeEmployee);
-											*/ 
+											
 											//System.out.println("harvest task started " + previousMap + " index "+ index + " value " + previousMap[index]);
 										});
 										popup.show(newImageView, event.getScreenX(), event.getScreenY());

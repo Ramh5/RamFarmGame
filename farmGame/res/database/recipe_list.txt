@@ -7,3 +7,8 @@ REC Oeufs brouillés ING Oeufs,2,Oignons,0.5 RES Oeufs brouillés,2
 WORKSHOP Silo
 
 REC Aliment de base ING Blé,1 RES Aliment de base,1
+REC Grains de blé ING Blé,1 RES Grains de blé,0.5
+
+WORKSHOP Moulin
+
+REC Farine de blé ING Grains de blé,1 RES Farine de blé,0.8

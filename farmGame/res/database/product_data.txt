@@ -1,0 +1,17 @@
+COMMENTLINE format is name of product CAT categories DETAILS baseprice,spoilRate
+BASEPRICE vegy,2,cereal,1
+COMMENTLINE////////////////////////////////////////////////////// Légumes ///////////////////////////////////////////
+Carottes CAT Légume DETAILS vegy,vegy
+Patates CAT Légume,Semence,Semence de légume DETAILS vegy,vegy
+Oignons CAT Légume DETAILS vegy,vegy
+COMMENTLINE////////////////////////////////////////////////////// Cereales ///////////////////////////////////////////
+Blé CAT Céréale DETAILS cereal,cereal
+Farine de blé CAT Céréale DETAILS rec,cereal
+COMMENTLINE////////////////////////////////////////////////////// Animal ///////////////////////////////////////////
+Oeufs CAT Animal DETAILS 2,animal
+COMMENTLINE////////////////////////////////////////////////////// Semences //////////////////////////////////////////
+Semences de carottes CAT Semence,Semence de légume DETAILS rec,seed
+Semences de patates CAT Semence,Semence de légume DETAILS rec,seed
+Semences d'oignons CAT Semence,Semence de légume DETAILS rec,seed
+Grains de blé CAT Semence,Semence de céréale DETAILS rec,seed
+Grains d'orge CAT Semence,Semence de céréale DETAILS rec,seed

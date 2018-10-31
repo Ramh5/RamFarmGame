@@ -1,0 +1,6 @@
+COMMENTLINE format is  name,qty,fresh,qual
+Semences d'oignons,1,1,1
+Grains de blé,1,1,1
+Grains d'orge,1,1,1
+Semences de patates,1,1,1
+Semences de carottes,1,1,1

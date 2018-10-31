@@ -117,7 +117,8 @@ public class Engine {
 	private Game game;
 	private Renderer renderer;
 	
-	private boolean manPaused;
+	public static boolean manPaused = false;
+	public static boolean otherPaused = false;
 	
 	FileChooser fileChooser = new FileChooser();
 	
@@ -126,7 +127,7 @@ public class Engine {
 	public void update(double dTime) {
 		//Pause game when in the seed selection pane
 		if(leftStackPane.getChildren().indexOf(seedPane)==leftStackPane.getChildren().size()-1){
-			pauseButton.setSelected(true);
+			otherPaused=true;
 			updatePauseButton();
 			openShopButton.setDisable(true);
 			openWSbutton.setDisable(true);
@@ -177,13 +178,14 @@ public class Engine {
 		if (game==null){
 			game = new Game();//create a new game if not loaded save game
 			fileChooser.setInitialDirectory(new File(getClass().getResource("/homier").getFile()));
+			game.getClock().addTime(4*FarmTimeUnits.MONTH.seconds);
 		}
 		
 		gameGridPane.getChildren().clear();
 		renderer = new Renderer(game.getTileList(), gameGridPane);
 		renderer.render(this);
 		
-		//TO ADD TIME to the clock : game.getClock().addTime(4*FarmTimeUnits.MONTH.seconds);
+		
 		
 		wxToday.setText("Today: "+game.getWxForcast().getToday().toString());
 		wxTomorrow.setText("Tomorrow: "+game.getWxForcast().getTomorrow().toString());
@@ -192,7 +194,7 @@ public class Engine {
 		updatePauseButton();
 		leftTextArea.setText(game.getInventory().toString());
 
-		gameSpeedChoice.getItems().setAll(1,2,5,10,50,500);
+		gameSpeedChoice.getItems().setAll(1,2,5,10,20,50,100,500,1000);
 		gameSpeedChoice.getSelectionModel().select(3);
 		App.gameSpeed=gameSpeedChoice.getSelectionModel().getSelectedItem();
 		
@@ -243,10 +245,9 @@ public class Engine {
 	@FXML 
 	private void seedCancelButtonAction(ActionEvent event){
 		seedPane.toBack();
-		if (!manPaused) {
-			pauseButton.setSelected(false);
-			updatePauseButton();
-		}
+		otherPaused=false;
+		updatePauseButton();
+
 		unselectTreeTable(tableSeed.getRoot());
 		openShopButton.setDisable(false);
 		openWSbutton.setDisable(false);
@@ -327,16 +328,25 @@ public class Engine {
 	}
 
 	@FXML
-	private void pauseButtonAction(ActionEvent event) {
-		updatePauseButton();
+	public void pauseButtonAction() {
+		
 		if(pauseButton.isSelected()){
 			manPaused=true;
 		}else{
 			manPaused=false;
 		}
+		updatePauseButton();
 	}
 
+	
 	public void updatePauseButton(){
+		
+		if(manPaused||otherPaused||Renderer.popupShown){
+			pauseButton.setSelected(true);
+		}else{
+			pauseButton.setSelected(false);
+		}
+		
 		pauseButton.setBackground(Background.EMPTY);
 		if (pauseButton.isSelected()) {
 			pauseLabel.setText("Jeu en pause");
@@ -352,9 +362,7 @@ public class Engine {
 	@FXML
 	private void closeShopButtonAction(ActionEvent event) {
 		if(!openWSbutton.isSelected()) {
-			if (!manPaused) {
-				pauseButton.setSelected(false);
-			}
+			otherPaused=false;
 			pauseButton.setDisable(false);
 		}else {
 			updateWSPanel();
@@ -370,13 +378,11 @@ public class Engine {
 		if(openShopButton.isSelected()){
 			updateShopPanel();
 			shopPane.toFront();
-			pauseButton.setSelected(true);
+			otherPaused=true;
 			pauseButton.setDisable(true);
 		}else{
 			if(!openWSbutton.isSelected()) {
-				if (!manPaused) {
-					pauseButton.setSelected(false);
-				}
+				otherPaused=false;
 				pauseButton.setDisable(false);
 			}
 			shopPane.toBack();
@@ -387,9 +393,7 @@ public class Engine {
 	@FXML
 	private void closeWSbuttonAction(ActionEvent event) {
 		if(!openShopButton.isSelected()) {
-			if (!manPaused) {
-				pauseButton.setSelected(false);
-			}
+			otherPaused=false;
 			pauseButton.setDisable(false);
 		}else {
 			updateShopPanel();
@@ -404,13 +408,11 @@ public class Engine {
 		if(openWSbutton.isSelected()){
 			updateWSPanel();
 			workShopPane.toFront();
-			pauseButton.setSelected(true);
+			otherPaused=true;
 			pauseButton.setDisable(true);
 		}else{		
 			if(!openShopButton.isSelected()) {
-				if (!manPaused) {
-					pauseButton.setSelected(false);
-				}
+				otherPaused=false;
 				pauseButton.setDisable(false);
 			}
 			workShopPane.toBack();
@@ -518,12 +520,17 @@ public class Engine {
 	public GameClock getGameClock() {
 		return game.getClock();
 	}
+	/*
 	public boolean getManPaused() {
 		
 		return manPaused;
 	}
+	*/
 	public AnchorPane getSeedPane(){
 		return seedPane;
+	}
+	public ToggleButton getOpenWSbutton(){
+		return openWSbutton;
 	}
 	
 	/**

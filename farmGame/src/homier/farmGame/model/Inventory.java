@@ -13,13 +13,12 @@ public class Inventory {
 	private double money;
 	private HashMap<String, ArrayList<Product>> data;
 	private HashMap<String, Product> averageData;
-	private ProductData prodData;
+	
 	
 	public Inventory(){
 		money = 0;
 		data=new HashMap<>();
 		averageData=new HashMap<>();
-		prodData = new ProductData();//TODO productData.getinstane to have just one instance of it accessible everywhere
 	}
 	/**
 	 * Creates a Inventory using a path to a file containing Products
@@ -27,6 +26,7 @@ public class Inventory {
 	 */
 	public Inventory(String path){
 		this();
+		
 		String fileString = ReadFile.getString(path);
 		String[] strList = fileString.split("\r\n");
 		for(String line:strList){
@@ -38,6 +38,19 @@ public class Inventory {
 			Product prod = new Product(categories, prodStr[0], Double.valueOf(prodStr[1]), Integer.valueOf(prodStr[2]), Integer.valueOf(prodStr[3]));
 			addProd(prod);
 		}
+		/*
+		 String fileString = ReadFile.getString(path);
+		String[] strList = fileString.split("\r\n");
+		for(String line:strList){
+			
+			if(line.contains("COMMENTLINE")) continue; //skips a commentline in the file
+			ArrayList<String> categories = new ArrayList<String>(Arrays.asList(line.substring(line.indexOf("CAT")+4, line.indexOf(" DETAILS")).split(",")));
+			String[] prodStr = line.substring(line.indexOf("DETAILS")+8).split(",");
+			
+			Product prod = new Product(categories, prodStr[0], Double.valueOf(prodStr[1]), Integer.valueOf(prodStr[2]), Integer.valueOf(prodStr[3]));
+			addProd(prod);
+		}
+		 */
 		
 	}
 	
@@ -126,7 +139,7 @@ public class Inventory {
 	private void calculateSpoil(int day){
 		for(Entry<String, ArrayList<Product>> entry : data.entrySet()){
 			for(Product prod : entry.getValue()){
-				prod.updateSpoil(prodData, day);
+				prod.updateSpoil(day);
 			}
 		}
 	}
@@ -209,9 +222,6 @@ public class Inventory {
 		return data;
 	}
 	
-	public ProductData getProdData() {
-		return prodData;
-	}
 	
 }
 

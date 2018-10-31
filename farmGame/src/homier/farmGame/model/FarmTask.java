@@ -91,6 +91,7 @@ public class FarmTask {
 					plow=false;
 				}
 				if(sow){
+					((FarmPlot) newTile).plow();
 					((FarmPlot) newTile).sow(seedName);
 					sow=false;
 				}

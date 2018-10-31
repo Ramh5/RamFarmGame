@@ -20,9 +20,8 @@ public class App extends Application{
 	public static int gridColumns = 10, gridRows = 9;
 	public static int width = gridColumns*RenderingData.tileSize;
 	public static int height = gridRows*RenderingData.tileSize;
-	public static String SEED_LIST_PATH;
-	public static String SEED_DATA_PATH;
-	public static String TILE_IMAGES_PATH;
+	public static String SEED_LIST_PATH, SHOP_LIST_PATH, SEED_DATA_PATH, TILE_IMAGES_PATH,
+						 PROD_DATA_PATH;
 	
 	
 	private Engine engine;
@@ -35,7 +34,9 @@ public class App extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		
+		PROD_DATA_PATH = getClass().getResource("/database/product_data.txt").getPath();
 		SEED_LIST_PATH = getClass().getResource("/database/seed_list.txt").getPath();
+		SHOP_LIST_PATH = getClass().getResource("/database/shop_list.txt").getPath();
 		SEED_DATA_PATH = getClass().getResource("/database/seed_data.txt").getPath();
 		TILE_IMAGES_PATH = getClass().getResource("/tiles").getPath();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/homier/farmGame/view/MainUI.fxml"));

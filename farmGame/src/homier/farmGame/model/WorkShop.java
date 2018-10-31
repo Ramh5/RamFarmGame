@@ -114,7 +114,7 @@ public class WorkShop extends Inventory {
 		result.setQty(recipe.getQuantity()*limFactor);
 		result.setFresh((int)Math.round(totFresh/totIngrQty));
 		result.setQual((int)(Math.round(totQual/totIngrQty)));
-		result.updateSpoil(getProdData(), 0);
+		result.updateSpoil(0);
 		
 		//set the energy and time cost for this task
 		task.setEnergyCost(20*limFactor);

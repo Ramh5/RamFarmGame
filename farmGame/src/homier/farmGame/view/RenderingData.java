@@ -1,10 +1,12 @@
 package homier.farmGame.view;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeMap;
 
 import homier.farmGame.controller.App;
+import homier.farmGame.model.MyData;
 import homier.farmGame.model.SeedData;
 import homier.farmGame.utils.ReadFile;
 import homier.farmGame.utils.Tools;
@@ -54,8 +56,12 @@ public class RenderingData {
 		TileViewData tvd = tvdList.get(seed.getProdName());
 		if(tvd==null){
 			System.out.println("RenderingData.java : no TileViewData available for : "+ seed.getProdName());
-			if(seed.getProdName().equals("Blé")){
+			
+			ArrayList<String> catList = MyData.categoriesOf(seed.getProdName());
+			if(catList.contains("Céréale")){
 				tvd = tvdList.get("cereal");
+			}else if(catList.contains("Légume")){
+				tvd = tvdList.get("Patates");
 			}else{
 				tvd = tvdList.get("dirt");
 				System.out.println("RenderingData.java : no TileViewData available for : "+ seed.getProdName() + " : used dirt as default");
