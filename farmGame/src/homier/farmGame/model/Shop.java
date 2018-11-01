@@ -22,7 +22,7 @@ public class Shop extends Inventory {
 		
 		super(App.SHOP_LIST_PATH);
 		freshMod = Tools.buildTreeMap(new double[][]{{1,1},{20,.75},{50,.2}});
-		qualMod = Tools.buildTreeMap(new double[][]{{0,0},{50,.5},{100,1}});
+		qualMod = Tools.buildTreeMap(new double[][]{{0,0},{1,.5},{50,.75},{100,1}});
 	}
 
 
