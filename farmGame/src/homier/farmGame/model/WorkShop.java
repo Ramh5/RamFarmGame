@@ -4,6 +4,9 @@ package homier.farmGame.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
+
+import homier.farmGame.controller.App;
+
 import java.util.TreeMap;
 
 import javafx.collections.FXCollections;
@@ -11,7 +14,7 @@ import javafx.collections.ObservableList;
 
 public class WorkShop extends Inventory {
 	
-	private RecipeBook recipeBook;
+	
 	private final ObservableList<Product> selectedIngr = FXCollections.observableArrayList();
 	private ArrayList<Product> ingrToBeUsed = new ArrayList<Product>();
 	private Product result = new Product(null,"EMPTY",0,0,0);
@@ -21,7 +24,6 @@ public class WorkShop extends Inventory {
 	
 	public WorkShop() {
 		super();
-		recipeBook = new RecipeBook(getClass().getResource("/database/recipe_list.txt").getPath());
 	}
 	
 	/**
@@ -31,22 +33,22 @@ public class WorkShop extends Inventory {
 	 * 
 	 */
 	public void calculateResult(Recipe recipe) {
-		HashMap<String, Double> availProdFactor = new HashMap<String, Double>(recipe.getIngredientList());
+		HashMap<String, Double> availProdFactor = new HashMap<String, Double>(recipe.getIngredients());
 		for(Entry<String,Double> entry: availProdFactor.entrySet()) {
 			entry.setValue(0.0);
 		}
 		
 		ArrayList<Product> selectedIngrCopy = new ArrayList<>(selectedIngr);
 		ingrToBeUsed.clear();
-		//TODO implement categories depending on the recipes
-		ArrayList<String> categoriesCereal = new ArrayList<String>();
-		categoriesCereal.add("Frais,Céréale");
-		result=new Product(categoriesCereal,recipe.getName(),0,0,0);
+		
+		String resultName = recipe.getResults().firstKey();
+		System.out.println(resultName);
+		result=new Product(MyData.categoriesOf(resultName),resultName,0,0,0);
 		
 		//make a map of ratios to determine the limfactor ingredient
 		for(Product prod:selectedIngr) {
 			String name = prod.getName();
-			Double qtyNeeded = recipe.getIngredientList().get(name);
+			Double qtyNeeded = recipe.getIngredients().get(name);
 			if(qtyNeeded!=null) {
 				availProdFactor.put(name, prod.getQty()/qtyNeeded+availProdFactor.get(name));
 			}
@@ -76,10 +78,10 @@ public class WorkShop extends Inventory {
 			return;
 		}
 		
-		for(Entry<String,Double> entry : recipe.getIngredientList().entrySet()) {
+		for(Entry<String,Double> entry : recipe.getIngredients().entrySet()) {
 			String name = entry.getKey();
 			//Product ingrProd = new Product(entry.getKey(),0,0,0);
-			double qtyNeeded = recipe.getIngredientList().get(name);
+			double qtyNeeded = recipe.getIngredients().get(name);
 			double qtyAvail = 0;
 			while(qtyAvail/qtyNeeded<limFactor) {
 				
@@ -110,8 +112,8 @@ public class WorkShop extends Inventory {
 			totFresh += prod.getQty()*prod.getFresh();
 			totQual += prod.getQty()*prod.getQual();
 		}
-		
-		result.setQty(recipe.getQuantity()*limFactor);
+		//TODO change the implementation to allow multi result recipes
+		result.setQty(recipe.getResults().firstEntry().getValue()*limFactor);
 		result.setFresh((int)Math.round(totFresh/totIngrQty));
 		result.setQual((int)(Math.round(totQual/totIngrQty)));
 		result.updateSpoil(0);
@@ -153,7 +155,7 @@ public class WorkShop extends Inventory {
 	 * @return the recipes TreeMap of a particular workshop
 	 */
 	public TreeMap<String, Recipe> getRecipeList(String workShopName) {
-		return recipeBook.getRecipeList(workShopName);
+		return MyData.getRecipeBook().getRecipeList(workShopName);
 	}
 	
 	/**
@@ -161,7 +163,7 @@ public class WorkShop extends Inventory {
 	 * @return the String array of all workshop names
 	 */
 	public String[] getWSList(){
-		return recipeBook.getWSList();
+		return MyData.getRecipeBook().getWSList();
 	}
 	
 	public Product getResult() {

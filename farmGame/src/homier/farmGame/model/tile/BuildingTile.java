@@ -1,17 +1,16 @@
 package homier.farmGame.model.tile;
 
-import homier.farmGame.model.RecipeBook;
 import homier.farmGame.model.Weather;
 
 public class BuildingTile extends Tile{
 
-	private RecipeBook recipeBook;
+	
 	private int state;//level of the house
 	
 	public BuildingTile() {
 		super("BuildingTile");
 		state=0;
-		recipeBook=new RecipeBook();
+		
 	}
 
 	
@@ -29,8 +28,5 @@ public class BuildingTile extends Tile{
 		this.state = state;
 	}
 	
-	public RecipeBook getRecipeBook(){
-		return recipeBook;
-	}
 	 
 }

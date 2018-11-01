@@ -193,7 +193,7 @@ public class Renderer {
 										b1.setText("Semer");
 										
 										b1.setOnAction(e -> {
-											//TODO  pause while no task
+											
 											engine.getSeedPane().toFront();
 											engine.getSeedPane().setUserData(index);
 											engine.updateSeedPanel();

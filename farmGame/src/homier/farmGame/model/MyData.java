@@ -14,7 +14,7 @@ import homier.farmGame.utils.Tools;
 public class MyData {
 	
 		//private static HashMap<String, ArrayList<String>> categoriesData;
-		
+		private static RecipeBook recipeBook;
 		private static HashMap<String,ProductData> prodDataList;
 		private static HashMap<String,SeedData> seedDataList;
 		private static HashMap<String, TreeMap<Double,Double>> spoilMapList;
@@ -24,6 +24,7 @@ public class MyData {
 		
 		public MyData(){
 			
+			recipeBook = new RecipeBook(App.RECIPE_LIST_PATH);
 			spoilMapList = new HashMap<String, TreeMap<Double,Double>>();
 			spoilMapList.put("default",Tools.buildTreeMap(defaultSpoilList));
 			spoilMapList.put("cereal",Tools.buildTreeMap(cerealSpoilList)); 
@@ -50,12 +51,18 @@ public class MyData {
 				
 				// get the base price, can be numeric in the file or from the recipe book
 				// or a string and get it from the basePriceMap
-				double basePrice;
+				double basePrice = 0;
 				if(NumberUtils.isParsable(strList[0])){
 					basePrice = Double.parseDouble(strList[0]);
 				}else if("rec".equals(strList[0])){
-				
-					basePrice = 2;//TODO get price from recipe book
+					TreeMap<String,TreeMap<String,Recipe>> allRecipes = recipeBook.getAllRecipes();
+					//Only works if the recipe name is exactly the same as its main result name for now
+					for(TreeMap<String,Recipe> recMap:allRecipes.values()){
+						if(recMap.containsKey(name)){
+							basePrice = recMap.get(name).calcBasePrice();
+						}
+					}
+					
 				}else{
 					
 					basePrice = basePriceMap.get(strList[0]);
@@ -65,7 +72,29 @@ public class MyData {
 	
 				prodDataList.put(name, new ProductData(name, categories, basePrice, spoilMap));
 			}
-		
+
+			for(int i=0;i<100;i++){//iterate a large number of times to try sort out any missing basePrice
+				boolean allSet=true;
+				for(ProductData prodData:prodDataList.values()){
+					String name = prodData.getName();
+					if(prodData.getBasePrice()==0){
+						allSet=false;
+						System.out.println("basePrice not set for " + name + "   i = " + i);
+						TreeMap<String,TreeMap<String,Recipe>> allRecipes = recipeBook.getAllRecipes();
+						//Only works if the recipe name is exactly the same as its main result name for now
+						for(TreeMap<String,Recipe> recMap:allRecipes.values()){
+							if(recMap.containsKey(name)){
+								prodData.setBasePrice(recMap.get(name).calcBasePrice());
+							}
+						}
+					}
+				}
+				if(allSet){
+					i=100;//skip the loop if no values are missing
+				}
+			}
+
+
 
 			
 
@@ -82,10 +111,13 @@ public class MyData {
 			}
 		}
 		
+		public static RecipeBook getRecipeBook(){
+			return recipeBook;
+		}
 		
 		public static TreeMap<Double,Double> spoilMapOf(String name){
 			return prodDataList.get(name).getSpoilMap();
-			//return spoilMapList.get(name)==null? spoilMapList.get("default"):spoilMapList.get(name);
+			
 		}
 		
 		/**
@@ -93,7 +125,7 @@ public class MyData {
 		 * @return the SeedData object for the seed
 		 */
 		public static SeedData seedDataOf(String name){
-			System.out.println(seedDataList);
+			
 			return seedDataList.get(name);
 		}
 		
@@ -103,13 +135,18 @@ public class MyData {
 		 */
 		
 		public static ArrayList<String> categoriesOf(String name){
+			//System.out.println(prodDataList.get(name).getName());
 			return prodDataList.get(name).getCategories();
 		}
 		
 		public static double basePriceOf(String name){
-			System.out.println(name);
+			if(prodDataList.get(name)==null){
+				System.out.println("basePrice not set for " + name);
+				return 0;
+			}
 			return prodDataList.get(name).getBasePrice();
 		}
+		
 		//spoil list databases and yieldmaps
 		private double[][] defaultSpoilList = {{1,.001},{10,.004},{20,.01},{30,.03},{40,.1},{50,.6}};
 		private double[][] vegySpoilList = {{1,.001},{10,.004},{20,.01},{30,.03},{40,.1},{50,.6}};

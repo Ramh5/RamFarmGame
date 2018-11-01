@@ -3,5 +3,6 @@ COMMENTLINE format is : name, prodName, growthRate, maxYield, yieldMap, minTemp,
 Semences d'oignons,Oignons,10,300,norm,5,20
 Semences de carottes,Carottes,10,300,norm,5,20
 Grains de blé,Blé,15,400,norm,15,25
+Grains d'orge,Orge,15,400,norm,15,25
 Semences de patates,Patates,10,300,norm,5,20
 Patates,Patates,15,300,norm,5,20

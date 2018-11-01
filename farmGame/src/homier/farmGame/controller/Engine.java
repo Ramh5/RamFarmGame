@@ -750,7 +750,7 @@ public class Engine {
 			            if (item == null) {
 			            	setText(null);
 			            }else {
-			            	setText(item.getName()+" "+item.getIngredientList().keySet().toString());
+			            	setText(item.getName()+" "+item.getIngredients().keySet().toString());
 			            }
 			        }
 				};
@@ -762,9 +762,10 @@ public class Engine {
 					@Override // populate the recipe details label and table in the workshop panel with the selected item
 					public void changed(ObservableValue<? extends Recipe> observable, Recipe oldValue, Recipe newValue) {
 						if(newValue!=null) {
-							labelSelectedRecipe.setText(newValue.getName() + ", " + newValue.getQuantity() + " kg");
+							Entry<String,Double> firstEntry = newValue.getResults().firstEntry();
+							labelSelectedRecipe.setText(firstEntry.getKey() + ", " + firstEntry.getValue() + " kg");
 							ObservableList<String> recipeDetailList = FXCollections.observableArrayList();
-							for(Entry<String,Double> entry: newValue.getIngredientList().entrySet()) {
+							for(Entry<String,Double> entry: newValue.getIngredients().entrySet()) {
 								recipeDetailList.add(entry.getKey() + ", " + entry.getValue() + " kg");
 							}
 							listViewRecipeDetails.getItems().setAll(recipeDetailList);
@@ -779,7 +780,7 @@ public class Engine {
 	}
 	
 	private void setupSeedPane(){
-		seedCatChoiceBox.getItems().setAll("Toutes les semences","Légume","Céréale");
+		seedCatChoiceBox.getItems().setAll("Toutes les semences","Semences de légume","Semences de céréale");
 		seedCatChoiceBox.getSelectionModel().select(0);
 		
 		seedFilterTextField.textProperty().addListener((obs, oldStr, newStr)->{

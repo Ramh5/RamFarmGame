@@ -1,47 +1,69 @@
 package homier.farmGame.model;
 
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 public class Recipe {
-	//TODO implement Recipe with products instead of strings and doubles
-	private String name;
-	//TODO add categories
-	private TreeMap<String,Double> ingredientList;
-	private double quantity;
 	
-	public Recipe(String name,TreeMap<String,Double> ingredientList, double quantity){
+	private String name;
+	private TreeMap<String,Double> ingredients;
+	private TreeMap<String,Double> results;
+	
+	 
+	
+	public Recipe(String name,TreeMap<String,Double> ingredientList, TreeMap<String,Double> results){
 		this.name=name;
-		this.ingredientList=ingredientList;
-		this.quantity=quantity;
+		this.ingredients=ingredientList;
+		this.results=results;
 	}
 	
 /**
  * creates a Recipe with a String of the form "Soupe ING Patates,2,Carottes,2 RES Soupe,3.5",
- * does not allow multiple results recipe yet
- * 
  * @param string
  */
 	public Recipe(String recStr) {
-		this.name=recStr.substring(0, recStr.indexOf("ING ")-1);
+		this.name=recStr.substring(0, recStr.indexOf(" ING "));
 		
-		this.ingredientList = new TreeMap<>();
-		String[] ingrStr = recStr.substring(recStr.indexOf("ING ")+4, recStr.indexOf("RES ")-1).split(",");
+		this.ingredients = new TreeMap<>();
+		String[] ingrStr = recStr.substring(recStr.indexOf("ING ")+4, recStr.indexOf(" RES ")).split(",");
 		for(int i=0;i<ingrStr.length;i=i+2){
-			ingredientList.put(ingrStr[i], Double.valueOf(ingrStr[i+1]));
+			ingredients.put(ingrStr[i], Double.parseDouble(ingrStr[i+1]));
 		}
-		this.quantity = Double.valueOf(recStr.substring(recStr.lastIndexOf(",")+1));
+		this.results = new TreeMap<>();
+		String[] resultStr = recStr.substring(recStr.indexOf("RES ")+4).split(",");
+		for(int i=0;i<resultStr.length;i=i+2){
+			results.put(resultStr[i], Double.parseDouble(resultStr[i+1]));
+		}
+		
 	}
 
 	public String getName() {
 		return name;
 	}
-	public TreeMap<String, Double> getIngredientList() {
-		return ingredientList;
+	public TreeMap<String, Double> getIngredients() {
+		return ingredients;
 	}
 
-	public double getQuantity() {
-		return quantity;
+	public TreeMap<String, Double> getResults() {
+		return results;
 	}
 	
+	/**
+	 * 
+	 * @return the basePrice of the main product result of this recipe 
+	 * given a certain bonus factor (does not take into acount a secondary product yet)
+	 */
+	public double calcBasePrice(){
+		double bp = 0;
+		for(Entry<String,Double> entry:ingredients.entrySet()){
+			if(MyData.basePriceOf(entry.getKey())==0){
+				return 0;
+			}
+			bp += MyData.basePriceOf(entry.getKey())*entry.getValue();
+		}
+		bp *=1.2; // recipe valuation factor
+		bp /= results.firstEntry().getValue();
+		return bp;
+	}
 	
 }

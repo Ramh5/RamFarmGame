@@ -6,12 +6,20 @@ Patates CAT Légume,Semence,Semence de légume DETAILS vegy,vegy
 Oignons CAT Légume DETAILS vegy,vegy
 COMMENTLINE////////////////////////////////////////////////////// Cereales ///////////////////////////////////////////
 Blé CAT Céréale DETAILS cereal,cereal
-Farine de blé CAT Céréale DETAILS rec,cereal
+Orge CAT Céréale DETAILS cereal,cereal
 COMMENTLINE////////////////////////////////////////////////////// Animal ///////////////////////////////////////////
 Oeufs CAT Animal DETAILS 2,animal
 COMMENTLINE////////////////////////////////////////////////////// Semences //////////////////////////////////////////
-Semences de carottes CAT Semence,Semence de légume DETAILS rec,seed
-Semences de patates CAT Semence,Semence de légume DETAILS rec,seed
-Semences d'oignons CAT Semence,Semence de légume DETAILS rec,seed
-Grains de blé CAT Semence,Semence de céréale DETAILS rec,seed
-Grains d'orge CAT Semence,Semence de céréale DETAILS rec,seed
+Semences de carottes CAT Semence,Semences de légume DETAILS rec,seed
+Semences de patates CAT Semence,Semences de légume DETAILS rec,seed
+Semences d'oignons CAT Semence,Semences de légume DETAILS rec,seed
+Grains de blé CAT Semence,Semences de céréale DETAILS rec,seed
+Grains d'orge CAT Semence,Semences de céréale DETAILS rec,seed
+COMMENTLINE////////////////////////////////////////////////////// Cuisine //////////////////////////////////////////
+Omelette CAT Cuisine DETAILS rec,vegy
+Soupe CAT Cuisine DETAILS rec,vegy
+Oeufs brouillés CAT Cuisine DETAILS rec,vegy
+COMMENTLINE////////////////////////////////////////////////////// Silo //////////////////////////////////////////
+Aliment de base CAT Aliment animal DETAILS rec,seed
+COMMENTLINE////////////////////////////////////////////////////// Moulin //////////////////////////////////////////
+Farine de blé CAT Céréale DETAILS rec,cereal

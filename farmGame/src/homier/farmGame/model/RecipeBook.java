@@ -1,10 +1,8 @@
 package homier.farmGame.model;
 
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.TreeMap;
 
 import homier.farmGame.utils.ReadFile;
@@ -14,27 +12,7 @@ public class RecipeBook {
 	
 	private TreeMap<String,TreeMap<String,Recipe>> allRecipes = new TreeMap<String, TreeMap<String,Recipe>>();
 	
-	public RecipeBook(){
-		TreeMap<String, Recipe> recipeList = new TreeMap<String,Recipe>();
-		
-		TreeMap<String,Double> omelette = new TreeMap<String,Double>();
-		omelette.put("Onions", 1.0);
-		omelette.put("Eggs", 2.0);
-		omelette.put("Carrots", 1.0);
-		recipeList.put("Omelette", new Recipe("Omelette", omelette, 3.0));	
-		
-		
-		
-		TreeMap<String,Double> soupe = new TreeMap<String,Double>();
-		soupe.put("Onions", 1.5);
-		soupe.put("Potatoes", 2.2);
-		soupe.put("Carrots", 0.5);
-		soupe.put("Beef", 1.5);
-		recipeList.put("Soupe", new Recipe("Soupe", soupe, 4.5));	
-		
-		allRecipes.put("Kitchen", recipeList);
-		
-	}
+	
 	
 	/**
 	 * Creates a recipeBook using a path to a file containing all recipes for all workshops
@@ -92,6 +70,11 @@ public class RecipeBook {
 	public TreeMap<String,Recipe> getRecipeList(String workShopName){
 		
 		return allRecipes.get(workShopName)!=null?allRecipes.get(workShopName):new TreeMap<String,Recipe>();
+	}
+	
+	
+	public  TreeMap<String,TreeMap<String,Recipe>> getAllRecipes(){
+		return allRecipes;
 	}
 	
 	/**

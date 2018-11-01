@@ -28,29 +28,16 @@ public class Inventory {
 		this();
 		
 		String fileString = ReadFile.getString(path);
-		String[] strList = fileString.split("\r\n");
-		for(String line:strList){
+		String[] lines = fileString.split("\r\n");
+		for(String line:lines){
 			
 			if(line.contains("COMMENTLINE")) continue; //skips a commentline in the file
-			ArrayList<String> categories = new ArrayList<String>(Arrays.asList(line.substring(line.indexOf("CAT")+4, line.indexOf(" DETAILS")).split(",")));
-			String[] prodStr = line.substring(line.indexOf("DETAILS")+8).split(",");
 			
-			Product prod = new Product(categories, prodStr[0], Double.valueOf(prodStr[1]), Integer.valueOf(prodStr[2]), Integer.valueOf(prodStr[3]));
+			String[] strList = line.split(",");
+			String name = strList[0];
+			Product prod = new Product(MyData.categoriesOf(name), name, Double.parseDouble(strList[1]), Integer.parseInt(strList[2]), Integer.parseInt(strList[3]));
 			addProd(prod);
 		}
-		/*
-		 String fileString = ReadFile.getString(path);
-		String[] strList = fileString.split("\r\n");
-		for(String line:strList){
-			
-			if(line.contains("COMMENTLINE")) continue; //skips a commentline in the file
-			ArrayList<String> categories = new ArrayList<String>(Arrays.asList(line.substring(line.indexOf("CAT")+4, line.indexOf(" DETAILS")).split(",")));
-			String[] prodStr = line.substring(line.indexOf("DETAILS")+8).split(",");
-			
-			Product prod = new Product(categories, prodStr[0], Double.valueOf(prodStr[1]), Integer.valueOf(prodStr[2]), Integer.valueOf(prodStr[3]));
-			addProd(prod);
-		}
-		 */
 		
 	}
 	
@@ -157,10 +144,7 @@ public class Inventory {
 		}
 	}
 	
-	public int[] removeList(TreeMap<String, Double> ingredientList, int[] freshReqList) {
-		// TODO Auto-generated method stub
-		return new int[]{0};
-	}
+	
 	
 	public String toString(){
 		String str="Cash : " + money + "$\n\n";

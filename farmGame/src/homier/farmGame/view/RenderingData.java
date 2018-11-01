@@ -51,7 +51,7 @@ public class RenderingData {
 		return tvd;
 	}
 	
-	//TODO implement categories on SeedData, using a categories database?
+	
 	public static TileViewData getTVD(SeedData seed){
 		TileViewData tvd = tvdList.get(seed.getProdName());
 		if(tvd==null){
