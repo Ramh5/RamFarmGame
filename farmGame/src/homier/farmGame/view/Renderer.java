@@ -6,33 +6,36 @@ import homier.farmGame.controller.App;
 import homier.farmGame.controller.Engine;
 import homier.farmGame.model.Employee;
 import homier.farmGame.model.FarmTask;
-import homier.farmGame.model.Inventory;
 import homier.farmGame.model.MyData;
 import homier.farmGame.model.Product;
 import homier.farmGame.model.tile.BuildingTile;
 import homier.farmGame.model.tile.FarmPlot;
+import homier.farmGame.model.tile.ForestTile;
 import homier.farmGame.model.tile.Tile;
 import homier.farmGame.utils.GameClock;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.Labeled;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.TextAlignment;
 
 public class Renderer {
 	
-	
-
+	private Button b1 = new Button("");
+	private Button b2 = new Button("");
+	private Button b3 = new Button("");
+	private Button b4 = new Button("");
+	private GridPane popupGrid = new GridPane();
+	private CustomMenuItem customMI;
+	private ContextMenu popup = new ContextMenu();
 	private final static Image emptyTileImage = new Image("empty_tile.png", 100, 100, true, true);
 
 	
@@ -42,6 +45,25 @@ public class Renderer {
 	public Renderer(ArrayList<Tile> tileList, GridPane grid) {
 		new RenderingData();
 		init(tileList, grid);
+		b1.getStyleClass().add("button-popup");
+		b2.getStyleClass().add("button-popup");
+		b3.getStyleClass().add("button-popup");
+		b4.getStyleClass().add("button-popup");
+		b1.setWrapText(true);
+		b2.setWrapText(true);
+		b3.setWrapText(true);
+		b4.setWrapText(true);
+		b1.setTextAlignment(TextAlignment.CENTER);
+		b2.setTextAlignment(TextAlignment.CENTER);
+		b3.setTextAlignment(TextAlignment.CENTER);
+		b4.setTextAlignment(TextAlignment.CENTER);
+		popupGrid.add(b1, 0, 0);
+		popupGrid.add(b2, 1, 0);
+		popupGrid.add(b3, 0, 1);
+		popupGrid.add(b4, 1, 1);
+		customMI = new CustomMenuItem(popupGrid, true);
+		popup.getItems().setAll(customMI);
+		
 		
 	}
 
@@ -69,22 +91,14 @@ public class Renderer {
 		
 		// create popup menu for the tiles and set to pause when shown and
 		// unpause when hidden only if the game was not manualy paused prior
-		Button b1 = new Button("");
-		Button b2 =	new Button("");
-		Button b3 =	new Button("");
-		Button b4 =	new Button("");
-		b1.getStyleClass().add("button-popup");
-		b2.getStyleClass().add("button-popup");
-		b3.getStyleClass().add("button-popup");
-		b4.getStyleClass().add("button-popup");
-		GridPane popupGrid = new GridPane();
-		popupGrid.add(b1, 0, 0);
-		popupGrid.add(b2, 1, 0);
-		popupGrid.add(b3, 0, 1);
-		popupGrid.add(b4, 1, 1);
-		CustomMenuItem customMI = new CustomMenuItem(popupGrid, true);
-		ContextMenu popup = new ContextMenu();
-		popup.getItems().setAll(customMI);
+		b1.setText("");
+		b2.setText("");
+		b3.setText("");
+		b4.setText("");
+		b1.setDisable(true);
+		b2.setDisable(true);
+		b3.setDisable(true);
+		b4.setDisable(true);
 		
 		popup.setOnHidden(e -> {
 			popupShown = false;
@@ -107,25 +121,53 @@ public class Renderer {
 				case "ForestTile":
 					TileViewData forestTVD = RenderingData.getTVD("forest");
 					newIndexToRender = forestTVD.getIndexToRender((gameClock.getMonth()+1)/3%4);
-					setImageView(i, j, index, newIndexToRender, forestTVD, grid);
-					break;
-				case "BuildingTile":
-					TileViewData houseTVD = RenderingData.getTVD("house");
-					newIndexToRender = houseTVD.getIndexToRender(0);
+					//setImageView(i, j, index, newIndexToRender, forestTVD, grid);
 					if (newIndexToRender != previousMap[index]) {
-						ImageView newImageView = houseTVD.getImageToRender(newIndexToRender);
+						ImageView newImageView = forestTVD.getImageToRender(newIndexToRender);
 						GridPane.setConstraints(newImageView, i, j);
 						grid.getChildren().set(index, newImageView);
 						previousMap[index] = newIndexToRender;
+						// set UI
 
+						newImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+							public void handle(MouseEvent event) {
+								if (event.getButton() == MouseButton.PRIMARY) {
+								
+									double price = ((ForestTile) tile).getPrice();
+									b1.setDisable(price>engine.getGame().getInventory().getMoney());
+									b1.setText("Acheter: " + String.format("%.0f$", price));
+									b1.setOnAction(e -> {	
+										engine.getGame().getInventory().addMoney(-price);
+										tileList.set(index, new FarmPlot());
+										
+									});
+									popup.show(newImageView, event.getScreenX(), event.getScreenY());
+								}
+							}
+						});// eventhandler mouse clicked
+
+					}
+					break;
+				case "BuildingTile":
+					TileViewData buildingTVD = RenderingData.getTVD(((BuildingTile) tile).getWsType());
+					newIndexToRender = buildingTVD.getIndexToRender(0);
+					if (newIndexToRender != previousMap[index]) {
+						ImageView newImageView = buildingTVD.getImageToRender(newIndexToRender);
+						GridPane.setConstraints(newImageView, i, j);
+						grid.getChildren().set(index, newImageView);
+						previousMap[index] = newIndexToRender;
+						engine.setupAvailWS();//update the workshops available
 						// set UI
 						
 						
 						newImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 							public void handle(MouseEvent event) {
 								if (event.getButton() == MouseButton.PRIMARY) {
+									//System.out.println(b1.getText() + " " + b2.getText());
+								
+									b1.setDisable(false);
+									b1.setText("Ateliers");
 									
-									b1.setText("Cuisine");
 									b1.setOnAction(e -> {	
 										engine.getOpenWSbutton().fire();
 									});
@@ -155,9 +197,16 @@ public class Renderer {
 									if (event.getButton() == MouseButton.PRIMARY) {
 										Employee activeEmployee= engine.getActiveEmployee();
 										//System.out.println(engine.getActiveEmployee());
+										double money = engine.getGame().getInventory().getMoney();
 										b1.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<100);
+										b2.setDisable(money<1000);
+										b3.setDisable(money<1000);
+										b4.setDisable(money<1000);
 										b1.setText("Labourer");
-										
+										b2.setText("Construire Silo");
+										b3.setText("Construire Entrepot");
+										b4.setText("Construire Moulin");
+									
 										b1.setOnAction(e -> {
 											FarmTask plow = new FarmTask("Labourer", 100, 30, gameClock.getTotalSeconds());
 											activeEmployee.setTask(plow);
@@ -166,6 +215,21 @@ public class Renderer {
 											plow.startTask(gameClock.getTotalSeconds(), activeEmployee);
 											
 										});//plant button setOnAction event handler
+										b2.setOnAction(e -> {	
+											engine.getGame().getInventory().addMoney(-1000);
+											tileList.set(index, new BuildingTile("silo", 0, 0, 2000));
+											previousMap[index] = -1;
+										});
+										b3.setOnAction(e -> {	
+											engine.getGame().getInventory().addMoney(-1000);
+											tileList.set(index, new BuildingTile("wharehouse", 0, 2000, 0));
+											previousMap[index] = -1;
+										});
+										b4.setOnAction(e -> {	
+											engine.getGame().getInventory().addMoney(-1000);
+											tileList.set(index, new BuildingTile("mill", 0, 0, 500));
+											previousMap[index] = -1;
+										});
 										popup.show(newImageView, event.getScreenX(), event.getScreenY());
 									}//if primary mouse click (ie left mouse click)
 								}//handle() for the ImageView mouse click event
@@ -242,7 +306,7 @@ public class Renderer {
 											activeEmployee.setTask(harvestWheat);
 											
 											harvestWheat.setResult(new Product(MyData.categoriesOf(farmTile.getSeed().getProdName()),
-																	   		farmTile.getSeed().getProdName(),farmTile.getYield(),1,farmTile.getQual()));
+																	   		farmTile.getSeed().getProdName(),farmTile.getYield(),100,farmTile.getQual()));
 											harvestWheat.setNewTile(new FarmPlot(), index);
 											harvestWheat.startTask(gameClock.getTotalSeconds(), activeEmployee);
 											

@@ -30,26 +30,34 @@ public class Game {
 	public Game() {
 		new MyData();
 		inventory = new Inventory();
+		inventory.addMoney(6000);
 		shop = new Shop();
 		workShop = new WorkShop();
 		tileList = new ArrayList<Tile>();
 		gameClock = new GameClock(300, 0);
 		wxForcast = new WxForcast(gameClock);
 		
-		for (int i = 0; i < App.gridColumns*App.gridRows; i++) {
-
-			tileList.add(new ForestTile());
+		//puts foresttiles on all the grid and sets the price in relation to the distance from (4,4) where we put the house
+		for (int i = 0; i < App.gridColumns; i++) {
+			for (int j = 0; j < App.gridRows; j++) {
+				double distance = Math.sqrt((i-4)*(i-4)+(j-4)*(j-4));
+				tileList.add(new ForestTile(1000*Math.round(distance)));
+				
+			}
 		}
+
+				
+		
 		int[] indexList = { 30, 31, 32, 39, 41, 48, 49, 50 };
 		for (int i : indexList) {
 			tileList.set(i, new FarmPlot());
 		}
-		tileList.set(40, new BuildingTile());
+		tileList.set(40, new BuildingTile("house", 0, 500, 500));
 		employees = new Employee[]{new Employee("Ram",0,1000),new Employee("EMPTY",200,900)};
 		inventory.addProd(new Product(MyData.categoriesOf("Blé"),"Blé",12.0220,100,1));
 		inventory.addProd(new Product(MyData.categoriesOf("Carottes"),"Carottes",100,100,80));
 		inventory.addProd(new Product(MyData.categoriesOf("Carottes"),"Carottes",80,80,50));
-		inventory.addProd(new Product(MyData.categoriesOf("Oeufs"),"Oeufs",15,60,50));
+		inventory.addProd(new Product(MyData.categoriesOf("Oeufs"),"Oeufs",100,100,50));
 		inventory.addProd(new Product(MyData.categoriesOf("Oignons"),"Oignons",30,70,50));
 	
 		

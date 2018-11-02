@@ -13,12 +13,15 @@ public class Inventory {
 	private double money;
 	private HashMap<String, ArrayList<Product>> data;
 	private HashMap<String, Product> averageData;
-	
+	private double siloSize;//the silo size of all the buildings combined
+	private double storageSize;//the storage size of all the buildings combined
 	
 	public Inventory(){
 		money = 0;
 		data=new HashMap<>();
 		averageData=new HashMap<>();
+		siloSize=0;
+		storageSize=0;
 	}
 	/**
 	 * Creates a Inventory using a path to a file containing Products
@@ -41,6 +44,37 @@ public class Inventory {
 		
 	}
 	
+	/**
+	 * 
+	 * @return the total quantity of cereals (products that goes in the silo)
+	 */
+	public double getTotalCerealQty(){
+		double totQty=0;
+		for(Entry<String, ArrayList<Product>> entry : data.entrySet()){
+			for(Product prod : entry.getValue()){
+				if(prod.getCategories().contains("Céréale")){
+					totQty+=prod.getQty();
+				}
+			}
+		}
+		return totQty;
+	}
+	
+	/**
+	 * 
+	 * @return the total quantity of all product that goes in wharehouse
+	 */
+	public double getTotalOtherQty(){
+		double totQty=0;
+		for(Entry<String, ArrayList<Product>> entry : data.entrySet()){
+			for(Product prod : entry.getValue()){
+				if(!prod.getCategories().contains("Céréale")){
+					totQty+=prod.getQty();
+				}
+			}
+		}
+		return totQty;
+	}
 
 	/**
 	 * calculates the total quantity and average fresh and quality of each product in the inventory 
@@ -144,11 +178,11 @@ public class Inventory {
 		}
 	}
 	
-	
-	
+
 	public String toString(){
-		String str="Cash : " + money + "$\n\n";
-		
+		String str="Fonds : " + money + "$\n";
+		str+= "Silos: " + String.format("%.1f/", getTotalCerealQty()) + siloSize + "\n";
+		str+= "Entrepôts: " + String.format("%.1f/", getTotalOtherQty()) + storageSize + "\n\n";
 		for(Entry<String, ArrayList<Product>> entry : data.entrySet()){
 			str += entry.getKey();
 			for(Product prod : entry.getValue()){
@@ -205,6 +239,20 @@ public class Inventory {
 	public HashMap<String, ArrayList<Product>> getData(){
 		return data;
 	}
+	
+	public double getSiloSize() {
+		return siloSize;
+	}
+	public void setSiloSize(double siloSize) {
+		this.siloSize = siloSize;
+	}
+	public double getStorageSize() {
+		return storageSize;
+	}
+	public void setStorageSize(double storageSize) {
+		this.storageSize = storageSize;
+	}
+	
 	
 	
 }

@@ -42,7 +42,7 @@ public class WorkShop extends Inventory {
 		ingrToBeUsed.clear();
 		
 		String resultName = recipe.getResults().firstKey();
-		System.out.println(resultName);
+		
 		result=new Product(MyData.categoriesOf(resultName),resultName,0,0,0);
 		
 		//make a map of ratios to determine the limfactor ingredient
@@ -105,7 +105,7 @@ public class WorkShop extends Inventory {
 
 		//use the "list of ingredients to be used" to make the average fresh and qual result for the crafted product 
 		double totIngrQty = 0;
-		int totFresh = 0;
+		double totFresh = 0;
 		int totQual = 0;
 		for(Product prod:ingrToBeUsed) {
 			totIngrQty += prod.getQty();
@@ -114,7 +114,7 @@ public class WorkShop extends Inventory {
 		}
 		//TODO change the implementation to allow multi result recipes
 		result.setQty(recipe.getResults().firstEntry().getValue()*limFactor);
-		result.setFresh((int)Math.round(totFresh/totIngrQty));
+		result.setFresh(totFresh/totIngrQty);
 		result.setQual((int)(Math.round(totQual/totIngrQty)));
 		result.updateSpoil();
 		

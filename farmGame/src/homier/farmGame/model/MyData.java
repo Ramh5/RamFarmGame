@@ -19,7 +19,7 @@ public class MyData {
 		private static HashMap<String,SeedData> seedDataList;
 		private static HashMap<String,Double> basePriceMap;
 		private static HashMap<String,Double> freshDecayMap;
-		public final static TreeMap<Double,Double> spoilMap = Tools.buildTreeMap(new double[][]{{100,.0001},{80,.001},{60,.001},{40,.015},{20,.05},{0,.3}});
+		public final static TreeMap<Double,Double> spoilMap = Tools.buildTreeMap(new double[][]{{100,.0001},{80,.001},{60,.001},{40,.015},{20,.05},{0,.4}});
 		//public final static TreeMap<Double,Double> spoilMap = Tools.buildTreeMap(new double[][]{{100,.001},{80,.004},{60,.01},{40,.03},{20,.1},{0,.6}});
 		public MyData(){
 			

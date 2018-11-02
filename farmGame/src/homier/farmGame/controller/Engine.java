@@ -87,7 +87,7 @@ import javafx.util.Callback;
 public class Engine {
 
 	@FXML private GridPane gameGridPane;
-	@FXML private Button actionWSbutton;//closeShopButton, cancelTransactionButton, buyButton, sellButton;
+	@FXML private Button actionWSbutton, buyButton;//closeShopButton, cancelTransactionButton, sellButton;
 	@FXML private ToggleButton pauseButton, openShopButton, openWSbutton;
 	@FXML private VBox mouseOverPanel;
 	@FXML private TextArea leftTextArea;
@@ -219,8 +219,7 @@ public class Engine {
 		preventColumnReordering(tableBuy);
 		
 		//workShop
-		
-		wsChoiceBox.getItems().setAll(game.getWorkShop().getWSList());
+		setupAvailWS();
 		wsChoiceBox.getSelectionModel().select(0);
 		wsChoiceBox.getSelectionModel().selectedItemProperty().addListener((obs,oldVal,newVal)->{
 			//default selection to fix a bug when loading a new save game
@@ -233,6 +232,36 @@ public class Engine {
 		setupSeedPane();
 		seedDetailTextFlow.getChildren().setAll(new Text("Choisissez une semence"));
 		
+	}
+	/**
+	 * populates the wsChoiceBox with the available workshops by looking through the tileList for buildings
+	 * and updates the storage capacity of the inventory
+	 */
+	public void setupAvailWS(){
+		//String[] wsList = game.getWorkShop().getWSList();//TODO put this workshop list in MyData class
+		ArrayList<String> availWS = new ArrayList<>();
+		Inventory inv = game.getInventory();
+		inv.setSiloSize(0);
+		inv.setStorageSize(0);
+		for(Tile tile:game.getTileList()){
+		
+			if("BuildingTile".equals(tile.getType())){
+				BuildingTile building = ((BuildingTile)tile);
+				inv.setSiloSize(inv.getSiloSize()+building.getSiloSize());
+				inv.setStorageSize(inv.getStorageSize()+building.getStorageSize());
+				switch(((BuildingTile)tile).getWsType()){
+				case "house":
+					availWS.add("Cuisine");
+					break;
+				case "silo":
+					availWS.add("Silo");
+					break;
+				case "mill":
+					availWS.add("Moulin");
+				}
+			}
+		}
+		wsChoiceBox.getItems().setAll(availWS);
 	}
 
 	//-------------- BUTTON HANDELERS---------------------
@@ -378,7 +407,7 @@ public class Engine {
 		if(openShopButton.isSelected()){
 			updateShopPanel();
 			shopPane.toFront();
-			//otherPaused=true; TODO temporary
+			otherPaused=true;
 			pauseButton.setDisable(true);
 		}else{
 			if(!openWSbutton.isSelected()) {
@@ -680,7 +709,7 @@ public class Engine {
 		
 		final PseudoClass topLevelTTVPseudoClass = PseudoClass.getPseudoClass("top-level-treetableview");
 		
-		//------------ WS inventory table------------- //TODO setup spoil colum (negative and red)
+		//------------ WS inventory table------------- //
 		TreeItem<Product> rootInvWS = new TreeItem<>(new Product(null,"empty", 0, 0, 0));
 		tableInvWS.setPlaceholder(new Text("Empty Inventory"));
 		tableInvWS.setRoot(rootInvWS);
@@ -799,7 +828,7 @@ public class Engine {
 		
 		final PseudoClass topLevelTTVPseudoClass = PseudoClass.getPseudoClass("top-level-treetableview");
 		
-		//------------ Seed inventory table------------- //TODO setup spoil colum (negative and red)
+		//------------ Seed inventory table------------- //
 		TreeItem<Product> rootSeed = new TreeItem<>(new Product(null,"empty", 0, 0, 0));
 		tableSeed.setPlaceholder(new Text("Empty Inventory"));
 		tableSeed.setRoot(rootSeed);
@@ -897,6 +926,7 @@ public class Engine {
 		updateTreeItemRoot(tableShop.getRoot(), game.getShop(), game.getShop(),shopFilterTextField.getText(),null);
 		listenForSelection(tableInv.getRoot(), game.getShop().getDataSelling());
 		listenForSelection(tableShop.getRoot(), game.getShop().getDataBuying());
+		
 	}
 	
 	 /**
@@ -1027,8 +1057,7 @@ public class Engine {
 					list.remove(copy);
 					copy.setQty(rootTreeItem.getValue().getQty());
 				}
-				sellTotalLabel.setText(String.format("%.2f", game.getShop().totalPrice(game.getShop().getDataSelling())));
-				buyTotalLabel.setText(String.format("%.2f", game.getShop().totalPrice(game.getShop().getDataBuying())));
+				updateBuySellLabels();
 			});
 		}
 		rootTreeItem.getChildren().forEach(item -> listenForSelection(item,list));
@@ -1095,13 +1124,20 @@ public class Engine {
 				prod.setQty(newValue);
 			}
 			event.getTableView().refresh();
-			//update the transaction labels
-			Shop shop = game.getShop();
-			buyTotalLabel.setText(String.format("%.2f", shop.totalPrice(shop.getDataBuying())));
-			sellTotalLabel.setText(String.format("%.2f", shop.totalPrice(shop.getDataSelling())));
+			
+			updateBuySellLabels();
 			
 			updateWSResultLabel();
 		};
+	}
+	/**
+	 * update the transaction labels and buy button disable if too expensive
+	 */
+	private void updateBuySellLabels(){
+		double buyPrice = game.getShop().totalPrice(game.getShop().getDataBuying());
+		sellTotalLabel.setText(String.format("%.2f", game.getShop().totalPrice(game.getShop().getDataSelling())));
+		buyTotalLabel.setText(String.format("%.2f", buyPrice));
+		buyButton.setDisable(buyPrice>game.getInventory().getMoney());
 	}
 	
 	public static <T> void preventColumnReordering(TableView<T> tableView) {

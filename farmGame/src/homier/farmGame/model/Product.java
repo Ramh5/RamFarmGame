@@ -99,7 +99,7 @@ public class Product{
 	}
 	
 	public void updateSpoil(){
-		setSpoilQty((getQty()*Tools.interpolateMap(MyData.spoilMap,getFresh())));
+		setSpoilQty(MyData.freshDecayOf(getName())*(getQty()*Tools.interpolateMap(MyData.spoilMap,getFresh())));
 	}
 	
 	/**
