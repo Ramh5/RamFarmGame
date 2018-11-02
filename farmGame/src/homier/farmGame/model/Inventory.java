@@ -114,32 +114,32 @@ public class Inventory {
 	public void update() {
 
 		spoilAndAge();
-		calculateSpoil(0);
+		calculateSpoil();
 		clean();
 
 	}
 
 	/**
 	 * calculate and updates the spoilQty property of every product in the list
-	 * @param day, 0 if we want to calculate today spoil, 1 to calculate tomorrow spoil
+	 * 
 	 */
-	private void calculateSpoil(int day){
+	private void calculateSpoil(){
 		for(Entry<String, ArrayList<Product>> entry : data.entrySet()){
 			for(Product prod : entry.getValue()){
-				prod.updateSpoil(day);
+				prod.updateSpoil();
 			}
 		}
 	}
 	
 	/**
 	 * apply the spoil for each item using the previously calculated spoil quantities,
-	 * and adds one day to the freshness
+	 * and decays the freshness for one day
 	 */
 	private void spoilAndAge(){
 		for(Entry<String, ArrayList<Product>> entry : data.entrySet()){
 			for(Product prod : entry.getValue()){
 				prod.setQty(prod.getQty()-prod.getSpoilQty());
-				prod.setFresh(prod.getFresh()+1);
+				prod.setFresh(Math.max(0, prod.getFresh()-MyData.freshDecayOf(prod.getName())));
 			}
 		}
 	}
@@ -152,7 +152,7 @@ public class Inventory {
 		for(Entry<String, ArrayList<Product>> entry : data.entrySet()){
 			str += entry.getKey();
 			for(Product prod : entry.getValue()){
-				str += String.format("| %.1f f%d |", prod.getQty(), prod.getFresh());
+				str += String.format("| %.1f f%.1f |", prod.getQty(), prod.getFresh());
 			}
 			str+= " kg\n";
 		}

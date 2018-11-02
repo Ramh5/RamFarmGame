@@ -1,5 +1,5 @@
 COMMENTLINE format is name of product CAT categories DETAILS baseprice,spoilRate
-BASEPRICE vegy,2,cereal,1
+BASEPRICE vegy,2,cereal,1; FRESHDECAY animal,1.2,vegy,1,cereal,0.5,seed,0.1
 COMMENTLINE////////////////////////////////////////////////////// Légumes ///////////////////////////////////////////
 Carottes CAT Légume DETAILS vegy,vegy
 Patates CAT Légume,Semence,Semence de légume DETAILS vegy,vegy

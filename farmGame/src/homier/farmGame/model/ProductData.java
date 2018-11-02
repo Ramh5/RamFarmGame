@@ -3,19 +3,20 @@ package homier.farmGame.model;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
+
 public class ProductData {
 	private String name;
 	private ArrayList<String> categories;
 	private double basePrice;
-	private TreeMap<Double,Double> spoilMap;
+	private double freshDecay;
 	
 	
 	
-	public ProductData(String name, ArrayList<String> categories, double basePrice, TreeMap<Double, Double> spoilMap) {
+	public ProductData(String name, ArrayList<String> categories, double basePrice, double freshDecay) {
 		this.name = name;
 		this.categories = categories;
 		this.basePrice = basePrice;
-		this.spoilMap = spoilMap;
+		this.freshDecay=freshDecay;
 	}
 	
 	public String getName() {
@@ -33,11 +34,8 @@ public class ProductData {
 	public void setBasePrice(double basePrice) {
 		this.basePrice = basePrice;
 	}
-	public TreeMap<Double, Double> getSpoilMap() {
-		return spoilMap;
-	}
-	public void setSpoilMap(TreeMap<Double, Double> spoilMap) {
-		this.spoilMap = spoilMap;
+	public double getFreshDecay(){
+		return freshDecay;
 	}
 	
 	

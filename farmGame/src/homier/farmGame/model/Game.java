@@ -46,11 +46,11 @@ public class Game {
 		}
 		tileList.set(40, new BuildingTile());
 		employees = new Employee[]{new Employee("Ram",0,1000),new Employee("EMPTY",200,900)};
-		inventory.addProd(new Product(MyData.categoriesOf("Blé"),"Blé",12.0220,5,1));
-		inventory.addProd(new Product(MyData.categoriesOf("Carottes"),"Carottes",15,2,80));
-		inventory.addProd(new Product(MyData.categoriesOf("Carottes"),"Carottes",10,6,50));
-		inventory.addProd(new Product(MyData.categoriesOf("Oeufs"),"Oeufs",15,6,50));
-		inventory.addProd(new Product(MyData.categoriesOf("Oignons"),"Oignons",30,2,50));
+		inventory.addProd(new Product(MyData.categoriesOf("Blé"),"Blé",12.0220,100,1));
+		inventory.addProd(new Product(MyData.categoriesOf("Carottes"),"Carottes",100,100,80));
+		inventory.addProd(new Product(MyData.categoriesOf("Carottes"),"Carottes",80,80,50));
+		inventory.addProd(new Product(MyData.categoriesOf("Oeufs"),"Oeufs",15,60,50));
+		inventory.addProd(new Product(MyData.categoriesOf("Oignons"),"Oignons",30,70,50));
 	
 		
 	}

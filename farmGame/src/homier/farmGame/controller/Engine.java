@@ -378,7 +378,7 @@ public class Engine {
 		if(openShopButton.isSelected()){
 			updateShopPanel();
 			shopPane.toFront();
-			otherPaused=true;
+			//otherPaused=true; TODO temporary
 			pauseButton.setDisable(true);
 		}else{
 			if(!openWSbutton.isSelected()) {
@@ -569,10 +569,12 @@ public class Engine {
 		//Setup the cell values
 		colNameInv.setCellValueFactory(new TreeItemPropertyValueFactory<>("name"));
 		colQtyInv.setCellValueFactory(cellData ->Bindings.format("%.2f", cellData.getValue().getValue().qtyProperty()));
+		colSpoilQtyInv.setCellValueFactory(cellData ->Bindings.format("-%.3f", cellData.getValue().getValue().spoilQtyProperty()));
+		colSpoilQtyInv.setStyle("-fx-text-fill: red");
 		colFreshInv.setCellValueFactory(new TreeItemPropertyValueFactory<>("fresh"));
 		colQualInv.setCellValueFactory(new TreeItemPropertyValueFactory<>("qual"));
 		colPriceInv.setCellValueFactory(cellData ->Bindings.format("%.2f", cellData.getValue().getValue().priceProperty()));
-		colActInv.setCellFactory(column ->{ //TODO show the state of the checkbox depending on the children selected
+		colActInv.setCellFactory(column ->{ 
 			return new CheckBoxTreeTableCell<Product, Boolean>(){
 				@Override
 				public void updateItem(Boolean item, boolean empty) {
@@ -618,6 +620,8 @@ public class Engine {
 		//Setup the cell values
 		colNameShop.setCellValueFactory(new TreeItemPropertyValueFactory<>("name"));
 		colQtyShop.setCellValueFactory(cellData ->Bindings.format("%.2f", cellData.getValue().getValue().qtyProperty()));
+		colSpoilQtyShop.setCellValueFactory(cellData ->Bindings.format("-%.3f", cellData.getValue().getValue().spoilQtyProperty()));
+		colSpoilQtyShop.setStyle("-fx-text-fill: red");
 		colFreshShop.setCellValueFactory(new TreeItemPropertyValueFactory<>("fresh"));
 		colQualShop.setCellValueFactory(new TreeItemPropertyValueFactory<>("qual"));
 		colPriceShop.setCellValueFactory(cellData ->Bindings.format("%.2f", cellData.getValue().getValue().priceProperty()));
