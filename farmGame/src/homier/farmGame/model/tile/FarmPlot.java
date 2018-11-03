@@ -81,7 +81,7 @@ public class FarmPlot extends Tile {
 	
 	public DoubleProperty yieldProperty(){ return yield;}
 
-	
+	public final void setQuality(double quality){this.quality.set(quality);}
 
 	public int getQual() {
 		return (int)quality.get();

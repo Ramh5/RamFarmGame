@@ -46,6 +46,26 @@ public class Shop extends Inventory {
 	}
 	
 	/**
+	 * @param forSilo true if we want the silo storage required or false if other storage
+	 * @return the quantity of storage required by products in the dataBuying list
+	 */
+	public double getBuyingStorageRequired(boolean forSilo){
+		double qty=0;
+		for(Product prod:dataBuying){
+			if(forSilo){
+				if(prod.getCategories().contains("Céréale")){
+					qty+=prod.getQty();
+				}
+			}else{
+				if(!prod.getCategories().contains("Céréale")){
+					qty+=prod.getQty();
+				}
+			}
+		}
+		return qty;
+	}
+	
+	/**
 	 * 
 	 * @param list of product
 	 * @return the total price of a list of product

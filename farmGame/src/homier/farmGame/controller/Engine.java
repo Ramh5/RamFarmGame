@@ -20,6 +20,7 @@ import homier.farmGame.model.Employee;
 import homier.farmGame.model.FarmTask;
 import homier.farmGame.model.Game;
 import homier.farmGame.model.Inventory;
+import homier.farmGame.model.MyData;
 import homier.farmGame.model.Product;
 import homier.farmGame.model.Recipe;
 import homier.farmGame.model.Shop;
@@ -109,7 +110,7 @@ public class Engine {
 	@FXML private TableColumn<Product, Boolean> colActSell, colActBuy, colActIngrWS;
 	@FXML private ListView<String>  listViewRecipeDetails;
 	@FXML private ListView<Recipe> listViewRecipe;
-	@FXML private MenuItem save,load;
+//	@FXML private MenuItem save,load;
 	@FXML private TextFlow seedDetailTextFlow;
 	@FXML private StackPane leftStackPane;
 	@FXML private TextField shopFilterTextField,wsFilterTextField,seedFilterTextField;
@@ -140,6 +141,7 @@ public class Engine {
 		
 		//if it is a new day, update the forecast
 		if(game.getClock().isNewDay()){
+			gameSpeedChoice.getSelectionModel().select(new  Integer(1));//reset the gameSpeed
 			game.getEmployees()[0].energyProperty().set(1000);
 			game.getWxForcast().forcastNewDay();
 			wxToday.setText("Today: "+game.getWxForcast().getToday().toString());
@@ -285,15 +287,21 @@ public class Engine {
 	
 	@FXML 
 	private void seedOKButtonAction(ActionEvent event){
-		FarmTask plantWheat = new FarmTask("Plant", 100, 20, game.getClock().getTotalSeconds());
+		FarmTask plantWheat = new FarmTask("Plant", 100, 20);
 		getActiveEmployee().setTask(plantWheat);
 		plantWheat.setNewTile( new FarmPlot(), (int)seedPane.getUserData());//seedPane userData stores the tile index of the tile it was called from in Renderer.java
 		Product selectedSeed = (Product)tableSeed.getUserData();//tableSeed userData stores the selected seed
 		selectedSeed.setQty(selectedSeed.getQty()-0.5);//remove 0.5 kg when sowing TODO make it dependend on seed data
-		plantWheat.setSow(true, selectedSeed.getName());
+		plantWheat.setSow(true, selectedSeed.getName(),selectedSeed.getQual());
 		plantWheat.startTask(game.getClock().getTotalSeconds(), getActiveEmployee());
 		seedCancelButtonAction(new ActionEvent());
 	}
+	
+	@FXML
+	private void skipDayAction(){
+		gameSpeedChoice.getSelectionModel().select(new Integer(1000));
+	}
+	
 	
 	@FXML 
 	private void saveMenuAction(ActionEvent event){
@@ -450,14 +458,15 @@ public class Engine {
 	}
 	@FXML
 	private void buyButtonAction(ActionEvent event){
-		game.getInventory().addMoney(-Double.valueOf(buyTotalLabel.getText()));
+		game.getInventory().addMoney(-game.getShop().totalPrice(game.getShop().getDataBuying()));
+		//game.getInventory().addMoney(-Double.valueOf(buyTotalLabel.getText()));
 		for(Product prod:tableBuy.getItems() ){
 			game.getInventory().addProd(new Product(prod));
 			prod.setQty(-prod.getQty());
 			game.getShop().addProd(new Product(prod));
 		}
 		tableBuy.getItems().clear();
-		buyTotalLabel.setText(String.format("%.2f", 0.0));
+		buyTotalLabel.setText(String.format("%.2f$", 0.00));
 		
 		updateShopPanel();
 		updateWSPanel();
@@ -467,14 +476,15 @@ public class Engine {
 	
 	@FXML
 	private void sellButtonAction(ActionEvent event){
-		game.getInventory().addMoney(Double.valueOf(sellTotalLabel.getText()));
+		game.getInventory().addMoney(game.getShop().totalPrice(game.getShop().getDataSelling()));
+		//game.getInventory().addMoney(Double.valueOf(sellTotalLabel.getText()));
 		for(Product prod:tableSell.getItems() ){
 			game.getShop().addProd(new Product(prod));
 			prod.setQty(-prod.getQty());
 			game.getInventory().addProd(new Product(prod));
 		}
 		tableSell.getItems().clear();
-		sellTotalLabel.setText(String.format("%.2f", 0.0));
+		sellTotalLabel.setText(String.format("%.2f$", 0.00));
 		updateShopPanel();
 		updateWSPanel();
 		unselectTreeTable(tableInv.getRoot());
@@ -1135,9 +1145,14 @@ public class Engine {
 	 */
 	private void updateBuySellLabels(){
 		double buyPrice = game.getShop().totalPrice(game.getShop().getDataBuying());
-		sellTotalLabel.setText(String.format("%.2f", game.getShop().totalPrice(game.getShop().getDataSelling())));
-		buyTotalLabel.setText(String.format("%.2f", buyPrice));
-		buyButton.setDisable(buyPrice>game.getInventory().getMoney());
+		sellTotalLabel.setText(String.format("%.2f$", game.getShop().totalPrice(game.getShop().getDataSelling())));
+		buyTotalLabel.setText(String.format("%.2f$", buyPrice));
+		
+		//check if enough storage to enable harvest
+		
+		boolean enoughSilo = game.getInventory().enoughStorageFor(game.getShop().getBuyingStorageRequired(true), true);
+		boolean enoughOtherStorage = game.getInventory().enoughStorageFor(game.getShop().getBuyingStorageRequired(false), false);
+		buyButton.setDisable(buyPrice>game.getInventory().getMoney()||!enoughSilo||!enoughOtherStorage);
 	}
 	
 	public static <T> void preventColumnReordering(TableView<T> tableView) {

@@ -75,8 +75,8 @@
                   <Button fx:id="sellButton" layoutX="431.0" layoutY="711.0" mnemonicParsing="false" onAction="#sellButtonAction" text="SELL --&gt;" />
                   <Button fx:id="buyButton" layoutX="520.0" layoutY="775.0" mnemonicParsing="false" onAction="#buyButtonAction" text="&lt;-- BUY" />
                   <Button fx:id="cancelTransactionButton" layoutX="475.0" layoutY="834.0" mnemonicParsing="false" onAction="#cancelTransactionButtonAction" text="CANCEL" />
-                  <Label fx:id="sellTotalLabel" layoutX="431.0" layoutY="741.0" prefHeight="17.0" prefWidth="62.0" text="+ 50.00 $" />
-                  <Label fx:id="buyTotalLabel" layoutX="520.0" layoutY="800.0" prefHeight="17.0" prefWidth="62.0" text="- 70.00 $" />
+                  <Label fx:id="sellTotalLabel" layoutX="431.0" layoutY="741.0" prefHeight="17.0" prefWidth="62.0" text="0.00$" />
+                  <Label fx:id="buyTotalLabel" layoutX="520.0" layoutY="800.0" prefHeight="17.0" prefWidth="62.0" text="0.00$" />
                   <Button fx:id="closeShopButton" cancelButton="true" layoutX="944.0" layoutY="14.0" mnemonicParsing="false" onAction="#closeShopButtonAction" text="Fermer" />
                   <TableView fx:id="tableSell" layoutX="14.0" layoutY="680.0" prefHeight="206.0" prefWidth="410.0">
                     <columns>
@@ -266,9 +266,9 @@
                               <MenuItem fx:id="load" mnemonicParsing="false" onAction="#loadMenuAction" text="Load" />
                         </items>
                       </Menu>
-                      <Menu mnemonicParsing="false" text="Edit">
+                      <Menu mnemonicParsing="false" text="Time">
                         <items>
-                          <MenuItem mnemonicParsing="false" text="Delete" />
+                          <MenuItem fx:id="skipDay" mnemonicParsing="false" onAction="#skipDayAction" text="Fin de la journée" />
                         </items>
                       </Menu>
                       <Menu mnemonicParsing="false" text="Help">

@@ -45,6 +45,32 @@ public class Inventory {
 	}
 	
 	/**
+	 * Check if enough storage space for more products
+	 * 
+	 * @param qty of items we want to add to the storage
+	 * @param forSilo true if items to be put in silo, false for other storage
+	 * @return whether or not we have enough free storage space for more products
+	 */
+	public boolean enoughStorageFor(double qty, boolean forSilo){
+		boolean enoughStorage;
+		if(forSilo){
+			enoughStorage = qty+getTotalCerealQty()<getSiloSize();
+			if(!enoughStorage){
+				System.out.println("Not enough silo capacity");
+			}
+		}else{
+			enoughStorage = qty+getTotalOtherQty()<getStorageSize();
+			if(!enoughStorage){
+				System.out.println("Not enough wharehouse storage capacity");
+			}
+		}
+		
+		return enoughStorage;
+	}
+	
+
+	
+	/**
 	 * 
 	 * @return the total quantity of cereals (products that goes in the silo)
 	 */
@@ -180,9 +206,9 @@ public class Inventory {
 	
 
 	public String toString(){
-		String str="Fonds : " + money + "$\n";
-		str+= "Silos: " + String.format("%.1f/", getTotalCerealQty()) + siloSize + "\n";
-		str+= "Entrepôts: " + String.format("%.1f/", getTotalOtherQty()) + storageSize + "\n\n";
+		String str= String.format("Fonds : %.2f$\n", money);
+		str+= String.format("Silos: %.1f/", getTotalCerealQty()) + siloSize + "\n";
+		str+= String.format("Entrepôts: %.1f/", getTotalOtherQty()) + storageSize + "\n\n";
 		for(Entry<String, ArrayList<Product>> entry : data.entrySet()){
 			str += entry.getKey();
 			for(Product prod : entry.getValue()){

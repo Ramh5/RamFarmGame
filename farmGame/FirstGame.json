@@ -1,0 +1,1204 @@
+{
+  "inventory": {
+    "money": 682.0795465568384,
+    "data": {
+      "Semences de patates": [
+        {
+          "categories": [
+            "Semence",
+            "Semences de légume"
+          ],
+          "name": "Semences de patates",
+          "qty": 0.9976445039263223,
+          "spoilQty": 2.793404610993602E-5,
+          "fresh": 96.00000000000023,
+          "qual": 1,
+          "price": 5.880000000000006,
+          "selected": false
+        }
+      ],
+      "Grains de blé": [
+        {
+          "categories": [
+            "Semence",
+            "Semences de céréale",
+            "Céréale"
+          ],
+          "name": "Grains de blé",
+          "qty": 8.997577308403786,
+          "spoilQty": 1.6690505907088595E-4,
+          "fresh": 98.10000000000011,
+          "qual": 7,
+          "price": 1.2613714285714295,
+          "selected": false
+        }
+      ],
+      "Patates": [
+        {
+          "categories": [
+            "Légume",
+            "Semence",
+            "Semence de légume"
+          ],
+          "name": "Patates",
+          "qty": 0.6962328627644182,
+          "spoilQty": 6.962328627644183E-4,
+          "fresh": 78.0,
+          "qual": 12,
+          "price": 0.9898979591836735,
+          "selected": false
+        },
+        {
+          "categories": [
+            "Légume",
+            "Semence",
+            "Semence de légume"
+          ],
+          "name": "Patates",
+          "qty": 293.72644929293324,
+          "spoilQty": 0.13511416667474932,
+          "fresh": 92.0,
+          "qual": 7,
+          "price": 1.0187755102040816,
+          "selected": false
+        },
+        {
+          "categories": [
+            "Légume",
+            "Semence",
+            "Semence de légume"
+          ],
+          "name": "Patates",
+          "qty": 297.92407784981856,
+          "spoilQty": 0.04319899128822371,
+          "fresh": 99.0,
+          "qual": 10,
+          "price": 1.0863775510204081,
+          "selected": false
+        },
+        {
+          "categories": [
+            "Légume",
+            "Semence",
+            "Semence de légume"
+          ],
+          "name": "Patates",
+          "qty": 596.9565926307489,
+          "spoilQty": 0.08655870593145862,
+          "fresh": 99.0,
+          "qual": 7,
+          "price": 1.0559183673469388,
+          "selected": false
+        }
+      ],
+      "Blé": [
+        {
+          "categories": [
+            "Céréale"
+          ],
+          "name": "Blé",
+          "qty": 754.1539756291048,
+          "spoilQty": 0.10558155658807471,
+          "fresh": 96.0,
+          "qual": 7,
+          "price": 0.52,
+          "selected": false
+        }
+      ]
+    },
+    "averageData": {
+      "Farine de blé": {
+        "categories": [
+          "Moulin"
+        ],
+        "name": "Farine de blé",
+        "qty": 0.4,
+        "spoilQty": 2.0E-5,
+        "fresh": 100.0,
+        "qual": 6,
+        "price": 1.8918367346938774,
+        "selected": false
+      },
+      "Grains de blé": {
+        "categories": [
+          "Semence",
+          "Semences de céréale",
+          "Céréale"
+        ],
+        "name": "Grains de blé",
+        "qty": 8.997577308403786,
+        "spoilQty": 1.6690505907088595E-4,
+        "fresh": 98.0,
+        "qual": 7,
+        "price": 1.260734693877551,
+        "selected": false
+      },
+      "Semences de patates": {
+        "categories": [
+          "Semence",
+          "Semences de légume"
+        ],
+        "name": "Semences de patates",
+        "qty": 0.9976445039263223,
+        "spoilQty": 2.793404610993602E-5,
+        "fresh": 96.0,
+        "qual": 1,
+        "price": 5.879999999999999,
+        "selected": false
+      },
+      "Patates": {
+        "categories": [
+          "Légume",
+          "Semence",
+          "Semence de légume"
+        ],
+        "name": "Patates",
+        "qty": 1189.3033526362651,
+        "spoilQty": 0.26556809675719606,
+        "fresh": 97.0,
+        "qual": 8,
+        "price": 1.0553571428571429,
+        "selected": false
+      },
+      "Blé": {
+        "categories": [
+          "Céréale"
+        ],
+        "name": "Blé",
+        "qty": 754.1539756291048,
+        "spoilQty": 0.10558155658807471,
+        "fresh": 96.0,
+        "qual": 7,
+        "price": 0.52,
+        "selected": false
+      }
+    },
+    "siloSize": 3000.0,
+    "storageSize": 2500.0
+  },
+  "shop": {
+    "freshMod": {
+      "0.0": 0.2,
+      "50.0": 0.75,
+      "100.0": 1.0
+    },
+    "qualMod": {
+      "0.0": 0.0,
+      "1.0": 0.5,
+      "50.0": 0.75,
+      "100.0": 1.0
+    },
+    "dataSelling": [],
+    "dataBuying": [],
+    "money": 0.0,
+    "data": {
+      "Semences de carottes": [
+        {
+          "categories": [
+            "Semence",
+            "Semences de légume"
+          ],
+          "name": "Semences de carottes",
+          "qty": 99.92592669385029,
+          "spoilQty": 0.002797925947427707,
+          "fresh": 96.00000000000023,
+          "qual": 1,
+          "price": 5.880000000000006,
+          "selected": false
+        }
+      ],
+      "Semences d\u0027oignons": [
+        {
+          "categories": [
+            "Semence",
+            "Semences de légume"
+          ],
+          "name": "Semences d\u0027oignons",
+          "qty": 99.92592669385029,
+          "spoilQty": 0.002797925947427707,
+          "fresh": 96.00000000000023,
+          "qual": 1,
+          "price": 5.880000000000006,
+          "selected": false
+        }
+      ],
+      "Grains d\u0027orge": [
+        {
+          "categories": [
+            "Semence",
+            "Semences de céréale",
+            "Céréale"
+          ],
+          "name": "Grains d\u0027orge",
+          "qty": 99.92592669385029,
+          "spoilQty": 0.002797925947427707,
+          "fresh": 96.00000000000023,
+          "qual": 1,
+          "price": 1.1760000000000013,
+          "selected": false
+        }
+      ],
+      "Farine de blé": [
+        {
+          "categories": [
+            "Moulin"
+          ],
+          "name": "Farine de blé",
+          "qty": 0.39971408838583,
+          "spoilQty": 5.595997237401622E-5,
+          "fresh": 96.0,
+          "qual": 6,
+          "price": 1.8539999999999996,
+          "selected": false
+        }
+      ],
+      "Grains de blé": [
+        {
+          "categories": [
+            "Semence",
+            "Semences de céréale",
+            "Céréale"
+          ],
+          "name": "Grains de blé",
+          "qty": 97.92738727523634,
+          "spoilQty": 0.002741966843706519,
+          "fresh": 96.00000000000023,
+          "qual": 1,
+          "price": 1.1760000000000013,
+          "selected": false
+        }
+      ],
+      "Semences de patates": [
+        {
+          "categories": [
+            "Semence",
+            "Semences de légume"
+          ],
+          "name": "Semences de patates",
+          "qty": 95.92870815430334,
+          "spoilQty": 0.0026860038283203964,
+          "fresh": 96.00000000000023,
+          "qual": 1,
+          "price": 5.880000000000006,
+          "selected": false
+        }
+      ],
+      "Patates": [
+        {
+          "categories": [
+            "Légume",
+            "Semence",
+            "Semence de légume"
+          ],
+          "name": "Patates",
+          "qty": 290.9683163206891,
+          "spoilQty": 0.2909683163206891,
+          "fresh": 75.0,
+          "qual": 10,
+          "price": 0.9553571428571428,
+          "selected": false
+        },
+        {
+          "categories": [
+            "Légume",
+            "Semence",
+            "Semence de légume"
+          ],
+          "name": "Patates",
+          "qty": 294.7882008006117,
+          "spoilQty": 0.29478820080061174,
+          "fresh": 76.0,
+          "qual": 10,
+          "price": 0.9608163265306122,
+          "selected": false
+        },
+        {
+          "categories": [
+            "Légume",
+            "Semence",
+            "Semence de légume"
+          ],
+          "name": "Patates",
+          "qty": 290.56862814091136,
+          "spoilQty": 0.2905686281409114,
+          "fresh": 77.0,
+          "qual": 11,
+          "price": 0.9753061224489795,
+          "selected": false
+        },
+        {
+          "categories": [
+            "Légume",
+            "Semence",
+            "Semence de légume"
+          ],
+          "name": "Patates",
+          "qty": 286.41060692370075,
+          "spoilQty": 0.28641060692370074,
+          "fresh": 78.0,
+          "qual": 12,
+          "price": 0.9898979591836735,
+          "selected": false
+        },
+        {
+          "categories": [
+            "Légume",
+            "Semence",
+            "Semence de légume"
+          ],
+          "name": "Patates",
+          "qty": 590.0480294640017,
+          "spoilQty": 0.4307350615087213,
+          "fresh": 86.0,
+          "qual": 7,
+          "price": 0.986938775510204,
+          "selected": false
+        }
+      ],
+      "Blé": [
+        {
+          "categories": [
+            "Céréale"
+          ],
+          "name": "Blé",
+          "qty": 1565.3658565904195,
+          "spoilQty": 0.4304756105623654,
+          "fresh": 90.0,
+          "qual": 7,
+          "price": 0.5040816326530613,
+          "selected": false
+        }
+      ]
+    },
+    "averageData": {
+      "Semences de carottes": {
+        "categories": [
+          "Semence",
+          "Semences de légume"
+        ],
+        "name": "Semences de carottes",
+        "qty": 99.92592669385029,
+        "spoilQty": 0.002797925947427707,
+        "fresh": 96.0,
+        "qual": 1,
+        "price": 5.879999999999999,
+        "selected": false
+      },
+      "Semences d\u0027oignons": {
+        "categories": [
+          "Semence",
+          "Semences de légume"
+        ],
+        "name": "Semences d\u0027oignons",
+        "qty": 99.92592669385029,
+        "spoilQty": 0.002797925947427707,
+        "fresh": 96.0,
+        "qual": 1,
+        "price": 5.879999999999999,
+        "selected": false
+      },
+      "Grains d\u0027orge": {
+        "categories": [
+          "Semence",
+          "Semences de céréale",
+          "Céréale"
+        ],
+        "name": "Grains d\u0027orge",
+        "qty": 99.92592669385029,
+        "spoilQty": 0.002797925947427707,
+        "fresh": 96.0,
+        "qual": 1,
+        "price": 1.176,
+        "selected": false
+      },
+      "Farine de blé": {
+        "categories": [
+          "Moulin"
+        ],
+        "name": "Farine de blé",
+        "qty": 0.39971408838583,
+        "spoilQty": 5.595997237401622E-5,
+        "fresh": 96.0,
+        "qual": 6,
+        "price": 1.8539999999999996,
+        "selected": false
+      },
+      "Grains de blé": {
+        "categories": [
+          "Semence",
+          "Semences de céréale",
+          "Céréale"
+        ],
+        "name": "Grains de blé",
+        "qty": 97.92738727523634,
+        "spoilQty": 0.002741966843706519,
+        "fresh": 96.0,
+        "qual": 1,
+        "price": 1.176,
+        "selected": false
+      },
+      "Semences de patates": {
+        "categories": [
+          "Semence",
+          "Semences de légume"
+        ],
+        "name": "Semences de patates",
+        "qty": 95.92870815430334,
+        "spoilQty": 0.0026860038283203964,
+        "fresh": 96.0,
+        "qual": 1,
+        "price": 5.879999999999999,
+        "selected": false
+      },
+      "Patates": {
+        "categories": [
+          "Légume",
+          "Semence",
+          "Semence de légume"
+        ],
+        "name": "Patates",
+        "qty": 1752.7837816499145,
+        "spoilQty": 1.5934708136946343,
+        "fresh": 80.0,
+        "qual": 9,
+        "price": 0.9734693877551022,
+        "selected": false
+      },
+      "Blé": {
+        "categories": [
+          "Céréale"
+        ],
+        "name": "Blé",
+        "qty": 1565.3658565904195,
+        "spoilQty": 0.4304756105623654,
+        "fresh": 90.0,
+        "qual": 7,
+        "price": 0.5040816326530613,
+        "selected": false
+      }
+    },
+    "siloSize": 0.0,
+    "storageSize": 0.0
+  },
+  "workShop": {
+    "selectedIngr": [],
+    "ingrToBeUsed": [],
+    "result": {
+      "categories": [
+        "Moulin"
+      ],
+      "name": "Farine de blé",
+      "qty": 0.0,
+      "spoilQty": 0.0,
+      "fresh": 0.0,
+      "qual": 0,
+      "price": 0.0,
+      "selected": false
+    },
+    "task": {
+      "name": "Cook",
+      "energyCost": 10.0,
+      "timeCost": 5,
+      "startedAt": 23950.038472383236,
+      "isComplete": true,
+      "result": {
+        "categories": [
+          "Moulin"
+        ],
+        "name": "Farine de blé",
+        "qty": 0.0,
+        "spoilQty": 2.0E-5,
+        "fresh": 100.0,
+        "qual": 6,
+        "price": 1.8918367346938774,
+        "selected": true
+      },
+      "newTile": null,
+      "newTileIndex": 0,
+      "plow": false,
+      "sow": false,
+      "seedName": null
+    },
+    "money": 0.0,
+    "data": {
+      "Semences de patates": [
+        {
+          "categories": [
+            "Semence",
+            "Semences de légume"
+          ],
+          "name": "Semences de patates",
+          "qty": 0.9976445039263223,
+          "spoilQty": 2.793404610993602E-5,
+          "fresh": 96.00000000000023,
+          "qual": 1,
+          "price": 5.880000000000006,
+          "selected": false
+        }
+      ],
+      "Grains de blé": [
+        {
+          "categories": [
+            "Semence",
+            "Semences de céréale",
+            "Céréale"
+          ],
+          "name": "Grains de blé",
+          "qty": 8.997577308403786,
+          "spoilQty": 1.6690505907088595E-4,
+          "fresh": 98.10000000000011,
+          "qual": 7,
+          "price": 1.2613714285714295,
+          "selected": false
+        }
+      ],
+      "Patates": [
+        {
+          "categories": [
+            "Légume",
+            "Semence",
+            "Semence de légume"
+          ],
+          "name": "Patates",
+          "qty": 0.6962328627644182,
+          "spoilQty": 6.962328627644183E-4,
+          "fresh": 78.0,
+          "qual": 12,
+          "price": 0.9898979591836735,
+          "selected": false
+        },
+        {
+          "categories": [
+            "Légume",
+            "Semence",
+            "Semence de légume"
+          ],
+          "name": "Patates",
+          "qty": 293.72644929293324,
+          "spoilQty": 0.13511416667474932,
+          "fresh": 92.0,
+          "qual": 7,
+          "price": 1.0187755102040816,
+          "selected": false
+        },
+        {
+          "categories": [
+            "Légume",
+            "Semence",
+            "Semence de légume"
+          ],
+          "name": "Patates",
+          "qty": 297.92407784981856,
+          "spoilQty": 0.04319899128822371,
+          "fresh": 99.0,
+          "qual": 10,
+          "price": 1.0863775510204081,
+          "selected": false
+        },
+        {
+          "categories": [
+            "Légume",
+            "Semence",
+            "Semence de légume"
+          ],
+          "name": "Patates",
+          "qty": 596.9565926307489,
+          "spoilQty": 0.08655870593145862,
+          "fresh": 99.0,
+          "qual": 7,
+          "price": 1.0559183673469388,
+          "selected": false
+        }
+      ],
+      "Blé": [
+        {
+          "categories": [
+            "Céréale"
+          ],
+          "name": "Blé",
+          "qty": 754.1539756291048,
+          "spoilQty": 0.10558155658807471,
+          "fresh": 96.0,
+          "qual": 7,
+          "price": 0.52,
+          "selected": false
+        }
+      ]
+    },
+    "averageData": {
+      "Grains de blé": {
+        "categories": [
+          "Semence",
+          "Semences de céréale",
+          "Céréale"
+        ],
+        "name": "Grains de blé",
+        "qty": 8.997577308403786,
+        "spoilQty": 1.6690505907088595E-4,
+        "fresh": 98.0,
+        "qual": 7,
+        "price": 1.260734693877551,
+        "selected": false
+      },
+      "Semences de patates": {
+        "categories": [
+          "Semence",
+          "Semences de légume"
+        ],
+        "name": "Semences de patates",
+        "qty": 0.9976445039263223,
+        "spoilQty": 2.793404610993602E-5,
+        "fresh": 96.0,
+        "qual": 1,
+        "price": 5.879999999999999,
+        "selected": false
+      },
+      "Patates": {
+        "categories": [
+          "Légume",
+          "Semence",
+          "Semence de légume"
+        ],
+        "name": "Patates",
+        "qty": 1189.3033526362651,
+        "spoilQty": 0.26556809675719606,
+        "fresh": 97.0,
+        "qual": 8,
+        "price": 1.0553571428571429,
+        "selected": false
+      },
+      "Blé": {
+        "categories": [
+          "Céréale"
+        ],
+        "name": "Blé",
+        "qty": 754.1539756291048,
+        "spoilQty": 0.10558155658807471,
+        "fresh": 96.0,
+        "qual": 7,
+        "price": 0.52,
+        "selected": false
+      }
+    },
+    "siloSize": 0.0,
+    "storageSize": 0.0
+  },
+  "tileList": [
+    {
+      "type": "ForestTile",
+      "price": 6000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 5000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 4000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 4000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 4000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 4000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 4000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 5000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 6000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 5000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 4000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 4000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 3000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 3000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 3000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 4000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 4000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 5000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 4000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 4000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 3000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 2000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 2000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 2000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 3000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 4000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 4000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 4000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 3000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 2000.0
+    },
+    {
+      "type": "FarmPlot",
+      "seed": {
+        "name": "Patates",
+        "prodName": "Patates",
+        "growthRate": 15.0,
+        "maxYield": 300,
+        "yieldMap": {
+          "0.0": 0.0,
+          "50.0": 0.0,
+          "80.0": 30.0,
+          "95.0": 98.0,
+          "100.0": 100.0,
+          "110.0": 98.0,
+          "115.0": 95.0,
+          "130.0": 70.0,
+          "150.0": 0.0,
+          "160.0": 0.0
+        },
+        "tempRange": [
+          5,
+          20
+        ]
+      },
+      "plowed": true,
+      "sown": true,
+      "growth": 27.266377003935393,
+      "yield": 0.0,
+      "quality": 2.817758466954688
+    },
+    {
+      "type": "FarmPlot",
+      "seed": {
+        "name": "Semences de patates",
+        "prodName": "Patates",
+        "growthRate": 10.0,
+        "maxYield": 300,
+        "yieldMap": {
+          "0.0": 0.0,
+          "50.0": 0.0,
+          "80.0": 30.0,
+          "95.0": 98.0,
+          "100.0": 100.0,
+          "110.0": 98.0,
+          "115.0": 95.0,
+          "130.0": 70.0,
+          "150.0": 0.0,
+          "160.0": 0.0
+        },
+        "tempRange": [
+          5,
+          20
+        ]
+      },
+      "plowed": true,
+      "sown": true,
+      "growth": 16.948274892441432,
+      "yield": 0.0,
+      "quality": 2.694827489268115
+    },
+    {
+      "type": "FarmPlot",
+      "seed": null,
+      "plowed": false,
+      "sown": false,
+      "growth": 0.0,
+      "yield": 0.0,
+      "quality": 1.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 2000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 3000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 4000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 4000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 3000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 2000.0
+    },
+    {
+      "type": "FarmPlot",
+      "seed": null,
+      "plowed": false,
+      "sown": false,
+      "growth": 0.0,
+      "yield": 0.0,
+      "quality": 1.0
+    },
+    {
+      "type": "BuildingTile",
+      "wsType": "house",
+      "state": 0,
+      "storageSize": 500.0,
+      "siloSize": 500.0
+    },
+    {
+      "type": "BuildingTile",
+      "wsType": "wharehouse",
+      "state": 0,
+      "storageSize": 2000.0,
+      "siloSize": 0.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 2000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 3000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 4000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 4000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 3000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 2000.0
+    },
+    {
+      "type": "BuildingTile",
+      "wsType": "mill",
+      "state": 0,
+      "storageSize": 0.0,
+      "siloSize": 500.0
+    },
+    {
+      "type": "FarmPlot",
+      "seed": null,
+      "plowed": false,
+      "sown": false,
+      "growth": 0.0,
+      "yield": 0.0,
+      "quality": 1.0
+    },
+    {
+      "type": "BuildingTile",
+      "wsType": "silo",
+      "state": 0,
+      "storageSize": 0.0,
+      "siloSize": 2000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 2000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 3000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 4000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 4000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 4000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 3000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 2000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 2000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 2000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 3000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 4000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 4000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 5000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 4000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 4000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 3000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 3000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 3000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 4000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 4000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 5000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 6000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 5000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 4000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 4000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 4000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 4000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 4000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 5000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 6000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 6000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 6000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 5000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 5000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 5000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 5000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 5000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 6000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 6000.0
+    }
+  ],
+  "wxForcast": {
+    "today": {
+      "temp": 12.0,
+      "sky": "RAIN2",
+      "wind": "WIND2"
+    },
+    "tomorrow": {
+      "temp": 13.0,
+      "sky": "RAIN2",
+      "wind": "WIND1"
+    },
+    "random": {
+      "seed": 2863195463665,
+      "nextNextGaussian": -0.4706945346570984,
+      "haveNextNextGaussian": false
+    },
+    "gameClock": {
+      "secondsInADay": 300,
+      "totalSeconds": 26114.929623511234,
+      "year": 1,
+      "month": 7,
+      "day": 4,
+      "hour": 6,
+      "isNewDay": false
+    }
+  },
+  "employees": [
+    {
+      "name": "Ram",
+      "salary": 0.0,
+      "energy": 1000.0,
+      "isWorking": false,
+      "currentTask": {
+        "name": "Récolter",
+        "energyCost": 100.0,
+        "timeCost": 30,
+        "startedAt": 25876.443486565186,
+        "isComplete": true,
+        "result": {
+          "categories": [
+            "Légume",
+            "Semence",
+            "Semence de légume"
+          ],
+          "name": "Patates",
+          "qty": 299.4121914822121,
+          "spoilQty": 0.0,
+          "fresh": 100.0,
+          "qual": 7,
+          "price": 0.0,
+          "selected": false
+        },
+        "newTile": {
+          "type": "FarmPlot",
+          "seed": null,
+          "plowed": false,
+          "sown": false,
+          "growth": 0.0,
+          "yield": 0.0,
+          "quality": 1.0
+        },
+        "newTileIndex": 32,
+        "plow": false,
+        "sow": false,
+        "seedName": null
+      }
+    }
+  ],
+  "gameClock": {
+    "secondsInADay": 300,
+    "totalSeconds": 26114.929623511234,
+    "year": 1,
+    "month": 7,
+    "day": 4,
+    "hour": 6,
+    "isNewDay": false
+  }
+}

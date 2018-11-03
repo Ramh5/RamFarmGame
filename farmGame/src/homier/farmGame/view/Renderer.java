@@ -6,6 +6,7 @@ import homier.farmGame.controller.App;
 import homier.farmGame.controller.Engine;
 import homier.farmGame.model.Employee;
 import homier.farmGame.model.FarmTask;
+import homier.farmGame.model.Inventory;
 import homier.farmGame.model.MyData;
 import homier.farmGame.model.Product;
 import homier.farmGame.model.tile.BuildingTile;
@@ -85,7 +86,7 @@ public class Renderer {
 		GridPane grid = engine.getGameGridPane();
 		//ToggleButton pauseButton = engine.getPauseButton();
 		VBox mouseOverPanel = engine.getMouseOverPanel();
-		
+		Inventory inventory = engine.getGame().getInventory();
 		GameClock gameClock = engine.getGameClock();
 		
 		
@@ -156,7 +157,7 @@ public class Renderer {
 						GridPane.setConstraints(newImageView, i, j);
 						grid.getChildren().set(index, newImageView);
 						previousMap[index] = newIndexToRender;
-						engine.setupAvailWS();//update the workshops available
+						engine.setupAvailWS();//update the workshops and storage available
 						// set UI
 						
 						
@@ -208,7 +209,7 @@ public class Renderer {
 										b4.setText("Construire Moulin");
 									
 										b1.setOnAction(e -> {
-											FarmTask plow = new FarmTask("Labourer", 100, 30, gameClock.getTotalSeconds());
+											FarmTask plow = new FarmTask("Labourer", 100, 30);
 											activeEmployee.setTask(plow);
 											plow.setPlow(true);
 											plow.setNewTile(farmTile, index);
@@ -296,17 +297,21 @@ public class Renderer {
 								public void handle(MouseEvent event) {
 									if (event.getButton() == MouseButton.PRIMARY) {
 										Employee activeEmployee= engine.getActiveEmployee();
-										b1.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<100);
+										
+										//check if enough storage to enable harvest
+										ArrayList<String> categories = MyData.categoriesOf(farmTile.getSeed().getProdName());
+										double yield = farmTile.getYield();
+										boolean enoughStorage = inventory.enoughStorageFor(yield, categories.contains("Céréale"));
+										b1.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<100||!enoughStorage);
 										b1.setText("Récolter");
 										b1.setOnAction(e -> {
-											
+
 											//create the task, add it to the active employee and create a changelistener to finish the task
 											
-											FarmTask harvestWheat = new FarmTask("Récolter", 100, 30, gameClock.getTotalSeconds());
+											FarmTask harvestWheat = new FarmTask("Récolter", 100, 30);
 											activeEmployee.setTask(harvestWheat);
 											
-											harvestWheat.setResult(new Product(MyData.categoriesOf(farmTile.getSeed().getProdName()),
-																	   		farmTile.getSeed().getProdName(),farmTile.getYield(),100,farmTile.getQual()));
+											harvestWheat.setResult(new Product(categories,farmTile.getSeed().getProdName(),yield,100,farmTile.getQual()));
 											harvestWheat.setNewTile(new FarmPlot(), index);
 											harvestWheat.startTask(gameClock.getTotalSeconds(), activeEmployee);
 											

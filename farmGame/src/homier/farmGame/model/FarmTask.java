@@ -32,11 +32,11 @@ public class FarmTask {
 		isComplete=true;
 	}
 	
-	public FarmTask(String name, double energyCost, int timeCost, double startedAt){
+	public FarmTask(String name, double energyCost, int timeCost){
 		this.name=name;
 		this.energyCost=energyCost;
 		this.timeCost=timeCost;
-		this.startedAt=startedAt;
+		startedAt = 0;
 		isComplete=true;
 	}
 
@@ -134,8 +134,9 @@ public class FarmTask {
 		this.plow=plow;
 	}
 	
-	public void setSow(boolean sow, String seedName){
+	public void setSow(boolean sow, String seedName, int qual){
 		this.seedName=seedName;
+		((FarmPlot) this.newTile).setQuality(qual);
 		this.sow=sow;
 	}
 }
