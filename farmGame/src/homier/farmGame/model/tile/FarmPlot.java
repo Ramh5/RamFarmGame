@@ -4,14 +4,11 @@ package homier.farmGame.model.tile;
 
 
 import homier.farmGame.model.MyData;
-import homier.farmGame.model.ProductData;
 import homier.farmGame.model.SeedData;
 import homier.farmGame.model.Weather;
 import homier.farmGame.utils.Tools;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 
 
 

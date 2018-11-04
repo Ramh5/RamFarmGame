@@ -52,6 +52,7 @@ public class Recipe {
 	 * 
 	 * @return the basePrice of the main product result of this recipe 
 	 * given a certain bonus factor (does not take into acount a secondary product yet)
+	 * returns 0 if base price is not set yet for one of the ingredient
 	 */
 	public double calcBasePrice(){
 		double bp = 0;

@@ -20,7 +20,6 @@ import homier.farmGame.model.Employee;
 import homier.farmGame.model.FarmTask;
 import homier.farmGame.model.Game;
 import homier.farmGame.model.Inventory;
-import homier.farmGame.model.MyData;
 import homier.farmGame.model.Product;
 import homier.farmGame.model.Recipe;
 import homier.farmGame.model.Shop;
@@ -46,15 +45,11 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -82,7 +77,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
-import javafx.stage.StageStyle;
 import javafx.util.Callback;
 
 public class Engine {
@@ -226,6 +220,7 @@ public class Engine {
 		wsChoiceBox.getSelectionModel().selectedItemProperty().addListener((obs,oldVal,newVal)->{
 			//default selection to fix a bug when loading a new save game
 			if(newVal==null)wsChoiceBox.getSelectionModel().select(0);
+			
 			updateWSPanel();
 		});
 		setupWS();
@@ -292,7 +287,7 @@ public class Engine {
 		plantWheat.setNewTile( new FarmPlot(), (int)seedPane.getUserData());//seedPane userData stores the tile index of the tile it was called from in Renderer.java
 		Product selectedSeed = (Product)tableSeed.getUserData();//tableSeed userData stores the selected seed
 		selectedSeed.setQty(selectedSeed.getQty()-0.5);//remove 0.5 kg when sowing TODO make it dependend on seed data
-		plantWheat.setSow(true, selectedSeed.getName(),selectedSeed.getQual());
+		plantWheat.setSow(selectedSeed.getName(),selectedSeed.getQual());
 		plantWheat.startTask(game.getClock().getTotalSeconds(), getActiveEmployee());
 		seedCancelButtonAction(new ActionEvent());
 	}
@@ -799,11 +794,14 @@ public class Engine {
 				};
 			}
 		});
-
+		
+		labelSelectedRecipe.setText(" Select a recipe from the list ");
+		listViewRecipeDetails.getItems().setAll("Details...");
 		listViewRecipe.getSelectionModel().selectedItemProperty().addListener(
 				new ChangeListener<Recipe>() {
 					@Override // populate the recipe details label and table in the workshop panel with the selected item
 					public void changed(ObservableValue<? extends Recipe> observable, Recipe oldValue, Recipe newValue) {
+						
 						if(newValue!=null) {
 							Entry<String,Double> firstEntry = newValue.getResults().firstEntry();
 							labelSelectedRecipe.setText(firstEntry.getKey() + ", " + firstEntry.getValue() + " kg");
@@ -814,6 +812,9 @@ public class Engine {
 							listViewRecipeDetails.getItems().setAll(recipeDetailList);
 							
 							
+						}else{
+							labelSelectedRecipe.setText(" Select a recipe from the list ");
+							listViewRecipeDetails.getItems().setAll("Details...");
 						}
 						updateWSResultLabel();
 					}
@@ -921,9 +922,9 @@ public class Engine {
 		updateTreeItemRoot(tableInvWS.getRoot(), ws, game.getShop(),wsFilterTextField.getText(),null);
 		listenForSelection(tableInvWS.getRoot(), ws.getSelectedIngr());
 		
-		Recipe selectedRecipe = listViewRecipe.getSelectionModel().getSelectedItem();
+		
 		listViewRecipe.getItems().setAll(ws.getRecipeList(wsChoiceBox.getSelectionModel().getSelectedItem()).values());
-		listViewRecipe.getSelectionModel().select(selectedRecipe);
+		
 		updateWSResultLabel();
 		
 	}

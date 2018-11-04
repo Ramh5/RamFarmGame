@@ -15,6 +15,8 @@ public class MyData {
 	
 		
 		private static RecipeBook recipeBook;
+		private static HashMap<String,ArrayList<Double>> wsEnergyFactorMap;//list of energy factor for each tier for each workshop 
+		private static HashMap<String,ArrayList<Double>> wsTimeFactorMap;//list of time factor for each tier for each workshop 
 		private static HashMap<String,ProductData> prodDataList;
 		private static HashMap<String,SeedData> seedDataList;
 		private static HashMap<String,Double> basePriceMap;

@@ -119,7 +119,7 @@ public class WorkShop extends Inventory {
 		result.updateSpoil();
 		
 		//set the energy and time cost for this task
-		task.setEnergyCost(20*limFactor);
+		task.setEnergyCost(20*limFactor);//TODO make it dependent on the workshop
 		task.setTimeCost((int)(10*limFactor));
 		task.setName("Cook");//TODO set the task name depending on the workshop selected
 	}

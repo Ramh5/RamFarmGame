@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import homier.farmGame.model.tile.FarmPlot;
 import homier.farmGame.model.tile.Tile;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 
 public class FarmTask {
 	private String name;
@@ -134,9 +132,9 @@ public class FarmTask {
 		this.plow=plow;
 	}
 	
-	public void setSow(boolean sow, String seedName, int qual){
+	public void setSow(String seedName, int qual){
 		this.seedName=seedName;
 		((FarmPlot) this.newTile).setQuality(qual);
-		this.sow=sow;
+		this.sow=true;
 	}
 }

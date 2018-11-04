@@ -1,0 +1,18 @@
+WORKSHOP Cuisine
+
+REC Omelette ING Oignons,1.5,Oeufs,1 RES Omelette,2
+REC Soupe ING Patates,2,Carottes,2 RES Soupe,3.5
+REC Oeufs brouillés ING Oeufs,2,Oignons,0.5 RES Oeufs brouillés,2
+
+WORKSHOP Silo
+
+REC Aliment de base ING Blé,1 RES Aliment de base,1
+REC Grains de blé ING Blé,1 RES Grains de blé,0.5
+REC Semences de carottes ING Carottes,1 RES Semences de carottes,0.2
+REC Semences de patates ING Patates,1 RES Semences de patates,0.2
+REC Semences d'oignons ING Oignons,1 RES Semences d'oignons,0.2
+REC Grains d'orge ING Orge,1 RES Grains d'orge,0.5
+
+WORKSHOP Moulin
+
+REC Farine de blé ING Grains de blé,1 RES Farine de blé,0.8

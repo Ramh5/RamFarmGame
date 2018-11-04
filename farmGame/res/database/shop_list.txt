@@ -1,6 +1,6 @@
 COMMENTLINE format is  name,qty,fresh,qual
-Semences d'oignons,100,100,1
-Grains de blé,100,100,1
-Grains d'orge,100,100,1
-Semences de patates,100,100,1
-Semences de carottes,100,100,1
+Onion seeds,100,100,1
+Wheat grain,100,100,1
+Barley grain,100,100,1
+Potato seeds,100,100,1
+Carrot seeds,100,100,1
