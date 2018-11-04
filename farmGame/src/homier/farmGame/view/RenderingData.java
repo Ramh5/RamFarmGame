@@ -40,7 +40,7 @@ public class RenderingData {
 		tvdList.put("mill", new TileViewData(new Image[]{images.get("mill1")}, new int[]{0}));
 		tvdList.put("cereal", new TileViewData(new Image[]{images.get("sown1"),images.get("sown2"),
 						images.get("cereal1"),images.get("cereal2")}, new int[]{ 0, 25, 50, 90}));
-		tvdList.put("Patates", new TileViewData(new Image[]{images.get("sown1"),images.get("sown2"),
+		tvdList.put("Potatoes", new TileViewData(new Image[]{images.get("sown1"),images.get("sown2"),
 						images.get("potato1"),images.get("potato2")}, new int[]{ 0, 25, 50, 90}));
 		tvdList.put("forest", new TileViewData(new Image[]{images.get("forest_winter"),images.get("forest_spring"),
 				   		images.get("forest_summer"),images.get("forest_automn")}, new int[]{ 0, 1, 2, 3}));
@@ -61,10 +61,10 @@ public class RenderingData {
 			System.out.println("RenderingData.java : no TileViewData available for : "+ seed.getProdName());
 			
 			ArrayList<String> catList = MyData.categoriesOf(seed.getProdName());
-			if(catList.contains("Céréale")){
+			if(catList.contains("Cereal")){
 				tvd = tvdList.get("cereal");
-			}else if(catList.contains("Légume")){
-				tvd = tvdList.get("Patates");
+			}else if(catList.contains("Vegetable")){
+				tvd = tvdList.get("Potatoes");
 			}else{
 				tvd = tvdList.get("dirt");
 				System.out.println("RenderingData.java : no TileViewData available for : "+ seed.getProdName() + " : used dirt as default");

@@ -1,4 +1,4 @@
-COMMENTLINE format is name of product;categories;baseprice;spoilRate
+COMMENTLINE format is name of product;categories;basePrice;freshDecay
 BASEPRICE vegy;2;cereal;1
 FRESHDECAY animal;1.4;vegy;1;cereal;0.5;seed;0.1
 COMMENTLINE...................................................... Vegetables .....................................................

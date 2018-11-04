@@ -10,13 +10,13 @@ import homier.farmGame.controller.App;
 import homier.farmGame.model.SeedData;
 import homier.farmGame.utils.ReadFile;
 import homier.farmGame.utils.Tools;
+import javafx.util.Pair;
 
 public class MyData {
 	
 		
 		private static RecipeBook recipeBook;
-		private static HashMap<String,ArrayList<Double>> wsEnergyFactorMap;//list of energy factor for each tier for each workshop 
-		private static HashMap<String,ArrayList<Double>> wsTimeFactorMap;//list of time factor for each tier for each workshop 
+		
 		private static HashMap<String,ProductData> prodDataList;
 		private static HashMap<String,SeedData> seedDataList;
 		private static HashMap<String,Double> basePriceMap;
@@ -31,50 +31,58 @@ public class MyData {
 			basePriceMap = new HashMap<>();
 			freshDecayMap = new HashMap<>();
 			String prodDataString = ReadFile.getString(App.PROD_DATA_PATH);
-			for(String line:prodDataString.split("\r\n")){
-				//System.out.println(line);
-				if(line.contains("COMMENTLINE")) continue; //skips a commentline in the file
-				if(line.contains("BASEPRICE")){
-					String[] split = line.replace("BASEPRICE ", "").replace(" FRESHDECAY ", "").split(";");
-					String[] basePriceStrList = split[0].split(",");
-					String[] freshDecayStrList = split[1].split(",");
+			prodDataString=prodDataString.replaceAll("(?m)^COMMENTLINE.*(?:\r?\n)?", "").replace("BASEPRICE ", "").replace("FRESHDECAY ", "");//remove all lines starting with COMMENTLINE 
+			//get and then remove BASEPRICE and FRESHDECAY lines which are now that 2 first lines of the file after removing COMMENTLINEs
+			
+				String basePriceStr = prodDataString.substring(0, prodDataString.indexOf("\r\n")+2);//get and then remove 
+				prodDataString = prodDataString.replaceFirst(basePriceStr, "");
+				String freshDecayStr = prodDataString.substring(0, prodDataString.indexOf("\r\n")+2);
+				prodDataString = prodDataString.replaceFirst(freshDecayStr, "");
+				
+				String[] basePriceStrList = basePriceStr.split(";");
+				String[] freshDecayStrList = freshDecayStr.split(";");
 					
-					for(int i=0;i<basePriceStrList.length;i=i+2){
-						basePriceMap.put(basePriceStrList[i], Double.parseDouble(basePriceStrList[i+1]));
-					}
-					for(int i=0;i<freshDecayStrList.length;i=i+2){
-						//System.out.println(freshDecayStrList[i] + " " + freshDecayStrList[i+1]);
-						freshDecayMap.put(freshDecayStrList[i], Double.parseDouble(freshDecayStrList[i+1]));
-					}
-					//System.out.println("continued");
-					continue;
+				//populate the maps
+				for(int i=0;i<basePriceStrList.length;i=i+2){
+					basePriceMap.put(basePriceStrList[i], Double.parseDouble(basePriceStrList[i+1]));
 				}
-				String name = line.substring(0,line.indexOf("CAT")-1);
-				ArrayList<String> categories = new ArrayList<>(Arrays.asList(line.substring(line.indexOf("CAT")+4, line.indexOf(" DETAILS")).split(",")));
-				String[] strList = line.substring(line.indexOf("DETAILS")+8).split(",");
+				for(int i=0;i<freshDecayStrList.length;i=i+2){
+					//System.out.println(freshDecayStrList[i] + " " + freshDecayStrList[i+1]);
+					freshDecayMap.put(freshDecayStrList[i], Double.parseDouble(freshDecayStrList[i+1]));
+				}
+			
+
+			for(String line:prodDataString.split("\r\n")){
+				String[] prodStrList = line.split(";");
+				
+				ArrayList<String> categories = new ArrayList<>(Arrays.asList(prodStrList[1].split(",")));
 				
 				// get the base price, can be numeric in the file or from the recipe book
 				// or a string and get it from the basePriceMap
 				double basePrice = 0;
-				if(NumberUtils.isParsable(strList[0])){
-					basePrice = Double.parseDouble(strList[0]);
-				}else if("rec".equals(strList[0])){
+				if(NumberUtils.isParsable(prodStrList[2])){
+					basePrice = Double.parseDouble(prodStrList[2]);
+				}else if("rec".equals(prodStrList[2])){
 					TreeMap<String,TreeMap<String,Recipe>> allRecipes = recipeBook.getAllRecipes();
 					//Only works if the recipe name is exactly the same as its main result name for now
 					for(TreeMap<String,Recipe> recMap:allRecipes.values()){
-						if(recMap.containsKey(name)){
-							basePrice = recMap.get(name).calcBasePrice();
+						if(recMap.containsKey(prodStrList[0])){
+							basePrice = recMap.get(prodStrList[0]).calcBasePrice();
 						}
 					}
 					
 				}else{
 					//System.out.println(name);
-					basePrice = basePriceMap.get(strList[0]);
+					basePrice = basePriceMap.get(prodStrList[2]);
 				}
 				
-				double freshDecay = freshDecayMap.get(strList[1]);
-	
-				prodDataList.put(name, new ProductData(name, categories, basePrice, freshDecay));
+				double freshDecay = 0;
+				if(NumberUtils.isParsable(prodStrList[3])){
+					basePrice = Double.parseDouble(prodStrList[3]);
+				}else{
+					freshDecay = freshDecayMap.get(prodStrList[3]);
+				}
+				prodDataList.put(prodStrList[0], new ProductData(prodStrList[0], categories, basePrice, freshDecay));
 			}
 
 			for(int i=0;i<100;i++){//iterate a large number of times to try sort out any missing basePrice

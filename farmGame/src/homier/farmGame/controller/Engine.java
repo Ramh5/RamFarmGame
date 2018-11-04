@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map.Entry;
 
 import org.hildan.fxgson.FxGson;
@@ -20,6 +21,7 @@ import homier.farmGame.model.Employee;
 import homier.farmGame.model.FarmTask;
 import homier.farmGame.model.Game;
 import homier.farmGame.model.Inventory;
+import homier.farmGame.model.MyData;
 import homier.farmGame.model.Product;
 import homier.farmGame.model.Recipe;
 import homier.farmGame.model.Shop;
@@ -232,11 +234,12 @@ public class Engine {
 	}
 	/**
 	 * populates the wsChoiceBox with the available workshops by looking through the tileList for buildings
-	 * and updates the storage capacity of the inventory
+	 * and updates the storage capacity of the inventory, and updates the level of the workshops
 	 */
 	public void setupAvailWS(){
-		//String[] wsList = game.getWorkShop().getWSList();//TODO put this workshop list in MyData class
+		ArrayList<String> wsList = new ArrayList<>(Arrays.asList(MyData.getRecipeBook().getWSList()));
 		ArrayList<String> availWS = new ArrayList<>();
+		int[] wsMaxLevelList = new int[wsList.size()];
 		Inventory inv = game.getInventory();
 		inv.setSiloSize(0);
 		inv.setStorageSize(0);
@@ -246,18 +249,26 @@ public class Engine {
 				BuildingTile building = ((BuildingTile)tile);
 				inv.setSiloSize(inv.getSiloSize()+building.getSiloSize());
 				inv.setStorageSize(inv.getStorageSize()+building.getStorageSize());
-				switch(((BuildingTile)tile).getWsType()){
+				int i;
+				switch(building.getWsType()){
 				case "house":
-					availWS.add("Cuisine");
+					availWS.add("Kitchen");
+					i = wsList.indexOf("Kitchen");
+					wsMaxLevelList[i]=Math.max(wsMaxLevelList[i], building.getLevel());
 					break;
 				case "silo":
 					availWS.add("Silo");
+					i = wsList.indexOf("Silo");
+					wsMaxLevelList[i]=Math.max(wsMaxLevelList[i], building.getLevel());
 					break;
 				case "mill":
-					availWS.add("Moulin");
+					availWS.add("Wind mill");
+					i = wsList.indexOf("Wind mill");
+					wsMaxLevelList[i]=Math.max(wsMaxLevelList[i], building.getLevel());
 				}
 			}
 		}
+		game.getWorkShop().setWsLevelMap(MyData.getRecipeBook().getWSList(), wsMaxLevelList);
 		wsChoiceBox.getItems().setAll(availWS);
 	}
 
@@ -282,7 +293,7 @@ public class Engine {
 	
 	@FXML 
 	private void seedOKButtonAction(ActionEvent event){
-		FarmTask plantWheat = new FarmTask("Plant", 100, 20);
+		FarmTask plantWheat = new FarmTask("Sow", 100, 20);
 		getActiveEmployee().setTask(plantWheat);
 		plantWheat.setNewTile( new FarmPlot(), (int)seedPane.getUserData());//seedPane userData stores the tile index of the tile it was called from in Renderer.java
 		Product selectedSeed = (Product)tableSeed.getUserData();//tableSeed userData stores the selected seed
@@ -824,7 +835,7 @@ public class Engine {
 	}
 	
 	private void setupSeedPane(){
-		seedCatChoiceBox.getItems().setAll("Toutes les semences","Semences de légume","Semences de céréale");
+		seedCatChoiceBox.getItems().setAll("All seeds","Vegetable seed","Cereal seed");
 		seedCatChoiceBox.getSelectionModel().select(0);
 		
 		seedFilterTextField.textProperty().addListener((obs, oldStr, newStr)->{
@@ -885,7 +896,7 @@ public class Engine {
 	public void updateSeedPanel(){
 		ArrayList<String> catFilter = new ArrayList<>();
 		catFilter.add(seedCatChoiceBox.getSelectionModel().getSelectedItem());
-		catFilter.add("Semence seulement");	
+		catFilter.add("Only seeds");	
 		updateTreeItemRoot(tableSeed.getRoot(), game.getInventory(), game.getShop(),seedFilterTextField.getText(),catFilter);
 		listenForSelectionSeedPane(tableSeed.getRoot());
 		
@@ -899,7 +910,7 @@ public class Engine {
 		Product result = game.getWorkShop().getResult();
 		Employee empl = getActiveEmployee();
 		if(listViewRecipe.getSelectionModel().getSelectedItem()!=null) {
-			game.getWorkShop().calculateResult(listViewRecipe.getSelectionModel().getSelectedItem());
+			game.getWorkShop().calculateResult(wsChoiceBox.getSelectionModel().getSelectedItem(), listViewRecipe.getSelectionModel().getSelectedItem());
 			result=game.getWorkShop().getResult();
 			result.updatePrice(game.getShop());			
 		}
@@ -967,7 +978,7 @@ public class Engine {
 			boolean filterOK = false;
 			
 			if(catFilter!=null){
-				if(catFilter.contains("Toutes")||catFilter.contains("Toutes les semences")){
+				if(catFilter.contains("All")||catFilter.contains("All seeds")){
 					filterOK = true;
 					//System.out.println(catFilter +" "+ filterOK);
 				}else{
@@ -981,8 +992,8 @@ public class Engine {
 				}
 
 				//turn filterOK to false if we want only seeds and the product is not a seed
-				if(catFilter.contains("Semence seulement")){
-					if(!(product.getCategories().stream().anyMatch(s -> s.equals("Semence")))){
+				if(catFilter.contains("Only seeds")){
+					if(!(product.getCategories().stream().anyMatch(s -> s.equals("Seed")))){
 						filterOK = false;
 						//System.out.println(" " +catFilter +" Product Name "+ product.getName()+" product.getCategories() "+product.getCategories() + filterOK);
 					}

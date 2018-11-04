@@ -1,57 +1,96 @@
 {
   "inventory": {
-    "money": 0.0,
-    "data": {},
+    "money": 50.66242448979597,
+    "data": {
+      "Wheat grain": [
+        {
+          "categories": [
+            "Seed",
+            "Cereal seed",
+            "Cereal"
+          ],
+          "name": "Wheat grain",
+          "qty": 1.4985855503886032,
+          "spoilQty": 2.7798761959707878E-5,
+          "fresh": 98.10000000000011,
+          "qual": 1,
+          "price": 1.1886000000000008,
+          "selected": false
+        },
+        {
+          "categories": [
+            "Seed",
+            "Cereal seed",
+            "Cereal"
+          ],
+          "name": "Wheat grain",
+          "qty": 50.0,
+          "spoilQty": 5.0E-4,
+          "fresh": 100.0,
+          "qual": 7,
+          "price": 1.273469387755102,
+          "selected": false
+        },
+        {
+          "categories": [
+            "Seed",
+            "Cereal seed",
+            "Cereal"
+          ],
+          "name": "Wheat grain",
+          "qty": 5.0,
+          "spoilQty": 6.125000000000005E-5,
+          "fresh": 99.5,
+          "qual": 7,
+          "price": 1.2702857142857145,
+          "selected": false
+        }
+      ],
+      "Wheat": [
+        {
+          "categories": [
+            "Cereal"
+          ],
+          "name": "Wheat",
+          "qty": 187.626623234641,
+          "spoilQty": 0.01210463067312177,
+          "fresh": 99.5,
+          "qual": 7,
+          "price": 0.5292857142857144,
+          "selected": false
+        }
+      ]
+    },
     "averageData": {
-      "Oeufs": {
+      "Wheat grain": {
         "categories": [
-          "Animal"
+          "Seed",
+          "Cereal seed",
+          "Cereal"
         ],
-        "name": "Oeufs",
-        "qty": 0.16918040015171887,
-        "spoilQty": 0.07105576806372214,
-        "fresh": 7.0,
-        "qual": 50,
-        "price": 0.41550000000000004,
+        "name": "Wheat grain",
+        "qty": 51.498585550388604,
+        "spoilQty": 5.277987619597079E-4,
+        "fresh": 100.0,
+        "qual": 7,
+        "price": 1.273469387755102,
         "selected": false
       },
-      "Oignons": {
+      "Wheat": {
         "categories": [
-          "Légume"
+          "Cereal"
         ],
-        "name": "Oignons",
-        "qty": 0.10821175222861865,
-        "spoilQty": 0.04598999469716292,
-        "fresh": 7.0,
-        "qual": 50,
-        "price": 0.41550000000000004,
-        "selected": false
-      },
-      "Blé": {
-        "categories": [
-          "Céréale"
-        ],
-        "name": "Blé",
-        "qty": 0.11149346395409436,
-        "spoilQty": 0.019511356191966506,
-        "fresh": 17.0,
-        "qual": 1,
-        "price": 0.1935,
-        "selected": false
-      },
-      "Carottes": {
-        "categories": [
-          "Légume"
-        ],
-        "name": "Carottes",
-        "qty": 0.10237091411209887,
-        "spoilQty": 0.04862618420324696,
-        "fresh": 5.0,
-        "qual": 80,
-        "price": 0.459,
+        "name": "Wheat",
+        "qty": 187.626623234641,
+        "spoilQty": 0.01210463067312177,
+        "fresh": 100.0,
+        "qual": 7,
+        "price": 0.5306122448979592,
         "selected": false
       }
-    }
+    },
+    "siloSize": 2500.0,
+    "storageSize": 500.0
   },
   "shop": {
     "freshMod": {
@@ -68,83 +107,193 @@
     "dataSelling": [],
     "dataBuying": [],
     "money": 0.0,
-    "data": {},
+    "data": {
+      "Barley grain": [
+        {
+          "categories": [
+            "Seed",
+            "Cereal seed",
+            "Cereal"
+          ],
+          "name": "Barley grain",
+          "qty": 99.97430811262525,
+          "spoilQty": 0.0018545234154891507,
+          "fresh": 98.10000000000011,
+          "qual": 1,
+          "price": 1.1886000000000008,
+          "selected": false
+        }
+      ],
+      "Potato seeds": [
+        {
+          "categories": [
+            "Seed",
+            "Vegetable seed"
+          ],
+          "name": "Potato seeds",
+          "qty": 99.97430811262525,
+          "spoilQty": 0.0018545234154891507,
+          "fresh": 98.10000000000011,
+          "qual": 1,
+          "price": 5.943000000000003,
+          "selected": false
+        }
+      ],
+      "Onion seeds": [
+        {
+          "categories": [
+            "Seed",
+            "Vegetable seed"
+          ],
+          "name": "Onion seeds",
+          "qty": 99.97430811262525,
+          "spoilQty": 0.0018545234154891507,
+          "fresh": 98.10000000000011,
+          "qual": 1,
+          "price": 5.943000000000003,
+          "selected": false
+        }
+      ],
+      "Wheat grain": [
+        {
+          "categories": [
+            "Seed",
+            "Cereal seed",
+            "Cereal"
+          ],
+          "name": "Wheat grain",
+          "qty": 97.974801055524,
+          "spoilQty": 0.0018174325595799235,
+          "fresh": 98.10000000000011,
+          "qual": 1,
+          "price": 1.1886000000000008,
+          "selected": false
+        }
+      ],
+      "Carrot seeds": [
+        {
+          "categories": [
+            "Seed",
+            "Vegetable seed"
+          ],
+          "name": "Carrot seeds",
+          "qty": 99.97430811262525,
+          "spoilQty": 0.0018545234154891507,
+          "fresh": 98.10000000000011,
+          "qual": 1,
+          "price": 5.943000000000003,
+          "selected": false
+        }
+      ],
+      "Wheat": [
+        {
+          "categories": [
+            "Cereal"
+          ],
+          "name": "Wheat",
+          "qty": 100.0,
+          "spoilQty": 0.0061250000000000054,
+          "fresh": 99.5,
+          "qual": 7,
+          "price": 0.5292857142857144,
+          "selected": false
+        }
+      ]
+    },
     "averageData": {
-      "Semences de carottes": {
+      "Barley grain": {
         "categories": [
-          "Semence",
-          "Semences de légume"
+          "Seed",
+          "Cereal seed",
+          "Cereal"
         ],
-        "name": "Semences de carottes",
-        "qty": 0.1003746729817551,
-        "spoilQty": 0.0013450206179553236,
-        "fresh": 57.0,
+        "name": "Barley grain",
+        "qty": 99.97430811262525,
+        "spoilQty": 0.0018545234154891507,
+        "fresh": 98.0,
         "qual": 1,
-        "price": 4.709999999999999,
+        "price": 1.188,
         "selected": false
       },
-      "Semences d\u0027oignons": {
+      "Potato seeds": {
         "categories": [
-          "Semence",
-          "Semences de légume"
+          "Seed",
+          "Vegetable seed"
         ],
-        "name": "Semences d\u0027oignons",
-        "qty": 0.1003746729817551,
-        "spoilQty": 0.0013450206179553236,
-        "fresh": 57.0,
+        "name": "Potato seeds",
+        "qty": 99.97430811262525,
+        "spoilQty": 0.0018545234154891507,
+        "fresh": 98.0,
         "qual": 1,
-        "price": 4.709999999999999,
+        "price": 5.9399999999999995,
         "selected": false
       },
-      "Grains d\u0027orge": {
+      "Onion seeds": {
         "categories": [
-          "Semence",
-          "Semences de céréale"
+          "Seed",
+          "Vegetable seed"
         ],
-        "name": "Grains d\u0027orge",
-        "qty": 0.1003746729817551,
-        "spoilQty": 0.0013450206179553236,
-        "fresh": 57.0,
+        "name": "Onion seeds",
+        "qty": 99.97430811262525,
+        "spoilQty": 0.0018545234154891507,
+        "fresh": 98.0,
         "qual": 1,
-        "price": 0.942,
+        "price": 5.9399999999999995,
         "selected": false
       },
-      "Grains de blé": {
+      "Wheat grain": {
         "categories": [
-          "Semence",
-          "Semences de céréale"
+          "Seed",
+          "Cereal seed",
+          "Cereal"
         ],
-        "name": "Grains de blé",
-        "qty": 0.1003746729817551,
-        "spoilQty": 0.0013450206179553236,
-        "fresh": 57.0,
+        "name": "Wheat grain",
+        "qty": 97.974801055524,
+        "spoilQty": 0.0018174325595799235,
+        "fresh": 98.0,
         "qual": 1,
-        "price": 0.942,
+        "price": 1.188,
         "selected": false
       },
-      "Semences de patates": {
+      "Carrot seeds": {
         "categories": [
-          "Semence",
-          "Semences de légume"
+          "Seed",
+          "Vegetable seed"
         ],
-        "name": "Semences de patates",
-        "qty": 0.1003746729817551,
-        "spoilQty": 0.0013450206179553236,
-        "fresh": 57.0,
+        "name": "Carrot seeds",
+        "qty": 99.97430811262525,
+        "spoilQty": 0.0018545234154891507,
+        "fresh": 98.0,
         "qual": 1,
-        "price": 4.709999999999999,
+        "price": 5.9399999999999995,
+        "selected": false
+      },
+      "Wheat": {
+        "categories": [
+          "Cereal"
+        ],
+        "name": "Wheat",
+        "qty": 100.0,
+        "spoilQty": 0.0061250000000000054,
+        "fresh": 100.0,
+        "qual": 7,
+        "price": 0.5306122448979592,
         "selected": false
       }
-    }
+    },
+    "siloSize": 0.0,
+    "storageSize": 0.0
   },
   "workShop": {
     "selectedIngr": [],
     "ingrToBeUsed": [],
     "result": {
       "categories": [
-        "default"
+        "Seed",
+        "Cereal seed",
+        "Cereal"
       ],
-      "name": "EMPTY",
+      "name": "Wheat grain",
       "qty": 0.0,
       "spoilQty": 0.0,
       "fresh": 0.0,
@@ -153,161 +302,241 @@
       "selected": false
     },
     "task": {
-      "name": "-----",
-      "energyCost": 0.0,
-      "timeCost": 0,
-      "startedAt": 0.0,
+      "name": "Crafting Wheat grain in the Silo",
+      "energyCost": 10.0,
+      "timeCost": 10,
+      "startedAt": 19817.10820053398,
       "isComplete": true,
-      "result": null,
+      "result": {
+        "categories": [
+          "Seed",
+          "Cereal seed",
+          "Cereal"
+        ],
+        "name": "Wheat grain",
+        "qty": 5.0,
+        "spoilQty": 6.125000000000005E-5,
+        "fresh": 99.5,
+        "qual": 7,
+        "price": 1.2702857142857145,
+        "selected": false
+      },
       "newTile": null,
       "newTileIndex": 0,
       "plow": false,
       "sow": false,
       "seedName": null
     },
+    "wsLevelMap": {
+      "Wind Mill": 0,
+      "Kitchen": 0,
+      "Silo": 0
+    },
     "money": 0.0,
-    "data": {},
+    "data": {
+      "Wheat grain": [
+        {
+          "categories": [
+            "Seed",
+            "Cereal seed",
+            "Cereal"
+          ],
+          "name": "Wheat grain",
+          "qty": 1.4985855503886032,
+          "spoilQty": 2.7798761959707878E-5,
+          "fresh": 98.10000000000011,
+          "qual": 1,
+          "price": 1.1886000000000008,
+          "selected": false
+        },
+        {
+          "categories": [
+            "Seed",
+            "Cereal seed",
+            "Cereal"
+          ],
+          "name": "Wheat grain",
+          "qty": 50.0,
+          "spoilQty": 5.0E-4,
+          "fresh": 100.0,
+          "qual": 7,
+          "price": 1.273469387755102,
+          "selected": false
+        }
+      ],
+      "Wheat": [
+        {
+          "categories": [
+            "Cereal"
+          ],
+          "name": "Wheat",
+          "qty": 187.626623234641,
+          "spoilQty": 0.01210463067312177,
+          "fresh": 99.5,
+          "qual": 7,
+          "price": 0.5292857142857144,
+          "selected": false
+        }
+      ]
+    },
     "averageData": {
-      "Oeufs": {
+      "Wheat grain": {
         "categories": [
-          "Animal"
+          "Seed",
+          "Cereal seed",
+          "Cereal"
         ],
-        "name": "Oeufs",
-        "qty": 0.16918040015171887,
-        "spoilQty": 0.07105576806372214,
-        "fresh": 7.0,
-        "qual": 50,
-        "price": 0.41550000000000004,
+        "name": "Wheat grain",
+        "qty": 51.498585550388604,
+        "spoilQty": 5.277987619597079E-4,
+        "fresh": 100.0,
+        "qual": 7,
+        "price": 1.273469387755102,
         "selected": false
       },
-      "Oignons": {
+      "Wheat": {
         "categories": [
-          "Légume"
+          "Cereal"
         ],
-        "name": "Oignons",
-        "qty": 0.10821175222861865,
-        "spoilQty": 0.04598999469716292,
-        "fresh": 7.0,
-        "qual": 50,
-        "price": 0.41550000000000004,
-        "selected": false
-      },
-      "Blé": {
-        "categories": [
-          "Céréale"
-        ],
-        "name": "Blé",
-        "qty": 0.11149346395409436,
-        "spoilQty": 0.019511356191966506,
-        "fresh": 17.0,
-        "qual": 1,
-        "price": 0.1935,
-        "selected": false
-      },
-      "Carottes": {
-        "categories": [
-          "Légume"
-        ],
-        "name": "Carottes",
-        "qty": 0.10237091411209887,
-        "spoilQty": 0.04862618420324696,
-        "fresh": 5.0,
-        "qual": 80,
-        "price": 0.459,
+        "name": "Wheat",
+        "qty": 187.626623234641,
+        "spoilQty": 0.01210463067312177,
+        "fresh": 100.0,
+        "qual": 7,
+        "price": 0.5306122448979592,
         "selected": false
       }
-    }
+    },
+    "siloSize": 0.0,
+    "storageSize": 0.0
   },
   "tileList": [
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 6000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 5000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 4000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 4000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 4000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 4000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 4000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 5000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 6000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 5000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 4000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 4000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 3000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 3000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 3000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 4000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 4000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 5000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 4000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 4000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 3000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 2000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 2000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 2000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 3000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 4000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 4000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 4000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 3000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 2000.0
+    },
+    {
+      "type": "BuildingTile",
+      "wsType": "silo",
+      "level": 0,
+      "storageSize": 0.0,
+      "siloSize": 2000.0
     },
     {
       "type": "FarmPlot",
@@ -328,31 +557,28 @@
       "quality": 1.0
     },
     {
-      "type": "FarmPlot",
-      "seed": null,
-      "plowed": false,
-      "sown": false,
-      "growth": 0.0,
-      "yield": 0.0,
-      "quality": 1.0
+      "type": "ForestTile",
+      "price": 2000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 3000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 4000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 4000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 3000.0
     },
     {
-      "type": "ForestTile"
-    },
-    {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 2000.0
     },
     {
       "type": "FarmPlot",
@@ -365,7 +591,10 @@
     },
     {
       "type": "BuildingTile",
-      "state": 0
+      "wsType": "house",
+      "level": 0,
+      "storageSize": 500.0,
+      "siloSize": 500.0
     },
     {
       "type": "FarmPlot",
@@ -377,31 +606,28 @@
       "quality": 1.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 2000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 3000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 4000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 4000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 3000.0
     },
     {
-      "type": "ForestTile"
-    },
-    {
-      "type": "FarmPlot",
-      "seed": null,
-      "plowed": false,
-      "sown": false,
-      "growth": 0.0,
-      "yield": 0.0,
-      "quality": 1.0
+      "type": "ForestTile",
+      "price": 2000.0
     },
     {
       "type": "FarmPlot",
@@ -422,146 +648,194 @@
       "quality": 1.0
     },
     {
-      "type": "ForestTile"
+      "type": "FarmPlot",
+      "seed": null,
+      "plowed": false,
+      "sown": false,
+      "growth": 0.0,
+      "yield": 0.0,
+      "quality": 1.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 2000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 3000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 4000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 4000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 4000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 3000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 2000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 2000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 2000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 3000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 4000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 4000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 5000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 4000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 4000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 3000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 3000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 3000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 4000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 4000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 5000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 6000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 5000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 4000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 4000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 4000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 4000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 4000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 5000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 6000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 6000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 6000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 5000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 5000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 5000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 5000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 5000.0
     },
     {
-      "type": "ForestTile"
+      "type": "ForestTile",
+      "price": 6000.0
+    },
+    {
+      "type": "ForestTile",
+      "price": 6000.0
     }
   ],
   "wxForcast": {
     "today": {
-      "temp": 10.0,
-      "sky": "RAIN1",
-      "wind": "WIND1"
+      "temp": 15.0,
+      "sky": "RAIN2",
+      "wind": "WIND2"
     },
     "tomorrow": {
-      "temp": 20.0,
-      "sky": "RAIN1",
+      "temp": 14.0,
+      "sky": "RAIN2",
       "wind": "WIND0"
     },
     "random": {
-      "seed": 804350082049,
-      "nextNextGaussian": -0.8272035173572673,
+      "seed": 250657221866322,
+      "nextNextGaussian": 0.908740684985641,
       "haveNextNextGaussian": true
     },
     "gameClock": {
       "secondsInADay": 300,
-      "totalSeconds": 148925.96847291032,
-      "year": 4,
+      "totalSeconds": 19844.85185172502,
+      "year": 1,
       "month": 5,
-      "day": 5,
-      "hour": 11,
+      "day": 7,
+      "hour": 8,
       "isNewDay": false
     }
   },
@@ -569,34 +843,28 @@
     {
       "name": "Ram",
       "salary": 0.0,
-      "energy": 1000.0,
+      "energy": 990.0,
       "isWorking": false,
       "currentTask": {
-        "name": "-----",
-        "energyCost": 0.0,
-        "timeCost": 0,
-        "startedAt": 0.0,
+        "name": "Crafting Wheat grain in the Silo",
+        "energyCost": 10.0,
+        "timeCost": 10,
+        "startedAt": 19817.10820053398,
         "isComplete": true,
-        "result": null,
-        "newTile": null,
-        "newTileIndex": 0,
-        "plow": false,
-        "sow": false,
-        "seedName": null
-      }
-    },
-    {
-      "name": "EMPTY",
-      "salary": 0.0,
-      "energy": 900.0,
-      "isWorking": false,
-      "currentTask": {
-        "name": "-----",
-        "energyCost": 0.0,
-        "timeCost": 0,
-        "startedAt": 0.0,
-        "isComplete": true,
-        "result": null,
+        "result": {
+          "categories": [
+            "Seed",
+            "Cereal seed",
+            "Cereal"
+          ],
+          "name": "Wheat grain",
+          "qty": 5.0,
+          "spoilQty": 6.125000000000005E-5,
+          "fresh": 99.5,
+          "qual": 7,
+          "price": 1.2702857142857145,
+          "selected": false
+        },
         "newTile": null,
         "newTileIndex": 0,
         "plow": false,
@@ -607,11 +875,11 @@
   ],
   "gameClock": {
     "secondsInADay": 300,
-    "totalSeconds": 148925.96847291032,
-    "year": 4,
+    "totalSeconds": 19844.85185172502,
+    "year": 1,
     "month": 5,
-    "day": 5,
-    "hour": 11,
+    "day": 7,
+    "hour": 8,
     "isNewDay": false
   }
 }

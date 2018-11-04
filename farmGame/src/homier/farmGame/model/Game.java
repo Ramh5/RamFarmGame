@@ -28,7 +28,7 @@ public class Game {
 	
 	
 	public Game() {
-		new MyData();
+
 		inventory = new Inventory();
 		inventory.addMoney(1000);
 		shop = new Shop();

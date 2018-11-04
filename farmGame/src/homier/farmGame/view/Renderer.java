@@ -136,7 +136,7 @@ public class Renderer {
 								
 									double price = ((ForestTile) tile).getPrice();
 									b1.setDisable(price>engine.getGame().getInventory().getMoney());
-									b1.setText("Acheter: " + String.format("%.0f$", price));
+									b1.setText("Buy land: " + String.format("%.0f$", price));
 									b1.setOnAction(e -> {	
 										engine.getGame().getInventory().addMoney(-price);
 										tileList.set(index, new FarmPlot());
@@ -167,7 +167,7 @@ public class Renderer {
 									//System.out.println(b1.getText() + " " + b2.getText());
 								
 									b1.setDisable(false);
-									b1.setText("Ateliers");
+									b1.setText("Workshops");
 									
 									b1.setOnAction(e -> {	
 										engine.getOpenWSbutton().fire();
@@ -203,13 +203,13 @@ public class Renderer {
 										b2.setDisable(money<1000);
 										b3.setDisable(money<1000);
 										b4.setDisable(money<1000);
-										b1.setText("Labourer");
-										b2.setText("Construire Silo");
-										b3.setText("Construire Entrepot");
-										b4.setText("Construire Moulin");
+										b1.setText("Plow");
+										b2.setText("Construct Silo");
+										b3.setText("Construct Wharehouse");
+										b4.setText("Construct Wind Mill");
 									
 										b1.setOnAction(e -> {
-											FarmTask plow = new FarmTask("Labourer", 100, 30);
+											FarmTask plow = new FarmTask("Plow", 100, 20);
 											activeEmployee.setTask(plow);
 											plow.setPlow(true);
 											plow.setNewTile(farmTile, index);
@@ -255,7 +255,7 @@ public class Renderer {
 										Employee activeEmployee= engine.getActiveEmployee();
 										//System.out.println(engine.getActiveEmployee());
 										b1.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<100);
-										b1.setText("Semer");
+										b1.setText("Sow");
 										
 										b1.setOnAction(e -> {
 											
@@ -301,14 +301,14 @@ public class Renderer {
 										//check if enough storage to enable harvest
 										ArrayList<String> categories = MyData.categoriesOf(farmTile.getSeed().getProdName());
 										double yield = farmTile.getYield();
-										boolean enoughStorage = inventory.enoughStorageFor(yield, categories.contains("Céréale"));
+										boolean enoughStorage = inventory.enoughStorageFor(yield, categories.contains("Cereal"));
 										b1.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<100||!enoughStorage);
-										b1.setText("Récolter");
+										b1.setText("Harvest");
 										b1.setOnAction(e -> {
 
 											//create the task, add it to the active employee and create a changelistener to finish the task
 											
-											FarmTask harvestWheat = new FarmTask("Récolter", 100, 30);
+											FarmTask harvestWheat = new FarmTask("Harvest", 100, 20);
 											activeEmployee.setTask(harvestWheat);
 											
 											harvestWheat.setResult(new Product(categories,farmTile.getSeed().getProdName(),yield,100,farmTile.getQual()));

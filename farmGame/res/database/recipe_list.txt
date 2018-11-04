@@ -4,7 +4,7 @@ ENERGYCOST silo1;1;kitchen1;10;mill1;2
 TIMECOST silo1;1;kitchen1;10;mill1;2
 WORKSHOP Kitchen;1,0.8;1,0.8
 Omelette;kitchen1;kitchen1;Onions,1.5,Eggs,1;Omelette,2
-Soup;kitchen1;kitchen1;Potatos,2,Carrots,2;Soup,3.5
+Soup;kitchen1;kitchen1;Potatoes,2,Carrots,2;Soup,3.5
 Scrambled eggs;kitchen1;kitchen1;Eggs,2,Onions,0.5;Scrambled eggs,2
 WORKSHOP Silo;1,0.8;1,0.8
 Wheat grain;silo1;silo1;Wheat,1;Wheat grain,0.5

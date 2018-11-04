@@ -11,9 +11,11 @@ import javafx.util.Pair;
 
 public class RecipeBook {
 	
-	private TreeMap<String,TreeMap<String,Recipe>> allRecipes = new TreeMap<String, TreeMap<String,Recipe>>();
-	private static HashMap<String,Double> energyCostMap;
-	private static HashMap<String,Double> timeCostMap;
+	private static TreeMap<String,TreeMap<String,Recipe>> allRecipes = new TreeMap<String, TreeMap<String,Recipe>>();
+	private static HashMap<String,Double> energyCostMap;//String keys to energy cost for use in recipes
+	private static HashMap<String,Double> timeCostMap;//String keys to time cost for use in recipes
+	private static HashMap<String,ArrayList<Double>> wsEnergyFactorMap;//list of energy factor for each tier for each workshop 
+	private static HashMap<String,ArrayList<Double>> wsTimeFactorMap;//list of time factor for each tier for each workshop 
 	
 	
 	/**
@@ -23,6 +25,8 @@ public class RecipeBook {
 	public RecipeBook(String path){
 		energyCostMap = new HashMap<>();
 		timeCostMap = new HashMap<>();
+		wsEnergyFactorMap = new HashMap<>();
+		wsTimeFactorMap = new HashMap<>();
 		String fileString = ReadFile.getString(path);
 			
 		fileString=fileString.replaceAll("(?m)^COMMENTLINE.*(?:\r?\n)?", "").replace("ENERGYCOST ", "").replace("TIMECOST ", "");//remove all lines starting with COMMENTLINE 
@@ -61,12 +65,34 @@ public class RecipeBook {
 	private ArrayList<Pair<String,String>> parseWSstr(String fileString){
 		ArrayList<Pair<String,String>> parsedStr = new ArrayList<>();
 		String[] strList = fileString.split("WORKSHOP ");
-		String[] firstLine = strList[0].split(";");
+		//System.out.println(strList[1]);
 		
+		//the first line (index 0) is empty cause of the way split works so start at i=1
 		for(int i=1;i<strList.length;i++){
-			String wsName = strList[i].substring(0, strList[i].indexOf("\r\n"));
-			String recStr = strList[i].substring(strList[i].indexOf("REC"));
-			parsedStr.add(new Pair<String,String>(wsName, recStr));
+			//System.out.println(strList[i]);
+			String firstLine = strList[i].substring(0, strList[i].indexOf("\r\n")+2);//get the first line and then remove 
+			//System.out.println("FirstLine : \n" +firstLine);
+			strList[i] = strList[i].replaceFirst(firstLine, "");
+			
+			String[] firstLineList = firstLine.split(";");
+			String wsName = firstLineList[0];
+			
+			//populate the wsEnergyFactorMap and wsTimeFactorMap from the first line of the workShop string
+			ArrayList<Double> energyFactorList = new ArrayList<>();
+			//System.out.println("FirstLine : \n" +firstLine);
+			//System.out.println(firstLineList[0]);
+			for(String val:firstLineList[1].split(",")){
+				energyFactorList.add(Double.parseDouble(val));
+			}
+			wsEnergyFactorMap.put(firstLineList[0], energyFactorList);
+			ArrayList<Double> timeFactorList = new ArrayList<>();
+			for(String val:firstLineList[2].split(",")){
+				timeFactorList.add(Double.parseDouble(val));
+			}
+			wsTimeFactorMap.put(firstLineList[0], timeFactorList);
+			
+			//
+			parsedStr.add(new Pair<String,String>(wsName, strList[i]));
 		}
 		return parsedStr;
 	}
@@ -79,10 +105,10 @@ public class RecipeBook {
 	 */
 	private TreeMap<String, Recipe> parseRECstr(String recipeListString){
 		TreeMap<String, Recipe> recipeList = new TreeMap<String,Recipe>();
-		String[] strList = recipeListString.split("REC ");
-		for(int i=1;i<strList.length;i++){
-			String recName = strList[i].substring(0, strList[i].indexOf("ING ")-1);
-			recipeList.put(recName, new Recipe(strList[i]));
+		String[] strList = recipeListString.split("\r\n");
+		for(int i=0;i<strList.length;i++){
+			Recipe recipe = new Recipe(strList[i]);
+			recipeList.put(recipe.getName(), recipe);
 		}
 		return recipeList;
 	}
@@ -112,6 +138,65 @@ public class RecipeBook {
 		
 		Object[] objArray = allRecipes.keySet().toArray();
 		return Arrays.copyOf(objArray, objArray.length, String[].class);
+	}
+	
+	/**
+	 * get the energyCost for a recipe using a key
+	 * @param key
+	 * @return the energyCost for the key, or 0 if no such key
+	 */
+	public static double energyCostOf(String key){
+		Double energyCost = energyCostMap.get(key);
+		
+		if(energyCost==null){
+			energyCost=0.0;
+			System.out.println("no energyCost for key:" + key + "     in RecipeBook.java" );
+		}
+		return energyCost;
+	}
+	
+	/**
+	 * get the timeCost for a recipe using a key
+	 * @param key
+	 * @return the timeCost for the key, or 0 if no such key
+	 */
+	public static double timeCostOf(String key){
+		Double timeCost = timeCostMap.get(key);
+		if(timeCost==null){
+			timeCost=0.0;
+			System.out.println("no timeCost for key:" + key + "     in RecipeBook.java" );
+		}
+		return timeCost;
+	}
+	
+	/**
+	 * get the energy cost Factor of the workshop given a name and a level
+	 * @param wsName
+	 * @param wsLevel
+	 * @return
+	 */
+	public static double energyFactorOf(String wsName, int wsLevel){
+		Double energyFactor = wsEnergyFactorMap.get(wsName).get(wsLevel);
+		if(energyFactor==null){
+			energyFactor=0.0;
+			System.out.println("no energyFactor for key:" + wsName + "     in RecipeBook.java" );
+		}
+		return energyFactor;
+	}
+	
+	/**
+	 * get the time cost Factor of the workshop given a name and a level
+	 * @param wsName
+	 * @param wsLevel
+	 * @return
+	 */
+	public static double timeFactorOf(String wsName, int wsLevel){
+		Double timeFactor = wsTimeFactorMap.get(wsName).get(wsLevel);
+		if(timeFactor==null){
+			timeFactor=0.0;
+			System.out.println("no timeFactor for key:" + wsName + "     in RecipeBook.java" );
+		}
+		return timeFactor;
 	}
 	
 }

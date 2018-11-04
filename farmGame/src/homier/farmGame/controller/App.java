@@ -5,6 +5,7 @@ package homier.farmGame.controller;
 
 
 
+import homier.farmGame.model.MyData;
 import homier.farmGame.view.Renderer;
 import homier.farmGame.view.RenderingData;
 import javafx.animation.AnimationTimer;
@@ -39,6 +40,7 @@ public class App extends Application{
 		SEED_DATA_PATH = getClass().getResource("/database/seed_data.txt").getPath();
 		RECIPE_LIST_PATH = getClass().getResource("/database/recipe_list.txt").getPath();
 		TILE_IMAGES_PATH = getClass().getResource("/tiles").getPath();
+		new MyData();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/homier/farmGame/view/MainUI.fxml"));
 		Parent root = loader.load();
 		engine=loader.getController();

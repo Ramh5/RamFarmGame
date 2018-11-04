@@ -19,20 +19,20 @@ public class WorkShop extends Inventory {
 	private ArrayList<Product> ingrToBeUsed = new ArrayList<Product>();
 	private Product result = new Product(null,"EMPTY",0,0,0);
 	private FarmTask task = new FarmTask();
-	
+	private HashMap<String, Integer> wsLevelMap = new HashMap<>();//this map is set in Engine.java by the method setupAvailWS()
 	
 	
 	public WorkShop() {
 		super();
+		
 	}
 	
 	/**
 	 * Calculate and sets the result of the selected recipe given the selected ingredients
+	 * @param wsName : the name of the selected workshop for energy and time calculation
 	 * @param recipe : the selected recipe for which we want to calculate the result
-	 * 
-	 * 
 	 */
-	public void calculateResult(Recipe recipe) {
+	public void calculateResult(String wsName,Recipe recipe) {
 		HashMap<String, Double> availProdFactor = new HashMap<String, Double>(recipe.getIngredients());
 		for(Entry<String,Double> entry: availProdFactor.entrySet()) {
 			entry.setValue(0.0);
@@ -119,9 +119,10 @@ public class WorkShop extends Inventory {
 		result.updateSpoil();
 		
 		//set the energy and time cost for this task
-		task.setEnergyCost(20*limFactor);//TODO make it dependent on the workshop
-		task.setTimeCost((int)(10*limFactor));
-		task.setName("Cook");//TODO set the task name depending on the workshop selected
+		task.setEnergyCost(limFactor*recipe.getBaseEnergyCost()*RecipeBook.energyFactorOf(wsName, wsLevelMap.get(wsName)));
+		task.setTimeCost((int)(limFactor*recipe.getBaseTimeCost()*RecipeBook.timeFactorOf(wsName, wsLevelMap.get(wsName))));
+		System.out.println(task.getTimeCost());
+		task.setName("Crafting " +recipe.getName() + " in the " + wsName);
 	}
 	
 	/**
@@ -173,6 +174,23 @@ public class WorkShop extends Inventory {
 	public FarmTask getTask() {
 		return task;
 	}
+	
+	/**
+	 * Sets the workshop levels map 
+	 * @param wsNames
+	 * @param levels
+	 */
+	public void setWsLevelMap(String[] wsNames, int[] levels){
+		for(int i=0;i<wsNames.length;i++){
+			wsLevelMap.put(wsNames[i], levels[i]);
+		}
+	}
+	
+	
+//	public int wsLevelOf(String wsName) {
+//		return wsLevelMap.get(wsName);
+//	}
+	
 	/**
 	 * Copies an inventory data to fill the WorkShop inventory data with copies of each products
 	 * @param inventory : the inventory to be copied into the workshop data

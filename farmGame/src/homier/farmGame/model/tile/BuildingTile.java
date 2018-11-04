@@ -5,7 +5,7 @@ import homier.farmGame.model.Weather;
 public class BuildingTile extends Tile{
 
 	private String wsType;
-	private int state;//level of the house/workshop
+	private int level;//level of the house/workshop
 	private double storageSize;//other than grains storage
 	private double siloSize;//grains storage
 	
@@ -14,14 +14,14 @@ public class BuildingTile extends Tile{
 
 	private BuildingTile() {
 		super("BuildingTile");
-		state=0;
+		level=0;
 		
 	}
 	
-	public BuildingTile(String wsType, int state, double storageSize, double siloSize) {
+	public BuildingTile(String wsType, int level, double storageSize, double siloSize) {
 		this();
 		this.wsType = wsType;
-		this.state = state;
+		this.level = level;
 		this.storageSize = storageSize;
 		this.siloSize = siloSize;
 	}
@@ -56,12 +56,12 @@ public class BuildingTile extends Tile{
 	public void setSiloSize(double siloSize) {
 		this.siloSize = siloSize;
 	}
-	public int getState(){
-		return state;
+	public int getLevel(){
+		return level;
 	}
 	
-	public void setState(int state){
-		this.state = state;
+	public void setLevel(int state){
+		this.level = state;
 	}
 	
 	 
