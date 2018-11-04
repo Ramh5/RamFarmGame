@@ -46,5 +46,12 @@ public class SeedData {
 		return tempRange;
 	}
 
+	@Override
+	public String toString(){
+		String str = "Seed: " + name + "\nProduct: " + prodName + "\n";
+		str+= String.format("Growth rate: %.0f%%\n", growthRate);
+		str+= String.format("Temperature range: %d to %d \u00b0C", tempRange[0], tempRange[1]);
+		return str;
+	}
 	
 }

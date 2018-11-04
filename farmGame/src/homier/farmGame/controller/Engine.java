@@ -87,9 +87,10 @@ public class Engine {
 	@FXML private Button actionWSbutton, buyButton;//closeShopButton, cancelTransactionButton, sellButton;
 	@FXML private ToggleButton pauseButton, openShopButton, openWSbutton;
 	@FXML private VBox mouseOverPanel;
-	@FXML private TextArea leftTextArea;
+	@FXML private TextArea leftTextArea,mouseOverSeedDetails;
 	@FXML private ChoiceBox<Integer> gameSpeedChoice;
-	@FXML private Label clockLabel, pauseLabel ,wxToday, wxTomorrow, energyLabel, taskName1, buyTotalLabel, sellTotalLabel, labelSelectedRecipe, labelResultWS;
+	@FXML private Label clockLabel, pauseLabel ,wxToday, wxTomorrow, energyLabel, taskName1, buyTotalLabel, sellTotalLabel, labelSelectedRecipe, labelResultWS,
+						craftEnergyLabel,craftTimeLabel,productLabel,growthLabel,yieldLabel,qualityLabel,growthdDetailsLabel;
 	@FXML private ChoiceBox<Employee> employeeChoice;
 	@FXML private ChoiceBox<String> wsChoiceBox,seedCatChoiceBox ;
 	@FXML private ProgressIndicator taskProgress1;
@@ -121,6 +122,9 @@ public class Engine {
 	
 	//TODO add button to skip days, months...
 	
+	/** 
+	 * @param dTime: elapsed time since last update in seconds (multiply dTime from the main game loop to increase gameSpeed)
+	 */
 	public void update(double dTime) {
 		//Pause game when in the seed selection pane
 		if(leftStackPane.getChildren().indexOf(seedPane)==leftStackPane.getChildren().size()-1){
@@ -549,7 +553,8 @@ public class Engine {
 	}
 	public VBox getMouseOverPanel() {
 		return mouseOverPanel;
-	}	
+	}
+	
 	public ChoiceBox<Integer> getGameSpeedChoice(){
 		return gameSpeedChoice;
 	}	
@@ -578,6 +583,30 @@ public class Engine {
 		return openWSbutton;
 	}
 	
+	public Label getProductLabel() {
+		return productLabel;
+	}
+
+	public Label getGrowthLabel() {
+		return growthLabel;
+	}
+
+	public Label getYieldLabel() {
+		return yieldLabel;
+	}
+
+	public Label getQualityLabel() {
+		return qualityLabel;
+	}
+
+	public Label getGrowthdDetailsLabel() {
+		return growthdDetailsLabel;
+	}
+
+	public TextArea getMouseOverSeedDetails() {
+		return mouseOverSeedDetails;
+	}
+
 	/**
 	 * @return the active employee as selected on the employee choice box
 	 */
@@ -914,12 +943,20 @@ public class Engine {
 			result=game.getWorkShop().getResult();
 			result.updatePrice(game.getShop());			
 		}
-		if(result.getQty()==0 || empl.isWorking()|| empl.getEnergy()<empl.getTask().getEnergyCost()) {
+		if(result.getQty()==0 || empl.isWorking()|| empl.getEnergy()<game.getWorkShop().getTask().getEnergyCost()) {
 			actionWSbutton.setDisable(true);
 		}else {
 			actionWSbutton.setDisable(false);
 		}
-		labelResultWS.setText(result.toString()); 
+		labelResultWS.setText(result.toString());
+		if(result.getQty()==0){
+			craftEnergyLabel.setText(String.format("Energy cost: %.0f",0.0));
+			craftTimeLabel.setText(String.format("Time cost: %d",0));
+		}else{
+			craftEnergyLabel.setText(String.format("Energy cost: %.0f",game.getWorkShop().getTask().getEnergyCost()));
+			craftTimeLabel.setText(String.format("Time cost: %d",game.getWorkShop().getTask().getTimeCost()));
+		}
+		
 	}
 
 	/**

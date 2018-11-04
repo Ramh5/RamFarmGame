@@ -20,7 +20,10 @@ public class GameClock {
 	public void addTime(double seconds){
 		totalSeconds += seconds;
 	}
-
+/**
+ * 
+ * @param dTime : elapsed time since lastupdate in seconds
+ */
 	public void update(double dTime){
 		
 		//based on 5 minutes (when secondsInADay = 300s) real time is 14 hours is 1 day, 12 days is 1 month, 12 months is one year

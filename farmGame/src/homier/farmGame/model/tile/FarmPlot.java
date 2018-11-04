@@ -20,13 +20,14 @@ public class FarmPlot extends Tile {
 	private DoubleProperty growth;
 	private DoubleProperty yield;
 	private DoubleProperty quality;
-	
+	private DoubleProperty growthFactor;//one day of growth
 
 	public FarmPlot(){
 		super("FarmPlot");
 		this.growth = new SimpleDoubleProperty(0);
 		this.yield= new SimpleDoubleProperty(0);
 		this.quality = new SimpleDoubleProperty(1);
+		this.growthFactor = new SimpleDoubleProperty(0);
 	}
 	
 	@Override
@@ -36,8 +37,8 @@ public class FarmPlot extends Tile {
 		}
 		double wxFactor = wx.getFactor(seed.getTempRange());
 		if(growth.get()<150)
-			growth.set(growth.get()+seed.getGrowthRate()*(float)dTime*wxFactor);
-			
+			growth.set(growth.get()+seed.getGrowthRate()*dTime*wxFactor);
+		growthFactor.set(seed.getGrowthRate()*wxFactor);	
 		yield.set(calculateYield());
 		quality.set(Math.min(100, quality.get()+wxFactor*dTime));
 		//System.out.println(quality + " " + wxFactor*dTime );
@@ -80,6 +81,10 @@ public class FarmPlot extends Tile {
 
 	public final void setQuality(double quality){this.quality.set(quality);}
 
+	public DoubleProperty qualityProperty(){return quality;}
+	
+	public DoubleProperty growthFactorProperty(){return growthFactor;}
+	
 	public int getQual() {
 		return (int)quality.get();
 	}

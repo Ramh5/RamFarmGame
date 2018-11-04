@@ -26,6 +26,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
 public class Renderer {
@@ -85,7 +86,7 @@ public class Renderer {
 		ArrayList<Tile> tileList = engine.getGame().getTileList();
 		GridPane grid = engine.getGameGridPane();
 		//ToggleButton pauseButton = engine.getPauseButton();
-		VBox mouseOverPanel = engine.getMouseOverPanel();
+		//VBox mouseOverPanel = engine.getMouseOverPanel();
 		Inventory inventory = engine.getGame().getInventory();
 		GameClock gameClock = engine.getGameClock();
 		
@@ -284,13 +285,25 @@ public class Renderer {
 
 							// set UI
 							newImageView.setOnMouseEntered(e -> {
-								((Labeled) mouseOverPanel.getChildren().get(1)).textProperty()
-								        .set(farmTile.getSeed().getName());
-								((Labeled) mouseOverPanel.getChildren().get(2)).textProperty()
-										.bind(growthProperty.asString("%.0f"));
-								((Labeled) mouseOverPanel.getChildren().get(3)).textProperty()
-										.bind(yieldProperty.asString("%.0f"));
+								engine.getProductLabel().textProperty().set(farmTile.getSeed().getName());
+								engine.getGrowthLabel().textProperty().bind(growthProperty.asString("Growth: %.0f%%"));
+								engine.getYieldLabel().textProperty().bind(yieldProperty.asString("Yield: %.0fkg"));
+								engine.getQualityLabel().textProperty().bind(farmTile.qualityProperty().asString("Quality: %.0f%%"));
+								engine.getGrowthdDetailsLabel().textProperty().bind(farmTile.growthFactorProperty().asString("+ %.0f%% growth today"));
+								engine.getMouseOverSeedDetails().setText(farmTile.getSeed().toString());
+							});
+							newImageView.setOnMouseExited(e->{
 								
+								engine.getProductLabel().setText("");
+								engine.getGrowthLabel().textProperty().unbind();
+								engine.getGrowthLabel().setText("");
+								engine.getYieldLabel().textProperty().unbind();
+								engine.getYieldLabel().setText("");
+								engine.getQualityLabel().textProperty().unbind();
+								engine.getQualityLabel().setText("");
+								engine.getGrowthdDetailsLabel().textProperty().unbind();
+								engine.getGrowthdDetailsLabel().setText("");
+								engine.getMouseOverSeedDetails().setText("");
 							});
 							
 							newImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {

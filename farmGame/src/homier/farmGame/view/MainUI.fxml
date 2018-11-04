@@ -26,7 +26,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.TextFlow?>
 
-<BorderPane prefHeight="950" prefWidth="1500.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/" fx:controller="homier.farmGame.controller.Engine">
+<BorderPane prefHeight="950" prefWidth="1500.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="homier.farmGame.controller.Engine">
 	<center>
 		<StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
 			<children>
@@ -100,6 +100,9 @@
                   </TableView>
                </children>
             </AnchorPane>
+				<GridPane fx:id="gameGridPane" alignment="CENTER" prefHeight="662.0" prefWidth="1010.0">
+
+				</GridPane>
             <AnchorPane fx:id="workShopPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: -fx-background;" styleClass="masking-pane">
                <children>
                   <TreeTableView fx:id="tableInvWS" layoutX="14.0" layoutY="80.0" prefHeight="550.0" prefWidth="470.0">
@@ -127,7 +130,7 @@
                   <Label layoutX="239.0" layoutY="46.0" text="Filter:" />
                   <TextField fx:id="wsFilterTextField" layoutX="275.0" layoutY="42.0" />
                   <Separator layoutX="14.0" layoutY="669.0" prefHeight="11.0" prefWidth="982.0" />
-                  <Label layoutX="14.0" layoutY="643.0" text="Selected ingredient">
+                  <Label layoutX="14.0" layoutY="643.0" text="Selected ingredients">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -156,18 +159,25 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="labelResultWS" layoutX="14.0" layoutY="844.0" text="">
+                  <Label fx:id="labelResultWS" layoutX="14.0" layoutY="834.0" prefHeight="25.0" prefWidth="410.0" text="">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
                   <ChoiceBox fx:id="wsChoiceBox" layoutX="14.0" layoutY="14.0" prefWidth="150.0" />
                   <Separator layoutX="14.0" layoutY="6.0" prefHeight="16.0" prefWidth="990.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="6.0" />
+                  <Label fx:id="craftEnergyLabel" layoutX="446.0" layoutY="722.0" prefHeight="30.0" prefWidth="127.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="craftTimeLabel" layoutX="446.0" layoutY="752.0" prefHeight="30.0" prefWidth="127.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
-				<GridPane fx:id="gameGridPane" alignment="CENTER" prefHeight="662.0" prefWidth="1010.0">
-
-				</GridPane>
 			</children>
 		</StackPane>
 	</center>
@@ -223,7 +233,7 @@
                            </columns>
                         </TreeTableView>
                         <TextField fx:id="seedFilterTextField" layoutX="327.0" layoutY="49.0" />
-                        <Label layoutX="15.0" layoutY="7.0" prefHeight="35.0" prefWidth="233.0" text="Choix des semences">
+                        <Label layoutX="15.0" layoutY="7.0" prefHeight="35.0" prefWidth="233.0" text="Seed choice">
                            <font>
                               <Font name="System Bold" size="24.0" />
                            </font>
@@ -238,10 +248,21 @@
                   <AnchorPane style="-fx-background-color: -fx-background;" styleClass="masking-pane">
                      <children>
             				<VBox fx:id="mouseOverPanel" alignment="CENTER">
-               				<TextArea fx:id="leftTextArea" prefHeight="441.0" prefWidth="300.0" />
-            					<Label fx:id="productLabel" text="test" />
-            					<Label fx:id="growthLabel" text="test" />
-            					<Label fx:id="yieldLabel" text="test" />
+               				<TextArea fx:id="leftTextArea" editable="false" prefHeight="441.0" prefWidth="490.0" />
+                           <HBox alignment="CENTER_RIGHT">
+                              <children>
+                                 <VBox alignment="CENTER">
+                                    <children>
+                        					<Label fx:id="productLabel" text="test" />
+                        					<Label fx:id="growthLabel" text="test" />
+                        					<Label fx:id="yieldLabel" text="test" />
+                                      		<Label fx:id="qualityLabel" layoutX="10.0" layoutY="44.0" text="test" />
+                                       		<Label fx:id="growthdDetailsLabel" layoutX="10.0" layoutY="61.0" text="test" />
+                                    </children>
+                                 </VBox>
+                                 <TextArea fx:id="mouseOverSeedDetails" editable="false" prefHeight="85.0" prefWidth="317.0" />
+                              </children>
+                           </HBox>
             				</VBox>
                      </children>
                   </AnchorPane>
