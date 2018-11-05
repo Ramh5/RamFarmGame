@@ -248,8 +248,6 @@ public class Renderer {
 							grid.getChildren().set(index, newImageView);
 							previousMap[index] = newIndexToRender;
 							// set UI
-							
-							
 							newImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {	
 								public void handle(MouseEvent event) {
 									if (event.getButton() == MouseButton.PRIMARY) {
@@ -257,14 +255,19 @@ public class Renderer {
 										//System.out.println(engine.getActiveEmployee());
 										b1.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<100);
 										b1.setText("Sow");
-										
 										b1.setOnAction(e -> {
-											
 											engine.getSeedPane().toFront();
 											engine.getSeedPane().setUserData(index);
-											engine.updateSeedPanel();
-											
+											engine.updateSeedPanel();		
 										});//plant button setOnAction event handler
+										b2.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<100);
+										b2.setText("\"Un-plow\"");
+										b2.setOnAction(e->{
+											FarmTask unplow = new FarmTask("Un-plow", 100, 20);
+											activeEmployee.setTask(unplow);
+											unplow.setNewTile(new FarmPlot(), index);
+											unplow.startTask(gameClock.getTotalSeconds(), activeEmployee);
+										});
 										popup.show(newImageView, event.getScreenX(), event.getScreenY());
 									}//if primary mouse click (ie left mouse click)
 								}//handle() for the ImageView mouse click event
@@ -283,7 +286,7 @@ public class Renderer {
 							grid.getChildren().set(index, newImageView);
 							previousMap[index] = newIndexToRender;
 
-							// set UI
+							// setup mouseOver for sown fields
 							newImageView.setOnMouseEntered(e -> {
 								engine.getProductLabel().textProperty().set(farmTile.getSeed().getName());
 								engine.getGrowthLabel().textProperty().bind(growthProperty.asString("Growth: %.0f%%"));
@@ -293,7 +296,6 @@ public class Renderer {
 								engine.getMouseOverSeedDetails().setText(farmTile.getSeed().toString());
 							});
 							newImageView.setOnMouseExited(e->{
-								
 								engine.getProductLabel().setText("");
 								engine.getGrowthLabel().textProperty().unbind();
 								engine.getGrowthLabel().setText("");
@@ -347,16 +349,7 @@ public class Renderer {
 		} // for i
 	}// render method
 
-	// method to set the imageView on the grid for a tile
-	private void setImageView(int i, int j, int index, int newIndexToRender, TileViewData tileViewData, GridPane grid) {
-		if (newIndexToRender != previousMap[index]) {
-			ImageView newImageView = tileViewData.getImageToRender(newIndexToRender);
-			GridPane.setConstraints(newImageView, i, j);
-			grid.getChildren().set(index, newImageView);
-			previousMap[index] = newIndexToRender;
 
-		}
-	}
 
 	public int[] getPreviousMap() {
 		return previousMap;

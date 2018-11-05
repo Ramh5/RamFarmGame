@@ -624,7 +624,6 @@ public class Engine {
 			updateShopPanel();
 		});
 		
-		final PseudoClass topLevelTTVPseudoClass = PseudoClass.getPseudoClass("top-level-treetableview");
 		
 		//------------inventory table------------- 
 		TreeItem<Product> rootInv = new TreeItem<>(new Product(null,"empty", 0, 0, 0));
@@ -644,7 +643,7 @@ public class Engine {
 		colNameInv.setCellValueFactory(new TreeItemPropertyValueFactory<>("name"));
 		colQtyInv.setCellValueFactory(cellData ->Bindings.format("%.2f", cellData.getValue().getValue().qtyProperty()));
 		colSpoilQtyInv.setCellValueFactory(cellData ->Bindings.format("-%.3f", cellData.getValue().getValue().spoilQtyProperty()));
-		colSpoilQtyInv.setStyle("-fx-text-fill: red");
+		colSpoilQtyInv.setStyle("-fx-text-fill: darkred");
 		colFreshInv.setCellValueFactory(new TreeItemPropertyValueFactory<>("fresh"));
 		colQualInv.setCellValueFactory(new TreeItemPropertyValueFactory<>("qual"));
 		colPriceInv.setCellValueFactory(cellData ->Bindings.format("%.2f", cellData.getValue().getValue().priceProperty()));
@@ -657,10 +656,13 @@ public class Engine {
 					if(item == null || empty){
 						setText(null);
 						setGraphic(null);
-						getTreeTableRow().pseudoClassStateChanged(topLevelTTVPseudoClass, false);
-					
+						getTreeTableRow().getStyleClass().remove("topLevelRow");
 					}else{
-						getTreeTableRow().pseudoClassStateChanged(topLevelTTVPseudoClass, isTopLevel);
+						if(isTopLevel){
+							getTreeTableRow().getStyleClass().add("topLevelRow");
+						}else{
+							getTreeTableRow().getStyleClass().remove("topLevelRow");
+						}
 						setEditable(!isTopLevel);	
 					}
 				}
@@ -695,7 +697,7 @@ public class Engine {
 		colNameShop.setCellValueFactory(new TreeItemPropertyValueFactory<>("name"));
 		colQtyShop.setCellValueFactory(cellData ->Bindings.format("%.2f", cellData.getValue().getValue().qtyProperty()));
 		colSpoilQtyShop.setCellValueFactory(cellData ->Bindings.format("-%.3f", cellData.getValue().getValue().spoilQtyProperty()));
-		colSpoilQtyShop.setStyle("-fx-text-fill: red");
+		colSpoilQtyShop.setStyle("-fx-text-fill: darkred");
 		colFreshShop.setCellValueFactory(new TreeItemPropertyValueFactory<>("fresh"));
 		colQualShop.setCellValueFactory(new TreeItemPropertyValueFactory<>("qual"));
 		colPriceShop.setCellValueFactory(cellData ->Bindings.format("%.2f", cellData.getValue().getValue().priceProperty()));
@@ -708,10 +710,15 @@ public class Engine {
 					if(item == null || empty){
 						setText(null);
 						setGraphic(null);
-						getTreeTableRow().pseudoClassStateChanged(topLevelTTVPseudoClass, false);
+						
+						getTreeTableRow().getStyleClass().remove("topLevelRow");
 					}else{
-					
-						getTreeTableRow().pseudoClassStateChanged(topLevelTTVPseudoClass, isTopLevel);
+						if(isTopLevel){
+							getTreeTableRow().getStyleClass().add("topLevelRow");
+						}else{
+							getTreeTableRow().getStyleClass().remove("topLevelRow");
+						}
+						
 						setEditable(!isTopLevel);	
 					}
 				}
@@ -752,7 +759,7 @@ public class Engine {
 			updateWSPanel();
 		});
 		
-		final PseudoClass topLevelTTVPseudoClass = PseudoClass.getPseudoClass("top-level-treetableview");
+		
 		
 		//------------ WS inventory table------------- //
 		TreeItem<Product> rootInvWS = new TreeItem<>(new Product(null,"empty", 0, 0, 0));
@@ -781,10 +788,13 @@ public class Engine {
 					if(item == null || empty){
 						setText(null);
 						setGraphic(null);
-						getTreeTableRow().pseudoClassStateChanged(topLevelTTVPseudoClass, false);
-					
+						getTreeTableRow().getStyleClass().remove("topLevelRow");
 					}else{
-						getTreeTableRow().pseudoClassStateChanged(topLevelTTVPseudoClass, isTopLevel);
+						if(isTopLevel){
+							getTreeTableRow().getStyleClass().add("topLevelRow");
+						}else{
+							getTreeTableRow().getStyleClass().remove("topLevelRow");
+						}
 						setEditable(!isTopLevel);	
 					}
 				}
@@ -877,7 +887,6 @@ public class Engine {
 		});
 		
 		
-		final PseudoClass topLevelTTVPseudoClass = PseudoClass.getPseudoClass("top-level-treetableview");
 		
 		//------------ Seed inventory table------------- //
 		TreeItem<Product> rootSeed = new TreeItem<>(new Product(null,"empty", 0, 0, 0));
@@ -906,10 +915,13 @@ public class Engine {
 					if(item == null || empty){
 						setText(null);
 						setGraphic(null);
-						getTreeTableRow().pseudoClassStateChanged(topLevelTTVPseudoClass, false);
-					
+						getTreeTableRow().getStyleClass().remove("topLevelRow");
 					}else{
-						getTreeTableRow().pseudoClassStateChanged(topLevelTTVPseudoClass, isTopLevel);
+						if(isTopLevel){
+							getTreeTableRow().getStyleClass().add("topLevelRow");
+						}else{
+							getTreeTableRow().getStyleClass().remove("topLevelRow");
+						}
 						setEditable(!isTopLevel);	
 					}
 				}
@@ -932,7 +944,7 @@ public class Engine {
 	}
 	
 	/**
-	 * update the result label to reflect the selected recipe and selected ingredients
+	 * update the result label and the energy and time labels to reflect the selected recipe and selected ingredients
 	 * @return the result (or anticipated result) of the craft
 	 */
 	public void updateWSResultLabel(){

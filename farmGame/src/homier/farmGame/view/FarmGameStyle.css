@@ -75,12 +75,22 @@
 
 
  /*Top level categories of items in inventory treetableview pseudoclass style */
-.tree-table-row-cell:top-level-treetableview,
+/*.tree-table-row-cell:top-level-treetableview,
 .tree-table-row-cell:filled:selected:top-level-treetableview{
-	-fx-font-size:14;
+	-fx-font-size:12;
+	-fx-font-weight:bold;
+	
 	-fx-background-color: 	#F0F0F0 ;
 	
+} */
+
+.topLevelRow .tree-table-cell{
+	-fx-font-size:12;
+	-fx-text-fill: grey;
+	/*-fx-font-weight:bold;*/
+	-fx-background-color: 	#F0F0F0 ;
 }
+
 
 
 /*for tableview cell editing */
