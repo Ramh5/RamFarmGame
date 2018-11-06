@@ -10,7 +10,7 @@ public class FarmTask {
 	private double energyCost;
 	private int timeCost;
 	private double startedAt;
-	private boolean isComplete;
+	private boolean isCompleted;
 	
 	//optional properties related to the result when task completes
 	//depending on the type of task
@@ -20,6 +20,8 @@ public class FarmTask {
 	private boolean plow=false;
 	private boolean sow=false;
 	private String seedName;
+	private double waterReq;
+	private FarmPlot tileToWater;
 	
 	
 	public FarmTask() {
@@ -27,7 +29,7 @@ public class FarmTask {
 		energyCost = 0;
 		timeCost = 0;
 		startedAt = 0;
-		isComplete=true;
+		isCompleted=true;
 	}
 	
 	public FarmTask(String name, double energyCost, int timeCost){
@@ -35,14 +37,13 @@ public class FarmTask {
 		this.energyCost=energyCost;
 		this.timeCost=timeCost;
 		startedAt = 0;
-		isComplete=true;
+		isCompleted=true;
 	}
 
 	public void startTask(double startedAt, Employee employee) {
 		employee.spendEnergy(energyCost);
 		employee.setIsWorking(true);
-		isComplete=false;
-		
+		isCompleted=false;
 		this.startedAt=startedAt;
 	}
 	
@@ -77,7 +78,7 @@ public class FarmTask {
 	 */
 	public double taskProgress(double currentTime, Inventory inventory, Employee employee, ArrayList<Tile> tileList, int[] previousMap){
 		double taskProgress = (currentTime-startedAt)/timeCost;
-		if(taskProgress>=1&&!isComplete){
+		if(taskProgress>=1&&!isCompleted){
 			if(result!=null){
 				inventory.addProd(result);
 			}
@@ -95,15 +96,17 @@ public class FarmTask {
 				}
 				//System.out.println( name+ " task completed " + previousMap + " index "+ newTileIndex + " value " + previousMap[newTileIndex]);
 			}
-			
-			isComplete=true;
+			if(tileToWater!=null){
+				tileToWater.setWaterLevel(tileToWater.getWaterLevel()+waterReq);
+			}
+			isCompleted=true;
 			employee.setIsWorking(false);
 		}
 		return taskProgress;
 	}
 	
-	public boolean isComplete(){
-		return isComplete;
+	public boolean isCompleted(){
+		return isCompleted;
 	}
 
 	public void setName(String name) {
@@ -136,5 +139,11 @@ public class FarmTask {
 		this.seedName=seedName;
 		((FarmPlot) this.newTile).setQuality(qual);
 		this.sow=true;
+	}
+
+	public void setWater(double waterReq, FarmPlot tileToWater) {
+		this.waterReq = waterReq;
+		this.tileToWater=tileToWater;
+		
 	}
 }

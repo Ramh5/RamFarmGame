@@ -5,6 +5,7 @@ package homier.farmGame.model.tile;
 
 import homier.farmGame.model.MyData;
 import homier.farmGame.model.SeedData;
+import homier.farmGame.model.WaterData;
 import homier.farmGame.model.Weather;
 import homier.farmGame.utils.Tools;
 import javafx.beans.property.DoubleProperty;
@@ -17,6 +18,8 @@ public class FarmPlot extends Tile {
 	private SeedData seed;
 	private boolean plowed;
 	private boolean sown;
+	private double waterLevel;
+	private double yieldPenalty;
 	private DoubleProperty growth;
 	private DoubleProperty yield;
 	private DoubleProperty quality;
@@ -24,6 +27,8 @@ public class FarmPlot extends Tile {
 
 	public FarmPlot(){
 		super("FarmPlot");
+		this.waterLevel=0;
+		this.yieldPenalty=0;
 		this.growth = new SimpleDoubleProperty(0);
 		this.yield= new SimpleDoubleProperty(0);
 		this.quality = new SimpleDoubleProperty(1);
@@ -32,19 +37,24 @@ public class FarmPlot extends Tile {
 	
 	@Override
 	public void update(double dTime,Weather wx){
-		if(!plowed||!sown){
-			return;
+		if(plowed&&sown){
+			double wxFactor = wx.getGrowthFactor(seed.getTempRange());
+			growthFactor.set(seed.getGrowthRate()*wxFactor*WaterData.growthFactor(waterLevel));
+			
+			if(growth.get()<150){
+				growth.set(growth.get()+growthFactor.get()*dTime);
+			}
+			yieldPenalty+=WaterData.yieldPenaltyFactor(waterLevel)*dTime*50;//50 would be the yieldPenalty Rate
+			setYield(calculateYield());
+			quality.set(Math.min(100, quality.get()+wxFactor*WaterData.growthFactor(waterLevel)*dTime));
+
+			//update the waterlevel
+			waterLevel = Math.min(120, Math.max(0, waterLevel-WaterData.dryingFactor(wx)*dTime*50));//lose 50 waterLevel per day if dryingFactor of 1
+			//System.out.println(quality + " " + wxFactor*dTime );
+			System.out.println("WaterLevel: " + waterLevel + "yieldPenalty: " + yieldPenalty);
 		}
-		double wxFactor = wx.getFactor(seed.getTempRange());
-		if(growth.get()<150)
-			growth.set(growth.get()+seed.getGrowthRate()*dTime*wxFactor);
-		growthFactor.set(seed.getGrowthRate()*wxFactor);	
-		yield.set(calculateYield());
-		quality.set(Math.min(100, quality.get()+wxFactor*dTime));
-		//System.out.println(quality + " " + wxFactor*dTime );
-		
 	}
-	
+
 	public void plow(){
 		this.plowed=true;
 	}
@@ -75,7 +85,9 @@ public class FarmPlot extends Tile {
 	
 	public final double getYield() {return yield.get();}
 
-	public final void setYield(int yield) {this.yield.set(yield);}
+	public final void setYield(double yield) {
+		this.yield.set(Math.max(0, yield));
+	}
 	
 	public DoubleProperty yieldProperty(){ return yield;}
 
@@ -89,51 +101,29 @@ public class FarmPlot extends Tile {
 		return (int)quality.get();
 	}
 
-
-
+	public double getWaterLevel(){
+		return waterLevel;
+	}
+	
+	/**
+	 * sets the water level of the tile and restricts it to min 0 max 120
+	 * @param waterLevel
+	 */
+	public void setWaterLevel(double waterLevel){
+		this.waterLevel=waterLevel = Math.min(120, Math.max(0, waterLevel));
+	}
 	
 	public String toString(){
 		return (super.toString() + String.format("\tGrowth Rate: %.0f", seed.getGrowthRate()) + 
 				String.format("\t  Growth: %.0f", growth.get()) + "\tyield: " + yield.get() + "\tproduct: " + "\tquality: " + quality.get());
 	}
-	/*
-	//private helper methode to create the YieldMap
-	private TreeMap<Double, Double> buildYieldMap() {
-		TreeMap<Double, Double> treeMap = new TreeMap<Double,Double>();
-		treeMap.put(0.0,0.0);
-		treeMap.put(50.0,0.0);
-		treeMap.put(80.0,30.0);
-		treeMap.put(95.0,98.0);
-		treeMap.put(100.0,100.0);
-		treeMap.put(110.0,98.0);
-		treeMap.put(115.0,95.0);
-		treeMap.put(130.0,70.0);
-		treeMap.put(150.0,0.0);
-		treeMap.put(160.0,0.0);
-		return treeMap;
-	}
-*/
-	//private helper methode to calculate the yield
+	
+	/**
+	 * calculate the yield using the seedData yield vs growth map and the current yieldPenalty
+	 * @return the current yield of the plot
+	 */
 	private double calculateYield(){
-		return Tools.interpolateMap(seed.getYieldMap(), growth.get())/100*seed.getMaxYield();
-		/*
-		double yield=0;
-		double yieldFactor;
-		double x1 =  yieldMap.floorKey(growth.get());
-		double x2 =  yieldMap.ceilingKey(growth.get());
-		double y1 =  yieldMap.get(x1).doubleValue();
-		double y2 =  yieldMap.get(x2).doubleValue();
-		//to prevent devision by zero
-		if(x2-x1==0){
-			yieldFactor = y1;
-		}else{
-			yieldFactor =  ((y2-y1)/((x2-x1)))*(growth.get()-x1)+y1;
-		}
-		
-			yield = (yieldFactor/100*maxYield);
-			
-		return yield;
-		*/
+		return Tools.interpolateMap(seed.getYieldMap(), growth.get())/100*seed.getMaxYield()-yieldPenalty;
 	}
 	
 }

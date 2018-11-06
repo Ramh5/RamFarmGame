@@ -332,6 +332,22 @@ public class Renderer {
 											
 											//System.out.println("harvest task started " + previousMap + " index "+ index + " value " + previousMap[index]);
 										});
+										
+										b1.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<100);
+										b1.setText("Water");
+										b1.setOnAction(e -> {
+
+											//create the task, add it to the active employee and create a changelistener to finish the task
+											double waterReq = 120-farmTile.getWaterLevel();
+											FarmTask waterTile = new FarmTask("Water", waterReq, (int)(0.2*waterReq));
+											
+											activeEmployee.setTask(waterTile);
+											
+											waterTile.setWater(waterReq,farmTile);
+											waterTile.startTask(gameClock.getTotalSeconds(), activeEmployee);
+											
+											//System.out.println("harvest task started " + previousMap + " index "+ index + " value " + previousMap[index]);
+										});
 										popup.show(newImageView, event.getScreenX(), event.getScreenY());
 									}
 								}

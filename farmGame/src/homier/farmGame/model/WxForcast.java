@@ -19,7 +19,7 @@ public class WxForcast {
 	
 	public void forcastNewDay() {
 		today = tomorrow;
-		//TODO Fix: raining during winter
+		
 		tomorrow = randomWx(tomorrowMonth());
 	}
 	
@@ -32,9 +32,22 @@ public class WxForcast {
 		return month;
 	}
 	
+	/**
+	 * generate a random weather given the month, converts rain into snow if temperature negative
+	 * @param month
+	 * @return
+	 */
 	private Weather randomWx(int month){
-		return new Weather(newTemp(month), Sky.values()[random.nextInt(Sky.values().length)], 
+		Weather wx = new Weather(newTemp(month), Sky.values()[random.nextInt(Sky.values().length-2)], 
 				Wind.values()[random.nextInt(Wind.values().length)]);
+		if(wx.getTemp()<0){
+			if(wx.getSky()==Sky.RAIN1){
+				wx.setSky(Sky.SNOW1);
+			}else if(wx.getSky()==Sky.RAIN2){
+				wx.setSky(Sky.SNOW2);
+			}
+		}
+		return wx;
 	}
 	
 	private int newTemp(int month){

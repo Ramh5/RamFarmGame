@@ -1,12 +1,15 @@
 package homier.farmGame.model;
 
 enum Sky{
-	SKC(1,"Sunny"),CLOUD1(.9,"Partly clouded"),CLOUD2(.8, "Overcast"),RAIN1(.7, "Light rain"),RAIN2(.6, "Heavy rain");
-	private double factor;
+	SKC("Sunny",1,.4),CLOUD1("Partly clouded",.9,.2),CLOUD2("Overcast",.8,0),RAIN1( "Light rain",.7,-.3),RAIN2( "Heavy rain",.6,-.7),
+	SNOW1("Light snow",.7,0),SNOW2("Heavy snow",.6,0);
+	private double growthFactor;
+	private double dryingFactor;//additive factor
 	private String name;
 	
-	Sky(double factor, String name){
-		this.factor=factor;
+	Sky( String name,double growthFactor,double dryingFactor){
+		this.growthFactor=growthFactor;
+		this.dryingFactor=dryingFactor;
 		this.name=name;
 	}
 	
@@ -14,14 +17,33 @@ enum Sky{
 		return name;
 	}
 	
-	public double getFactor(){
-		return factor;
+	public double getGrowthFactor(){
+		return growthFactor;
+	}
+	
+	public double getDryingFactor(){
+		return dryingFactor;
 	}
 	
 }
 
 enum Wind{
-	WIND0,WIND1,WIND2;	
+	WIND0("Winds calm",0),WIND1("Light winds",0.2),WIND2("Strong winds",0.5);
+	private double dryingFactor;
+	private String name;
+	
+	Wind(String name,double dryingFactor){
+		this.dryingFactor=dryingFactor;
+		this.name=name;
+	}
+	
+	public String getName(){
+		return name;
+	}
+	
+	public double getDryingFactor(){
+		return dryingFactor;
+	}
 }
 
 public class Weather {
@@ -39,7 +61,12 @@ public class Weather {
 	
 	//attempt at a gaussian distribution for the growth factor vs temperature, 
 	//maybe just a list of points and interpolation would be better, like yield vs growth in FarmPlot
-	public double getFactor(int[] tempRange){ 
+	/**
+	 * get the growthFactor given an ideal temperature range for the current temperature and sky condition
+	 * @param tempRange
+	 * @return
+	 */
+	public double getGrowthFactor(int[] tempRange){ 
 		double factor;
 		
 		int r1 = tempRange[0];
@@ -47,10 +74,8 @@ public class Weather {
 		double mean = (r2+r1)/2.0;
 		double variance = Math.pow((r2-r1)/1.5, 2);
 		
-		factor = Math.exp(-Math.pow(temp-mean,2)/(2*variance))*sky.getFactor();
-
+		factor = Math.exp(-Math.pow(temp-mean,2)/(2*variance))*sky.getGrowthFactor();
 		if(Double.isNaN(factor)) factor = 0;
-		
 		return factor;
 	}
 	public double getTemp() {
@@ -77,6 +102,7 @@ public class Weather {
 		this.wind = wind;
 	}
 	
+	//TODO include the wind in the wx display
 	public String toString(){
 		return String.format("%.0f\u00b0C %s", temp,sky.getName());
 	}
