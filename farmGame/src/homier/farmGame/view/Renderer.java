@@ -1,6 +1,7 @@
 package homier.farmGame.view;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import homier.farmGame.controller.App;
 import homier.farmGame.controller.Engine;
@@ -134,15 +135,27 @@ public class Renderer {
 						newImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 							public void handle(MouseEvent event) {
 								if (event.getButton() == MouseButton.PRIMARY) {
-								
-									double price = ((ForestTile) tile).getPrice();
-									b1.setDisable(price>engine.getGame().getInventory().getMoney());
-									b1.setText("Buy land: " + String.format("%.0f$", price));
+									Employee activeEmployee= engine.getActiveEmployee();
+									
+									b1.setDisable(activeEmployee.isWorking()||activeEmployee.getEnergy()<20);
+									b1.setText("Collect mushrooms");
 									b1.setOnAction(e -> {	
+									FarmTask collectMushrooms = new FarmTask("Collecting mushrooms", 120, 20);
+										activeEmployee.setTask(collectMushrooms);
+										collectMushrooms.setResult(new Product(MyData.categoriesOf("Mushrooms"), "Mushrooms", 4.0, 
+												100, Math.min(100,Math.max(0,(int)(50+new Random().nextGaussian()*10)))));
+										collectMushrooms.startTask(gameClock.getTotalSeconds(), activeEmployee);
+										
+									});
+									double price = ((ForestTile) tile).getPrice();
+									b2.setDisable(price>engine.getGame().getInventory().getMoney());
+									b2.setText("Buy land: " + String.format("%.0f$", price));
+									b2.setOnAction(e -> {	
 										engine.getGame().getInventory().addMoney(-price);
 										tileList.set(index, new FarmPlot());
 										
 									});
+									
 									popup.show(newImageView, event.getScreenX(), event.getScreenY());
 								}
 							}
@@ -252,12 +265,18 @@ public class Renderer {
 								public void handle(MouseEvent event) {
 									if (event.getButton() == MouseButton.PRIMARY) {
 										Employee activeEmployee= engine.getActiveEmployee();
+										double waterEnergy = waterEnergy(farmTile);
 										//System.out.println(engine.getActiveEmployee());
-										b1.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<100);
-										b1.setText("Sow");
+										b1.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<100+waterEnergy);
+										b1.setText("Water and sow");
 										b1.setOnAction(e -> {
+											
+											FarmTask plantSeed = new FarmTask("Water and sow", 100+waterEnergy, waterTime(farmTile)+20);
+											activeEmployee.setTask(plantSeed);
+											FarmPlot newFarmPlot = new FarmPlot();
+											plantSeed.setWater(120, newFarmPlot);//Water at the same time as planting the seed
+											plantSeed.setNewTile(newFarmPlot , index);
 											engine.getSeedPane().toFront();
-											engine.getSeedPane().setUserData(index);
 											engine.updateSeedPanel();		
 										});//plant button setOnAction event handler
 										b2.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<100);
@@ -317,9 +336,9 @@ public class Renderer {
 										ArrayList<String> categories = MyData.categoriesOf(farmTile.getSeed().getProdName());
 										double yield = farmTile.getYield();
 										boolean enoughStorage = inventory.enoughStorageFor(yield, categories.contains("Cereal"));
-										b1.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<100||!enoughStorage);
-										b1.setText("Harvest");
-										b1.setOnAction(e -> {
+										b2.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<100||!enoughStorage);
+										b2.setText("Harvest");
+										b2.setOnAction(e -> {
 
 											//create the task, add it to the active employee and create a changelistener to finish the task
 											
@@ -332,18 +351,19 @@ public class Renderer {
 											
 											//System.out.println("harvest task started " + previousMap + " index "+ index + " value " + previousMap[index]);
 										});
-										
-										b1.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<100);
+										double waterEnergy = waterEnergy(farmTile);
+										b1.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<waterEnergy);
 										b1.setText("Water");
 										b1.setOnAction(e -> {
 
 											//create the task, add it to the active employee and create a changelistener to finish the task
-											double waterReq = 120-farmTile.getWaterLevel();
-											FarmTask waterTile = new FarmTask("Water", waterReq, (int)(0.2*waterReq));
+										
+											int waterTime = waterTime(farmTile);
+											FarmTask waterTile = new FarmTask("Water", waterEnergy, waterTime);
 											
 											activeEmployee.setTask(waterTile);
 											
-											waterTile.setWater(waterReq,farmTile);
+											waterTile.setWater(120-farmTile.getWaterLevel(),farmTile);
 											waterTile.startTask(gameClock.getTotalSeconds(), activeEmployee);
 											
 											//System.out.println("harvest task started " + previousMap + " index "+ index + " value " + previousMap[index]);
@@ -366,7 +386,24 @@ public class Renderer {
 	}// render method
 
 
-
+	/**
+	 * calculates the energy required to water a FarmPlot as a function
+	 * of missing water plus 30 flat energy
+	 * @param farmPlot
+	 * @return the energy required to water a FarmPlot
+	 */
+	private double waterEnergy(FarmPlot farmPlot){
+		return 120-farmPlot.getWaterLevel()+30;
+	}
+	/**
+	 * calculate the time required to water a FarmPlot as a function
+	 * of missing water plus a 10 seconds flat time
+	 * @param farmPlot
+	 * @return time required to water a farmplot
+	 */
+	private int waterTime(FarmPlot farmPlot){
+		return (int)(0.15*(120-farmPlot.getWaterLevel())+10);
+	}
 	public int[] getPreviousMap() {
 		return previousMap;
 	}

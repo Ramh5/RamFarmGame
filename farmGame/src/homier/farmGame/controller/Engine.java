@@ -94,7 +94,7 @@ public class Engine {
 	@FXML private ChoiceBox<Employee> employeeChoice;
 	@FXML private ChoiceBox<String> wsChoiceBox,seedCatChoiceBox ;
 	@FXML private ProgressIndicator taskProgress1;
-	@FXML private AnchorPane shopPane, workShopPane, seedPane;
+	@FXML private AnchorPane shopPane, workShopPane, seedPane, mouseBlockingPane;
 	@FXML private TreeTableView<Product> tableInv, tableShop, tableInvWS, tableSeed;
 	@FXML private TreeTableColumn<Product, String> colNameInv, colNameShop,colNameInvWS,colNameSeed, colQtyInv, colQtyShop, colQtyInvWS,colQtySeed, 
 												   colPriceInv, colPriceShop, colPriceInvWS,colPriceSeed, colSpoilQtyInv, colSpoilQtyShop, colSpoilQtyInvWS,colSpoilQtySeed;
@@ -133,6 +133,8 @@ public class Engine {
 			openShopButton.setDisable(true);
 			openWSbutton.setDisable(true);
 			pauseButton.setDisable(true);
+			employeeChoice.setDisable(true);
+			mouseBlockingPane.toFront();
 			return;//not sure if this could introduce a bug since game might unpause for a tick after popup is hidden
 		}
 		
@@ -293,18 +295,20 @@ public class Engine {
 		openShopButton.setDisable(false);
 		openWSbutton.setDisable(false);
 		pauseButton.setDisable(false);
+		employeeChoice.setDisable(false);
+		mouseBlockingPane.toBack();
 	}
 	
 	@FXML 
 	private void seedOKButtonAction(ActionEvent event){
-		FarmTask plantWheat = new FarmTask("Sow", 100, 20);
-		getActiveEmployee().setTask(plantWheat);
-		plantWheat.setNewTile( new FarmPlot(), (int)seedPane.getUserData());//seedPane userData stores the tile index of the tile it was called from in Renderer.java
+		FarmTask plantSeed = getActiveEmployee().getTask();
 		Product selectedSeed = (Product)tableSeed.getUserData();//tableSeed userData stores the selected seed
 		selectedSeed.setQty(selectedSeed.getQty()-0.5);//remove 0.5 kg when sowing TODO make it dependend on seed data
-		plantWheat.setSow(selectedSeed.getName(),selectedSeed.getQual());
-		plantWheat.startTask(game.getClock().getTotalSeconds(), getActiveEmployee());
+		plantSeed.setSow(selectedSeed.getName(),selectedSeed.getQual());
+		plantSeed.startTask(game.getClock().getTotalSeconds(), getActiveEmployee());
+		
 		seedCancelButtonAction(new ActionEvent());
+		
 	}
 	
 	@FXML

@@ -12,6 +12,6 @@ Barley grain;silo1;silo1;Barley,1;Barley grain,0.5
 Potato seeds;silo1;silo1;Potatoes,1;Potato seeds,0.2
 Onion seeds;silo1;silo1;Onions,1;Onion seeds,0.2
 Carrot seeds;silo1;silo1;Carrots,1;Carrot seeds,0.2
-WORKSHOP Wind Mill;1,0.8;1,0.8
+WORKSHOP Wind mill;1,0.8;1,0.8
 Wheat flour;mill1;mill1;Wheat grain,1;Wheat flour,0.8
 Barley flour;mill1;mill1;Barley grain,1;Barley flour,0.8

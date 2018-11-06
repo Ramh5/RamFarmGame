@@ -1,10 +1,11 @@
 COMMENTLINE format is name of product;categories;basePrice;freshDecay
-BASEPRICE vegy;2;cereal;1
-FRESHDECAY animal;1.4;vegy;1;cereal;0.5;seed;0.1
+BASEPRICE vegy;2;cereal;1;mush;5
+FRESHDECAY animal;1.4;vegy;1;cereal;0.5;seed;0.1;mush;0.2
 COMMENTLINE...................................................... Vegetables .....................................................
 Carrots;Vegetable;vegy;vegy
 Potatoes;Vegetable,Seed,Vegetable seed;vegy;vegy
 Onions;Vegetable;vegy;vegy
+Mushrooms;Vegetable;mush;mush
 COMMENTLINE...................................................... Cereals ....................................................
 Wheat;Cereal;cereal;cereal
 Barley;Cereal;cereal;cereal
