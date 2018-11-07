@@ -1,5 +1,8 @@
 package homier.farmGame.view;
 
+import java.text.FieldPosition;
+import java.text.NumberFormat;
+import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -15,6 +18,8 @@ import homier.farmGame.model.tile.FarmPlot;
 import homier.farmGame.model.tile.ForestTile;
 import homier.farmGame.model.tile.Tile;
 import homier.farmGame.utils.GameClock;
+import homier.farmGame.utils.TextFlowDataSet;
+import homier.farmGame.utils.TextFlowManager;
 import javafx.beans.property.DoubleProperty;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -29,6 +34,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.util.StringConverter;
+import javafx.util.converter.NumberStringConverter;
 
 public class Renderer {
 	
@@ -306,25 +313,12 @@ public class Renderer {
 							previousMap[index] = newIndexToRender;
 
 							// setup mouseOver for sown fields
+							//TextFlowManager.farmTileTFDS=new TextFlowDataSet(farmTile, true, engine.getGameInfoTextFlow());
 							newImageView.setOnMouseEntered(e -> {
-								engine.getProductLabel().textProperty().set(farmTile.getSeed().getName());
-								engine.getGrowthLabel().textProperty().bind(growthProperty.asString("Growth: %.0f%%"));
-								engine.getYieldLabel().textProperty().bind(yieldProperty.asString("Yield: %.0fkg"));
-								engine.getQualityLabel().textProperty().bind(farmTile.qualityProperty().asString("Quality: %.0f%%"));
-								engine.getGrowthdDetailsLabel().textProperty().bind(farmTile.growthFactorProperty().asString("+ %.0f%% growth today"));
-								engine.getMouseOverSeedDetails().setText(farmTile.getSeed().toString());
+								TextFlowManager.farmTileTFDS=new TextFlowDataSet(farmTile, true, engine.getGameInfoTextFlow());
 							});
 							newImageView.setOnMouseExited(e->{
-								engine.getProductLabel().setText("");
-								engine.getGrowthLabel().textProperty().unbind();
-								engine.getGrowthLabel().setText("");
-								engine.getYieldLabel().textProperty().unbind();
-								engine.getYieldLabel().setText("");
-								engine.getQualityLabel().textProperty().unbind();
-								engine.getQualityLabel().setText("");
-								engine.getGrowthdDetailsLabel().textProperty().unbind();
-								engine.getGrowthdDetailsLabel().setText("");
-								engine.getMouseOverSeedDetails().setText("");
+								TextFlowManager.farmTileTFDS.off();				
 							});
 							
 							newImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {

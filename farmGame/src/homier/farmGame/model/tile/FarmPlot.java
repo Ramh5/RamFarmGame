@@ -23,26 +23,27 @@ public class FarmPlot extends Tile {
 	private DoubleProperty growth;
 	private DoubleProperty yield;
 	private DoubleProperty quality;
-	private DoubleProperty growthFactor;//one day of growth
+	private double growthFactor;//one day of growth
 
 	public FarmPlot(){
 		super("FarmPlot");
+		this.seed=new SeedData("empty");
 		this.waterLevel=0;
 		this.yieldPenalty=0;
 		this.growth = new SimpleDoubleProperty(0);
 		this.yield= new SimpleDoubleProperty(0);
 		this.quality = new SimpleDoubleProperty(1);
-		this.growthFactor = new SimpleDoubleProperty(0);
+		this.growthFactor = 0;
 	}
 	
 	@Override
 	public void update(double dTime,Weather wx){
 		if(plowed&&sown){
 			double wxFactor = wx.getGrowthFactor(seed.getTempRange());
-			growthFactor.set(seed.getGrowthRate()*wxFactor*WaterData.growthFactor(waterLevel));
+			growthFactor=seed.getGrowthRate()*wxFactor*WaterData.growthFactor(waterLevel);
 			
 			if(growth.get()<150){
-				growth.set(growth.get()+growthFactor.get()*dTime);
+				growth.set(growth.get()+growthFactor*dTime);
 			}
 			yieldPenalty+=WaterData.yieldPenaltyFactor(waterLevel)*dTime*50;//50 would be the yieldPenalty Rate
 			setYield(calculateYield());
@@ -51,7 +52,7 @@ public class FarmPlot extends Tile {
 			//update the waterlevel
 			waterLevel = Math.min(120, Math.max(0, waterLevel-WaterData.dryingFactor(wx)*dTime*50));//lose 50 waterLevel per day if dryingFactor of 1
 			//System.out.println(quality + " " + wxFactor*dTime );
-			System.out.println(String.format("WaterLevel: %.2f yieldPenalty: %.2f ",waterLevel,yieldPenalty )  );
+			//System.out.println(String.format("WaterLevel: %.2f yieldPenalty: %.2f ",waterLevel,yieldPenalty )  );
 		}
 	}
 
@@ -95,7 +96,7 @@ public class FarmPlot extends Tile {
 
 	public DoubleProperty qualityProperty(){return quality;}
 	
-	public DoubleProperty growthFactorProperty(){return growthFactor;}
+	public double getGrowthFactor(){return growthFactor;}
 	
 	public int getQual() {
 		return (int)quality.get();

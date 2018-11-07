@@ -34,8 +34,6 @@ public class Employee {
 	
 	public void setTask(FarmTask task){
 		currentTask=task;
-		isWorking=true;
-		energy.add(-task.getEnergyCost());
 	}
 	
 	public FarmTask getTask(){

@@ -33,6 +33,7 @@ import homier.farmGame.model.tile.Tile;
 import homier.farmGame.utils.FarmTimeUnits;
 import homier.farmGame.utils.GameClock;
 import homier.farmGame.utils.RuntimeTypeAdapterFactory;
+import homier.farmGame.utils.TextFlowManager;
 import homier.farmGame.view.Renderer;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -41,7 +42,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.css.PseudoClass;
+
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -84,7 +85,7 @@ import javafx.util.Callback;
 public class Engine {
 
 	@FXML private GridPane gameGridPane;
-	@FXML private Button actionWSbutton, buyButton;//closeShopButton, cancelTransactionButton, sellButton;
+	@FXML private Button actionWSbutton, buyButton, seedOKButton;//closeShopButton, cancelTransactionButton, sellButton;
 	@FXML private ToggleButton pauseButton, openShopButton, openWSbutton;
 	@FXML private VBox mouseOverPanel;
 	@FXML private TextArea leftTextArea,mouseOverSeedDetails;
@@ -108,7 +109,7 @@ public class Engine {
 	@FXML private ListView<String>  listViewRecipeDetails;
 	@FXML private ListView<Recipe> listViewRecipe;
 //	@FXML private MenuItem save,load;
-	@FXML private TextFlow seedDetailTextFlow;
+	@FXML private TextFlow seedDetailTextFlow, gameInfoTextFlow;
 	@FXML private StackPane leftStackPane;
 	@FXML private TextField shopFilterTextField,wsFilterTextField,seedFilterTextField;
 	
@@ -128,13 +129,7 @@ public class Engine {
 	public void update(double dTime) {
 		//Pause game when in the seed selection pane
 		if(leftStackPane.getChildren().indexOf(seedPane)==leftStackPane.getChildren().size()-1){
-			otherPaused=true;
-			updatePauseButton();
-			openShopButton.setDisable(true);
-			openWSbutton.setDisable(true);
-			pauseButton.setDisable(true);
-			employeeChoice.setDisable(true);
-			mouseBlockingPane.toFront();
+			seedPaneUIinteraction(true);
 			return;//not sure if this could introduce a bug since game might unpause for a tick after popup is hidden
 		}
 		
@@ -157,7 +152,7 @@ public class Engine {
 			
 		}
 		
-		leftTextArea.setText(game.getInventory().toString());
+		
 		
 		//update energy and task name when task is in progress
 		taskProgress1.setProgress(getActiveEmployee().getTask().taskProgress(game.getClock().getTotalSeconds(), game.getInventory(),getActiveEmployee(), game.getTileList(), renderer.getPreviousMap()));
@@ -174,7 +169,8 @@ public class Engine {
 
 	public void render() {
 		renderer.render(this);
-
+		TextFlowManager.update();
+		leftTextArea.setText(game.getInventory().toString());
 	}
 
 	public void initialize() {
@@ -237,6 +233,8 @@ public class Engine {
 		setupSeedPane();
 		seedDetailTextFlow.getChildren().setAll(new Text("Choisissez une semence"));
 		
+		new TextFlowManager();//instanciate the TextFlowManager, it will be called statically from various places
+		
 	}
 	/**
 	 * populates the wsChoiceBox with the available workshops by looking through the tileList for buildings
@@ -287,18 +285,30 @@ public class Engine {
 	
 	@FXML 
 	private void seedCancelButtonAction(ActionEvent event){
-		seedPane.toBack();
-		otherPaused=false;
-		updatePauseButton();
-
-		unselectTreeTable(tableSeed.getRoot());
-		openShopButton.setDisable(false);
-		openWSbutton.setDisable(false);
-		pauseButton.setDisable(false);
-		employeeChoice.setDisable(false);
-		mouseBlockingPane.toBack();
+		getActiveEmployee().setTask(new FarmTask());
+		seedPaneUIinteraction(false);
 	}
-	
+	/**
+	 * helper method to manage the interactivity of the UI while seedPane is up
+	 * @param seedPaneUp true or false
+	 */
+	private void seedPaneUIinteraction(boolean seedPaneUp){
+		if(seedPaneUp){
+			mouseBlockingPane.toFront();
+		}else{
+			seedPane.toBack();
+			mouseBlockingPane.toBack();
+			unselectTreeTable(tableSeed.getRoot());
+		}
+		
+		otherPaused=seedPaneUp;
+		updatePauseButton();
+		openShopButton.setDisable(seedPaneUp);
+		openWSbutton.setDisable(seedPaneUp);
+		pauseButton.setDisable(seedPaneUp);
+		employeeChoice.setDisable(seedPaneUp);
+		
+	}
 	@FXML 
 	private void seedOKButtonAction(ActionEvent event){
 		FarmTask plantSeed = getActiveEmployee().getTask();
@@ -307,7 +317,7 @@ public class Engine {
 		plantSeed.setSow(selectedSeed.getName(),selectedSeed.getQual());
 		plantSeed.startTask(game.getClock().getTotalSeconds(), getActiveEmployee());
 		
-		seedCancelButtonAction(new ActionEvent());
+		seedPaneUIinteraction(false);
 		
 	}
 	
@@ -610,6 +620,10 @@ public class Engine {
 	public TextArea getMouseOverSeedDetails() {
 		return mouseOverSeedDetails;
 	}
+	
+	public TextFlow getGameInfoTextFlow(){
+		return gameInfoTextFlow;
+	}
 
 	/**
 	 * @return the active employee as selected on the employee choice box
@@ -878,6 +892,7 @@ public class Engine {
 	}
 	
 	private void setupSeedPane(){
+		seedOKButton.setDisable(true);
 		seedCatChoiceBox.getItems().setAll("All seeds","Vegetable seed","Cereal seed");
 		seedCatChoiceBox.getSelectionModel().select(0);
 		
@@ -939,6 +954,7 @@ public class Engine {
 	 * updates the seed panel after it has been set up to show changed data
 	 */
 	public void updateSeedPanel(){
+		
 		ArrayList<String> catFilter = new ArrayList<>();
 		catFilter.add(seedCatChoiceBox.getSelectionModel().getSelectedItem());
 		catFilter.add("Only seeds");	
@@ -1149,8 +1165,12 @@ public class Engine {
 					seedDetailTextFlow.getChildren().setAll(new Text(rootTreeItem.getValue().toString()));
 					tableSeed.setUserData(rootTreeItem.getValue());//store the selected product in the treetableview userdata
 					unselectTreeTableButOne(tableSeed.getRoot(),rootTreeItem);
+					if(rootTreeItem.getValue().getQty()>=0.5){
+						seedOKButton.setDisable(false);
+					}
 				}else{
 					seedDetailTextFlow.getChildren().setAll(new Text("Choisissez une semence"));
+					seedOKButton.setDisable(true);
 				}
 				
 			});

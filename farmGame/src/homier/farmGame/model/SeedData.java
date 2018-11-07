@@ -12,8 +12,11 @@ public class SeedData {
 	private TreeMap<Double, Double> yieldMap;
 	private int[] tempRange;
 	
-	public SeedData(String name, String prodName, double growthRate, int maxYield, TreeMap<Double, Double> yieldMap, int[] tempRange) {
+	public SeedData(String name){
 		this.name = name;
+	}
+	public SeedData(String name, String prodName, double growthRate, int maxYield, TreeMap<Double, Double> yieldMap, int[] tempRange) {
+		this(name);
 		this.prodName = prodName;
 		this.growthRate = growthRate;
 		this.maxYield = maxYield;

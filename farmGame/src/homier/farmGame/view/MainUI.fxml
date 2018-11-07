@@ -265,6 +265,7 @@
                               </children>
                            </HBox>
             				</VBox>
+                        <TextFlow fx:id="gameInfoTextFlow" layoutX="2.0" layoutY="527.0" prefHeight="143.0" prefWidth="490.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="527.0" />
                      </children>
                   </AnchorPane>
                </children>
