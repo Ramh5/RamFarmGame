@@ -78,7 +78,7 @@ public class Inventory {
 		double totQty=0;
 		for(Entry<String, ArrayList<Product>> entry : data.entrySet()){
 			for(Product prod : entry.getValue()){
-				if(prod.getCategories().contains("Céréale")){
+				if(prod.getCategories().contains("Cereal")){
 					totQty+=prod.getQty();
 				}
 			}
@@ -94,7 +94,7 @@ public class Inventory {
 		double totQty=0;
 		for(Entry<String, ArrayList<Product>> entry : data.entrySet()){
 			for(Product prod : entry.getValue()){
-				if(!prod.getCategories().contains("Céréale")){
+				if(!prod.getCategories().contains("Cereal")){
 					totQty+=prod.getQty();
 				}
 			}

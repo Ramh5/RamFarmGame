@@ -4,3 +4,5 @@ Wheat grain,100,100,1
 Barley grain,100,100,1
 Potato seeds,100,100,1
 Carrot seeds,100,100,1
+Soybeans,10,100,1
+Sunflower seeds,10,100,1

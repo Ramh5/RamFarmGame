@@ -41,7 +41,7 @@ public class Shop extends Inventory {
 		super.update();
 		dailyBuyCount=0;
 		dailySellCount=0;
-		System.out.println(getClass()+" transaction counters reset");
+		//System.out.println(getClass()+" transaction counters reset");
 	}
 	
 	/**

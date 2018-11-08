@@ -38,8 +38,11 @@ public class RenderingData {
 		tvdList.put("silo", new TileViewData(new Image[]{images.get("silo1")}, new int[]{0}));
 		tvdList.put("wharehouse", new TileViewData(new Image[]{images.get("wharehouse1")}, new int[]{0}));
 		tvdList.put("mill", new TileViewData(new Image[]{images.get("mill1")}, new int[]{0}));
+		tvdList.put("bakery", new TileViewData(new Image[]{images.get("bakery1")}, new int[]{0}));
 		tvdList.put("cereal", new TileViewData(new Image[]{images.get("sown1"),images.get("sown2"),
 						images.get("cereal1"),images.get("cereal2")}, new int[]{ 0, 25, 50, 90}));
+		tvdList.put("Sunflowers", new TileViewData(new Image[]{images.get("sown1"),images.get("sown2"),
+		   		images.get("sunflowers1"),images.get("sunflowers2")}, new int[]{ 0, 25, 50, 90}));
 		tvdList.put("Potatoes", new TileViewData(new Image[]{images.get("sown1"),images.get("sown2"),
 						images.get("potato1"),images.get("potato2")}, new int[]{ 0, 25, 50, 90}));
 		tvdList.put("forest", new TileViewData(new Image[]{images.get("forest_winter"),images.get("forest_spring"),
@@ -58,7 +61,7 @@ public class RenderingData {
 	public static TileViewData getTVD(SeedData seed){
 		TileViewData tvd = tvdList.get(seed.getProdName());
 		if(tvd==null){
-			System.out.println("RenderingData.java : no TileViewData available for : "+ seed.getProdName());
+			//System.out.println("RenderingData.java : no TileViewData available for : "+ seed.getProdName());
 			
 			ArrayList<String> catList = MyData.categoriesOf(seed.getProdName());
 			if(catList.contains("Cereal")){
@@ -66,8 +69,8 @@ public class RenderingData {
 			}else if(catList.contains("Vegetable")){
 				tvd = tvdList.get("Potatoes");
 			}else{
-				tvd = tvdList.get("dirt");
-				System.out.println("RenderingData.java : no TileViewData available for : "+ seed.getProdName() + " : used dirt as default");
+				tvd = tvdList.get("cereal");
+				//System.out.println("RenderingData.java : no TileViewData available for : "+ seed.getProdName() + " : used dirt as default");
 			}
 			
 		}

@@ -51,8 +51,8 @@ public class WxForcast {
 	}
 	
 	private int newTemp(int month){
-		int[] baseTemp = {-15,-10,-2,2,10,15,20,15,12,7,2,-7};
-		int newTemp= (int)(baseTemp[month]+3*random.nextGaussian());
+		int[] baseTemp = {-6,-6,2,9,16,21,24,23,18,12,6,-1};
+		int newTemp= (int)(baseTemp[month]+2*random.nextGaussian());
 		return newTemp;
 	}
 	

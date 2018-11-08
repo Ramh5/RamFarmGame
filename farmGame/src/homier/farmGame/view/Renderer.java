@@ -1,9 +1,8 @@
 package homier.farmGame.view;
 
-import java.text.FieldPosition;
-import java.text.NumberFormat;
-import java.text.ParsePosition;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Optional;
 import java.util.Random;
 
 import homier.farmGame.controller.App;
@@ -23,19 +22,17 @@ import homier.farmGame.utils.TextFlowManager;
 import javafx.beans.property.DoubleProperty;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.CustomMenuItem;
-import javafx.scene.control.Labeled;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.util.StringConverter;
-import javafx.util.converter.NumberStringConverter;
 
 public class Renderer {
 	
@@ -144,7 +141,7 @@ public class Renderer {
 								if (event.getButton() == MouseButton.PRIMARY) {
 									Employee activeEmployee= engine.getActiveEmployee();
 									
-									b1.setDisable(activeEmployee.isWorking()||activeEmployee.getEnergy()<20);
+									b1.setDisable(activeEmployee.isWorking()||activeEmployee.getEnergy()<120);
 									b1.setText("Collect mushrooms");
 									b1.setOnAction(e -> {	
 									FarmTask collectMushrooms = new FarmTask("Collecting mushrooms", 120, 20);
@@ -221,13 +218,11 @@ public class Renderer {
 										//System.out.println(engine.getActiveEmployee());
 										double money = engine.getGame().getInventory().getMoney();
 										b1.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<100);
-										b2.setDisable(money<1000);
-										b3.setDisable(money<1000);
-										b4.setDisable(money<1000);
+										b2.setDisable(money<1000|| activeEmployee.getEnergy()<300);
+										
 										b1.setText("Plow");
-										b2.setText("Construct Silo");
-										b3.setText("Construct Wharehouse");
-										b4.setText("Construct Wind Mill");
+										b2.setText("Add a building");
+										
 									
 										b1.setOnAction(e -> {
 											FarmTask plow = new FarmTask("Plow", 100, 20);
@@ -238,19 +233,7 @@ public class Renderer {
 											
 										});//plant button setOnAction event handler
 										b2.setOnAction(e -> {	
-											engine.getGame().getInventory().addMoney(-1000);
-											tileList.set(index, new BuildingTile("silo", 0, 0, 2000));
-											previousMap[index] = -1;
-										});
-										b3.setOnAction(e -> {	
-											engine.getGame().getInventory().addMoney(-1000);
-											tileList.set(index, new BuildingTile("wharehouse", 0, 2000, 0));
-											previousMap[index] = -1;
-										});
-										b4.setOnAction(e -> {	
-											engine.getGame().getInventory().addMoney(-1000);
-											tileList.set(index, new BuildingTile("mill", 0, 0, 500));
-											previousMap[index] = -1;
+											buildDialogHandling(engine,index);
 										});
 										popup.show(newImageView, event.getScreenX(), event.getScreenY());
 									}//if primary mouse click (ie left mouse click)
@@ -303,7 +286,6 @@ public class Renderer {
 					
 					if(farmTile.isSown()){
 						DoubleProperty growthProperty = farmTile.growthProperty();
-						DoubleProperty yieldProperty = farmTile.yieldProperty();
 						TileViewData sownTVD = RenderingData.getTVD(farmTile.getSeed());
 						newIndexToRender = sownTVD.getIndexToRender(growthProperty.get());
 						if (newIndexToRender != previousMap[index]) {
@@ -379,7 +361,40 @@ public class Renderer {
 		} // for i
 	}// render method
 
+	private void buildDialogHandling(Engine engine, int index){
+		Employee activeEmployee= engine.getActiveEmployee();
+		GameClock gameClock = engine.getGameClock();
+		HashMap<String,String> choices = new HashMap<>();
+		choices.put("Silo", "silo");
+		choices.put("Wharehouse", "wharehouse");
+		choices.put("Wind mill", "mill");
+		choices.put("Bakery", "bakery");
+		ChoiceDialog<String> dialog = new ChoiceDialog<>("Silo", choices.keySet());
+		dialog.setTitle("Select a building");
+		dialog.setHeaderText("");
+		ButtonType buildButtonType = new ButtonType("Build", ButtonData.OK_DONE);
+		dialog.getDialogPane().getButtonTypes().setAll(buildButtonType, ButtonType.CANCEL);
 
+
+		Optional<String> result = dialog.showAndWait();
+		result.ifPresent(building -> {
+			engine.getGame().getInventory().addMoney(-1000);
+			FarmTask buildTask = new FarmTask("Building", 300, 100);
+			activeEmployee.setTask(buildTask);
+			BuildingTile newBuilding = new BuildingTile(choices.get(building), 0, 0, 0);
+			if("Silo".equals(building)){
+				newBuilding.setSiloSize(2000);
+			}else if("Wharehouse".equals(building)){
+				newBuilding.setStorageSize(2000);
+			}else if("Wind mill".equals(building)){
+				newBuilding.setSiloSize(500);
+			}else if("Bakery".equals(building)){
+				
+			}
+			buildTask.setNewTile(newBuilding, index);
+			buildTask.startTask(gameClock.getTotalSeconds(), activeEmployee);
+		});
+	}
 	/**
 	 * calculates the energy required to water a FarmPlot as a function
 	 * of missing water plus 30 flat energy

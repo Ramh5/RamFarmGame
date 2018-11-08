@@ -1,27 +1,29 @@
 COMMENTLINE format is name of product;categories;basePrice;freshDecay
-BASEPRICE vegy;2;cereal;1;mush;5
-FRESHDECAY animal;1.4;vegy;1;cereal;0.5;seed;0.1;mush;0.2
+BASEPRICE vegy;2;cereal;0.5;mush;5
+FRESHDECAY animal;1.4;vegy;1;cereal;0.5;seed;0.1;mush;0.2;dry;0.2
 COMMENTLINE...................................................... Vegetables .....................................................
 Carrots;Vegetable;vegy;vegy
 Potatoes;Vegetable,Seed,Vegetable seed;vegy;vegy
 Onions;Vegetable;vegy;vegy
 Mushrooms;Vegetable;mush;mush
 COMMENTLINE...................................................... Cereals ....................................................
-Wheat;Cereal;cereal;cereal
-Barley;Cereal;cereal;cereal
+Wheat grain;Seed,Cereal seed,Cereal;cereal;seed
+Barley grain;Seed,Cereal seed,Cereal;cereal;seed
 COMMENTLINE...................................................... Animal ......................................................
 Eggs;Animal;2;animal
 COMMENTLINE...................................................... Seeds ....................................................
 Carrot seeds;Seed,Vegetable seed;rec;seed
 Potato seeds;Seed,Vegetable seed;rec;seed
 Onion seeds;Seed,Vegetable seed;rec;seed
-Wheat grain;Seed,Cereal seed,Cereal;rec;seed
-Barley grain;Seed,Cereal seed,Cereal;rec;seed
+Sunflower seeds;Seed;1.5;seed
+Soybeans;Seed,Legume,Cereal;cereal;seed
 COMMENTLINE...................................................... Kitchen .....................................................
 Omelette;Kitchen;rec;vegy
 Soup;Kitchen;rec;vegy
 Scrambled eggs;Kitchen;rec;vegy
 COMMENTLINE...................................................... Silo ........................................................
 COMMENTLINE...................................................... Mill ......................................................
-Wheat flour;Mill;rec;cereal
-Barley flour;Mill;rec;cereal
+Wheat flour;Mill;rec;dry
+Barley flour;Mill;rec;dry
+COMMENTLINE...................................................... Bakery ......................................................
+Bread;Bakery;rec;cereal

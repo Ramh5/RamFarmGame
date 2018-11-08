@@ -121,7 +121,12 @@ public class Engine {
 	
 	FileChooser fileChooser = new FileChooser();
 	
-	//TODO add button to skip days, months...
+	/**
+	 * Update the UI, especially the mouseover info even when the game is paused
+	 */
+	public void updateUI(){
+		TextFlowManager.update();
+	}
 	
 	/** 
 	 * @param dTime: elapsed time since last update in seconds (multiply dTime from the main game loop to increase gameSpeed)
@@ -138,7 +143,7 @@ public class Engine {
 		
 		//if it is a new day, update the forecast
 		if(game.getClock().isNewDay()){
-			gameSpeedChoice.getSelectionModel().select(new  Integer(1));//reset the gameSpeed
+			gameSpeedChoice.getSelectionModel().select(new  Integer(2));//reset the gameSpeed
 			game.getEmployees()[0].energyProperty().set(1000);
 			game.getWxForcast().forcastNewDay();
 			wxToday.setText("Today: "+game.getWxForcast().getToday().toString());
@@ -169,7 +174,6 @@ public class Engine {
 
 	public void render() {
 		renderer.render(this);
-		TextFlowManager.update();
 		leftTextArea.setText(game.getInventory().toString());
 	}
 
@@ -269,6 +273,12 @@ public class Engine {
 					availWS.add("Wind mill");
 					i = wsList.indexOf("Wind mill");
 					wsMaxLevelList[i]=Math.max(wsMaxLevelList[i], building.getLevel());
+					break;
+				case "bakery":
+					availWS.add("Bakery");
+					i = wsList.indexOf("Bakery");
+					wsMaxLevelList[i]=Math.max(wsMaxLevelList[i], building.getLevel());
+					break;
 				}
 			}
 		}
@@ -277,6 +287,8 @@ public class Engine {
 	}
 
 	//-------------- BUTTON HANDELERS---------------------
+	
+	
 	@FXML
 	private void gameSpeedChoiceAction(ActionEvent event){
 		if(gameSpeedChoice.getSelectionModel().getSelectedItem()==null)gameSpeedChoice.getSelectionModel().select(3);
@@ -326,6 +338,10 @@ public class Engine {
 		gameSpeedChoice.getSelectionModel().select(new Integer(1000));
 	}
 	
+	@FXML
+	private void addMoneyMenuAction(){
+		game.getInventory().addMoney(1000);
+	}
 	
 	@FXML 
 	private void saveMenuAction(ActionEvent event){
