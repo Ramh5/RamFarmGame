@@ -1,8 +1,12 @@
 package homier.farmGame.utils;
 
+import java.util.ArrayList;
+
 import homier.farmGame.model.tile.FarmPlot;
 import homier.farmGame.model.tile.Tile;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
@@ -11,25 +15,23 @@ public class TextFlowDataSet {
 	private Tile tile;
 	private boolean isOn;
 	private TextFlow textFlow;
-	private Text[] textList;
+	private ArrayList<Text> textList;
 	
 	
 	public TextFlowDataSet(Tile tile, boolean isOn, TextFlow textFlow){
 		this.tile=tile;
 		this.isOn=isOn;
 		this.textFlow=textFlow;
-		textList=new Text[6];
+		textList=new ArrayList<>();
 	}
 	
 	public void init(){
 		if(tile.getType()=="FarmPlot"){
 			FarmPlot farmTile = (FarmPlot)tile;
-			textList[0]=new Text("Seed name: " + farmTile.getSeed().getName());
-			textList[1]=new Text(String.format("  Growth: %.0f%%", farmTile.getGrowth()));
-			textList[2]=new Text(String.format("  Yield: %.0fkg\n", farmTile.getYield()));
-			textList[3]=new Text(String.format("Quality: %d%%", farmTile.getQual()));
-			textList[4]=new Text(String.format("  Growth today: %.0f%%\n", farmTile.getGrowthFactor()));
-			textList[5]=new Text(farmTile.getSeed().toString());
+			for(int i=0;i<8;i++){
+				textList.add(new Text());
+			}
+			textFlow.setId("MSTextFlow");
 		}
 
 
@@ -37,30 +39,34 @@ public class TextFlowDataSet {
 
 	public void update(){
 		if(tile.getType()=="FarmPlot"){
-			if(textList[0]==null){
+			if(textList.size()==0){
 				init();
 			}
 			FarmPlot farmTile = (FarmPlot)tile;
 			if(isOn){
-				textList[0].setText("Seed name: " + farmTile.getSeed().getName());
-				textList[1].setText(String.format("  Growth: %.0f%%", farmTile.getGrowth()));
-				textList[2].setText(String.format("  Yield: %.0fkg\n", farmTile.getYield()));
-				textList[3].setText(String.format("Quality: %d%%", farmTile.getQual()));
-				textList[4].setText(String.format("  Growth today: %.0f%%\n", farmTile.getGrowthFactor()));
-				textList[5].setText(farmTile.getSeed().toString());
+				textList.get(0).setText("Seed name: " + farmTile.getSeed().getName() +"\n");
+				textList.get(1).setText(String.format("Growth:%2.0f%%", farmTile.getGrowth()));
+				textList.get(2).setText(String.format("   Yield:%3.0fkg", farmTile.getYield()));
+				textList.get(3).setText(String.format("   Quality:%3d%%", farmTile.getQual()));
+				textList.get(4).setText(String.format("   Growth today:%2.0f%%\n", farmTile.getGrowthFactor()));
+				textList.get(5).setText(String.format("Irrigation:%3.0f", farmTile.getWaterLevel()));
+				textList.get(6).setText(String.format("   Yield penalty:%3.0fkg\n", farmTile.getYieldPenalty()));
+				textList.get(7).setText(farmTile.getSeed().toString());
 
 			}else{
-				textList[0].setText("Seed name:          ");
-				textList[1].setText("Growth:          ");
-				textList[2].setText("Yield:\n");
-				textList[3].setText("Quality:          ");
-				textList[4].setText("Growth today:\n");
-				textList[5].setText("Mouse over seed details...");
+				textList.get(0).setText("Seed name:\n");
+				textList.get(1).setText("Growth:");
+				textList.get(2).setText("      Yield:");
+				textList.get(3).setText("        Quality:");
+				textList.get(4).setText("       Growth today:\n");
+				textList.get(5).setText("Irrigation:");
+				textList.get(6).setText("      Yield penalty:\n");
+				textList.get(7).setText("Mouse over seed details...");
 			}
 			textFlow.getChildren().setAll(textList);
-			textFlow.getChildren().add(5, new Line(0, 0, 200, 0));
-			textFlow.getChildren().add(6, new Text("\n"));
-			//textFlow.
+			textFlow.getChildren().add(7, new Line(0, 0, 200, 0));
+			textFlow.getChildren().add(8, new Text("\n"));
+			
 		}
 
 		

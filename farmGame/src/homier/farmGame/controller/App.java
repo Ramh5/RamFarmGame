@@ -34,7 +34,7 @@ public class App extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		
+		System.out.println(javafx.scene.text.Font.getFamilies());
 		PROD_DATA_PATH = getClass().getResource("/database/product_data.txt").getPath();
 		SHOP_LIST_PATH = getClass().getResource("/database/shop_list.txt").getPath();
 		SEED_DATA_PATH = getClass().getResource("/database/seed_data.txt").getPath();

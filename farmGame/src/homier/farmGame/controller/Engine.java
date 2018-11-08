@@ -85,13 +85,13 @@ import javafx.util.Callback;
 public class Engine {
 
 	@FXML private GridPane gameGridPane;
-	@FXML private Button actionWSbutton, buyButton, seedOKButton;//closeShopButton, cancelTransactionButton, sellButton;
+	@FXML private Button actionWSbutton, buyButton,sellButton, seedOKButton;//closeShopButton, cancelTransactionButton, ;
 	@FXML private ToggleButton pauseButton, openShopButton, openWSbutton;
 	@FXML private VBox mouseOverPanel;
 	@FXML private TextArea leftTextArea,mouseOverSeedDetails;
 	@FXML private ChoiceBox<Integer> gameSpeedChoice;
 	@FXML private Label clockLabel, pauseLabel ,wxToday, wxTomorrow, energyLabel, taskName1, buyTotalLabel, sellTotalLabel, labelSelectedRecipe, labelResultWS,
-						craftEnergyLabel,craftTimeLabel,productLabel,growthLabel,yieldLabel,qualityLabel,growthdDetailsLabel;
+						craftEnergyLabel,craftTimeLabel;
 	@FXML private ChoiceBox<Employee> employeeChoice;
 	@FXML private ChoiceBox<String> wsChoiceBox,seedCatChoiceBox ;
 	@FXML private ProgressIndicator taskProgress1;
@@ -482,12 +482,14 @@ public class Engine {
 	}
 	@FXML
 	private void buyButtonAction(ActionEvent event){
-		game.getInventory().addMoney(-game.getShop().totalPrice(game.getShop().getDataBuying()));
+		Shop shop = game.getShop();
+		game.getInventory().addMoney(-shop.totalPrice(shop.getDataBuying())*shop.getBuyingPricePenalty());
 		//game.getInventory().addMoney(-Double.valueOf(buyTotalLabel.getText()));
 		for(Product prod:tableBuy.getItems() ){
 			game.getInventory().addProd(new Product(prod));
+			shop.addToDailyBuyCount(prod.getQty());
 			prod.setQty(-prod.getQty());
-			game.getShop().addProd(new Product(prod));
+			shop.addProd(new Product(prod));
 		}
 		tableBuy.getItems().clear();
 		buyTotalLabel.setText(String.format("%.2f$", 0.00));
@@ -500,10 +502,12 @@ public class Engine {
 	
 	@FXML
 	private void sellButtonAction(ActionEvent event){
-		game.getInventory().addMoney(game.getShop().totalPrice(game.getShop().getDataSelling()));
-		//game.getInventory().addMoney(Double.valueOf(sellTotalLabel.getText()));
+		Shop shop = game.getShop();
+		game.getInventory().addMoney(shop.totalPrice(shop.getDataSelling())*shop.getSellingPricePenalty());
+		
 		for(Product prod:tableSell.getItems() ){
-			game.getShop().addProd(new Product(prod));
+			shop.addProd(new Product(prod));
+			shop.addToDailySellCount(prod.getQty());
 			prod.setQty(-prod.getQty());
 			game.getInventory().addProd(new Product(prod));
 		}
@@ -597,25 +601,6 @@ public class Engine {
 		return openWSbutton;
 	}
 	
-	public Label getProductLabel() {
-		return productLabel;
-	}
-
-	public Label getGrowthLabel() {
-		return growthLabel;
-	}
-
-	public Label getYieldLabel() {
-		return yieldLabel;
-	}
-
-	public Label getQualityLabel() {
-		return qualityLabel;
-	}
-
-	public Label getGrowthdDetailsLabel() {
-		return growthdDetailsLabel;
-	}
 
 	public TextArea getMouseOverSeedDetails() {
 		return mouseOverSeedDetails;
@@ -1229,15 +1214,18 @@ public class Engine {
 	 * update the transaction labels and buy button disable if too expensive
 	 */
 	private void updateBuySellLabels(){
-		double buyPrice = game.getShop().totalPrice(game.getShop().getDataBuying());
-		sellTotalLabel.setText(String.format("%.2f$", game.getShop().totalPrice(game.getShop().getDataSelling())));
+		Shop shop = game.getShop();
+		Inventory inv = game.getInventory();
+		double buyPrice = shop.totalPrice(shop.getDataBuying())*shop.getBuyingPricePenalty();
+		sellTotalLabel.setText(String.format("%.2f$", shop.totalPrice(shop.getDataSelling())*shop.getSellingPricePenalty()));
 		buyTotalLabel.setText(String.format("%.2f$", buyPrice));
 		
 		//check if enough storage to enable harvest
 		
-		boolean enoughSilo = game.getInventory().enoughStorageFor(game.getShop().getBuyingStorageRequired(true), true);
-		boolean enoughOtherStorage = game.getInventory().enoughStorageFor(game.getShop().getBuyingStorageRequired(false), false);
-		buyButton.setDisable(buyPrice>game.getInventory().getMoney()||!enoughSilo||!enoughOtherStorage);
+		boolean enoughSilo = inv.enoughStorageFor(shop.getBuyingStorageRequired(true), true);
+		boolean enoughOtherStorage = inv.enoughStorageFor(shop.getBuyingStorageRequired(false), false);
+		buyButton.setDisable(buyPrice>inv.getMoney()||!enoughSilo||!enoughOtherStorage||!shop.enoughBuyTransaction());
+		sellButton.setDisable(!shop.enoughSellTransaction());
 	}
 	
 	public static <T> void preventColumnReordering(TableView<T> tableView) {

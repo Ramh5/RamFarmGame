@@ -105,6 +105,9 @@ public class FarmPlot extends Tile {
 	public double getWaterLevel(){
 		return waterLevel;
 	}
+	public double getYieldPenalty() {
+		return yieldPenalty;
+	}
 	
 	/**
 	 * sets the water level of the tile and restricts it to min 0 max 120
@@ -126,5 +129,7 @@ public class FarmPlot extends Tile {
 	private double calculateYield(){
 		return Tools.interpolateMap(seed.getYieldMap(), growth.get())/100*seed.getMaxYield()-yieldPenalty;
 	}
+
+
 	
 }

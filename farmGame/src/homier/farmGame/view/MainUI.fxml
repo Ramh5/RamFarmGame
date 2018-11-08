@@ -187,22 +187,15 @@
 			<children>
 				<HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0" spacing="5.0">
 					<children>
-						<Label alignment="CENTER" style="-fx-font-size: 18;" text="Employee" />
+						<Label alignment="CENTER" text="Employee" />
 						<ChoiceBox fx:id="employeeChoice" prefWidth="50.0" />
 					</children>
 				</HBox>
 				<HBox prefHeight="30.0" prefWidth="200.0">
 					<children>
-						<Label fx:id="energyLabel" text="Label" textAlignment="CENTER">
-							<font>
-								<Font size="18.0" />
-							</font>
-						</Label>
-						<Label fx:id="taskName1" text="Label">
-							<font>
-								<Font size="18.0" />
-							</font>
-						</Label>
+						<Label fx:id="energyLabel" text="Label" textAlignment="CENTER" />
+							
+						<Label fx:id="taskName1" text="Label" />
 						<ProgressIndicator fx:id="taskProgress1" progress="0.0" />
 					</children>
 				</HBox>
@@ -250,20 +243,6 @@
                      <children>
             				<VBox fx:id="mouseOverPanel" alignment="CENTER">
                				<TextArea fx:id="leftTextArea" editable="false" prefHeight="441.0" prefWidth="490.0" />
-                           <HBox alignment="CENTER_RIGHT">
-                              <children>
-                                 <VBox alignment="CENTER">
-                                    <children>
-                        					<Label fx:id="productLabel" text="test" />
-                        					<Label fx:id="growthLabel" text="test" />
-                        					<Label fx:id="yieldLabel" text="test" />
-                                      		<Label fx:id="qualityLabel" layoutX="10.0" layoutY="44.0" text="test" />
-                                       		<Label fx:id="growthdDetailsLabel" layoutX="10.0" layoutY="61.0" text="test" />
-                                    </children>
-                                 </VBox>
-                                 <TextArea fx:id="mouseOverSeedDetails" editable="false" prefHeight="85.0" prefWidth="317.0" />
-                              </children>
-                           </HBox>
             				</VBox>
                         <TextFlow fx:id="gameInfoTextFlow" layoutX="2.0" layoutY="527.0" prefHeight="143.0" prefWidth="490.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="527.0" />
                      </children>
@@ -304,21 +283,9 @@
                </children>
             </VBox>
             <Separator orientation="VERTICAL" prefHeight="50.0" prefWidth="0.0" />
-				<Label fx:id="clockLabel" alignment="CENTER" minWidth="-Infinity" prefWidth="200.0" text="Label" textAlignment="CENTER">
-					<font>
-						<Font size="18.0" />
-					</font>
-				</Label>
-				<Label fx:id="wxToday" alignment="CENTER" prefWidth="230.0" text="Label" textAlignment="CENTER" textFill="#187911">
-					<font>
-						<Font size="18.0" />
-					</font>
-				</Label>
-				<Label fx:id="wxTomorrow" alignment="CENTER" prefWidth="280.0" text="Label" textAlignment="CENTER" textFill="#150794">
-					<font>
-						<Font size="18.0" />
-					</font>
-				</Label>
+				<Label fx:id="clockLabel" alignment="CENTER" minWidth="-Infinity" prefWidth="200.0" text="Label" textAlignment="CENTER" />
+				<Label fx:id="wxToday" alignment="CENTER" prefWidth="230.0" text="Label" textAlignment="CENTER" textFill="#187911" />
+				<Label fx:id="wxTomorrow" alignment="CENTER" prefWidth="280.0" text="Label" textAlignment="CENTER" textFill="#150794" />
 			</children>
 		</HBox>
 	</top>
