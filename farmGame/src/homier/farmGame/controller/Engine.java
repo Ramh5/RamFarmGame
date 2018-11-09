@@ -48,6 +48,8 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -126,6 +128,7 @@ public class Engine {
 	 */
 	public void updateUI(){
 		TextFlowManager.update();
+		
 	}
 	
 	/** 
@@ -143,6 +146,18 @@ public class Engine {
 		
 		//if it is a new day, update the forecast
 		if(game.getClock().isNewDay()){
+			if(game.getClock().getDay()==1){//first day of the month popup alert
+				otherPaused=true;
+				updatePauseButton();
+				game.getInventory().addMoney(-100);
+				Alert newMonthAlert = new Alert(AlertType.INFORMATION);
+				newMonthAlert.setTitle("New month!");
+				newMonthAlert.setHeaderText("This is the first day of the month and some bills have been payed\nThis is a summary:");
+				newMonthAlert.setContentText("Electricity charges:" + 100 + "$");
+				newMonthAlert.setOnHidden(evt -> {otherPaused=false;updatePauseButton();});
+				newMonthAlert.show();
+			}
+			
 			gameSpeedChoice.getSelectionModel().select(new  Integer(2));//reset the gameSpeed
 			game.getEmployees()[0].energyProperty().set(1000);
 			game.getWxForcast().forcastNewDay();
@@ -252,7 +267,6 @@ public class Engine {
 		inv.setSiloSize(0);
 		inv.setStorageSize(0);
 		for(Tile tile:game.getTileList()){
-		
 			if("BuildingTile".equals(tile.getType())){
 				BuildingTile building = ((BuildingTile)tile);
 				inv.setSiloSize(inv.getSiloSize()+building.getSiloSize());
@@ -325,7 +339,7 @@ public class Engine {
 	private void seedOKButtonAction(ActionEvent event){
 		FarmTask plantSeed = getActiveEmployee().getTask();
 		Product selectedSeed = (Product)tableSeed.getUserData();//tableSeed userData stores the selected seed
-		selectedSeed.setQty(selectedSeed.getQty()-0.5);//remove 0.5 kg when sowing TODO make it dependend on seed data
+		selectedSeed.setQty(selectedSeed.getQty()-(selectedSeed.getName().equals("Potatoes")?50:2));//remove 2 when planting or 50 if potatoes
 		plantSeed.setSow(selectedSeed.getName(),selectedSeed.getQual());
 		plantSeed.startTask(game.getClock().getTotalSeconds(), getActiveEmployee());
 		
@@ -1166,7 +1180,8 @@ public class Engine {
 					seedDetailTextFlow.getChildren().setAll(new Text(rootTreeItem.getValue().toString()));
 					tableSeed.setUserData(rootTreeItem.getValue());//store the selected product in the treetableview userdata
 					unselectTreeTableButOne(tableSeed.getRoot(),rootTreeItem);
-					if(rootTreeItem.getValue().getQty()>=0.5){
+					//Disable the seedOk button if not enough seeds
+					if(rootTreeItem.getValue().getQty()>=(rootTreeItem.getValue().getName().equals("Potatoes")?50:2)){
 						seedOKButton.setDisable(false);
 					}
 				}else{

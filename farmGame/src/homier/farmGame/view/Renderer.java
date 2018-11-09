@@ -402,7 +402,7 @@ public class Renderer {
 	 * @return the energy required to water a FarmPlot
 	 */
 	private double waterEnergy(FarmPlot farmPlot){
-		return 120-farmPlot.getWaterLevel()+30;
+		return (120-farmPlot.getWaterLevel())*1.5+50;
 	}
 	/**
 	 * calculate the time required to water a FarmPlot as a function
@@ -411,7 +411,7 @@ public class Renderer {
 	 * @return time required to water a farmplot
 	 */
 	private int waterTime(FarmPlot farmPlot){
-		return (int)(0.15*(120-farmPlot.getWaterLevel())+10);
+		return (int)(0.20*(120-farmPlot.getWaterLevel())+20);
 	}
 	public int[] getPreviousMap() {
 		return previousMap;

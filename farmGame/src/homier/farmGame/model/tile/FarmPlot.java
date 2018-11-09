@@ -50,7 +50,7 @@ public class FarmPlot extends Tile {
 			quality.set(Math.min(100, quality.get()+wxFactor*WaterData.growthFactor(waterLevel)*dTime));
 
 			//update the waterlevel
-			waterLevel = Math.min(120, Math.max(0, waterLevel-WaterData.dryingFactor(wx)*dTime*50));//lose 50 waterLevel per day if dryingFactor of 1
+			waterLevel = Math.min(120, Math.max(0, waterLevel-WaterData.dryingFactor(wx)*dTime*25));//lose 25 waterLevel per day if dryingFactor of 1
 			//System.out.println(quality + " " + wxFactor*dTime );
 			//System.out.println(String.format("WaterLevel: %.2f yieldPenalty: %.2f ",waterLevel,yieldPenalty )  );
 		}

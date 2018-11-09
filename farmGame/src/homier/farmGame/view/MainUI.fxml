@@ -284,7 +284,7 @@
             </VBox>
             <Separator orientation="VERTICAL" prefHeight="50.0" prefWidth="0.0" />
 				<Label fx:id="clockLabel" alignment="CENTER" minWidth="-Infinity" prefWidth="200.0" text="Label" textAlignment="CENTER" />
-				<Label fx:id="wxToday" alignment="CENTER" prefWidth="230.0" text="Label" textAlignment="CENTER" textFill="#187911" />
+				<Label fx:id="wxToday" alignment="CENTER" prefWidth="280.0" text="Label" textAlignment="CENTER" textFill="#187911" />
 				<Label fx:id="wxTomorrow" alignment="CENTER" prefWidth="280.0" text="Label" textAlignment="CENTER" textFill="#150794" />
 			</children>
 		</HBox>

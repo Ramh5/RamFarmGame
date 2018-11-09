@@ -28,7 +28,7 @@ enum Sky{
 }
 
 enum Wind{
-	WIND0("Winds calm",0),WIND1("Light winds",0.2),WIND2("Strong winds",0.5);
+	WIND0("Calm winds",0),WIND1("Light winds",0.2),WIND2("Strong winds",0.5);
 	private double dryingFactor;
 	private String name;
 	
@@ -104,6 +104,6 @@ public class Weather {
 	
 	//TODO include the wind in the wx display
 	public String toString(){
-		return String.format("%.0f\u00b0C %s", temp,sky.getName());
+		return String.format("%.0f\u00b0C %s   %s", temp,sky.getName(),wind.getName());
 	}
 }

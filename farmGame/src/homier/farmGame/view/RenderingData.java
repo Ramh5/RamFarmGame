@@ -41,7 +41,7 @@ public class RenderingData {
 		tvdList.put("bakery", new TileViewData(new Image[]{images.get("bakery1")}, new int[]{0}));
 		tvdList.put("cereal", new TileViewData(new Image[]{images.get("sown1"),images.get("sown2"),
 						images.get("cereal1"),images.get("cereal2")}, new int[]{ 0, 25, 50, 90}));
-		tvdList.put("Sunflowers", new TileViewData(new Image[]{images.get("sown1"),images.get("sown2"),
+		tvdList.put("Sunflower seeds", new TileViewData(new Image[]{images.get("sown1"),images.get("sown2"),
 		   		images.get("sunflowers1"),images.get("sunflowers2")}, new int[]{ 0, 25, 50, 90}));
 		tvdList.put("Potatoes", new TileViewData(new Image[]{images.get("sown1"),images.get("sown2"),
 						images.get("potato1"),images.get("potato2")}, new int[]{ 0, 25, 50, 90}));
