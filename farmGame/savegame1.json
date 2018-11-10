@@ -1,61 +1,19 @@
 {
   "inventory": {
-    "money": 402.23975395723136,
-    "data": {
-      "Wheat grain": [
-        {
-          "categories": [
-            "Seed",
-            "Cereal seed",
-            "Cereal"
-          ],
-          "name": "Wheat grain",
-          "qty": 634.9795658709759,
-          "spoilQty": 0.008349981291203222,
-          "fresh": 99.30000000000004,
-          "qual": 14,
-          "price": 0.2821721938775511,
-          "selected": false
-        },
-        {
-          "categories": [
-            "Seed",
-            "Cereal seed",
-            "Cereal"
-          ],
-          "name": "Wheat grain",
-          "qty": 407.37762204382346,
-          "spoilQty": 0.005357015729876208,
-          "fresh": 99.30000000000004,
-          "qual": 12,
-          "price": 0.2770880102040817,
-          "selected": false
-        }
-      ]
-    },
+    "money": 885.0075,
+    "data": {},
     "averageData": {
-      "Mushrooms": {
+      "Potato seeds": {
         "categories": [
-          "Vegetable"
+          "Seed",
+          "Vegetable seed"
         ],
-        "name": "Mushrooms",
-        "qty": 64.0,
-        "spoilQty": 6.976000000000018E-4,
+        "name": "Potato seeds",
+        "qty": 2.0,
+        "spoilQty": 0.0010449999999999988,
         "fresh": 100.0,
-        "qual": 44,
-        "price": 3.596938775510204,
-        "selected": false
-      },
-      "Sunflower seeds": {
-        "categories": [
-          "Seed"
-        ],
-        "name": "Sunflower seeds",
-        "qty": 1.99894729957338,
-        "spoilQty": 3.887952497670118E-5,
-        "fresh": 98.0,
         "qual": 1,
-        "price": 0.7424999999999999,
+        "price": 5.999999999999999,
         "selected": false
       },
       "Wheat grain": {
@@ -65,15 +23,15 @@
           "Cereal"
         ],
         "name": "Wheat grain",
-        "qty": 1042.3571879147994,
-        "spoilQty": 0.01370699702107943,
-        "fresh": 99.0,
-        "qual": 13,
-        "price": 0.27920918367346936,
+        "qty": 2.0,
+        "spoilQty": 0.0010449999999999988,
+        "fresh": 100.0,
+        "qual": 1,
+        "price": 0.25,
         "selected": false
       }
     },
-    "siloSize": 2500.0,
+    "siloSize": 500.0,
     "storageSize": 500.0
   },
   "shop": {
@@ -106,11 +64,11 @@
             "Cereal"
           ],
           "name": "Soybeans",
-          "qty": 9.993924288829426,
-          "spoilQty": 2.5734355043734885E-4,
-          "fresh": 96.5000000000002,
+          "qty": 9.9998955,
+          "spoilQty": 1.0899886094999962E-4,
+          "fresh": 99.80000000000001,
           "qual": 1,
-          "price": 0.24562500000000026,
+          "price": 0.24975000000000003,
           "selected": false
         }
       ],
@@ -122,11 +80,11 @@
             "Cereal"
           ],
           "name": "Barley grain",
-          "qty": 99.93924288829425,
-          "spoilQty": 0.002573435504373488,
-          "fresh": 96.5000000000002,
+          "qty": 99.998955,
+          "spoilQty": 0.0010899886094999961,
+          "fresh": 99.80000000000001,
           "qual": 1,
-          "price": 0.24562500000000026,
+          "price": 0.24975000000000003,
           "selected": false
         }
       ],
@@ -137,301 +95,11 @@
             "Vegetable seed"
           ],
           "name": "Potato seeds",
-          "qty": 99.93924288829425,
-          "spoilQty": 0.002573435504373488,
-          "fresh": 96.5000000000002,
+          "qty": 97.998955,
+          "spoilQty": 0.0010681886094999961,
+          "fresh": 99.80000000000001,
           "qual": 1,
-          "price": 5.895000000000006,
-          "selected": false
-        }
-      ],
-      "Mushrooms": [
-        {
-          "categories": [
-            "Vegetable"
-          ],
-          "name": "Mushrooms",
-          "qty": 3.9984786643365835,
-          "spoilQty": 1.7353397403220918E-4,
-          "fresh": 97.39999999999996,
-          "qual": 61,
-          "price": 3.9726749999999997,
-          "selected": false
-        },
-        {
-          "categories": [
-            "Vegetable"
-          ],
-          "name": "Mushrooms",
-          "qty": 3.9984786643365835,
-          "spoilQty": 1.7353397403220918E-4,
-          "fresh": 97.39999999999996,
-          "qual": 33,
-          "price": 3.2732142857142854,
-          "selected": false
-        },
-        {
-          "categories": [
-            "Vegetable"
-          ],
-          "name": "Mushrooms",
-          "qty": 3.9984786643365835,
-          "spoilQty": 1.7353397403220918E-4,
-          "fresh": 97.39999999999996,
-          "qual": 44,
-          "price": 3.550178571428571,
-          "selected": false
-        },
-        {
-          "categories": [
-            "Vegetable"
-          ],
-          "name": "Mushrooms",
-          "qty": 3.9984786643365835,
-          "spoilQty": 1.7353397403220918E-4,
-          "fresh": 97.39999999999996,
-          "qual": 54,
-          "price": 3.79995,
-          "selected": false
-        },
-        {
-          "categories": [
-            "Vegetable"
-          ],
-          "name": "Mushrooms",
-          "qty": 3.9984786643365835,
-          "spoilQty": 1.7353397403220918E-4,
-          "fresh": 97.39999999999996,
-          "qual": 60,
-          "price": 3.948,
-          "selected": false
-        },
-        {
-          "categories": [
-            "Vegetable"
-          ],
-          "name": "Mushrooms",
-          "qty": 3.9984786643365835,
-          "spoilQty": 1.7353397403220918E-4,
-          "fresh": 97.39999999999996,
-          "qual": 49,
-          "price": 3.6760714285714284,
-          "selected": false
-        },
-        {
-          "categories": [
-            "Vegetable"
-          ],
-          "name": "Mushrooms",
-          "qty": 3.998804160374498,
-          "spoilQty": 1.591524055829062E-4,
-          "fresh": 97.79999999999997,
-          "qual": 45,
-          "price": 3.5826020408163264,
-          "selected": false
-        },
-        {
-          "categories": [
-            "Vegetable"
-          ],
-          "name": "Mushrooms",
-          "qty": 3.998804160374498,
-          "spoilQty": 1.591524055829062E-4,
-          "fresh": 97.79999999999997,
-          "qual": 51,
-          "price": 3.7334749999999994,
-          "selected": false
-        },
-        {
-          "categories": [
-            "Vegetable"
-          ],
-          "name": "Mushrooms",
-          "qty": 7.997999420558105,
-          "spoilQty": 3.0392397798121017E-4,
-          "fresh": 97.99999999999997,
-          "qual": 45,
-          "price": 3.586224489795918,
-          "selected": false
-        },
-        {
-          "categories": [
-            "Vegetable"
-          ],
-          "name": "Mushrooms",
-          "qty": 3.998956120707085,
-          "spoilQty": 1.5196033258687032E-4,
-          "fresh": 97.99999999999997,
-          "qual": 36,
-          "price": 3.3589285714285713,
-          "selected": false
-        },
-        {
-          "categories": [
-            "Vegetable"
-          ],
-          "name": "Mushrooms",
-          "qty": 3.998956120707085,
-          "spoilQty": 1.5196033258687032E-4,
-          "fresh": 97.99999999999997,
-          "qual": 49,
-          "price": 3.687244897959183,
-          "selected": false
-        },
-        {
-          "categories": [
-            "Vegetable"
-          ],
-          "name": "Mushrooms",
-          "qty": 3.998956120707085,
-          "spoilQty": 1.5196033258687032E-4,
-          "fresh": 97.99999999999997,
-          "qual": 68,
-          "price": 4.1579999999999995,
-          "selected": false
-        },
-        {
-          "categories": [
-            "Vegetable"
-          ],
-          "name": "Mushrooms",
-          "qty": 3.998956120707085,
-          "spoilQty": 1.5196033258687032E-4,
-          "fresh": 97.99999999999997,
-          "qual": 31,
-          "price": 3.232653061224489,
-          "selected": false
-        },
-        {
-          "categories": [
-            "Vegetable"
-          ],
-          "name": "Mushrooms",
-          "qty": 3.998956120707085,
-          "spoilQty": 1.5196033258687032E-4,
-          "fresh": 97.99999999999997,
-          "qual": 48,
-          "price": 3.661989795918367,
-          "selected": false
-        },
-        {
-          "categories": [
-            "Vegetable"
-          ],
-          "name": "Mushrooms",
-          "qty": 3.998956120707085,
-          "spoilQty": 1.5196033258687032E-4,
-          "fresh": 97.99999999999997,
-          "qual": 59,
-          "price": 3.9352499999999995,
-          "selected": false
-        },
-        {
-          "categories": [
-            "Vegetable"
-          ],
-          "name": "Mushrooms",
-          "qty": 3.998956120707085,
-          "spoilQty": 1.5196033258687032E-4,
-          "fresh": 97.99999999999997,
-          "qual": 29,
-          "price": 3.1821428571428565,
-          "selected": false
-        },
-        {
-          "categories": [
-            "Vegetable"
-          ],
-          "name": "Mushrooms",
-          "qty": 3.9991008881592363,
-          "spoilQty": 1.4476745215136536E-4,
-          "fresh": 98.19999999999997,
-          "qual": 31,
-          "price": 3.235918367346938,
-          "selected": false
-        },
-        {
-          "categories": [
-            "Vegetable"
-          ],
-          "name": "Mushrooms",
-          "qty": 3.9991008881592363,
-          "spoilQty": 1.4476745215136536E-4,
-          "fresh": 98.19999999999997,
-          "qual": 28,
-          "price": 3.1600765306122445,
-          "selected": false
-        },
-        {
-          "categories": [
-            "Vegetable"
-          ],
-          "name": "Mushrooms",
-          "qty": 3.9991008881592363,
-          "spoilQty": 1.4476745215136536E-4,
-          "fresh": 98.19999999999997,
-          "qual": 60,
-          "price": 3.9639999999999995,
-          "selected": false
-        },
-        {
-          "categories": [
-            "Vegetable"
-          ],
-          "name": "Mushrooms",
-          "qty": 3.9991008881592363,
-          "spoilQty": 1.4476745215136536E-4,
-          "fresh": 98.19999999999997,
-          "qual": 47,
-          "price": 3.640408163265305,
-          "selected": false
-        },
-        {
-          "categories": [
-            "Vegetable"
-          ],
-          "name": "Mushrooms",
-          "qty": 3.9991008881592363,
-          "spoilQty": 1.4476745215136536E-4,
-          "fresh": 98.19999999999997,
-          "qual": 41,
-          "price": 3.488724489795918,
-          "selected": false
-        },
-        {
-          "categories": [
-            "Vegetable"
-          ],
-          "name": "Mushrooms",
-          "qty": 3.9991008881592363,
-          "spoilQty": 1.4476745215136536E-4,
-          "fresh": 98.19999999999997,
-          "qual": 51,
-          "price": 3.7410249999999996,
-          "selected": false
-        },
-        {
-          "categories": [
-            "Vegetable"
-          ],
-          "name": "Mushrooms",
-          "qty": 3.9991008881592363,
-          "spoilQty": 1.4476745215136536E-4,
-          "fresh": 98.19999999999997,
-          "qual": 37,
-          "price": 3.387602040816326,
-          "selected": false
-        },
-        {
-          "categories": [
-            "Vegetable"
-          ],
-          "name": "Mushrooms",
-          "qty": 3.9991008881592363,
-          "spoilQty": 1.4476745215136536E-4,
-          "fresh": 98.19999999999997,
-          "qual": 45,
-          "price": 3.58984693877551,
+          "price": 5.994,
           "selected": false
         }
       ],
@@ -442,26 +110,11 @@
             "Vegetable seed"
           ],
           "name": "Onion seeds",
-          "qty": 99.93924288829425,
-          "spoilQty": 0.002573435504373488,
-          "fresh": 96.5000000000002,
+          "qty": 99.998955,
+          "spoilQty": 0.0010899886094999961,
+          "fresh": 99.80000000000001,
           "qual": 1,
-          "price": 5.895000000000006,
-          "selected": false
-        }
-      ],
-      "Carrot seeds": [
-        {
-          "categories": [
-            "Seed",
-            "Vegetable seed"
-          ],
-          "name": "Carrot seeds",
-          "qty": 99.93924288829425,
-          "spoilQty": 0.002573435504373488,
-          "fresh": 96.5000000000002,
-          "qual": 1,
-          "price": 5.895000000000006,
+          "price": 5.994,
           "selected": false
         }
       ],
@@ -473,53 +126,26 @@
             "Cereal"
           ],
           "name": "Wheat grain",
-          "qty": 91.9431893531797,
-          "spoilQty": 0.002367537125844296,
-          "fresh": 96.5000000000002,
+          "qty": 97.998955,
+          "spoilQty": 0.0010681886094999961,
+          "fresh": 99.80000000000001,
           "qual": 1,
-          "price": 0.24562500000000026,
+          "price": 0.24975000000000003,
           "selected": false
-        },
+        }
+      ],
+      "Carrot seeds": [
         {
           "categories": [
             "Seed",
-            "Cereal seed",
-            "Cereal"
+            "Vegetable seed"
           ],
-          "name": "Wheat grain",
-          "qty": 477.228852086248,
-          "spoilQty": 0.007778830289005676,
-          "fresh": 98.60000000000008,
-          "qual": 9,
-          "price": 0.2685153061224491,
-          "selected": false
-        },
-        {
-          "categories": [
-            "Seed",
-            "Cereal seed",
-            "Cereal"
-          ],
-          "name": "Wheat grain",
-          "qty": 499.96527600395325,
-          "spoilQty": 0.006574543379451899,
-          "fresh": 99.30000000000004,
-          "qual": 12,
-          "price": 0.2770880102040817,
-          "selected": false
-        },
-        {
-          "categories": [
-            "Seed",
-            "Cereal seed",
-            "Cereal"
-          ],
-          "name": "Wheat grain",
-          "qty": 982.1313689421336,
-          "spoilQty": 0.012915027501588886,
-          "fresh": 99.30000000000004,
-          "qual": 11,
-          "price": 0.27454591836734693,
+          "name": "Carrot seeds",
+          "qty": 99.998955,
+          "spoilQty": 0.0010899886094999961,
+          "fresh": 99.80000000000001,
+          "qual": 1,
+          "price": 5.994,
           "selected": false
         }
       ],
@@ -529,11 +155,11 @@
             "Seed"
           ],
           "name": "Sunflower seeds",
-          "qty": 1.9983212203462413,
-          "spoilQty": 5.145677142391394E-5,
-          "fresh": 96.5000000000002,
+          "qty": 9.9998955,
+          "spoilQty": 1.0899886094999962E-4,
+          "fresh": 99.80000000000001,
           "qual": 1,
-          "price": 0.7368750000000008,
+          "price": 0.7492500000000001,
           "selected": false
         }
       ]
@@ -546,11 +172,11 @@
           "Cereal"
         ],
         "name": "Soybeans",
-        "qty": 9.993924288829426,
-        "spoilQty": 2.5734355043734885E-4,
-        "fresh": 97.0,
+        "qty": 9.9998955,
+        "spoilQty": 1.0899886094999962E-4,
+        "fresh": 100.0,
         "qual": 1,
-        "price": 0.24625,
+        "price": 0.25,
         "selected": false
       },
       "Barley grain": {
@@ -560,11 +186,11 @@
           "Cereal"
         ],
         "name": "Barley grain",
-        "qty": 99.93924288829425,
-        "spoilQty": 0.002573435504373488,
-        "fresh": 97.0,
+        "qty": 99.998955,
+        "spoilQty": 0.0010899886094999961,
+        "fresh": 100.0,
         "qual": 1,
-        "price": 0.24625,
+        "price": 0.25,
         "selected": false
       },
       "Potato seeds": {
@@ -573,23 +199,11 @@
           "Vegetable seed"
         ],
         "name": "Potato seeds",
-        "qty": 99.93924288829425,
-        "spoilQty": 0.002573435504373488,
-        "fresh": 97.0,
+        "qty": 97.998955,
+        "spoilQty": 0.0010681886094999961,
+        "fresh": 100.0,
         "qual": 1,
-        "price": 5.909999999999999,
-        "selected": false
-      },
-      "Mushrooms": {
-        "categories": [
-          "Vegetable"
-        ],
-        "name": "Mushrooms",
-        "qty": 99.97197967755007,
-        "spoilQty": 0.003885294578659294,
-        "fresh": 98.0,
-        "qual": 46,
-        "price": 3.611479591836735,
+        "price": 5.999999999999999,
         "selected": false
       },
       "Onion seeds": {
@@ -598,11 +212,11 @@
           "Vegetable seed"
         ],
         "name": "Onion seeds",
-        "qty": 99.93924288829425,
-        "spoilQty": 0.002573435504373488,
-        "fresh": 97.0,
+        "qty": 99.998955,
+        "spoilQty": 0.0010899886094999961,
+        "fresh": 100.0,
         "qual": 1,
-        "price": 5.909999999999999,
+        "price": 5.999999999999999,
         "selected": false
       },
       "Wheat grain": {
@@ -612,11 +226,11 @@
           "Cereal"
         ],
         "name": "Wheat grain",
-        "qty": 2051.2686863855147,
-        "spoilQty": 0.029635938295890757,
-        "fresh": 99.0,
-        "qual": 10,
-        "price": 0.27159438775510203,
+        "qty": 97.998955,
+        "spoilQty": 0.0010681886094999961,
+        "fresh": 100.0,
+        "qual": 1,
+        "price": 0.25,
         "selected": false
       },
       "Carrot seeds": {
@@ -625,11 +239,11 @@
           "Vegetable seed"
         ],
         "name": "Carrot seeds",
-        "qty": 99.93924288829425,
-        "spoilQty": 0.002573435504373488,
-        "fresh": 97.0,
+        "qty": 99.998955,
+        "spoilQty": 0.0010899886094999961,
+        "fresh": 100.0,
         "qual": 1,
-        "price": 5.909999999999999,
+        "price": 5.999999999999999,
         "selected": false
       },
       "Sunflower seeds": {
@@ -637,11 +251,11 @@
           "Seed"
         ],
         "name": "Sunflower seeds",
-        "qty": 1.9983212203462413,
-        "spoilQty": 5.145677142391394E-5,
-        "fresh": 97.0,
+        "qty": 9.9998955,
+        "spoilQty": 1.0899886094999962E-4,
+        "fresh": 100.0,
         "qual": 1,
-        "price": 0.73875,
+        "price": 0.75,
         "selected": false
       }
     },
@@ -685,61 +299,19 @@
       "Silo": 0
     },
     "money": 0.0,
-    "data": {
-      "Wheat grain": [
-        {
-          "categories": [
-            "Seed",
-            "Cereal seed",
-            "Cereal"
-          ],
-          "name": "Wheat grain",
-          "qty": 634.9795658709759,
-          "spoilQty": 0.008349981291203222,
-          "fresh": 99.30000000000004,
-          "qual": 14,
-          "price": 0.2821721938775511,
-          "selected": false
-        },
-        {
-          "categories": [
-            "Seed",
-            "Cereal seed",
-            "Cereal"
-          ],
-          "name": "Wheat grain",
-          "qty": 407.37762204382346,
-          "spoilQty": 0.005357015729876208,
-          "fresh": 99.30000000000004,
-          "qual": 12,
-          "price": 0.2770880102040817,
-          "selected": false
-        }
-      ]
-    },
+    "data": {},
     "averageData": {
-      "Mushrooms": {
+      "Potato seeds": {
         "categories": [
-          "Vegetable"
+          "Seed",
+          "Vegetable seed"
         ],
-        "name": "Mushrooms",
-        "qty": 32.0,
-        "spoilQty": 6.976000000000018E-4,
+        "name": "Potato seeds",
+        "qty": 2.0,
+        "spoilQty": 0.0010449999999999988,
         "fresh": 100.0,
-        "qual": 46,
-        "price": 3.6479591836734695,
-        "selected": false
-      },
-      "Sunflower seeds": {
-        "categories": [
-          "Seed"
-        ],
-        "name": "Sunflower seeds",
-        "qty": 1.99894729957338,
-        "spoilQty": 3.887952497670118E-5,
-        "fresh": 98.0,
         "qual": 1,
-        "price": 0.7424999999999999,
+        "price": 5.999999999999999,
         "selected": false
       },
       "Wheat grain": {
@@ -749,11 +321,11 @@
           "Cereal"
         ],
         "name": "Wheat grain",
-        "qty": 1042.3571879147994,
-        "spoilQty": 0.01370699702107943,
-        "fresh": 99.0,
-        "qual": 13,
-        "price": 0.27920918367346936,
+        "qty": 2.0,
+        "spoilQty": 0.0010449999999999988,
+        "fresh": 100.0,
+        "qual": 1,
+        "price": 0.25,
         "selected": false
       }
     },
@@ -884,10 +456,10 @@
     {
       "type": "FarmPlot",
       "seed": {
-        "name": "Sunflower seeds",
-        "prodName": "Sunflower seeds",
-        "growthRate": 5.0,
-        "maxYield": 500,
+        "name": "Potato seeds",
+        "prodName": "Potatoes",
+        "growthRate": 8.0,
+        "maxYield": 300,
         "yieldMap": {
           "0.0": 0.0,
           "50.0": 0.0,
@@ -901,84 +473,56 @@
           "160.0": 0.0
         },
         "tempRange": [
-          20,
-          30
+          5,
+          20
         ]
       },
       "plowed": true,
       "sown": true,
-      "waterLevel": 110.15441465917547,
+      "waterLevel": 116.1893737636643,
       "yieldPenalty": 0.0,
-      "growth": 75.03253336172128,
-      "yield": 125.16266680860639,
-      "quality": 16.006506672344344,
-      "growthFactor": 4.449658700750549
+      "growth": 0.891158676930855,
+      "yield": 0.0,
+      "quality": 1.111394834616359,
+      "growthFactor": 7.229656622985568
     },
     {
       "type": "FarmPlot",
       "seed": {
-        "name": "Sunflower seeds",
-        "prodName": "Sunflower seeds",
-        "growthRate": 5.0,
-        "maxYield": 500,
-        "yieldMap": {
-          "0.0": 0.0,
-          "50.0": 0.0,
-          "80.0": 30.0,
-          "95.0": 98.0,
-          "100.0": 100.0,
-          "110.0": 98.0,
-          "115.0": 95.0,
-          "130.0": 70.0,
-          "150.0": 0.0,
-          "160.0": 0.0
-        },
-        "tempRange": [
-          20,
-          30
-        ]
+        "name": "empty",
+        "prodName": null,
+        "growthRate": 0.0,
+        "maxYield": 0,
+        "yieldMap": null,
+        "tempRange": null
       },
-      "plowed": true,
-      "sown": true,
-      "waterLevel": 110.15441465917547,
+      "plowed": false,
+      "sown": false,
+      "waterLevel": 0.0,
       "yieldPenalty": 0.0,
-      "growth": 74.46144553730974,
-      "yield": 122.30722768654871,
-      "quality": 15.892289107462048,
-      "growthFactor": 4.449658700750549
+      "growth": 0.0,
+      "yield": 0.0,
+      "quality": 1.0,
+      "growthFactor": 0.0
     },
     {
       "type": "FarmPlot",
       "seed": {
-        "name": "Sunflower seeds",
-        "prodName": "Sunflower seeds",
-        "growthRate": 5.0,
-        "maxYield": 500,
-        "yieldMap": {
-          "0.0": 0.0,
-          "50.0": 0.0,
-          "80.0": 30.0,
-          "95.0": 98.0,
-          "100.0": 100.0,
-          "110.0": 98.0,
-          "115.0": 95.0,
-          "130.0": 70.0,
-          "150.0": 0.0,
-          "160.0": 0.0
-        },
-        "tempRange": [
-          20,
-          30
-        ]
+        "name": "empty",
+        "prodName": null,
+        "growthRate": 0.0,
+        "maxYield": 0,
+        "yieldMap": null,
+        "tempRange": null
       },
-      "plowed": true,
-      "sown": true,
-      "waterLevel": 110.15441465917547,
-      "yieldPenalty": 3.6422728586065674,
-      "growth": 72.70101044484568,
-      "yield": 109.86277936562183,
-      "quality": 15.540202088969142,
-      "growthFactor": 4.449658700750549
+      "plowed": false,
+      "sown": false,
+      "waterLevel": 0.0,
+      "yieldPenalty": 0.0,
+      "growth": 0.0,
+      "yield": 0.0,
+      "quality": 1.0,
+      "growthFactor": 0.0
     },
     {
       "type": "ForestTile",
@@ -1007,10 +551,10 @@
     {
       "type": "FarmPlot",
       "seed": {
-        "name": "Sunflower seeds",
-        "prodName": "Sunflower seeds",
-        "growthRate": 5.0,
-        "maxYield": 500,
+        "name": "Wheat grain",
+        "prodName": "Wheat grain",
+        "growthRate": 10.0,
+        "maxYield": 1000,
         "yieldMap": {
           "0.0": 0.0,
           "50.0": 0.0,
@@ -1024,18 +568,18 @@
           "160.0": 0.0
         },
         "tempRange": [
-          20,
-          30
+          15,
+          25
         ]
       },
       "plowed": true,
       "sown": true,
-      "waterLevel": 110.15441465917547,
+      "waterLevel": 117.62983507449766,
       "yieldPenalty": 0.0,
-      "growth": 81.31965982939741,
-      "yield": 179.91228946634126,
-      "quality": 17.263931965879493,
-      "growthFactor": 4.449658700750549
+      "growth": 0.4942425693033021,
+      "yield": 0.0,
+      "quality": 1.049424256930332,
+      "growthFactor": 9.03707077873196
     },
     {
       "type": "BuildingTile",
@@ -1047,35 +591,21 @@
     {
       "type": "FarmPlot",
       "seed": {
-        "name": "Wheat grain",
-        "prodName": "Wheat grain",
-        "growthRate": 10.0,
-        "maxYield": 1000,
-        "yieldMap": {
-          "0.0": 0.0,
-          "50.0": 0.0,
-          "80.0": 30.0,
-          "95.0": 98.0,
-          "100.0": 100.0,
-          "110.0": 98.0,
-          "115.0": 95.0,
-          "130.0": 70.0,
-          "150.0": 0.0,
-          "160.0": 0.0
-        },
-        "tempRange": [
-          15,
-          25
-        ]
+        "name": "empty",
+        "prodName": null,
+        "growthRate": 0.0,
+        "maxYield": 0,
+        "yieldMap": null,
+        "tempRange": null
       },
-      "plowed": true,
-      "sown": true,
-      "waterLevel": 110.15441465917547,
+      "plowed": false,
+      "sown": false,
+      "waterLevel": 0.0,
       "yieldPenalty": 0.0,
-      "growth": 30.003637628027853,
+      "growth": 0.0,
       "yield": 0.0,
-      "quality": 17.000363762802763,
-      "growthFactor": 6.00279129772627
+      "quality": 1.0,
+      "growthFactor": 0.0
     },
     {
       "type": "ForestTile",
@@ -1104,75 +634,59 @@
     {
       "type": "FarmPlot",
       "seed": {
-        "name": "Wheat grain",
-        "prodName": "Wheat grain",
-        "growthRate": 10.0,
-        "maxYield": 1000,
-        "yieldMap": {
-          "0.0": 0.0,
-          "50.0": 0.0,
-          "80.0": 30.0,
-          "95.0": 98.0,
-          "100.0": 100.0,
-          "110.0": 98.0,
-          "115.0": 95.0,
-          "130.0": 70.0,
-          "150.0": 0.0,
-          "160.0": 0.0
-        },
-        "tempRange": [
-          15,
-          25
-        ]
+        "name": "empty",
+        "prodName": null,
+        "growthRate": 0.0,
+        "maxYield": 0,
+        "yieldMap": null,
+        "tempRange": null
       },
-      "plowed": true,
-      "sown": true,
-      "waterLevel": 110.15441465917547,
+      "plowed": false,
+      "sown": false,
+      "waterLevel": 0.0,
       "yieldPenalty": 0.0,
-      "growth": 35.33830116999571,
+      "growth": 0.0,
       "yield": 0.0,
-      "quality": 17.53383011699959,
-      "growthFactor": 6.00279129772627
+      "quality": 1.0,
+      "growthFactor": 0.0
     },
     {
       "type": "FarmPlot",
       "seed": {
-        "name": "Wheat grain",
-        "prodName": "Wheat grain",
-        "growthRate": 10.0,
-        "maxYield": 1000,
-        "yieldMap": {
-          "0.0": 0.0,
-          "50.0": 0.0,
-          "80.0": 30.0,
-          "95.0": 98.0,
-          "100.0": 100.0,
-          "110.0": 98.0,
-          "115.0": 95.0,
-          "130.0": 70.0,
-          "150.0": 0.0,
-          "160.0": 0.0
-        },
-        "tempRange": [
-          15,
-          25
-        ]
+        "name": "empty",
+        "prodName": null,
+        "growthRate": 0.0,
+        "maxYield": 0,
+        "yieldMap": null,
+        "tempRange": null
       },
-      "plowed": true,
-      "sown": true,
-      "waterLevel": 110.15441465917547,
+      "plowed": false,
+      "sown": false,
+      "waterLevel": 0.0,
       "yieldPenalty": 0.0,
-      "growth": 32.27467706954693,
+      "growth": 0.0,
       "yield": 0.0,
-      "quality": 17.227467706954688,
-      "growthFactor": 6.00279129772627
+      "quality": 1.0,
+      "growthFactor": 0.0
     },
     {
-      "type": "BuildingTile",
-      "wsType": "silo",
-      "level": 0,
-      "storageSize": 0.0,
-      "siloSize": 2000.0
+      "type": "FarmPlot",
+      "seed": {
+        "name": "empty",
+        "prodName": null,
+        "growthRate": 0.0,
+        "maxYield": 0,
+        "yieldMap": null,
+        "tempRange": null
+      },
+      "plowed": false,
+      "sown": false,
+      "waterLevel": 0.0,
+      "yieldPenalty": 0.0,
+      "growth": 0.0,
+      "yield": 0.0,
+      "quality": 1.0,
+      "growthFactor": 0.0
     },
     {
       "type": "ForestTile",
@@ -1333,27 +847,27 @@
   ],
   "wxForcast": {
     "today": {
-      "temp": 26.0,
-      "sky": "CLOUD1",
+      "temp": 17.0,
+      "sky": "SKC",
       "wind": "WIND1"
     },
     "tomorrow": {
-      "temp": 27.0,
-      "sky": "RAIN2",
-      "wind": "WIND1"
+      "temp": 17.0,
+      "sky": "CLOUD2",
+      "wind": "WIND2"
     },
     "random": {
-      "seed": 153346720280068,
-      "nextNextGaussian": -0.46958360038261693,
-      "haveNextNextGaussian": true
+      "seed": 274517528091655,
+      "nextNextGaussian": 0.7738606498718423,
+      "haveNextNextGaussian": false
     },
     "gameClock": {
       "secondsInADay": 300,
-      "totalSeconds": 24669.097298413268,
+      "totalSeconds": 14715.608800808008,
       "year": 1,
-      "month": 6,
-      "day": 11,
-      "hour": 9,
+      "month": 4,
+      "day": 2,
+      "hour": 6,
       "isNewDay": false
     }
   },
@@ -1367,7 +881,7 @@
         "name": "Water and sow",
         "energyCost": 330.0,
         "timeCost": 64,
-        "startedAt": 22984.75836831921,
+        "startedAt": 14608.014711702004,
         "isCompleted": true,
         "result": null,
         "newTile": {
@@ -1396,14 +910,14 @@
           },
           "plowed": true,
           "sown": true,
-          "waterLevel": 110.15441465917547,
+          "waterLevel": 117.62983507449766,
           "yieldPenalty": 0.0,
-          "growth": 30.003637628027853,
+          "growth": 0.4942425693033021,
           "yield": 0.0,
-          "quality": 17.000363762802763,
-          "growthFactor": 6.00279129772627
+          "quality": 1.049424256930332,
+          "growthFactor": 9.03707077873196
         },
-        "newTileIndex": 41,
+        "newTileIndex": 39,
         "plow": false,
         "sow": false,
         "seedName": "Wheat grain",
@@ -1433,23 +947,23 @@
           },
           "plowed": true,
           "sown": true,
-          "waterLevel": 110.15441465917547,
+          "waterLevel": 117.62983507449766,
           "yieldPenalty": 0.0,
-          "growth": 30.003637628027853,
+          "growth": 0.4942425693033021,
           "yield": 0.0,
-          "quality": 17.000363762802763,
-          "growthFactor": 6.00279129772627
+          "quality": 1.049424256930332,
+          "growthFactor": 9.03707077873196
         }
       }
     }
   ],
   "gameClock": {
     "secondsInADay": 300,
-    "totalSeconds": 24669.097298413268,
+    "totalSeconds": 14715.608800808008,
     "year": 1,
-    "month": 6,
-    "day": 11,
-    "hour": 9,
+    "month": 4,
+    "day": 2,
+    "hour": 6,
     "isNewDay": false
   }
 }

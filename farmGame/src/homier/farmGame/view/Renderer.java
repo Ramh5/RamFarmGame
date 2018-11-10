@@ -21,6 +21,7 @@ import homier.farmGame.utils.TextFlowDataSet;
 import homier.farmGame.utils.TextFlowManager;
 import javafx.beans.property.DoubleProperty;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
@@ -130,7 +131,7 @@ public class Renderer {
 					newIndexToRender = forestTVD.getIndexToRender((gameClock.getMonth()+1)/3%4);
 					//setImageView(i, j, index, newIndexToRender, forestTVD, grid);
 					if (newIndexToRender != previousMap[index]) {
-						ImageView newImageView = forestTVD.getImageToRender(newIndexToRender);
+						Group newImageView = forestTVD.getImageToRender(newIndexToRender);
 						GridPane.setConstraints(newImageView, i, j);
 						grid.getChildren().set(index, newImageView);
 						previousMap[index] = newIndexToRender;
@@ -171,7 +172,7 @@ public class Renderer {
 					TileViewData buildingTVD = RenderingData.getTVD(((BuildingTile) tile).getWsType());
 					newIndexToRender = buildingTVD.getIndexToRender(0);
 					if (newIndexToRender != previousMap[index]) {
-						ImageView newImageView = buildingTVD.getImageToRender(newIndexToRender);
+						Group newImageView = buildingTVD.getImageToRender(newIndexToRender);
 						GridPane.setConstraints(newImageView, i, j);
 						grid.getChildren().set(index, newImageView);
 						previousMap[index] = newIndexToRender;
@@ -204,7 +205,7 @@ public class Renderer {
 						TileViewData dirtTVD = RenderingData.getTVD("dirt");
 						newIndexToRender = dirtTVD.getIndexToRender(0);
 						if (newIndexToRender != previousMap[index]) {
-							ImageView newImageView = dirtTVD.getImageToRender(newIndexToRender);
+							Group newImageView = dirtTVD.getImageToRender(newIndexToRender);
 							GridPane.setConstraints(newImageView, i, j);
 							grid.getChildren().set(index, newImageView);
 							previousMap[index] = newIndexToRender;
@@ -246,7 +247,7 @@ public class Renderer {
 						TileViewData farmTVD = RenderingData.getTVD("plowed");
 						newIndexToRender = farmTVD.getIndexToRender(0);
 						if (newIndexToRender != previousMap[index]) {
-							ImageView newImageView = farmTVD.getImageToRender(newIndexToRender);
+							Group newImageView = farmTVD.getImageToRender(newIndexToRender);
 							GridPane.setConstraints(newImageView, i, j);
 							grid.getChildren().set(index, newImageView);
 							previousMap[index] = newIndexToRender;
@@ -289,7 +290,7 @@ public class Renderer {
 						TileViewData sownTVD = RenderingData.getTVD(farmTile.getSeed());
 						newIndexToRender = sownTVD.getIndexToRender(growthProperty.get());
 						if (newIndexToRender != previousMap[index]) {
-							ImageView newImageView = sownTVD.getImageToRender(newIndexToRender);
+							Group newImageView = sownTVD.getImageToRender(newIndexToRender);
 							GridPane.setConstraints(newImageView, i, j);
 							grid.getChildren().set(index, newImageView);
 							previousMap[index] = newIndexToRender;

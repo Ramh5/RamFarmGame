@@ -1,17 +1,21 @@
 package homier.farmGame.view;
 
+import javafx.scene.Group;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class TileViewData {
 	private Image[] images;
 	private int[] map;
+	private Image icon;
 	
 	
 	
-	public TileViewData(Image[] images, int[] map){
+	public TileViewData(Image[] images, int[] map, Image icon){
 		this.images = images;
 		this.map = map;	
+		this.icon = icon;
 	}
 
 	//method to return the index corresponding to a certain value when compared against map[]	
@@ -28,9 +32,12 @@ public class TileViewData {
 			return  map.length-1;
 	}//getIndexToRender method 
 	
-	public ImageView getImageToRender(int index){
+	public Group getImageToRender(int index){
+		ImageView tileIV = new ImageView(images[index]);
+		ImageView iconIV = new ImageView(icon);
+		iconIV.setBlendMode(BlendMode.SRC_OVER);
 		
-		return new ImageView(images[index]);
+		return new Group(tileIV,iconIV);
 		
 	}//getImageToRender method 
 	
