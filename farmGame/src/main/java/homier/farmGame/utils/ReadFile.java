@@ -2,8 +2,15 @@ package homier.farmGame.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
+import org.apache.commons.io.IOUtils;
+
+import homier.farmGame.controller.App;
+
 
 
 public class ReadFile{
@@ -29,12 +36,14 @@ public class ReadFile{
 	 * @param path : loads the file at the specified path
 	 * @return the string in the file
 	 */
-	public static String getString(String path) {
+	public static String getString(String resource) {
+		System.out.println("read file: " + resource);
 		byte[] encoded = new byte[0];
 		try {
-			encoded = Files.readAllBytes(new File(path).toPath());
+			InputStream in = App.class.getResourceAsStream(resource);
+			encoded = IOUtils.toByteArray(in);
 		} catch (IOException e) {
-			System.out.println("error reading  file at " + path);
+			System.out.println("error reading  file at " + resource);
 			e.printStackTrace();
 		}
 		return new String(encoded);

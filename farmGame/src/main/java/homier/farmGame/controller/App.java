@@ -49,18 +49,21 @@ public class App extends Application{
 			stop();
 		});
 		//System.out.println(javafx.scene.text.Font.getFamilies());
-		PROD_DATA_PATH = getClass().getResource("/database/product_data.txt").getPath();
-		SHOP_LIST_PATH = getClass().getResource("/database/shop_list.txt").getPath();
-		SEED_DATA_PATH = getClass().getResource("/database/seed_data.txt").getPath();
-		RECIPE_LIST_PATH = getClass().getResource("/database/recipe_list.txt").getPath();
-		TILE_IMAGES_PATH = getClass().getResource("/tiles").getPath();
-		PROD_ICON_PATH =getClass().getResource("/products_icons").getPath();
+
+		PROD_DATA_PATH = "/database/product_data.txt";
+		SHOP_LIST_PATH = "/database/shop_list.txt";
+		SEED_DATA_PATH = "/database/seed_data.txt";
+		RECIPE_LIST_PATH = "/database/recipe_list.txt";
+		
+		TILE_IMAGES_PATH = "./assets/tiles";//get the parent directory to get the assets
+		PROD_ICON_PATH ="./assets/products_icons";
 		new MyData();
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/homier/farmGame/view/MainUI.fxml"));
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource("/fxml/MainUI.fxml"));
 		Parent root = loader.load();
 		engine=loader.getController();
 		Scene scene = new Scene(root);
-		scene.getStylesheets().add(getClass().getResource("/homier/farmGame/view/FarmGameStyle.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("/css/FarmGameStyle.css").toExternalForm());
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		

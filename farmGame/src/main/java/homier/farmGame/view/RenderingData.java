@@ -1,6 +1,9 @@
 package homier.farmGame.view;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeMap;
@@ -26,9 +29,17 @@ public class RenderingData {
 		icons = new HashMap<>();
 		//load up all the images in the image folder
 		File folder = new File(App.TILE_IMAGES_PATH);
+		System.out.println(folder);
 		String[] fileNames = folder.list();
+		System.out.println(fileNames);
 		for(String name:fileNames){
-			images.put(name.replace(".png", ""), new Image("/tiles/"+name, tileSize, tileSize, true, true));
+			System.out.println(App.TILE_IMAGES_PATH+"/"+name);
+			try {//ugly but it seems to work, not sure how to get the url of a file in a parent directory in a cleaner way
+				images.put(name.replace(".png", ""), new Image(Paths.get(App.TILE_IMAGES_PATH+"/"+name).toUri().toURL().toString(), tileSize, tileSize, true, true));
+			} catch (MalformedURLException e) {
+				
+				e.printStackTrace();
+			}
 			//System.out.println(name.replace(".png", ""));
 		}
 		
@@ -36,7 +47,12 @@ public class RenderingData {
 		String[] iconsfileNames = iconsfolder.list();
 		
 		for(String name:iconsfileNames){
-			icons.put(name.replace(".png", ""), new Image("/products_icons/"+name, 40, 40, true, true));
+			try {//ugly but it seems to work, not sure how to get the url of a file in a parent directory in a cleaner way
+				icons.put(name.replace(".png", ""), new Image(Paths.get(App.PROD_ICON_PATH+"/"+name).toUri().toURL().toString(), 40, 40, true, true));
+			} catch (MalformedURLException e) {
+				
+				e.printStackTrace();
+			}
 			
 		}
 		

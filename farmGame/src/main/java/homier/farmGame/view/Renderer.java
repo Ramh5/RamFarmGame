@@ -44,7 +44,7 @@ public class Renderer {
 	private GridPane popupGrid = new GridPane();
 	private CustomMenuItem customMI;
 	private ContextMenu popup = new ContextMenu();
-	private final static Image emptyTileImage = new Image("empty_tile.png", 100, 100, true, true);
+	private final static Image emptyTileImage = new Image("/icons/empty_tile.png", 100, 100, true, true);
 
 	
 	private int[] previousMap;

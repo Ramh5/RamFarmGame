@@ -196,7 +196,7 @@ public class Engine {
 		
 		if (game==null){
 			game = new Game();//create a new game if not loaded save game
-			fileChooser.setInitialDirectory(new File(getClass().getResource("/homier").getFile()));
+			fileChooser.setInitialDirectory(new File("C:/Users/Ram/Documents/FarmGame/saves"));
 			game.getClock().addTime(4*FarmTimeUnits.MONTH.seconds);
 		}
 		
@@ -443,10 +443,10 @@ public class Engine {
 			pauseLabel.setText("Jeu en pause");
 			pauseLabel.setTextFill(Color.RED);
 			pauseLabel.setFont(new Font("Arial Bold", 12));
-			pauseButton.setGraphic(new ImageView(new Image("Button-Play.png", 32, 32, true, true)));
+			pauseButton.setGraphic(new ImageView(new Image("/icons/Button-Play.png", 32, 32, true, true)));
 		} else {
 			pauseLabel.setText("");
-			pauseButton.setGraphic(new ImageView(new Image("Button-Pause.png", 32, 32, true, true)));
+			pauseButton.setGraphic(new ImageView(new Image("/icons/Button-Pause.png", 32, 32, true, true)));
 		}
 	}
 
