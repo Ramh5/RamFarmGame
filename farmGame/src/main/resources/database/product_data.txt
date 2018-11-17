@@ -1,5 +1,5 @@
 COMMENTLINE format is name of product;categories;basePrice;freshDecay
-BASEPRICE vegy;2;cereal;0.5;mush;5
+BASEPRICE vegy;0.4;cereal;0.6;mush;5;seed;2
 FRESHDECAY animal;1.4;vegy;1;cereal;0.5;seed;0.1;mush;0.2;dry;0.2
 COMMENTLINE...................................................... Vegetables .....................................................
 Carrots;Vegetable;vegy;vegy
@@ -12,14 +12,15 @@ Barley grain;Seed,Cereal seed,Cereal;cereal;seed
 COMMENTLINE...................................................... Animal ......................................................
 Eggs;Animal;2;animal
 COMMENTLINE...................................................... Seeds ....................................................
-Carrot seeds;Seed,Vegetable seed;rec;seed
-Potato seeds;Seed,Vegetable seed;rec;seed
-Onion seeds;Seed,Vegetable seed;rec;seed
+Carrot seeds;Seed,Vegetable seed;seed;seed
+Potato seeds;Seed,Vegetable seed;seed;seed
+Onion seeds;Seed,Vegetable seed;seed;seed
 Sunflower seeds;Seed;1.5;seed
 Soybeans;Seed,Legume,Cereal;cereal;seed
 COMMENTLINE...................................................... Kitchen .....................................................
 Omelette;Kitchen;rec;vegy
 Soup;Kitchen;rec;vegy
+Barley soup;Kitchen;rec;vegy
 Scrambled eggs;Kitchen;rec;vegy
 COMMENTLINE...................................................... Silo ........................................................
 COMMENTLINE...................................................... Mill ......................................................

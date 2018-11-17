@@ -115,8 +115,10 @@ public class Product{
 	
 	@Override
 	public String toString() {
-		return getName() +" | "+ String.format("%.2f kg  F: ", getQty())  + getFresh() + "  Q: "+ getQual() 
-			+ "  Spoil: " +  String.format("%.2f kg  Price: %.2f", getSpoilQty(), getPrice())+"$ |" ;
+		return getName() + String.format(" | %.2f kg  F: %.2f  Q: ", getQty(), getFresh()) + getQual() 
+		+  String.format(" Price: %.2f",getPrice())+"$ |";
+		
+		//+ "  Spoil: " +  String.format("%.2f kg  Price: %.2f", getSpoilQty(), getPrice())+"$ |" ;
 		
 	}
 	public ArrayList<String> getCategories() {

@@ -102,7 +102,7 @@ public class Weather {
 		this.wind = wind;
 	}
 	
-	//TODO include the wind in the wx display
+	
 	public String toString(){
 		return String.format("%.0f\u00b0C %s   %s", temp,sky.getName(),wind.getName());
 	}

@@ -81,7 +81,7 @@ public class App extends Application{
                 
                 engine.updateUI();
                 
-                if (engine.getPaused()) return;
+                if (Engine.paused.get()) return;
                 
                 timer.value += dTime;
                 

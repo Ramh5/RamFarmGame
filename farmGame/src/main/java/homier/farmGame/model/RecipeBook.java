@@ -27,10 +27,10 @@ public class RecipeBook {
 		timeCostMap = new HashMap<>();
 		wsEnergyFactorMap = new HashMap<>();
 		wsTimeFactorMap = new HashMap<>();
-		String fileString = ReadFile.getString(path);
+		String fileString = ReadFile.getStringOfResFile(path);
 			
-		fileString=fileString.replaceAll("(?m)^COMMENTLINE.*(?:\r?\n)?", "").replace("ENERGYCOST ", "").replace("TIMECOST ", "");//remove all lines starting with COMMENTLINE 
-		//get and then remove ENERGYCOST and TIMECOST lines which are now that 2 first lines of the file after removing COMMENTLINEs
+		fileString=fileString.replaceAll("(?m)^COMMENTLINE.*(?:\r?\n)?", "").replace("BASEENERGYCOST ", "").replace("BASETIMECOST ", "");//remove all lines starting with COMMENTLINE 
+		//get and then remove BASEENERGYCOST and BASETIMECOST lines which are now that 2 first lines of the file after removing COMMENTLINEs
 			
 		String energyCostStr = fileString.substring(0, fileString.indexOf("\r\n")+2);//get and then remove 
 		

@@ -29,8 +29,16 @@ public class Inventory {
 	 */
 	public Inventory(String path){
 		this();
-		
-		String fileString = ReadFile.getString(path);
+		load(path);
+	}
+	
+	/**
+	 * Reload an inventory data by using a file specified by the path
+	 * @param path
+	 */
+	public void load(String path) {
+		data.clear();
+		String fileString = ReadFile.getStringOfResFile(path);
 		String[] lines = fileString.split("\r\n");
 		for(String line:lines){
 			
@@ -41,7 +49,6 @@ public class Inventory {
 			Product prod = new Product(MyData.categoriesOf(name), name, Double.parseDouble(strList[1]), Integer.parseInt(strList[2]), Integer.parseInt(strList[3]));
 			addProd(prod);
 		}
-		
 	}
 	
 	/**

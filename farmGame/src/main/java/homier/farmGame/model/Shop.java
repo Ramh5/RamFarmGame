@@ -28,21 +28,26 @@ public class Shop extends Inventory {
 		super(App.SHOP_LIST_PATH);
 		buyingPricePenalty = 1.2;
 		sellingPricePenalty = .8;
-		dailyBuyLimit=200;
+		dailyBuyLimit=500;
 		dailyBuyCount=0;
-		dailySellLimit=500;
+		dailySellLimit=1000;
 		dailySellCount=0;
 		freshMod = Tools.buildTreeMap(new double[][]{{100,1},{50,.75},{0,.2}});
 		qualMod = Tools.buildTreeMap(new double[][]{{0,0},{1,.5},{50,.75},{100,1}});
 	}
 
+	
 	@Override
 	public void update(){
-		super.update();
+		super.update();//this update is not needed if we reload from the file every day anyway
+		load(App.SHOP_LIST_PATH);//clears the shop inventory and reloads from the file
 		dailyBuyCount=0;
 		dailySellCount=0;
+		
 		//System.out.println(getClass()+" transaction counters reset");
 	}
+	
+	
 	
 	/**
 	 * @param forSilo true if we want the silo storage required or false if other storage
@@ -171,4 +176,14 @@ public class Shop extends Inventory {
 		return dataBuying;
 	}
 	
+	/**
+	 * 
+	 * @return the formatted string to display the daily transactions limit
+	 */
+	public String transactionsToString() {
+		return String.format("-----Daily transaction limits in kg-----\n"
+							+ "Selling: %.2f/%.2f\n"
+							+ "Buying: %.2f/%.2f",
+				dailySellCount,dailySellLimit,dailyBuyCount,dailyBuyLimit);
+	}
 }

@@ -33,14 +33,15 @@ public class ReadFile{
 	
 	/**
 	 * 
-	 * @param path : loads the file at the specified path
+	 * @param path : loads the resource file at the specified path
 	 * @return the string in the file
 	 */
-	public static String getString(String resource) {
+	public static String getStringOfResFile(String resource) {
 		System.out.println("read file: " + resource);
 		byte[] encoded = new byte[0];
 		try {
 			InputStream in = App.class.getResourceAsStream(resource);
+			//System.out.println(App.class.getResource(resource));
 			encoded = IOUtils.toByteArray(in);
 		} catch (IOException e) {
 			System.out.println("error reading  file at " + resource);

@@ -29,7 +29,7 @@ public class MyData {
 			prodDataList = new HashMap<>();
 			basePriceMap = new HashMap<>();
 			freshDecayMap = new HashMap<>();
-			String prodDataString = ReadFile.getString(App.PROD_DATA_PATH);
+			String prodDataString = ReadFile.getStringOfResFile(App.PROD_DATA_PATH);
 			prodDataString=prodDataString.replaceAll("(?m)^COMMENTLINE.*(?:\r?\n)?", "").replace("BASEPRICE ", "").replace("FRESHDECAY ", "");//remove all lines starting with COMMENTLINE 
 			//get and then remove BASEPRICE and FRESHDECAY lines which are now that 2 first lines of the file after removing COMMENTLINEs
 			
@@ -44,6 +44,7 @@ public class MyData {
 				//populate the maps
 				for(int i=0;i<basePriceStrList.length;i=i+2){
 					basePriceMap.put(basePriceStrList[i], Double.parseDouble(basePriceStrList[i+1]));
+					System.out.println(basePriceStrList[i] + " "+ basePriceStrList[i+1]);
 				}
 				for(int i=0;i<freshDecayStrList.length;i=i+2){
 					//System.out.println(freshDecayStrList[i] + " " + freshDecayStrList[i+1]);
@@ -110,7 +111,7 @@ public class MyData {
 			
 
 			seedDataList = new HashMap<>();
-			String seedDataString = ReadFile.getString(App.SEED_DATA_PATH);
+			String seedDataString = ReadFile.getStringOfResFile(App.SEED_DATA_PATH);
 			for(String line:seedDataString.split("\r\n")){
 				//System.out.println(line);
 				if(line.contains("COMMENTLINE")) continue; //skips a commentline in the file

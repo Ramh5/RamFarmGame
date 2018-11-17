@@ -37,12 +37,13 @@ import homier.farmGame.utils.TextFlowManager;
 import homier.farmGame.view.Renderer;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -119,7 +120,10 @@ public class Engine {
 	private Renderer renderer;
 	
 	public static boolean manPaused = false;
+	public static boolean manUnpaused = false; //used to unpause when we want to play while employee is not working
+	public static boolean noTaskPaused = false; //used to pause when no task
 	public static boolean otherPaused = false;
+	public static BooleanProperty paused = new SimpleBooleanProperty(false);
 	
 	FileChooser fileChooser = new FileChooser();
 	
@@ -127,19 +131,26 @@ public class Engine {
 	 * Update the UI, especially the mouseover info even when the game is paused
 	 */
 	public void updateUI(){
+
+		//Pause game when in the seed selection pane
+		if(leftStackPane.getChildren().indexOf(seedPane)==leftStackPane.getChildren().size()-1){
+			seedPaneUIinteraction(true);
+		}
+
 		TextFlowManager.update();
-		
+		//Pause if employee is not working TODO make it work for multiple employee
+		if(!getActiveEmployee().isWorking()) {
+			noTaskPaused=!manUnpaused;
+		}else{
+			noTaskPaused = false;
+		}
+		updatePause();
 	}
-	
+
 	/** 
 	 * @param dTime: elapsed time since last update in seconds (multiply dTime from the main game loop to increase gameSpeed)
 	 */
 	public void update(double dTime) {
-		//Pause game when in the seed selection pane
-		if(leftStackPane.getChildren().indexOf(seedPane)==leftStackPane.getChildren().size()-1){
-			seedPaneUIinteraction(true);
-			return;//not sure if this could introduce a bug since game might unpause for a tick after popup is hidden
-		}
 		
 		game.getClock().update(dTime);
 		clockLabel.setText(game.getClock().toString());
@@ -148,17 +159,17 @@ public class Engine {
 		if(game.getClock().isNewDay()){
 			if(game.getClock().getDay()==1){//first day of the month popup alert
 				otherPaused=true;
-				updatePauseButton();
 				game.getInventory().addMoney(-100);
 				Alert newMonthAlert = new Alert(AlertType.INFORMATION);
 				newMonthAlert.setTitle("New month!");
 				newMonthAlert.setHeaderText("This is the first day of the month and some bills have been payed\nThis is a summary:");
 				newMonthAlert.setContentText("Electricity charges:" + 100 + "$");
-				newMonthAlert.setOnHidden(evt -> {otherPaused=false;updatePauseButton();});
+				newMonthAlert.setOnHidden(evt -> {otherPaused=false;updatePause();});
 				newMonthAlert.show();
 			}
 			
-			gameSpeedChoice.getSelectionModel().select(new  Integer(2));//reset the gameSpeed
+			manUnpaused=false;//reset the pause on no task behavior every new day
+			gameSpeedChoice.getSelectionModel().select(new  Integer(20));//reset the gameSpeed
 			game.getEmployees()[0].energyProperty().set(1000);
 			game.getWxForcast().forcastNewDay();
 			wxToday.setText("Today: "+game.getWxForcast().getToday().toString());
@@ -189,20 +200,21 @@ public class Engine {
 
 	public void render() {
 		renderer.render(this);
-		leftTextArea.setText(game.getInventory().toString());
+		leftTextArea.setText(game.getInventory().toString()+"\n\n"+game.getShop().transactionsToString());
 	}
 
 	public void initialize() {
 		
 		if (game==null){
 			game = new Game();//create a new game if not loaded save game
-			fileChooser.setInitialDirectory(new File("C:/Users/Ram/Documents/FarmGame/saves"));
+			fileChooser.setInitialDirectory(new File(System.getProperty("user.home")+"/Documents/FarmGame/saves"));
+			//fileChooser.setInitialDirectory(new File("C:/Users/Ram/Documents/FarmGame/saves"));
 			game.getClock().addTime(4*FarmTimeUnits.MONTH.seconds);
 		}
 		
 		gameGridPane.getChildren().clear();
 		renderer = new Renderer(game.getTileList(), gameGridPane);
-		renderer.render(this);
+		render();
 		
 		
 		
@@ -210,8 +222,8 @@ public class Engine {
 		wxTomorrow.setText("Tomorrow: "+game.getWxForcast().getTomorrow().toString());
 		game.getClock().setIsNewDay(false);
 		clockLabel.setText(game.getClock().toString());
-		updatePauseButton();
-		leftTextArea.setText(game.getInventory().toString());
+		
+		leftTextArea.setText(game.getInventory().toString()+"\n\n"+game.getShop().transactionsToString());
 
 		gameSpeedChoice.getItems().setAll(1,2,5,10,20,50,100,500,1000);
 		gameSpeedChoice.getSelectionModel().select(3);
@@ -253,6 +265,10 @@ public class Engine {
 		seedDetailTextFlow.getChildren().setAll(new Text("Choisissez une semence"));
 		
 		new TextFlowManager();//instanciate the TextFlowManager, it will be called statically from various places
+		
+		//initialize the pause status
+		paused.addListener(x->updatePauseButton());
+		
 		
 	}
 	/**
@@ -328,7 +344,6 @@ public class Engine {
 		}
 		
 		otherPaused=seedPaneUp;
-		updatePauseButton();
 		openShopButton.setDisable(seedPaneUp);
 		openWSbutton.setDisable(seedPaneUp);
 		pauseButton.setDisable(seedPaneUp);
@@ -339,7 +354,7 @@ public class Engine {
 	private void seedOKButtonAction(ActionEvent event){
 		FarmTask plantSeed = getActiveEmployee().getTask();
 		Product selectedSeed = (Product)tableSeed.getUserData();//tableSeed userData stores the selected seed
-		selectedSeed.setQty(selectedSeed.getQty()-(selectedSeed.getName().equals("Potatoes")?50:2));//remove 2 when planting or 50 if potatoes
+		selectedSeed.setQty(selectedSeed.getQty()-(selectedSeed.getName().equals("Potatoes")?1000:3));//remove 3 when planting or 1000 if potatoes
 		plantSeed.setSow(selectedSeed.getName(),selectedSeed.getQual());
 		plantSeed.startTask(game.getClock().getTotalSeconds(), getActiveEmployee());
 		
@@ -350,6 +365,7 @@ public class Engine {
 	@FXML
 	private void skipDayAction(){
 		gameSpeedChoice.getSelectionModel().select(new Integer(1000));
+		manUnpaused=true;
 	}
 	
 	@FXML
@@ -425,22 +441,26 @@ public class Engine {
 			manPaused=true;
 		}else{
 			manPaused=false;
+			if(noTaskPaused) {
+				manUnpaused=true;
+			}
 		}
-		updatePauseButton();
 	}
 
-	
-	public void updatePauseButton(){
-		
-		if(manPaused||otherPaused||Renderer.popupShown){
+	public void updatePause() {
+		if(manPaused||otherPaused||Renderer.popupShown||noTaskPaused){
+			paused.set(true);
 			pauseButton.setSelected(true);
 		}else{
+			paused.set(false);
 			pauseButton.setSelected(false);
 		}
-		
+	}
+	
+	public void updatePauseButton(){
 		pauseButton.setBackground(Background.EMPTY);
-		if (pauseButton.isSelected()) {
-			pauseLabel.setText("Jeu en pause");
+		if (paused.get()) {
+			pauseLabel.setText("-------Game paused-------");
 			pauseLabel.setTextFill(Color.RED);
 			pauseLabel.setFont(new Font("Arial Bold", 12));
 			pauseButton.setGraphic(new ImageView(new Image("/icons/Button-Play.png", 32, 32, true, true)));
@@ -460,8 +480,6 @@ public class Engine {
 		}
 		shopPane.toBack();
 		openShopButton.setSelected(false);
-		updatePauseButton();
-
 	}
 
 	@FXML
@@ -478,7 +496,6 @@ public class Engine {
 			}
 			shopPane.toBack();
 		}
-		updatePauseButton();
 	}
 
 	@FXML
@@ -491,7 +508,6 @@ public class Engine {
 		}
 		workShopPane.toBack();
 		openWSbutton.setSelected(false);
-		updatePauseButton();
 	}
 	
 	@FXML 
@@ -508,13 +524,12 @@ public class Engine {
 			}
 			workShopPane.toBack();
 		}
-		updatePauseButton();
 	}
+	
 	@FXML
 	private void buyButtonAction(ActionEvent event){
 		Shop shop = game.getShop();
 		game.getInventory().addMoney(-shop.totalPrice(shop.getDataBuying())*shop.getBuyingPricePenalty());
-		//game.getInventory().addMoney(-Double.valueOf(buyTotalLabel.getText()));
 		for(Product prod:tableBuy.getItems() ){
 			game.getInventory().addProd(new Product(prod));
 			shop.addToDailyBuyCount(prod.getQty());
@@ -523,11 +538,10 @@ public class Engine {
 		}
 		tableBuy.getItems().clear();
 		buyTotalLabel.setText(String.format("%.2f$", 0.00));
-		
 		updateShopPanel();
 		updateWSPanel();
 		unselectTreeTable(tableShop.getRoot());	
-		leftTextArea.setText(game.getInventory().toString());
+		leftTextArea.setText(game.getInventory().toString()+"\n\n"+game.getShop().transactionsToString());
 	}
 	
 	@FXML
@@ -546,7 +560,7 @@ public class Engine {
 		updateShopPanel();
 		updateWSPanel();
 		unselectTreeTable(tableInv.getRoot());
-		leftTextArea.setText(game.getInventory().toString());
+		leftTextArea.setText(game.getInventory().toString()+"\n\n"+game.getShop().transactionsToString());
 	}
 	
 	@FXML
@@ -1181,7 +1195,7 @@ public class Engine {
 					tableSeed.setUserData(rootTreeItem.getValue());//store the selected product in the treetableview userdata
 					unselectTreeTableButOne(tableSeed.getRoot(),rootTreeItem);
 					//Disable the seedOk button if not enough seeds
-					if(rootTreeItem.getValue().getQty()>=(rootTreeItem.getValue().getName().equals("Potatoes")?50:2)){
+					if(rootTreeItem.getValue().getQty()>=(rootTreeItem.getValue().getName().equals("Potatoes")?1000:3)){
 						seedOKButton.setDisable(false);
 					}
 				}else{

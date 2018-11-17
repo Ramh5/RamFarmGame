@@ -77,7 +77,7 @@ public class Recipe {
 			}
 			bp += MyData.basePriceOf(entry.getKey())*entry.getValue();
 		}
-		bp *=1.2; // recipe valuation factor
+		bp *=(1+baseEnergyCost/3); // recipe valuation factor
 		bp /= results.firstEntry().getValue();
 		return bp;
 	}
