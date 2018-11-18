@@ -1,8 +1,8 @@
-COMMENTLINE format is  name,qty,fresh,qual
-Onion seeds,100,100,1
-Wheat grain,100,100,1
-Barley grain,100,100,1
-Potato seeds,100,100,1
-Carrot seeds,100,100,1
-Soybeans,10,100,1
-Sunflower seeds,10,100,1
+COMMENTLINE format is  name,qty,maturity,fresh,qual
+Onion seeds,3,100,100,1
+Wheat grain,3,100,100,1
+Barley grain,3,100,100,1
+Potato seeds,3,100,100,1
+Carrot seeds,3,100,100,1
+Soybeans,3,100,100,1
+Sunflower seeds,3,100,100,30

@@ -15,6 +15,7 @@ public class FarmTask {
 	//optional properties related to the result when task completes
 	//depending on the type of task
 	private Product result;
+	private ArrayList<Product> harvestResults;
 	private Tile newTile;
 	private int newTileIndex;
 	private boolean plow=false;
@@ -82,6 +83,11 @@ public class FarmTask {
 			if(result!=null){
 				inventory.addProd(result);
 			}
+			if(harvestResults!=null) {
+				for(Product prod:harvestResults) {
+					inventory.addProd(prod);
+				}
+			}
 			if(newTile!=null){
 				tileList.set(newTileIndex, newTile);
 				previousMap[newTileIndex]=-1;
@@ -124,6 +130,14 @@ public class FarmTask {
 	
 	public void setResult(Product prod){
 		this.result=new Product(prod);
+	}
+	
+	public void setHarvestResults(FarmPlot farmTile){
+		harvestResults=new ArrayList<>();
+		for(SeedByProd byProd:farmTile.getSeed().getByProds().values()) {
+			String name = byProd.getProdName();
+			harvestResults.add(new Product(MyData.categoriesOf(name), name, farmTile.yieldOf(name), 100, 100, farmTile.getQual()));
+		}
 	}
 
 	public void setNewTile(Tile newTile, int newTileIndex) {

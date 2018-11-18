@@ -19,7 +19,6 @@ import homier.farmGame.model.tile.Tile;
 import homier.farmGame.utils.GameClock;
 import homier.farmGame.utils.TextFlowDataSet;
 import homier.farmGame.utils.TextFlowManager;
-import javafx.beans.property.DoubleProperty;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
@@ -147,7 +146,7 @@ public class Renderer {
 									b1.setOnAction(e -> {	
 									FarmTask collectMushrooms = new FarmTask("Collecting mushrooms", 120, 20);
 										activeEmployee.setTask(collectMushrooms);
-										collectMushrooms.setResult(new Product(MyData.categoriesOf("Mushrooms"), "Mushrooms", 4.0, 
+										collectMushrooms.setResult(new Product(MyData.categoriesOf("Mushrooms"), "Mushrooms", 4.0,100, 
 												100, Math.min(100,Math.max(0,(int)(50+new Random().nextGaussian()*10)))));
 										collectMushrooms.startTask(gameClock.getTotalSeconds(), activeEmployee);
 										
@@ -286,9 +285,8 @@ public class Renderer {
 					}
 					
 					if(farmTile.isSown()){
-						DoubleProperty growthProperty = farmTile.growthProperty();
 						TileViewData sownTVD = RenderingData.getTVD(farmTile.getSeed());
-						newIndexToRender = sownTVD.getIndexToRender(growthProperty.get());
+						newIndexToRender = sownTVD.getIndexToRender(farmTile.getGrowth());
 						if (newIndexToRender != previousMap[index]) {
 							Group newImageView = sownTVD.getImageToRender(newIndexToRender);
 							GridPane.setConstraints(newImageView, i, j);
@@ -310,9 +308,9 @@ public class Renderer {
 										Employee activeEmployee= engine.getActiveEmployee();
 										
 										//check if enough storage to enable harvest
-										ArrayList<String> categories = MyData.categoriesOf(farmTile.getSeed().getProdName());
-										double yield = farmTile.getYield();
-										boolean enoughStorage = inventory.enoughStorageFor(yield, categories.contains("Cereal"));
+										
+										
+										boolean enoughStorage = farmTile.enoughStorageToHarvest(inventory);
 										b2.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<200||!enoughStorage);
 										b2.setText("Harvest");
 										b2.setOnAction(e -> {
@@ -321,8 +319,7 @@ public class Renderer {
 											
 											FarmTask harvestWheat = new FarmTask("Harvest", 200, 30);
 											activeEmployee.setTask(harvestWheat);
-											
-											harvestWheat.setResult(new Product(categories,farmTile.getSeed().getProdName(),yield,100,farmTile.getQual()));
+											harvestWheat.setHarvestResults(farmTile);
 											harvestWheat.setNewTile(new FarmPlot(), index);
 											harvestWheat.startTask(gameClock.getTotalSeconds(), activeEmployee);
 											

@@ -673,7 +673,7 @@ public class Engine {
 		
 		
 		//------------inventory table------------- 
-		TreeItem<Product> rootInv = new TreeItem<>(new Product(null,"empty", 0, 0, 0));
+		TreeItem<Product> rootInv = new TreeItem<>(new Product(null,"empty",0,0,0,0));
 		tableInv.setPlaceholder(new Text("Empty Inventory"));
 		tableInv.setRoot(rootInv);
 		tableInv.setShowRoot(false);
@@ -682,7 +682,7 @@ public class Engine {
 		
 		//populate the inventory treetableview with the inventory data
 		
-		TreeItem<Product> rootShop = new TreeItem<>(new Product(null,"empty", 0, 0, 0));
+		TreeItem<Product> rootShop = new TreeItem<>(new Product(null,"empty",0,0,0,0));
 		tableShop.setRoot(rootShop);
 		updateShopPanel();
 		
@@ -809,7 +809,7 @@ public class Engine {
 		
 		
 		//------------ WS inventory table------------- //
-		TreeItem<Product> rootInvWS = new TreeItem<>(new Product(null,"empty", 0, 0, 0));
+		TreeItem<Product> rootInvWS = new TreeItem<>(new Product(null,"empty",0,0,0,0));
 		tableInvWS.setPlaceholder(new Text("Empty Inventory"));
 		tableInvWS.setRoot(rootInvWS);
 		tableInvWS.setShowRoot(false);
@@ -937,7 +937,7 @@ public class Engine {
 		
 		
 		//------------ Seed inventory table------------- //
-		TreeItem<Product> rootSeed = new TreeItem<>(new Product(null,"empty", 0, 0, 0));
+		TreeItem<Product> rootSeed = new TreeItem<>(new Product(null,"empty",0,0,0,0));
 		tableSeed.setPlaceholder(new Text("Empty Inventory"));
 		tableSeed.setRoot(rootSeed);
 		tableSeed.setShowRoot(false);
