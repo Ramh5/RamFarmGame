@@ -124,7 +124,7 @@ public class WorkShop extends Inventory {
 		task.setEnergyCost(limFactor*recipe.getBaseEnergyCost()*RecipeBook.energyFactorOf(wsName, wsLevelMap.get(wsName)));
 		task.setTimeCost((int)(limFactor*recipe.getBaseTimeCost()*RecipeBook.timeFactorOf(wsName, wsLevelMap.get(wsName))));
 		
-		task.setName("Crafting " +recipe.getName() + " in the " + wsName);
+		task.setName("Crafting " + recipe.getName() + " in the " + wsName);
 	}
 	
 	/**

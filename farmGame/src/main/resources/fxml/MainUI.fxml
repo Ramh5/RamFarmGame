@@ -26,19 +26,21 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.TextFlow?>
 
-<BorderPane prefHeight="950" prefWidth="1500.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="homier.farmGame.controller.Engine">
+
+<BorderPane prefHeight="950" prefWidth="1500.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="homier.farmGame.controller.Engine">
 	<center>
 		<StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
 			<children>
             <AnchorPane fx:id="mouseBlockingPane" prefHeight="200.0" prefWidth="200.0" />
             <AnchorPane fx:id="shopPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: -fx-background;" styleClass="masking-pane">
                <children>
-                  <TreeTableView fx:id="tableInv" layoutX="14.0" layoutY="80.0" prefHeight="550.0" prefWidth="470.0">
+                  <TreeTableView fx:id="tableInv" layoutX="14.0" layoutY="80.0" prefHeight="550.0" prefWidth="525.0">
                     <columns>
                       <TreeTableColumn fx:id="colNameInv" prefWidth="170.0" text="Product" />
                       <TreeTableColumn fx:id="colQtyInv" prefWidth="60.0" text="Qty (kg)" />
-                        <TreeTableColumn fx:id="colFreshInv" prefWidth="40.0" text="Fresh" />
-                        <TreeTableColumn fx:id="colQualInv" prefWidth="40.0" text="Qual" />
+                        <TreeTableColumn fx:id="colMaturityInv" prefWidth="45.0" text="Mat" />
+                        <TreeTableColumn fx:id="colFreshInv" prefWidth="45.0" text="Fresh" />
+                        <TreeTableColumn fx:id="colQualInv" prefWidth="45.0" text="Qual" />
                         <TreeTableColumn fx:id="colPriceInv" prefWidth="50.0" text="\$$$" />
                         <TreeTableColumn fx:id="colSpoilQtyInv" prefWidth="60.0" text="Spoil" />
                         <TreeTableColumn fx:id="colActInv" prefWidth="35.0" text="X" />
@@ -55,15 +57,13 @@
                      </font>
                   </Label>
                   <Label layoutX="239.0" layoutY="46.0" text="Filter:" />
-                  <TextField fx:id="shopFilterTextField" layoutX="275.0" layoutY="42.0" />
-                  <TreeTableView fx:id="tableShop" layoutX="526.0" layoutY="80.0" prefHeight="550.0" prefWidth="470.0">
+                  <TreeTableView fx:id="tableShop" layoutX="576.0" layoutY="80.0" prefHeight="550.0" prefWidth="420.0">
                      <columns>
                         <TreeTableColumn fx:id="colNameShop" prefWidth="170.0" text="Product" />
                         <TreeTableColumn fx:id="colQtyShop" prefWidth="60.0" text="Qty (kg)" />
-                        <TreeTableColumn fx:id="colFreshShop" prefWidth="40.0" text="Fresh" />
-                        <TreeTableColumn fx:id="colQualShop" prefWidth="40.0" text="Qual" />
+                        <TreeTableColumn fx:id="colFreshShop" prefWidth="45.0" text="Fresh" />
+                        <TreeTableColumn fx:id="colQualShop" prefWidth="45.0" text="Qual" />
                         <TreeTableColumn fx:id="colPriceShop" prefWidth="50.0" text="\$$$" />
-                        <TreeTableColumn fx:id="colSpoilQtyShop" prefWidth="60.0" text="Spoil" />
                         <TreeTableColumn fx:id="colActShop" prefWidth="35.0" text="X" />
                      </columns>
                   </TreeTableView>
@@ -99,6 +99,7 @@
                         <TableColumn fx:id="colActBuy" prefWidth="35.0" text="X" />
                      </columns>
                   </TableView>
+                  <TextField fx:id="shopFilterTextField" layoutX="277.0" layoutY="42.0" prefHeight="25.0" prefWidth="261.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="workShopPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: -fx-background;" styleClass="masking-pane">
@@ -126,7 +127,6 @@
                      </font>
                   </Label>
                   <Label layoutX="239.0" layoutY="46.0" text="Filter:" />
-                  <TextField fx:id="wsFilterTextField" layoutX="275.0" layoutY="42.0" />
                   <Separator layoutX="14.0" layoutY="669.0" prefHeight="11.0" prefWidth="982.0" />
                   <Label layoutX="14.0" layoutY="643.0" text="Selected ingredients">
                      <font>
@@ -174,6 +174,7 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
+                  <TextField fx:id="wsFilterTextField" layoutX="278.0" layoutY="42.0" prefHeight="25.0" prefWidth="206.0" />
                </children>
             </AnchorPane>
 				<GridPane fx:id="gameGridPane" alignment="CENTER" prefHeight="662.0" prefWidth="1010.0">
@@ -226,17 +227,17 @@
                               <TreeTableColumn fx:id="colActSeed" prefWidth="35.0" text="X" />
                            </columns>
                         </TreeTableView>
-                        <TextField fx:id="seedFilterTextField" layoutX="327.0" layoutY="49.0" />
                         <Label layoutX="15.0" layoutY="7.0" prefHeight="35.0" prefWidth="233.0" text="Seed choice">
                            <font>
                               <Font name="System Bold" size="24.0" />
                            </font>
                         </Label>
-                        <Label layoutX="289.0" layoutY="53.0" text="Filtre:" />
+                        <Label layoutX="255.0" layoutY="53.0" text="Filtre:" />
                         <ChoiceBox fx:id="seedCatChoiceBox" layoutX="15.0" layoutY="49.0" prefWidth="150.0" />
                         <Button fx:id="seedCancelButton" cancelButton="true" layoutX="418.0" layoutY="501.0" mnemonicParsing="false" onAction="#seedCancelButtonAction" text="Annuler" />
                         <Button fx:id="seedOKButton" layoutX="418.0" layoutY="446.0" mnemonicParsing="false" onAction="#seedOKButtonAction" prefHeight="25.0" prefWidth="58.0" text="Semer" />
                         <TextFlow fx:id="seedDetailTextFlow" layoutX="10.0" layoutY="439.0" prefHeight="231.0" prefWidth="334.0" />
+                        <TextField fx:id="seedFilterTextField" layoutX="293.0" layoutY="49.0" prefHeight="25.0" prefWidth="187.0" />
                      </children>
                   </AnchorPane>
                   <AnchorPane style="-fx-background-color: -fx-background;" styleClass="masking-pane">
@@ -275,7 +276,7 @@
                       </Menu>
                       <Menu mnemonicParsing="false" text="Help">
                         <items>
-                          <MenuItem fx:id="addMoney" mnemonicParsing="false" text="1000$" onAction="#addMoneyMenuAction" />
+                          <MenuItem fx:id="addMoney" mnemonicParsing="false" onAction="#addMoneyMenuAction" text="1000$" />
                         </items>
                       </Menu>
                     </menus>

@@ -1,7 +1,15 @@
 package homier.farmGame.utils;
 
 
+import java.lang.reflect.Method;
 import java.util.TreeMap;
+
+import org.controlsfx.control.textfield.CustomTextField;
+import org.controlsfx.control.textfield.TextFields;
+
+import javafx.beans.property.ObjectProperty;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TreeItem;
 
 
 public class Tools {
@@ -51,7 +59,36 @@ public class Tools {
 
 		return y;
 	}
+
+	/**
+	 * Workaround to get a ControlsFx clearable textfield since clearabletextfields can't be put directly in FXML
+	 * @param customTextField
+	 * @throws Exception
+	 */
+	public static void setupClearButtonField(CustomTextField customTextField) {
+		try {
+		Method m = TextFields.class.getDeclaredMethod("setupClearButtonField", TextField.class, ObjectProperty.class);
+		m.setAccessible(true);
+		m.invoke(null, customTextField, customTextField.rightProperty());
+		}catch(Exception e){
+			System.out.println("Error setting up a clear button field in a textField in " + Tools.class);
+			e.printStackTrace();
+		}
+		
+	}
 	
+	/**
+	 * Copy a treeitem
+	 * @param item
+	 * @return
+	 */
+	public static <Item> TreeItem<Item> deepcopy(TreeItem<Item> item) {
+	    TreeItem<Item> copy = new TreeItem<Item>(item.getValue());
+	    for (TreeItem<Item> child : item.getChildren()) {
+	        copy.getChildren().add(deepcopy(child));
+	    }
+	    return copy;
+	}
 	
 }
 
