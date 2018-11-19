@@ -8,9 +8,9 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map.Entry;
 
-import org.controlsfx.control.textfield.CustomTextField;
 import org.hildan.fxgson.FxGson;
 
 import com.google.gson.Gson;
@@ -65,7 +65,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableRow;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.CheckBoxTreeTableCell;
@@ -129,11 +131,47 @@ public class Engine {
 	
 	FileChooser fileChooser = new FileChooser();
 	
+	
+	/**
+	 * TESTING
+	 */
+	
+	double lastFilterRun = System.currentTimeMillis()+4000;
+	boolean filterSet = false;
+	int counter = 0;
+	int updateItemCounter=0;
+	String[] filterList = new String[] {"q","w","e","r","t","y","u","i","o","p","a","s","d","f","g",
+			"h","j","k","l","z","x","c","v","b","n","m","q","w","e","r","t","y","u","i","o","p","a","s","d"};
+	String[] filterList2 = new String[] {"a","a","a","r","r","r","r","i","o","p","a","s","d","f","g",
+			"h","j","k","l","z","x","c","v","b","n","m","q","w","e","r","t","y","u","i","o","p","a","s","d"};
+	//--------------------
+	
 	/**
 	 * Update the UI, especially the mouseover info even when the game is paused
 	 */
 	public void updateUI(){
-
+		
+		/**
+		 * TESTING
+		 */
+		if(System.currentTimeMillis()-lastFilterRun>250&&!filterSet) {
+			filterSet=true;
+			//shopFilterTextField.setText(filterList[counter]);
+			//shopFilterTextField.setText("r");
+			counter++;
+			//System.out.println(counter + " " + shopFilterTextField.getText());
+			
+		}
+		if(System.currentTimeMillis()-lastFilterRun>500) {
+			lastFilterRun=System.currentTimeMillis();
+			filterSet=false;
+			//shopFilterTextField.clear();
+			
+		}
+		//--------------------------------------------------------------
+		
+		
+		
 		//Pause game when in the seed selection pane
 		if(leftStackPane.getChildren().indexOf(seedPane)==leftStackPane.getChildren().size()-1){
 			seedPaneUIinteraction(true);
@@ -206,6 +244,13 @@ public class Engine {
 	}
 
 	public void initialize() {
+		//TESTING
+		
+		shopPane.toFront();
+		
+		
+		//--------------------------
+		
 		
 		if (game==null){
 			game = new Game();//create a new game if not loaded save game
@@ -674,7 +719,7 @@ public class Engine {
 	private void setupShop(){
 		
 		shopFilterTextField.textProperty().addListener((obs, oldStr, newStr)->{
-			updateShopPanel();
+			filterShopPanel();
 		});
 		
 		
@@ -685,13 +730,35 @@ public class Engine {
 		tableInv.setShowRoot(false);
 		tableInv.setEditable(true);
 		tableInv.getSortOrder().add(colNameInv);
+		tableInv.setRowFactory(table-> {
+			return new TreeTableRow<Product>(){
+				@Override
+				public void updateItem(Product pers, boolean empty) {
+					super.updateItem(pers, empty);		
+					boolean isTopLevel = table.getRoot().getChildren().contains(treeItemProperty().get());
+					if(pers==null||empty) {
+						setText(null);
+						setGraphic(null);
+						getStyleClass().remove("topLevelRow");
+					}else {
+						if(isTopLevel) {
+							if(!getStyleClass().contains("topLevelRow")) {
+								getStyleClass().add("topLevelRow");
+							}
+						}else {
+							getStyleClass().remove("topLevelRow");
+						}
+					}
+				}
+			};
+		});
 		colActInv.setEditable(true);
 		
 		//populate the inventory treetableview with the inventory data
 		
 		TreeItem<Product> rootShop = new TreeItem<>(new Product(null,"empty",0,0,0,0));
 		tableShop.setRoot(rootShop);
-		updateShopPanel();
+		
 		
 		//Setup the cell values
 		colNameInv.setCellValueFactory(new TreeItemPropertyValueFactory<>("name"));
@@ -711,12 +778,9 @@ public class Engine {
 					if(item == null || empty){
 						setText(null);
 						setGraphic(null);
-						getTreeTableRow().getStyleClass().remove("topLevelRow");
 					}else{
 						if(isTopLevel){
-							getTreeTableRow().getStyleClass().add("topLevelRow");
-						}else{
-							getTreeTableRow().getStyleClass().remove("topLevelRow");
+							setGraphic(null);
 						}
 						setEditable(!isTopLevel);	
 					}
@@ -744,17 +808,45 @@ public class Engine {
 		//-------------shop table---------------
 		
 		tableShop.setPlaceholder(new Text("Empty Shop"));
-		
+		tableShop.getSortOrder().add(colNameShop);
 		tableShop.setShowRoot(false);
 		tableShop.setEditable(true);
-		tableShop.getSortOrder().add(colNameShop);
-		
+		tableShop.setRowFactory(table-> {
+			return new TreeTableRow<Product>(){
+				@Override
+				public void updateItem(Product pers, boolean empty) {
+					super.updateItem(pers, empty);
+					
+					boolean isTopLevel = table.getRoot().getChildren().contains(treeItemProperty().get());
+					if(pers==null||empty) {
+						setText(null);
+						setGraphic(null);
+						
+						//System.out.println(getStyleClass());
+	
+						getStyleClass().remove("topLevelRow");
+					}else {
+						if(isTopLevel) {
+							if(!getStyleClass().contains("topLevelRow")) {
+								getStyleClass().add("topLevelRow");
+							}
+						}else {
+							getStyleClass().remove("topLevelRow");
+							
+						}
+					}
+
+
+				}
+			};
+		});
 		//Setup the cell values
 		colNameShop.setCellValueFactory(new TreeItemPropertyValueFactory<>("name"));
 		colQtyShop.setCellValueFactory(cellData ->Bindings.format("%.2f", cellData.getValue().getValue().qtyProperty()));
 		colFreshShop.setCellValueFactory(new TreeItemPropertyValueFactory<>("fresh"));
 		colQualShop.setCellValueFactory(new TreeItemPropertyValueFactory<>("qual"));
 		colPriceShop.setCellValueFactory(cellData ->Bindings.format("%.2f", cellData.getValue().getValue().priceProperty()));
+		colActShop.setCellValueFactory(new TreeItemPropertyValueFactory<>("selected"));
 		colActShop.setCellFactory(column ->{
 			return new CheckBoxTreeTableCell<Product, Boolean>(){
 				@Override
@@ -764,15 +856,10 @@ public class Engine {
 					if(item == null || empty){
 						setText(null);
 						setGraphic(null);
-						
-						getTreeTableRow().getStyleClass().remove("topLevelRow");
 					}else{
 						if(isTopLevel){
-							getTreeTableRow().getStyleClass().add("topLevelRow");
-						}else{
-							getTreeTableRow().getStyleClass().remove("topLevelRow");
+							setGraphic(null);
 						}
-						
 						setEditable(!isTopLevel);	
 					}
 				}
@@ -780,8 +867,8 @@ public class Engine {
 		});
 		
 		
-		//setCellFactory(CheckBoxTreeTableCell.forTreeTableColumn(colActShop));
-		colActShop.setCellValueFactory(new TreeItemPropertyValueFactory<>("selected"));
+		updateShopPanel();
+		
 
 
 
@@ -821,6 +908,35 @@ public class Engine {
 		tableInvWS.setRoot(rootInvWS);
 		tableInvWS.setShowRoot(false);
 		tableInvWS.setEditable(true);
+		tableInvWS.setRowFactory(table-> {
+			return new TreeTableRow<Product>(){
+				@Override
+				public void updateItem(Product pers, boolean empty) {
+					super.updateItem(pers, empty);
+					
+					boolean isTopLevel = table.getRoot().getChildren().contains(treeItemProperty().get());
+					if(pers==null||empty) {
+						setText(null);
+						setGraphic(null);
+						
+						//System.out.println(getStyleClass());
+	
+						getStyleClass().remove("topLevelRow");
+					}else {
+						if(isTopLevel) {
+							if(!getStyleClass().contains("topLevelRow")) {
+								getStyleClass().add("topLevelRow");
+							}
+						}else {
+							getStyleClass().remove("topLevelRow");
+							
+						}
+					}
+
+
+				}
+			};
+		});
 		colActInvWS.setEditable(true);
 		tableInvWS.getSortOrder().add(colNameInvWS);
 		
@@ -844,18 +960,10 @@ public class Engine {
 					boolean isTopLevel = getTreeTableView().getRoot().getChildren().contains(getTreeTableRow().getTreeItem());
 					if(item == null || empty){
 						setText(null);
-						setGraphic(null);	
-						
-//						ObservableList<String> sc = getTreeTableRow().getStyleClass();
-//						System.out.println(sc);
-//						Platform.runLater(()->sc.remove("topLevelRow"));	
-//						System.out.println(sc);
-						getTreeTableRow().getStyleClass().remove("topLevelRow");
+						setGraphic(null);
 					}else{
 						if(isTopLevel){
-							getTreeTableRow().getStyleClass().add("topLevelRow");
-						}else{
-							getTreeTableRow().getStyleClass().remove("topLevelRow");
+							setGraphic(null);
 						}
 						setEditable(!isTopLevel);	
 					}
@@ -960,6 +1068,35 @@ public class Engine {
 		tableSeed.setShowRoot(false);
 		tableSeed.setEditable(true);
 		tableSeed.getSortOrder().add(colNameSeed);
+		tableSeed.setRowFactory(table-> {
+			return new TreeTableRow<Product>(){
+				@Override
+				public void updateItem(Product pers, boolean empty) {
+					super.updateItem(pers, empty);
+					
+					boolean isTopLevel = table.getRoot().getChildren().contains(treeItemProperty().get());
+					if(pers==null||empty) {
+						setText(null);
+						setGraphic(null);
+						
+						//System.out.println(getStyleClass());
+	
+						getStyleClass().remove("topLevelRow");
+					}else {
+						if(isTopLevel) {
+							if(!getStyleClass().contains("topLevelRow")) {
+								getStyleClass().add("topLevelRow");
+							}
+						}else {
+							getStyleClass().remove("topLevelRow");
+							
+						}
+					}
+
+
+				}
+			};
+		});
 		colActSeed.setEditable(true);
 		
 		//populate the seed panel with the inventory data filtered for seeds
@@ -981,12 +1118,9 @@ public class Engine {
 					if(item == null || empty){
 						setText(null);
 						setGraphic(null);
-						getTreeTableRow().getStyleClass().remove("topLevelRow");
 					}else{
 						if(isTopLevel){
-							getTreeTableRow().getStyleClass().add("topLevelRow");
-						}else{
-							getTreeTableRow().getStyleClass().remove("topLevelRow");
+							setGraphic(null);
 						}
 						setEditable(!isTopLevel);	
 					}
@@ -1005,7 +1139,7 @@ public class Engine {
 		ArrayList<String> catFilter = new ArrayList<>();
 		catFilter.add(seedCatChoiceBox.getSelectionModel().getSelectedItem());
 		catFilter.add("Only seeds");	
-		updateTreeItemRoot(tableSeed.getRoot(), game.getInventory(), game.getShop(),seedFilterTextField.getText(),catFilter);
+		updateTreeItemRoot2(tableSeed.getRoot(), game.getInventory(), game.getShop(),seedFilterTextField.getText(),catFilter);
 		listenForSelectionSeedPane(tableSeed.getRoot());
 		tableSeed.sort();
 		
@@ -1064,7 +1198,8 @@ public class Engine {
 			//catFilter.add(wsCatChoiceBox.getSelectionModel().getSelectedItem());
 			catFilter.add("All");
 			catFilter.add("Only mature");
-			updateTreeItemRoot(tableInvWS.getRoot(), ws, game.getShop(),wsFilterTextField.getText(),catFilter);
+			updateTreeItemRoot2(tableInvWS.getRoot(), ws, game.getShop(),wsFilterTextField.getText(),catFilter);
+			tableInvWS.getSelectionModel().clearSelection();
 			tableInvWS.sort();
 	
 	}
@@ -1074,15 +1209,53 @@ public class Engine {
 	 */
 	private void updateShopPanel(){
 		
-		updateTreeItemRoot(tableInv.getRoot(), game.getInventory(), game.getShop(),shopFilterTextField.getText(),null);
-		updateTreeItemRoot(tableShop.getRoot(), game.getShop(), game.getShop(),shopFilterTextField.getText(),null);
+		filterShopPanel();
 		listenForSelection(tableInv.getRoot(), game.getShop().getDataSelling());
 		listenForSelection(tableShop.getRoot(), game.getShop().getDataBuying());
-		tableInv.sort();
-		tableShop.sort();
+		
 		
 	}
 	
+	/**
+	 * filter and updates the treetableview of the shopPanel
+	 */
+	private void filterShopPanel() {
+		updateTreeItemRoot2(tableInv.getRoot(), game.getInventory(), game.getShop(),shopFilterTextField.getText(),null);
+		updateTreeItemRoot2(tableShop.getRoot(), game.getShop(), game.getShop(),shopFilterTextField.getText(),null);
+		tableInv.getSelectionModel().clearSelection();
+		tableShop.getSelectionModel().clearSelection();
+		tableInv.sort();
+		tableShop.sort();
+	}
+	private void updateTreeItemRoot2(TreeItem<Product> root, Inventory inventory, Shop shop, String filter, ArrayList<String> catFilter){
+		inventory.clean();
+		shop.clean();
+		inventory.calculateAverageData();
+		TreeItem<Product> newRoot = new TreeItem<>();
+		//get the expandedMap to restore the treetableview to the correct expanded state after updating
+		inventory.setExpandedMap(root);
+		HashMap<String,Boolean> expandedMap = inventory.getExpandedMap();
+		
+		for(Entry<String, ArrayList<Product>> entry : inventory.getData().entrySet()){
+			Product product = inventory.getAverageData(entry.getKey());
+
+			if(Tools.filterOK(product, filter, catFilter)){
+				product.updatePrice(shop);
+				TreeItem<Product> averageProdDataItem = new TreeItem<Product>(product);
+				averageProdDataItem.setExpanded(expandedMap.get(product.getName())!=null?expandedMap.get(product.getName()):true);
+				newRoot.getChildren().add(averageProdDataItem);
+
+				for(Product prod : entry.getValue()){
+					prod.updatePrice(shop);
+					TreeItem<Product> treeItem = new TreeItem<Product>(prod);
+					averageProdDataItem.getChildren().add(treeItem);
+
+				}
+				
+			}// if filterOK
+		}//for
+		root.getChildren().setAll(newRoot.getChildren());
+	}
 	 /**
 	  * A method to update a TreeTableView every time backing data changes in the model,
 	  * without resetting the table by only adding and removing data when required.
@@ -1097,11 +1270,11 @@ public class Engine {
 		inventory.clean();
 		shop.clean();
 		inventory.calculateAverageData();
-		//retrieve the product list of category items of the previous TreeTableView structure before updating
-		ArrayList<Product> oldProdCategoryList= new ArrayList<Product>();
-		ArrayList<TreeItem<Product>> oldTreeItemCategoryList= new ArrayList<>(root.getChildren());
-		for(TreeItem<Product> treeItem : oldTreeItemCategoryList){
-			oldProdCategoryList.add(treeItem.getValue());
+		//retrieve the product list of Average items of the previous TreeTableView structure before updating
+		ArrayList<Product> oldProdAverageList= new ArrayList<Product>();
+		ArrayList<TreeItem<Product>> oldTreeItemAverageList= new ArrayList<>(root.getChildren());
+		for(TreeItem<Product> treeItem : oldTreeItemAverageList){
+			oldProdAverageList.add(treeItem.getValue());
 		}
 		for(Entry<String, ArrayList<Product>> entry : inventory.getData().entrySet()){
 			Product product = inventory.getAverageData(entry.getKey());
@@ -1140,16 +1313,16 @@ public class Engine {
 				product.updatePrice(shop);
 				TreeItem<Product> averageProdDataItem; ;
 				//if this product category is not yet present in the table add it.
-				if(!oldProdCategoryList.contains(product)){
+				if(!oldProdAverageList.contains(product)){
 					averageProdDataItem = new TreeItem<Product>(product);
 					averageProdDataItem.setExpanded(true);
 					root.getChildren().add(averageProdDataItem);
 				}else{
 					//else if this product category is already in the table, retrieve the reference and remove it from the 
 					//	"old" Lists to see if something needs to be removed from the table in the end
-					averageProdDataItem = oldTreeItemCategoryList.get(oldProdCategoryList.indexOf(product));
-					oldTreeItemCategoryList.remove(oldProdCategoryList.indexOf(product));
-					oldProdCategoryList.remove(product);
+					averageProdDataItem = oldTreeItemAverageList.get(oldProdAverageList.indexOf(product));
+					oldTreeItemAverageList.remove(oldProdAverageList.indexOf(product));
+					oldProdAverageList.remove(product);
 				}
 				//retrieve the product list for this category category of the previous TreeTableView structure before updating
 				ArrayList<Product> oldProdList= new ArrayList<Product>();
@@ -1173,7 +1346,7 @@ public class Engine {
 				averageProdDataItem.getChildren().removeAll(oldTreeItemList); //clean up empty products
 			}// if filterOK
 		}//for
-		root.getChildren().removeAll(oldTreeItemCategoryList);// clean up empty categories
+		root.getChildren().removeAll(oldTreeItemAverageList);// clean up empty categories
 	}
 
 
@@ -1186,12 +1359,14 @@ public class Engine {
 	private void listenForSelection(TreeItem<Product> rootTreeItem, ObservableList<Product> list) {
 		Product copy = new Product(rootTreeItem.getValue());
 		copy.setSelListener((obs, oldVal, newVal) ->{
+			System.out.println("change listener on copy " + copy.getName());
 			if(!newVal){
 				rootTreeItem.getValue().setSelected(false);
 			}
 		});
 		if(rootTreeItem.isLeaf()){
 			rootTreeItem.getValue().setSelListener((obs, oldVal, newVal) -> {
+				System.out.println("change Listener on item " + rootTreeItem.getValue().getName());
 				if(newVal){
 					copy.setSelected(true);
 					list.add(copy);

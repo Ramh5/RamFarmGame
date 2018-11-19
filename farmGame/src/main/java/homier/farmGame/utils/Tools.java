@@ -2,11 +2,14 @@ package homier.farmGame.utils;
 
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.TreeMap;
 
 import org.controlsfx.control.textfield.CustomTextField;
 import org.controlsfx.control.textfield.TextFields;
 
+import homier.farmGame.model.Product;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
@@ -78,7 +81,7 @@ public class Tools {
 	}
 	
 	/**
-	 * Copy a treeitem
+	 * Copy a treeitem **does not seem to work**
 	 * @param item
 	 * @return
 	 */
@@ -88,6 +91,41 @@ public class Tools {
 	        copy.getChildren().add(deepcopy(child));
 	    }
 	    return copy;
+	}
+	
+	public static boolean filterOK(Product product, String filter, ArrayList<String> catFilter) {
+		//Filtering the TreeTableView 
+		boolean filterOK = false;
+		if(catFilter!=null){
+			if(catFilter.contains("All")||catFilter.contains("All seeds")){
+				filterOK = true;
+			}else{
+				//else look for any matching categories
+				for(String str:catFilter){
+					if(product.getCategories().stream().anyMatch(s -> s.equals(str))){
+						filterOK = true;
+						break;
+					}
+				}
+			}
+			//turn filterOk to false if we want only mature and product is not
+			if(catFilter.contains("Only mature")&&product.getMaturity()!=100) {
+				filterOK = false;
+			}
+			//turn filterOK to false if we want only seeds and the product is not a seed
+			if(catFilter.contains("Only seeds")){
+				if(!(product.getCategories().stream().anyMatch(s -> s.equals("Seed")))){
+					filterOK = false;
+				}
+			}
+		}else{
+			filterOK = true;
+		}
+		String[] filterList = filter.split(",");
+		if(filter.length()>0&&!Arrays.stream(filterList).anyMatch(s->product.getName().matches( "(?i:.*"+s+".*)"))){
+			filterOK = false;
+		}
+		return filterOK;
 	}
 	
 }

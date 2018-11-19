@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import homier.farmGame.utils.ReadFile;
+import javafx.scene.control.TreeItem;
 
 public class Inventory {
 	private double money;
@@ -13,6 +14,7 @@ public class Inventory {
 	private HashMap<String, Product> averageData;
 	private double siloSize;//the silo size of all the buildings combined
 	private double storageSize;//the storage size of all the buildings combined
+	private HashMap<String, Boolean> expandedMap; // stores the treeItem expanded state of each averageData
 	
 	public Inventory(){
 		money = 0;
@@ -20,6 +22,7 @@ public class Inventory {
 		averageData=new HashMap<>();
 		siloSize=0;
 		storageSize=0;
+		expandedMap = new HashMap<>();
 	}
 	/**
 	 * Creates a Inventory using a path to a file containing Products
@@ -296,6 +299,14 @@ public class Inventory {
 		this.storageSize = storageSize;
 	}
 	
+	public HashMap<String,Boolean> getExpandedMap(){
+		return expandedMap;
+	}
+	public void setExpandedMap(TreeItem<Product> root) {
+		for(TreeItem<Product> prodTreeItem:root.getChildren()) {
+			expandedMap.put(prodTreeItem.getValue().getName(),prodTreeItem.isExpanded());
+		}
+	}
 	
 	
 }

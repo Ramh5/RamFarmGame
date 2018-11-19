@@ -6,3 +6,12 @@ Potato seeds,3,100,100,1
 Carrot seeds,3,100,100,1
 Soybeans,3,100,100,1
 Sunflower seeds,3,100,100,30
+Hay,100,100,100,1
+Carrots,100,100,100,1
+Potatoes,100,100,100,1
+Onions,100,100,100,1
+Mushrooms,100,100,100,1
+Silage,100,100,100,1
+Bread,100,100,100,1
+Eggs,100,100,100,1
+Omelette,100,100,100,1
