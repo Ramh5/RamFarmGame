@@ -96,6 +96,7 @@ public class Product{
 	public double getFresh() {return fresh.get();}
 	public int getQual() {return qual.get();}
 	public double getPrice() {return price.get();}
+	public boolean isSelected() {return selected.get();}
 	public StringProperty nameProperty(){return name;}	
 	public DoubleProperty qtyProperty(){return qty;}
 	public DoubleProperty spoilQtyProperty(){return spoilQty;}

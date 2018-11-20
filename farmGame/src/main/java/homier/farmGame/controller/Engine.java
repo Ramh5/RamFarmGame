@@ -93,7 +93,7 @@ public class Engine {
 
 	@FXML private GridPane gameGridPane;
 	@FXML private Button actionWSbutton, buyButton,sellButton, seedOKButton;//closeShopButton, cancelTransactionButton, ;
-	@FXML private ToggleButton pauseButton, openShopButton, openWSbutton;
+	@FXML private ToggleButton pauseButton, openShopButton, openWSbutton; //FIXME shop, workshop, game grid showing mecanic
 	@FXML private VBox mouseOverPanel;
 	@FXML private TextArea leftTextArea,mouseOverSeedDetails;
 	@FXML private ChoiceBox<Integer> gameSpeedChoice;
@@ -218,7 +218,7 @@ public class Engine {
 			//update the inventory, especially for spoiling every day
 			game.getInventory().update();
 			game.getShop().update();
-			updateShopPanel();
+			updateShopPanel(true,true);
 			updateWSPanel();
 			
 		}
@@ -536,12 +536,14 @@ public class Engine {
 	@FXML
 	private void openShopButtonAction(ActionEvent event) {
 		if(openShopButton.isSelected()){
-			updateShopPanel();
+			updateShopPanel(false,false);
 			shopPane.toFront();
 			otherPaused=true;
 			pauseButton.setDisable(true);
 		}else{
-			if(!openWSbutton.isSelected()) {
+			if(openWSbutton.isSelected()) {
+				updateWSPanel();
+			}else {
 				otherPaused=false;
 				pauseButton.setDisable(false);
 			}
@@ -555,7 +557,7 @@ public class Engine {
 			otherPaused=false;
 			pauseButton.setDisable(false);
 		}else {
-			updateShopPanel();
+			updateShopPanel(false,false);
 		}
 		workShopPane.toBack();
 		openWSbutton.setSelected(false);
@@ -569,7 +571,9 @@ public class Engine {
 			otherPaused=true;
 			pauseButton.setDisable(true);
 		}else{		
-			if(!openShopButton.isSelected()) {
+			if(openShopButton.isSelected()) {
+				updateShopPanel(false, false);
+			}else {
 				otherPaused=false;
 				pauseButton.setDisable(false);
 			}
@@ -589,9 +593,8 @@ public class Engine {
 		}
 		tableBuy.getItems().clear();
 		buyTotalLabel.setText(String.format("%.2f$", 0.00));
-		updateShopPanel();
+		updateShopPanel(false,true);
 		updateWSPanel();
-		unselectTreeTable(tableShop.getRoot());	
 		leftTextArea.setText(game.getInventory().toString()+"\n\n"+game.getShop().transactionsToString());
 	}
 	
@@ -608,9 +611,8 @@ public class Engine {
 		}
 		tableSell.getItems().clear();
 		sellTotalLabel.setText(String.format("%.2f$", 0.00));
-		updateShopPanel();
+		updateShopPanel(true,false);
 		updateWSPanel();
-		unselectTreeTable(tableInv.getRoot());
 		leftTextArea.setText(game.getInventory().toString()+"\n\n"+game.getShop().transactionsToString());
 	}
 	
@@ -636,7 +638,8 @@ public class Engine {
 		game.getWorkShop().startTask(getActiveEmployee(),game.getInventory(),game.getClock().getTotalSeconds());
 		taskProgress1.setProgress(getActiveEmployee().getTask().taskProgress(game.getClock().getTotalSeconds(), game.getInventory(),getActiveEmployee(), game.getTileList(), renderer.getPreviousMap()));
 		taskName1.setText(getActiveEmployee().getTask().getName());
-		updateShopPanel();
+		
+		updateShopPanel(true,false);
 		updateWSPanel();
 	}
 	
@@ -865,12 +868,8 @@ public class Engine {
 				}
 			};
 		});
-		
-		
-		updateShopPanel();
-		
-
-
+				
+		updateShopPanel(false,false);
 
 		//-------------buy table-----------------
 		tableBuy.setItems(game.getShop().getDataBuying());
@@ -913,14 +912,10 @@ public class Engine {
 				@Override
 				public void updateItem(Product pers, boolean empty) {
 					super.updateItem(pers, empty);
-					
 					boolean isTopLevel = table.getRoot().getChildren().contains(treeItemProperty().get());
 					if(pers==null||empty) {
 						setText(null);
 						setGraphic(null);
-						
-						//System.out.println(getStyleClass());
-	
 						getStyleClass().remove("topLevelRow");
 					}else {
 						if(isTopLevel) {
@@ -929,11 +924,8 @@ public class Engine {
 							}
 						}else {
 							getStyleClass().remove("topLevelRow");
-							
 						}
 					}
-
-
 				}
 			};
 		});
@@ -1139,7 +1131,7 @@ public class Engine {
 		ArrayList<String> catFilter = new ArrayList<>();
 		catFilter.add(seedCatChoiceBox.getSelectionModel().getSelectedItem());
 		catFilter.add("Only seeds");	
-		updateTreeItemRoot2(tableSeed.getRoot(), game.getInventory(), game.getShop(),seedFilterTextField.getText(),catFilter);
+		updateTreeItemRoot(tableSeed.getRoot(), game.getInventory(), game.getShop(),seedFilterTextField.getText(),catFilter);
 		listenForSelectionSeedPane(tableSeed.getRoot());
 		tableSeed.sort();
 		
@@ -1178,7 +1170,7 @@ public class Engine {
 	 * updates the workShop panel after it has been set up to show changed data
 	 */
 	private void updateWSPanel() {
-
+System.out.println("updateWS");
 		WorkShop ws = game.getWorkShop();
 		ws.copyInventory(game.getInventory());
 		ws.getSelectedIngr().clear();
@@ -1193,26 +1185,26 @@ public class Engine {
 	 * @param ws
 	 */
 	private void filterWSPanel(WorkShop ws) {
-		
 			ArrayList<String> catFilter = new ArrayList<>();
 			//catFilter.add(wsCatChoiceBox.getSelectionModel().getSelectedItem());
 			catFilter.add("All");
 			catFilter.add("Only mature");
-			updateTreeItemRoot2(tableInvWS.getRoot(), ws, game.getShop(),wsFilterTextField.getText(),catFilter);
+			updateTreeItemRoot(tableInvWS.getRoot(), ws, game.getShop(),wsFilterTextField.getText(),catFilter);
 			tableInvWS.getSelectionModel().clearSelection();
 			tableInvWS.sort();
-	
 	}
 
 	/**
 	 * updates the Shop panel after it has been set up to show changed data
+	 * @param clearInvSelection : to clear the selection of the inventory table, after using products in the workshop for example
+	 * @param clearShopSelection : to clear shop and inventory selection on a new day for example
 	 */
-	private void updateShopPanel(){
-		
+	private void updateShopPanel(boolean clearInvSelection, boolean clearShopSelection){
+		if(clearInvSelection)unselectTreeTable(tableInv.getRoot());
+		if(clearShopSelection)unselectTreeTable(tableShop.getRoot());
 		filterShopPanel();
 		listenForSelection(tableInv.getRoot(), game.getShop().getDataSelling());
 		listenForSelection(tableShop.getRoot(), game.getShop().getDataBuying());
-		
 		
 	}
 	
@@ -1220,14 +1212,22 @@ public class Engine {
 	 * filter and updates the treetableview of the shopPanel
 	 */
 	private void filterShopPanel() {
-		updateTreeItemRoot2(tableInv.getRoot(), game.getInventory(), game.getShop(),shopFilterTextField.getText(),null);
-		updateTreeItemRoot2(tableShop.getRoot(), game.getShop(), game.getShop(),shopFilterTextField.getText(),null);
-		tableInv.getSelectionModel().clearSelection();
+		updateTreeItemRoot(tableInv.getRoot(), game.getInventory(), game.getShop(),shopFilterTextField.getText(),null);
+		updateTreeItemRoot(tableShop.getRoot(), game.getShop(), game.getShop(),shopFilterTextField.getText(),null);
+		tableInv.getSelectionModel().clearSelection();//to prevent a bug when sorting if something is selected
 		tableShop.getSelectionModel().clearSelection();
 		tableInv.sort();
 		tableShop.sort();
 	}
-	private void updateTreeItemRoot2(TreeItem<Product> root, Inventory inventory, Shop shop, String filter, ArrayList<String> catFilter){
+	/**
+	 * Update the root of a TreeTableView with the data of an inventory and applies filters
+	 * @param root
+	 * @param inventory
+	 * @param shop
+	 * @param filter
+	 * @param catFilter
+	 */
+	private void updateTreeItemRoot(TreeItem<Product> root, Inventory inventory, Shop shop, String filter, ArrayList<String> catFilter){
 		inventory.clean();
 		shop.clean();
 		inventory.calculateAverageData();
@@ -1249,107 +1249,14 @@ public class Engine {
 					prod.updatePrice(shop);
 					TreeItem<Product> treeItem = new TreeItem<Product>(prod);
 					averageProdDataItem.getChildren().add(treeItem);
-
 				}
 				
 			}// if filterOK
 		}//for
 		root.getChildren().setAll(newRoot.getChildren());
 	}
-	 /**
-	  * A method to update a TreeTableView every time backing data changes in the model,
-	  * without resetting the table by only adding and removing data when required.
-	  * Also applies filters
-	  * @param root : the root TreeItem of the table to update
-	  * @param inventory : the inventory backing this table
-	  * @param shop : the shop to calculate the price of products
-	  * @param filter : comma separated string filter
-	  * @param catFilter : category filter list
-	  */
-	private void updateTreeItemRoot(TreeItem<Product> root, Inventory inventory, Shop shop, String filter, ArrayList<String> catFilter){
-		inventory.clean();
-		shop.clean();
-		inventory.calculateAverageData();
-		//retrieve the product list of Average items of the previous TreeTableView structure before updating
-		ArrayList<Product> oldProdAverageList= new ArrayList<Product>();
-		ArrayList<TreeItem<Product>> oldTreeItemAverageList= new ArrayList<>(root.getChildren());
-		for(TreeItem<Product> treeItem : oldTreeItemAverageList){
-			oldProdAverageList.add(treeItem.getValue());
-		}
-		for(Entry<String, ArrayList<Product>> entry : inventory.getData().entrySet()){
-			Product product = inventory.getAverageData(entry.getKey());
-			//Filtering the TreeTableView 
-			boolean filterOK = false;
-			if(catFilter!=null){
-				if(catFilter.contains("All")||catFilter.contains("All seeds")){
-					filterOK = true;
-				}else{
-					//else look for any matching categories
-					for(String str:catFilter){
-						if(product.getCategories().stream().anyMatch(s -> s.equals(str))){
-							filterOK = true;
-							break;
-						}
-					}
-				}
-				//turn filterOk to false if we want only mature and product is not
-				if(catFilter.contains("Only mature")&&product.getMaturity()!=100) {
-					filterOK = false;
-				}
-				//turn filterOK to false if we want only seeds and the product is not a seed
-				if(catFilter.contains("Only seeds")){
-					if(!(product.getCategories().stream().anyMatch(s -> s.equals("Seed")))){
-						filterOK = false;
-					}
-				}
-			}else{
-				filterOK = true;
-			}
-			String[] filterList = filter.split(",");
-			if(filter.length()>0&&!Arrays.stream(filterList).anyMatch(s->product.getName().matches( "(?i:.*"+s+".*)"))){
-				filterOK = false;
-			}
-			if(filterOK){
-				product.updatePrice(shop);
-				TreeItem<Product> averageProdDataItem; ;
-				//if this product category is not yet present in the table add it.
-				if(!oldProdAverageList.contains(product)){
-					averageProdDataItem = new TreeItem<Product>(product);
-					averageProdDataItem.setExpanded(true);
-					root.getChildren().add(averageProdDataItem);
-				}else{
-					//else if this product category is already in the table, retrieve the reference and remove it from the 
-					//	"old" Lists to see if something needs to be removed from the table in the end
-					averageProdDataItem = oldTreeItemAverageList.get(oldProdAverageList.indexOf(product));
-					oldTreeItemAverageList.remove(oldProdAverageList.indexOf(product));
-					oldProdAverageList.remove(product);
-				}
-				//retrieve the product list for this category category of the previous TreeTableView structure before updating
-				ArrayList<Product> oldProdList= new ArrayList<Product>();
-				ArrayList<TreeItem<Product>> oldTreeItemList= new ArrayList<>(averageProdDataItem.getChildren());
-				for(TreeItem<Product> treeItem : oldTreeItemList){
-					oldProdList.add(treeItem.getValue());
-				}
-				for(Product prod : entry.getValue()){
-					prod.updatePrice(shop);
-					TreeItem<Product> treeItem;
-					//if the table does not contain this prod, add it
-					if(!oldProdList.contains(prod)){
-						treeItem = new TreeItem<Product>(prod);
-						averageProdDataItem.getChildren().add(treeItem);
-					}else{
-
-						oldTreeItemList.remove(oldProdList.indexOf(prod));
-						oldProdList.remove(prod);
-					}
-				}
-				averageProdDataItem.getChildren().removeAll(oldTreeItemList); //clean up empty products
-			}// if filterOK
-		}//for
-		root.getChildren().removeAll(oldTreeItemAverageList);// clean up empty categories
-	}
-
-
+	
+	//FIXME bug when filtered out items are not getting their changelistener properly
 	/**
 	 * Adds the appropriate changelisteners to products in the inventory treetableview (only for the leafs)
 	 * and populates the transaction table with copies of the selected products
@@ -1357,16 +1264,18 @@ public class Engine {
 	 * @param list : the transaction table list
 	 */
 	private void listenForSelection(TreeItem<Product> rootTreeItem, ObservableList<Product> list) {
+		
 		Product copy = new Product(rootTreeItem.getValue());
+		
 		copy.setSelListener((obs, oldVal, newVal) ->{
-			System.out.println("change listener on copy " + copy.getName());
+		//	System.out.println("change listener on copy " + copy.getName());
 			if(!newVal){
 				rootTreeItem.getValue().setSelected(false);
 			}
 		});
-		if(rootTreeItem.isLeaf()){
+		if(rootTreeItem.isLeaf()&&!rootTreeItem.getValue().isSelected()){
 			rootTreeItem.getValue().setSelListener((obs, oldVal, newVal) -> {
-				System.out.println("change Listener on item " + rootTreeItem.getValue().getName());
+			//	System.out.println("change Listener on item " + rootTreeItem.getValue().getName());
 				if(newVal){
 					copy.setSelected(true);
 					list.add(copy);
@@ -1446,9 +1355,7 @@ public class Engine {
 				prod.setQty(newValue);
 			}
 			event.getTableView().refresh();
-			
 			updateBuySellLabels();
-			
 			updateWSResultLabel();
 		};
 	}
@@ -1461,9 +1368,7 @@ public class Engine {
 		double buyPrice = shop.totalPrice(shop.getDataBuying())*shop.getBuyingPricePenalty();
 		sellTotalLabel.setText(String.format("%.2f$", shop.totalPrice(shop.getDataSelling())*shop.getSellingPricePenalty()));
 		buyTotalLabel.setText(String.format("%.2f$", buyPrice));
-		
 		//check if enough storage to enable harvest
-		
 		boolean enoughSilo = inv.enoughStorageFor(shop.getBuyingStorageRequired(true), true);
 		boolean enoughOtherStorage = inv.enoughStorageFor(shop.getBuyingStorageRequired(false), false);
 		buyButton.setDisable(buyPrice>inv.getMoney()||!enoughSilo||!enoughOtherStorage||!shop.enoughBuyTransaction());
