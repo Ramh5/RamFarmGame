@@ -6,22 +6,21 @@ public class SeedData {
 	
 
 	private String name;
-	private String prodName;
+	private TreeMap<String,SeedByProd> byProds;
 	private double growthRate;
-	private int maxYield;
-	private TreeMap<Double, Double> yieldMap;
 	private int[] tempRange;
+	
 	
 	public SeedData(String name){
 		this.name = name;
 	}
-	public SeedData(String name, String prodName, double growthRate, int maxYield, TreeMap<Double, Double> yieldMap, int[] tempRange) {
+	
+	public SeedData(String name, TreeMap<String,SeedByProd> byProds, double growthRate, int[] tempRange) {
 		this(name);
-		this.prodName = prodName;
+		this.byProds=byProds;
 		this.growthRate = growthRate;
-		this.maxYield = maxYield;
-		this.yieldMap = yieldMap;
 		this.tempRange = tempRange;
+		
 	}
 	
 
@@ -29,20 +28,12 @@ public class SeedData {
 		return name;
 	}
 
-	public String getProdName() {
-		return prodName;
+	public TreeMap<String,SeedByProd> getByProds(){
+		return byProds;
 	}
-
+	
 	public double getGrowthRate() {
 		return growthRate;
-	}
-
-	public int getMaxYield() {
-		return maxYield;
-	}
-
-	public TreeMap<Double, Double> getYieldMap() {
-		return yieldMap;
 	}
 
 	public int[] getTempRange() {
@@ -51,7 +42,11 @@ public class SeedData {
 
 	@Override
 	public String toString(){
-		String str = "Seed: " + name + "\nProduct: " + prodName + "\n";
+		String byProdsStr = "";
+		for(SeedByProd byProd:byProds.values()) {
+			byProdsStr += byProd.getProdName()+", ";
+		}
+		String str = "Seed: " + name + "\nProducts: \n" +byProdsStr + "\n";
 		str+= String.format("Growth rate: %.0f%%\n", growthRate);
 		str+= String.format("Temperature range: %d to %d \u00b0C", tempRange[0], tempRange[1]);
 		return str;

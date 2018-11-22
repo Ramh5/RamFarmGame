@@ -52,7 +52,7 @@ public class Game {
 		for (int i : indexList) {
 			tileList.set(i, new FarmPlot());
 		}
-		tileList.set(40, new BuildingTile("house", 0, 500, 500));
+		tileList.set(40, new BuildingTile("house", 0, 5000, 1000));
 		employees = new Employee[]{new Employee("Ram",0,1000)};
 		/*
 		inventory.addProd(new Product(MyData.categoriesOf("Blé"),"Blé",12.0220,100,1));

@@ -1,5 +1,5 @@
 COMMENTLINE format is name of product;categories;basePrice;freshDecay
-BASEPRICE vegy;2;cereal;0.5;mush;5
+BASEPRICE vegy;0.4;cereal;0.6;mush;5;seed;2
 FRESHDECAY animal;1.4;vegy;1;cereal;0.5;seed;0.1;mush;0.2;dry;0.2
 COMMENTLINE...................................................... Vegetables .....................................................
 Carrots;Vegetable;vegy;vegy
@@ -7,21 +7,24 @@ Potatoes;Vegetable,Seed,Vegetable seed;vegy;vegy
 Onions;Vegetable;vegy;vegy
 Mushrooms;Vegetable;mush;mush
 COMMENTLINE...................................................... Cereals ....................................................
-Wheat grain;Seed,Cereal seed,Cereal;cereal;seed
-Barley grain;Seed,Cereal seed,Cereal;cereal;seed
+Wheat grain;Seed,Cereal seed,Cereal,Silo;cereal;seed
+Barley grain;Seed,Cereal seed,Cereal,Silo;cereal;seed
+Hay;Hay;0.1;dry
 COMMENTLINE...................................................... Animal ......................................................
 Eggs;Animal;2;animal
 COMMENTLINE...................................................... Seeds ....................................................
-Carrot seeds;Seed,Vegetable seed;rec;seed
-Potato seeds;Seed,Vegetable seed;rec;seed
-Onion seeds;Seed,Vegetable seed;rec;seed
+Carrot seeds;Seed,Vegetable seed;seed;seed
+Potato seeds;Seed,Vegetable seed;seed;seed
+Onion seeds;Seed,Vegetable seed;seed;seed
 Sunflower seeds;Seed;1.5;seed
-Soybeans;Seed,Legume,Cereal;cereal;seed
+Soybeans;Seed,Legume,Silo;cereal;seed
 COMMENTLINE...................................................... Kitchen .....................................................
 Omelette;Kitchen;rec;vegy
 Soup;Kitchen;rec;vegy
+Barley soup;Kitchen;rec;vegy
 Scrambled eggs;Kitchen;rec;vegy
 COMMENTLINE...................................................... Silo ........................................................
+Silage;Silo;0.15;cereal
 COMMENTLINE...................................................... Mill ......................................................
 Wheat flour;Mill;rec;dry
 Barley flour;Mill;rec;dry

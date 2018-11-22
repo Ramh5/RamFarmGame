@@ -19,7 +19,6 @@ import homier.farmGame.model.tile.Tile;
 import homier.farmGame.utils.GameClock;
 import homier.farmGame.utils.TextFlowDataSet;
 import homier.farmGame.utils.TextFlowManager;
-import javafx.beans.property.DoubleProperty;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
@@ -147,7 +146,7 @@ public class Renderer {
 									b1.setOnAction(e -> {	
 									FarmTask collectMushrooms = new FarmTask("Collecting mushrooms", 120, 20);
 										activeEmployee.setTask(collectMushrooms);
-										collectMushrooms.setResult(new Product(MyData.categoriesOf("Mushrooms"), "Mushrooms", 4.0, 
+										collectMushrooms.setResult(new Product(MyData.categoriesOf("Mushrooms"), "Mushrooms", 4.0,100, 
 												100, Math.min(100,Math.max(0,(int)(50+new Random().nextGaussian()*10)))));
 										collectMushrooms.startTask(gameClock.getTotalSeconds(), activeEmployee);
 										
@@ -218,7 +217,7 @@ public class Renderer {
 										Employee activeEmployee= engine.getActiveEmployee();
 										//System.out.println(engine.getActiveEmployee());
 										double money = engine.getGame().getInventory().getMoney();
-										b1.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<100);
+										b1.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<200);
 										b2.setDisable(money<1000|| activeEmployee.getEnergy()<300);
 										
 										b1.setText("Plow");
@@ -226,7 +225,7 @@ public class Renderer {
 										
 									
 										b1.setOnAction(e -> {
-											FarmTask plow = new FarmTask("Plow", 100, 20);
+											FarmTask plow = new FarmTask("Plow", 200, 30);
 											activeEmployee.setTask(plow);
 											plow.setPlow(true);
 											plow.setNewTile(farmTile, index);
@@ -286,9 +285,8 @@ public class Renderer {
 					}
 					
 					if(farmTile.isSown()){
-						DoubleProperty growthProperty = farmTile.growthProperty();
 						TileViewData sownTVD = RenderingData.getTVD(farmTile.getSeed());
-						newIndexToRender = sownTVD.getIndexToRender(growthProperty.get());
+						newIndexToRender = sownTVD.getIndexToRender(farmTile.getGrowth());
 						if (newIndexToRender != previousMap[index]) {
 							Group newImageView = sownTVD.getImageToRender(newIndexToRender);
 							GridPane.setConstraints(newImageView, i, j);
@@ -310,19 +308,18 @@ public class Renderer {
 										Employee activeEmployee= engine.getActiveEmployee();
 										
 										//check if enough storage to enable harvest
-										ArrayList<String> categories = MyData.categoriesOf(farmTile.getSeed().getProdName());
-										double yield = farmTile.getYield();
-										boolean enoughStorage = inventory.enoughStorageFor(yield, categories.contains("Cereal"));
-										b2.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<100||!enoughStorage);
+										
+										
+										boolean enoughStorage = farmTile.enoughStorageToHarvest(inventory);
+										b2.setDisable(activeEmployee.isWorking() || activeEmployee.getEnergy()<200||!enoughStorage);
 										b2.setText("Harvest");
 										b2.setOnAction(e -> {
 
 											//create the task, add it to the active employee and create a changelistener to finish the task
 											
-											FarmTask harvestWheat = new FarmTask("Harvest", 100, 20);
+											FarmTask harvestWheat = new FarmTask("Harvest", 200, 30);
 											activeEmployee.setTask(harvestWheat);
-											
-											harvestWheat.setResult(new Product(categories,farmTile.getSeed().getProdName(),yield,100,farmTile.getQual()));
+											harvestWheat.setHarvestResults(farmTile);
 											harvestWheat.setNewTile(new FarmPlot(), index);
 											harvestWheat.startTask(gameClock.getTotalSeconds(), activeEmployee);
 											
@@ -386,7 +383,7 @@ public class Renderer {
 			if("Silo".equals(building)){
 				newBuilding.setSiloSize(2000);
 			}else if("Wharehouse".equals(building)){
-				newBuilding.setStorageSize(2000);
+				newBuilding.setStorageSize(10000);
 			}else if("Wind mill".equals(building)){
 				newBuilding.setSiloSize(500);
 			}else if("Bakery".equals(building)){

@@ -1,17 +1,16 @@
 COMMENTLINE format : WORKSHOP workshopName; level 1 energyFactor, level 2 energyFactor, level 3 energyFactor ...; level 1 timeFactor, level 2 timeFactor, level 3 timeFactor...;
-COMMENTLINE format : Recipe name; energyCost; timeCost; ingredient,quantity in kg...; result,quantity in kg... (starting with the primary result if multiple results)
-ENERGYCOST silo1;1;kitchen1;10;mill1;2;bakery1;3
-TIMECOST silo1;1;kitchen1;10;mill1;2;bakery1;3
+COMMENTLINE format : Recipe name; energyCost; timeCost;maturation ; ingredient,quantity in kg...; result,quantity in kg... (starting with the primary result if multiple results)
+BASEENERGYCOST silo1;0.5;kitchen1;5;mill1;1;bakery1;1.5
+BASETIMECOST silo1;0.25;kitchen1;2.5;mill1;0.5;bakery1;.75
 WORKSHOP Kitchen;1,0.8;1,0.8
-Omelette;kitchen1;kitchen1;Onions,1.5,Eggs,1;Omelette,2
-Soup;kitchen1;kitchen1;Potatoes,2,Carrots,2;Soup,3.5
-Scrambled eggs;kitchen1;kitchen1;Eggs,2,Onions,0.5;Scrambled eggs,2
+Omelette;kitchen1;kitchen1;0;Onions,0.5,Eggs,1;Omelette,1
+Soup;kitchen1;kitchen1;0;Potatoes,1,Carrots,1,Onions,0.5;Soup,1.5
+Barley soup;kitchen1;kitchen1;0;Potatoes,1,Carrots,1,Onions,0.5,Barley grain,1;Barley soup,2.25
+Scrambled eggs;kitchen1;kitchen1;0;Eggs,1,Onions,0.25;Scrambled eggs,1
 WORKSHOP Silo;1,0.8;1,0.8
-Potato seeds;silo1;silo1;Potatoes,1;Potato seeds,0.2
-Onion seeds;silo1;silo1;Onions,1;Onion seeds,0.2
-Carrot seeds;silo1;silo1;Carrots,1;Carrot seeds,0.2
+Silage;silo1;silo1;10;Hay,1;Silage,1
 WORKSHOP Wind mill;1,0.8;1,0.8
-Wheat flour;mill1;mill1;Wheat grain,1;Wheat flour,0.8
-Barley flour;mill1;mill1;Barley grain,1;Barley flour,0.8
+Wheat flour;mill1;mill1;0;Wheat grain,1;Wheat flour,0.8
+Barley flour;mill1;mill1;0;Barley grain,1;Barley flour,0.8
 WORKSHOP Bakery;1,0.8;1,0.8
-Bread;bakery1;bakery1;Wheat flour,1;Bread,0.8
+Bread;bakery1;bakery1;0;Wheat flour,1;Bread,0.8

@@ -17,7 +17,7 @@ public class WorkShop extends Inventory {
 	
 	private final ObservableList<Product> selectedIngr = FXCollections.observableArrayList();
 	private ArrayList<Product> ingrToBeUsed = new ArrayList<Product>();
-	private Product result = new Product(null,"EMPTY",0,0,0);
+	private Product result = new Product(null,"EMPTY",0,0,0,0);
 	private FarmTask task = new FarmTask();
 	private HashMap<String, Integer> wsLevelMap = new HashMap<>();//this map is set in Engine.java by the method setupAvailWS()
 	
@@ -43,7 +43,7 @@ public class WorkShop extends Inventory {
 		
 		String resultName = recipe.getResults().firstKey();
 		
-		result=new Product(MyData.categoriesOf(resultName),resultName,0,0,0);
+		result=new Product(MyData.categoriesOf(resultName),resultName,0,0,0,0);
 		
 		//make a map of ratios to determine the limfactor ingredient
 		for(Product prod:selectedIngr) {
@@ -85,7 +85,7 @@ public class WorkShop extends Inventory {
 			double qtyAvail = 0;
 			while(qtyAvail/qtyNeeded<limFactor) {
 				
-				Product leastFreshProd = new Product(null,name,0,0,0);
+				Product leastFreshProd = new Product(null,name,0,0,0,0);
 
 				for(Product prod:selectedIngrCopy) {
 					if(prod.getName().equals(entry.getKey())) {
@@ -114,6 +114,8 @@ public class WorkShop extends Inventory {
 		}
 		//TODO change the implementation to allow multi result recipes
 		result.setQty(recipe.getResults().firstEntry().getValue()*limFactor);
+		result.setMaturation(recipe.getMaturation());
+		result.setMaturity(recipe.getMaturation()>0?0:100);
 		result.setFresh(totFresh/totIngrQty);
 		result.setQual((int)(Math.round(totQual/totIngrQty)));
 		result.updateSpoil();
@@ -121,8 +123,8 @@ public class WorkShop extends Inventory {
 		//set the energy and time cost for this task
 		task.setEnergyCost(limFactor*recipe.getBaseEnergyCost()*RecipeBook.energyFactorOf(wsName, wsLevelMap.get(wsName)));
 		task.setTimeCost((int)(limFactor*recipe.getBaseTimeCost()*RecipeBook.timeFactorOf(wsName, wsLevelMap.get(wsName))));
-		System.out.println(task.getTimeCost());
-		task.setName("Crafting " +recipe.getName() + " in the " + wsName);
+		
+		task.setName("Crafting " + recipe.getName() + " in the " + wsName);
 	}
 	
 	/**

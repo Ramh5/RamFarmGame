@@ -1,14 +1,14 @@
 COMMENTLINE data for SeedData.java
-COMMENTLINE format is : name, prodName, growthRate, maxYield, yieldMap, minTemp, maxTemp
+COMMENTLINE format is : name; prodName1,maxYield,yieldMap,...; growthRate; minTemp; maxTemp
 COMMENTLINE...................................................... Vegetables .....................................................
-Onion seeds,Onions,8,300,norm,5,20
-Carrot seeds,Carrots,8,300,norm,5,20
-Potato seeds,Potatoes,8,300,norm,5,20
-Potatoes,Potatoes,10,300,norm,5,20
+Onion seeds;Onions,5000,norm,Onion seeds,100,seed;6;7;27
+Carrot seeds;Carrots,5000,norm,Carrot seeds,100,seed;6;7;27
+Potato seeds;Potatoes,5000,norm,Potato seeds,100,seed;6;7;27
+Potatoes;Potatoes,5000,norm,Potato seeds,100,seed;8;7;27
 COMMENTLINE...................................................... Cereals .....................................................
-Wheat grain,Wheat grain,10,1000,norm,15,25
-Barley grain,Barley grain,10,1000,norm,15,25
+Wheat grain;Wheat grain,1000,norm,Hay,1000,hay;10;15;25
+Barley grain;Barley grain,1000,norm,Hay,1000,hay;10;15;25
 COMMENTLINE...................................................... Misc .....................................................
-Sunflower seeds,Sunflower seeds,5,500,norm,20,30
+Sunflower seeds;Sunflower seeds,500,norm;5;20;30
 COMMENTLINE...................................................... Legumes .....................................................
-Soybeans,Soybeans,10,1000,norm,15,25
+Soybeans;Soybeans,1000,norm,Hay,1000,hay;10;15;25

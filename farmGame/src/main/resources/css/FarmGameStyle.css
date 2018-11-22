@@ -99,7 +99,7 @@
 .topLevelRow .tree-table-cell{
 	-fx-font-size:12;
 	-fx-text-fill: grey;
-	/*-fx-font-weight:bold;*/
+	
 	-fx-background-color: 	#F0F0F0 ;
 }
 

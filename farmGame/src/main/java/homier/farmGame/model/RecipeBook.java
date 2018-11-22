@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.TreeMap;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
 import homier.farmGame.utils.ReadFile;
 import javafx.util.Pair;
 
@@ -27,10 +29,10 @@ public class RecipeBook {
 		timeCostMap = new HashMap<>();
 		wsEnergyFactorMap = new HashMap<>();
 		wsTimeFactorMap = new HashMap<>();
-		String fileString = ReadFile.getString(path);
+		String fileString = ReadFile.getStringOfResFile(path);
 			
-		fileString=fileString.replaceAll("(?m)^COMMENTLINE.*(?:\r?\n)?", "").replace("ENERGYCOST ", "").replace("TIMECOST ", "");//remove all lines starting with COMMENTLINE 
-		//get and then remove ENERGYCOST and TIMECOST lines which are now that 2 first lines of the file after removing COMMENTLINEs
+		fileString=fileString.replaceAll("(?m)^COMMENTLINE.*(?:\r?\n)?", "").replace("BASEENERGYCOST ", "").replace("BASETIMECOST ", "");//remove all lines starting with COMMENTLINE 
+		//get and then remove BASEENERGYCOST and BASETIMECOST lines which are now that 2 first lines of the file after removing COMMENTLINEs
 			
 		String energyCostStr = fileString.substring(0, fileString.indexOf("\r\n")+2);//get and then remove 
 		
@@ -146,8 +148,10 @@ public class RecipeBook {
 	 * @return the energyCost for the key, or 0 if no such key
 	 */
 	public static double energyCostOf(String key){
+		if(NumberUtils.isParsable(key)){//if the key is a number use it directly
+			return Double.parseDouble(key);
+		}
 		Double energyCost = energyCostMap.get(key);
-		
 		if(energyCost==null){
 			energyCost=0.0;
 			System.out.println("no energyCost for key:" + key + "     in RecipeBook.java" );
@@ -161,6 +165,9 @@ public class RecipeBook {
 	 * @return the timeCost for the key, or 0 if no such key
 	 */
 	public static double timeCostOf(String key){
+		if(NumberUtils.isParsable(key)){//if the key is a number use it directly
+			return Double.parseDouble(key);
+		}
 		Double timeCost = timeCostMap.get(key);
 		if(timeCost==null){
 			timeCost=0.0;

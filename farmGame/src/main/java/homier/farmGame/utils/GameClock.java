@@ -19,6 +19,7 @@ public class GameClock {
 	
 	public void addTime(double seconds){
 		totalSeconds += seconds;
+		update(0);
 	}
 /**
  * 

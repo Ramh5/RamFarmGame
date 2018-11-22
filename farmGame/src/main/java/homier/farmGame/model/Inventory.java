@@ -3,11 +3,10 @@ package homier.farmGame.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.TreeMap;
 import java.util.Map.Entry;
 
 import homier.farmGame.utils.ReadFile;
-import javafx.util.Pair;
+import javafx.scene.control.TreeItem;
 
 public class Inventory {
 	private double money;
@@ -15,6 +14,7 @@ public class Inventory {
 	private HashMap<String, Product> averageData;
 	private double siloSize;//the silo size of all the buildings combined
 	private double storageSize;//the storage size of all the buildings combined
+	private HashMap<String, Boolean> expandedMap; // stores the treeItem expanded state of each averageData
 	
 	public Inventory(){
 		money = 0;
@@ -22,6 +22,7 @@ public class Inventory {
 		averageData=new HashMap<>();
 		siloSize=0;
 		storageSize=0;
+		expandedMap = new HashMap<>();
 	}
 	/**
 	 * Creates a Inventory using a path to a file containing Products
@@ -29,8 +30,16 @@ public class Inventory {
 	 */
 	public Inventory(String path){
 		this();
-		
-		String fileString = ReadFile.getString(path);
+		load(path);
+	}
+	
+	/**
+	 * Reload an inventory data by using a file specified by the path
+	 * @param path
+	 */
+	public void load(String path) {
+		data.clear();
+		String fileString = ReadFile.getStringOfResFile(path);
 		String[] lines = fileString.split("\r\n");
 		for(String line:lines){
 			
@@ -38,10 +47,11 @@ public class Inventory {
 			
 			String[] strList = line.split(",");
 			String name = strList[0];
-			Product prod = new Product(MyData.categoriesOf(name), name, Double.parseDouble(strList[1]), Integer.parseInt(strList[2]), Integer.parseInt(strList[3]));
+			System.out.println(name);
+			Product prod = new Product(MyData.categoriesOf(name), name, Double.parseDouble(strList[1]),Double.parseDouble(strList[2]),
+										Integer.parseInt(strList[3]), Integer.parseInt(strList[4]));
 			addProd(prod);
 		}
-		
 	}
 	
 	/**
@@ -54,7 +64,7 @@ public class Inventory {
 	public boolean enoughStorageFor(double qty, boolean forSilo){
 		boolean enoughStorage;
 		if(forSilo){
-			enoughStorage = qty+getTotalCerealQty()<getSiloSize();
+			enoughStorage = qty+getTotalSiloQty()<getSiloSize();
 			if(!enoughStorage){
 				System.out.println("Not enough silo capacity");
 			}
@@ -72,13 +82,13 @@ public class Inventory {
 	
 	/**
 	 * 
-	 * @return the total quantity of cereals (products that goes in the silo)
+	 * @return the total quantity of products that goes in the silo
 	 */
-	public double getTotalCerealQty(){
+	public double getTotalSiloQty(){
 		double totQty=0;
 		for(Entry<String, ArrayList<Product>> entry : data.entrySet()){
 			for(Product prod : entry.getValue()){
-				if(prod.getCategories().contains("Cereal")){
+				if(prod.getCategories().contains("Silo")){
 					totQty+=prod.getQty();
 				}
 			}
@@ -94,7 +104,7 @@ public class Inventory {
 		double totQty=0;
 		for(Entry<String, ArrayList<Product>> entry : data.entrySet()){
 			for(Product prod : entry.getValue()){
-				if(!prod.getCategories().contains("Cereal")){
+				if(!prod.getCategories().contains("Silo")){
 					totQty+=prod.getQty();
 				}
 			}
@@ -115,29 +125,34 @@ public class Inventory {
 			Product averageProd = averageData.get(prodName);
 			double totQty=0;
 			double totSpoilQty=0;
+			double avMaturity=0;
 			double avFresh=0;
 			double avQual=0;
 
 			//System.out.println(getClass() + " product name " +prodName);
 			
 			for(Product prod : entry.getValue()){
-				totQty += prod.getQty();
+				double qty = prod.getQty();
+				totQty += qty;
 				totSpoilQty += prod.getSpoilQty();
-				avFresh += prod.getQty()*prod.getFresh();
-				avQual += prod.getQty()*prod.getQual();
+				avMaturity += qty*prod.getMaturity();
+				avFresh += qty*prod.getFresh();
+				avQual += qty*prod.getQual();
 			}
 			if(totQty!=0){
+				avMaturity /= totQty;
 				avFresh /= totQty;
 				avQual /= totQty;
 			}
 			if(averageProd==null){
-				averageProd = new Product(categories, prodName, totQty, (int)Math.round(avFresh), (int)Math.round(avQual));
+				averageProd = new Product(categories, prodName, totQty, avMaturity, avFresh, (int)Math.round(avQual));
 				averageProd.setSpoilQty(totSpoilQty);
 				averageData.put(prodName, averageProd);
 			}else{
 				averageProd.setQty(totQty);
 				averageProd.setSpoilQty(totSpoilQty);
-				averageProd.setFresh((int)Math.round(avFresh));
+				averageProd.setMaturity(avMaturity);
+				averageProd.setFresh(avFresh);
 				averageProd.setQual((int)Math.round(avQual));
 			}
 
@@ -159,7 +174,9 @@ public class Inventory {
 		
 		for(int i=0; i<currList.size();i++){
 			Product elem = currList.get(i);
-			if(product.getFresh()==elem.getFresh()&&product.getQual()==elem.getQual()){
+			//if an exact product exist in the inventory add(or substract) to it
+			if(product.getFresh()==elem.getFresh()&&product.getQual()==elem.getQual()
+					&&product.getMaturity()==elem.getMaturity()){
 				elem.setQty(product.getQty()+elem.getQty());
 				return;
 			} 
@@ -198,8 +215,11 @@ public class Inventory {
 	private void spoilAndAge(){
 		for(Entry<String, ArrayList<Product>> entry : data.entrySet()){
 			for(Product prod : entry.getValue()){
-				prod.setQty(prod.getQty()-prod.getSpoilQty());
-				prod.setFresh(Math.max(0, prod.getFresh()-MyData.freshDecayOf(prod.getName())));
+				if(prod.getMaturity()==100) {
+					prod.setQty(prod.getQty()-prod.getSpoilQty());
+					prod.setFresh(Math.max(0, prod.getFresh()-MyData.freshDecayOf(prod.getName())));
+				}
+				prod.mature();
 			}
 		}
 	}
@@ -207,7 +227,7 @@ public class Inventory {
 
 	public String toString(){
 		String str= String.format("Fonds : %.2f$\n", money);
-		str+= String.format("Silos: %.1f/", getTotalCerealQty()) + siloSize + "\n";
+		str+= String.format("Silos: %.1f/", getTotalSiloQty()) + siloSize + "\n";
 		str+= String.format("Entrepôts: %.1f/", getTotalOtherQty()) + storageSize + "\n\n";
 		for(Entry<String, ArrayList<Product>> entry : data.entrySet()){
 			str += entry.getKey();
@@ -279,6 +299,14 @@ public class Inventory {
 		this.storageSize = storageSize;
 	}
 	
+	public HashMap<String,Boolean> getExpandedMap(){
+		return expandedMap;
+	}
+	public void setExpandedMap(TreeItem<Product> root) {
+		for(TreeItem<Product> prodTreeItem:root.getChildren()) {
+			expandedMap.put(prodTreeItem.getValue().getName(),prodTreeItem.isExpanded());
+		}
+	}
 	
 	
 }

@@ -5,20 +5,25 @@ import java.util.TreeMap;
 
 public class Recipe {
 	
-	private  String name;
-	private  TreeMap<String,Double> ingredients;
-	private  TreeMap<String,Double> results;
-	private  double baseEnergyCost;
-	private  double baseTimeCost;
+	private String name;
+	private double baseEnergyCost;
+	private double baseTimeCost;
+	private int maturation;
+	private TreeMap<String,Double> ingredients;
+	private TreeMap<String,Double> results;
+	
 	
 	 
 	
-	public Recipe(String name,TreeMap<String,Double> ingredientList, TreeMap<String,Double> results, double baseEnergyCost, double baseTimeCost){
+	public Recipe(String name, double baseEnergyCost, double baseTimeCost, int maturation, 
+			      TreeMap<String,Double> ingredientList, TreeMap<String,Double> results){
 		this.name=name;
-		this.ingredients=ingredientList;
-		this.results=results;
 		this.baseEnergyCost=baseEnergyCost;
 		this.baseTimeCost=baseTimeCost;
+		this.maturation = maturation;
+		this.ingredients=ingredientList;
+		this.results=results;
+		
 	}
 	
 /**
@@ -31,13 +36,14 @@ public class Recipe {
 		name=recStrList[0];
 		baseEnergyCost=RecipeBook.energyCostOf(recStrList[1]);
 		baseTimeCost=RecipeBook.timeCostOf(recStrList[2]);
+		maturation=Integer.parseInt(recStrList[3]);
 		this.ingredients = new TreeMap<>();
-		String[] ingrStr = recStrList[3].split(",");
+		String[] ingrStr = recStrList[4].split(",");
 		for(int i=0;i<ingrStr.length;i=i+2){
 			ingredients.put(ingrStr[i], Double.parseDouble(ingrStr[i+1]));
 		}
 		this.results = new TreeMap<>();
-		String[] resultStr = recStrList[4].split(",");
+		String[] resultStr = recStrList[5].split(",");
 		for(int i=0;i<resultStr.length;i=i+2){
 			results.put(resultStr[i], Double.parseDouble(resultStr[i+1]));
 		}
@@ -47,13 +53,6 @@ public class Recipe {
 	public String getName() {
 		return name;
 	}
-	public TreeMap<String, Double> getIngredients() {
-		return ingredients;
-	}
-
-	public TreeMap<String, Double> getResults() {
-		return results;
-	}
 	
 	public double getBaseEnergyCost() {
 		return baseEnergyCost;
@@ -62,6 +61,20 @@ public class Recipe {
 	public double getBaseTimeCost() {
 		return baseTimeCost;
 	}
+	
+	public int getMaturation() {
+		return maturation;
+	}
+	
+	public TreeMap<String, Double> getIngredients() {
+		return ingredients;
+	}
+
+	public TreeMap<String, Double> getResults() {
+		return results;
+	}
+	
+	
 
 	/**
 	 * 
@@ -77,7 +90,7 @@ public class Recipe {
 			}
 			bp += MyData.basePriceOf(entry.getKey())*entry.getValue();
 		}
-		bp *=1.2; // recipe valuation factor
+		bp *=(1+baseEnergyCost/3); // recipe valuation factor
 		bp /= results.firstEntry().getValue();
 		return bp;
 	}

@@ -3,13 +3,17 @@ package homier.farmGame.model.tile;
 
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import homier.farmGame.model.Inventory;
 import homier.farmGame.model.MyData;
+import homier.farmGame.model.SeedByProd;
 import homier.farmGame.model.SeedData;
 import homier.farmGame.model.WaterData;
 import homier.farmGame.model.Weather;
 import homier.farmGame.utils.Tools;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
+
 
 
 
@@ -19,10 +23,10 @@ public class FarmPlot extends Tile {
 	private boolean plowed;
 	private boolean sown;
 	private double waterLevel;
-	private double yieldPenalty;
-	private DoubleProperty growth;
-	private DoubleProperty yield;
-	private DoubleProperty quality;
+	private double yieldPenalty;//cumulative yieldPenalty factor
+	private double growth;
+	private HashMap<String,Double> yield;
+	private double quality;
 	private double growthFactor;//one day of growth
 
 	public FarmPlot(){
@@ -30,9 +34,9 @@ public class FarmPlot extends Tile {
 		this.seed=new SeedData("empty");
 		this.waterLevel=0;
 		this.yieldPenalty=0;
-		this.growth = new SimpleDoubleProperty(0);
-		this.yield= new SimpleDoubleProperty(0);
-		this.quality = new SimpleDoubleProperty(1);
+		this.growth = 0;
+		this.yield = new HashMap<>();
+		this.quality = 0;
 		this.growthFactor = 0;
 	}
 	
@@ -42,12 +46,17 @@ public class FarmPlot extends Tile {
 			double wxFactor = wx.getGrowthFactor(seed.getTempRange());
 			growthFactor=seed.getGrowthRate()*wxFactor*WaterData.growthFactor(waterLevel);
 			
-			if(growth.get()<150){
-				growth.set(growth.get()+growthFactor*dTime);
+			if(growth<150){
+				growth=growth+growthFactor*dTime;
 			}
-			yieldPenalty+=WaterData.yieldPenaltyFactor(waterLevel)*dTime*50;//50 would be the yieldPenalty Rate
-			setYield(calculateYield());
-			quality.set(Math.min(100, quality.get()+wxFactor*WaterData.growthFactor(waterLevel)*dTime));
+			yieldPenalty+=WaterData.yieldPenaltyFactor(waterLevel)*dTime;
+			
+			yield.clear();
+			for(SeedByProd byProd:seed.getByProds().values()) {
+				yield.put(byProd.getProdName(), calculateYield(byProd));
+			}
+			
+			quality=Math.min(100, quality+wxFactor*WaterData.growthFactor(waterLevel)*dTime);
 
 			//update the waterlevel
 			waterLevel = Math.min(120, Math.max(0, waterLevel-WaterData.dryingFactor(wx)*dTime*25));//lose 25 waterLevel per day if dryingFactor of 1
@@ -78,28 +87,22 @@ public class FarmPlot extends Tile {
 	}
 	
 
-	public final double getGrowth() {return growth.get();}
+	public final double getGrowth() {return growth;}
 
-	public final void setGrowth(float growth) {this.growth.set(growth);}
+	public final void setGrowth(float growth) {this.growth=growth;}
 
-	public DoubleProperty growthProperty(){return growth;}
 	
-	public final double getYield() {return yield.get();}
-
-	public final void setYield(double yield) {
-		this.yield.set(Math.max(0, yield));
-	}
+	public final double yieldOf(String prodName) {return yield.get(prodName);}
 	
-	public DoubleProperty yieldProperty(){ return yield;}
+	public final HashMap<String, Double> getYield() {return yield;}
 
-	public final void setQuality(double quality){this.quality.set(quality);}
+	public final void setQuality(double quality){this.quality=quality;}
 
-	public DoubleProperty qualityProperty(){return quality;}
 	
 	public double getGrowthFactor(){return growthFactor;}
 	
 	public int getQual() {
-		return (int)quality.get();
+		return (int)quality;
 	}
 
 	public double getWaterLevel(){
@@ -119,17 +122,35 @@ public class FarmPlot extends Tile {
 	
 	public String toString(){
 		return (super.toString() + String.format("\tGrowth Rate: %.0f", seed.getGrowthRate()) + 
-				String.format("\t  Growth: %.0f", growth.get()) + "\tyield: " + yield.get() + "\tproduct: " + "\tquality: " + quality.get());
+				String.format("\t  Growth: %.0f", growth)  + "\tquality: " + quality);
 	}
 	
 	/**
 	 * calculate the yield using the seedData yield vs growth map and the current yieldPenalty
 	 * @return the current yield of the plot
 	 */
-	private double calculateYield(){
-		return Tools.interpolateMap(seed.getYieldMap(), growth.get())/100*seed.getMaxYield()-yieldPenalty;
+	private double calculateYield(SeedByProd byProd){
+		return Math.max(0,(Tools.interpolateMap(byProd.getYieldMap(), growth)-yieldPenalty)/100*byProd.getMaxYield());
 	}
 
-
+	/**
+	 * Calculates if the inventory has enough storage to harvest this farmTile
+	 * @param inventory
+	 * @return
+	 */
+	public boolean enoughStorageToHarvest(Inventory inventory) {
+		double qtyForSilo=0;
+		double qtyForOther=0;
+		for(SeedByProd byProd:seed.getByProds().values()) {
+			String prodName = byProd.getProdName();
+			if(MyData.categoriesOf(prodName).contains("Silo")) {
+				qtyForSilo+=yield.get(prodName);
+			}else {
+				qtyForOther+=yield.get(prodName);
+			}
+		}
+		return inventory.enoughStorageFor(qtyForSilo, true)&&inventory.enoughStorageFor(qtyForOther, false);
+	}
+	
 	
 }
